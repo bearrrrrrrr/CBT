@@ -47,7 +47,7 @@
 	var/list/autoplappers = list()
 	var/autoplapper_autostart = TRUE
 	var/mean_time_to_cum = 5 MINUTES // how long it takes to cum when doing an autoplap
-	var/SeeLewd = FALSE // show the lewd stuff?
+	var/SeeLewd = TRUE // show the lewd stuff?
 	var/SeeExtreme = FALSE // show the REALLY lewd stuff?
 	var/savetimer = 0
 	var/autocum_flags = NONE
@@ -173,7 +173,7 @@
 	.["Recording"] = get_recording_autoplappers() || list()
 	.["AutoPlapAutoStart"] = autoplapper_autostart || FALSE
 	// .["selfAttributes"] = self.list_interaction_attributes(self) || list()
-	.["CanCum"] = self.ready_to_cum || FALSE // I AM NOT READY!!!!!!!!!!!!!
+	.["CanCum"] = TRUE // I AM NOT READY!!!!!!!!!!!!!
 	.["MTTC"] = mean_time_to_cum || 2 MINUTES // I will last 2 minutes, no more, no lest
 	.["MyLust"] = self.get_lust() || 0
 	.["MyMaxLust"] = self.get_lust_max() || 0

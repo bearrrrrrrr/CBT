@@ -79,7 +79,7 @@ GLOBAL_LIST_EMPTY(reskin_list)
 		if(!the_icon)
 			the_icon = my_original_skin.icon
 		skinnies["[skine.skin]"] = skine.get_preview_image(master)
-	var/choice = show_radial_menu(user, master, skinnies, custom_check = CALLBACK(src,PROC_REF(can_reskin), src, user), radius = 40, require_near = TRUE, ultradense = (LAZYLEN(skins) > 7))
+	var/choice = show_radial_menu(user, user, skinnies, custom_check = CALLBACK(src,PROC_REF(can_reskin), src, user), radius = 40, require_near = TRUE, ultradense = (LAZYLEN(skins) > 7))
 	if(!choice)
 		return FALSE
 	if(QDELETED(master))

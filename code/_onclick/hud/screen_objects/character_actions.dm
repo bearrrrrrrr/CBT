@@ -25,7 +25,7 @@
 	M.manage_flavor_tests()
 
 /atom/movable/screen/up
-	name = "up"
+	name = "look up"
 	icon_state = "up"
 	screen_loc = ui_character_actions
 
@@ -37,7 +37,7 @@
 	H.layershift_up()
 
 /atom/movable/screen/down
-	name = "down"
+	name = "look down"
 	icon_state = "down"
 	screen_loc = ui_character_actions
 
@@ -584,7 +584,7 @@
 	name = "give somebody something!"
 	icon = 'icons/mob/screen_gen.dmi'
 	icon_state = "give"
-	screen_loc = "CENTER+1:15,SOUTH+1:3"
+	screen_loc = "CENTER+1:14,SOUTH+1:3"
 
 /atom/movable/screen/give_button/Click(location,control,params)
 	var/mob/living/carbon/human/H = usr

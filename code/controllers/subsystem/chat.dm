@@ -995,67 +995,67 @@ SUBSYSTEM_DEF(chat)
 	return ckey2mob(TargetCkey)
 
 /// YES IM BLOWING CHAT'S TGUI LOAD ON FLIRTING, FIGHT ME
-/datum/controller/subsystem/chat/ui_interact(mob/user, datum/tgui/ui)
-	ui = SStgui.try_update_ui(user, src, ui)
-	if(!ui)
-		ui = new(user, src, "FlirtyFlirty")
-		ui.open()
-		ui.set_autoupdate(FALSE)
+// /datum/controller/subsystem/chat/ui_interact(mob/user, datum/tgui/ui)
+// 	ui = SStgui.try_update_ui(user, src, ui)
+// 	if(!ui)
+// 		ui = new(user, src, "FlirtyFlirty")
+// 		ui.open()
+// 		ui.set_autoupdate(FALSE)
 
-/// just holds the reader's target, if any
-/datum/controller/subsystem/chat/ui_data(mob/user)
-	var/list/data = list()
-	var/mob/living/heart = get_flirt_target(user)
-	var/mob/living/hearted = get_flirt_recipient(user)
-	data["DP"] = SSquirks.dp
-	data["FlirterCkey"] = user ? user.ckey : "AAAGOOD" // nulls are falsy
-	data["FlirterName"] = user ? user.name : "Some Dope"
-	/// who WE last flirted with
-	data["TargetCkey"] = heart ? heart.ckey : "AAAGOOD" // balls are nullsy
-	data["TargetName"] = heart ? heart.name : "AAABAD"
-	/// who last flirted with US
-	data["LastFlirtedByCkey"] = hearted ? hearted.ckey : "AAAGOOD" // balls are nullsy
-	data["LastFlirtedByName"] = hearted ? hearted.name : "AAABAD"
-	return data
+// /// just holds the reader's target, if any
+// /datum/controller/subsystem/chat/ui_data(mob/user)
+// 	var/list/data = list()
+// 	var/mob/living/heart = get_flirt_target(user)
+// 	var/mob/living/hearted = get_flirt_recipient(user)
+// 	data["DP"] = SSquirks.dp
+// 	data["FlirterCkey"] = user ? user.ckey : "AAAGOOD" // nulls are falsy
+// 	data["FlirterName"] = user ? user.name : "Some Dope"
+// 	/// who WE last flirted with
+// 	data["TargetCkey"] = heart ? heart.ckey : "AAAGOOD" // balls are nullsy
+// 	data["TargetName"] = heart ? heart.name : "AAABAD"
+// 	/// who last flirted with US
+// 	data["LastFlirtedByCkey"] = hearted ? hearted.ckey : "AAAGOOD" // balls are nullsy
+// 	data["LastFlirtedByName"] = hearted ? hearted.name : "AAABAD"
+// 	return data
 
-/// holds the whole enchilada
-/datum/controller/subsystem/chat/ui_static_data(mob/user)
-	var/list/static_data = list()
-	static_data["AllFlirts"] = flirt_for_tgui
-	static_data["AllCategories"] = flirts_all_categories
-	return static_data
+// /// holds the whole enchilada
+// /datum/controller/subsystem/chat/ui_static_data(mob/user)
+// 	var/list/static_data = list()
+// 	static_data["AllFlirts"] = flirt_for_tgui
+// 	static_data["AllCategories"] = flirts_all_categories
+// 	return static_data
 
-/datum/controller/subsystem/chat/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
-	. = ..()
-	var/mob/living/flirter = ckey2mob(params["ReturnFlirterCkey"])
-	if(!flirter)
-		return // nobody flirted
-	var/datum/flirt/F = LAZYACCESS(flirts, params["ReturnFlirtKey"])
-	flirt_cooldowns[flirter.ckey] = world.time + flirt_cooldown_time
-	var/mob/living/target = ckey2mob(params["ReturnTargetCkey"] || get_flirt_target(flirter))
-	switch(action)
-		if("ClearFlirtTarget")
-			return remove_flirt_target(flirter)
-		if("GiveFlirtTargetItem")
-			return give_flirt_targetter_item(flirter)
-		if("PreviewFlirt")
-			if(!F)
-				return
-			return F.preview_flirt(flirter, target)
-		if("PreviewSound")
-			if(!F)
-				return
-			return F.preview_sound(flirter, target)
-		if("ClickedFlirtButton")
-			if(!F)
-				return
-			if(LAZYACCESS(flirt_cooldowns, flirter.ckey) < world.time)
-				to_chat(flirter, span_warning("Hold your horses! You're still working on that last flirt!"))
-				return
-			return F.give_flirter(flirter)
+// /datum/controller/subsystem/chat/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+// 	. = ..()
+// 	var/mob/living/flirter = ckey2mob(params["ReturnFlirterCkey"])
+// 	if(!flirter)
+// 		return // nobody flirted
+// 	var/datum/flirt/F = LAZYACCESS(flirts, params["ReturnFlirtKey"])
+// 	flirt_cooldowns[flirter.ckey] = world.time + flirt_cooldown_time
+// 	var/mob/living/target = ckey2mob(params["ReturnTargetCkey"] || get_flirt_target(flirter))
+// 	switch(action)
+// 		if("ClearFlirtTarget")
+// 			return remove_flirt_target(flirter)
+// 		if("GiveFlirtTargetItem")
+// 			return give_flirt_targetter_item(flirter)
+// 		if("PreviewFlirt")
+// 			if(!F)
+// 				return
+// 			return F.preview_flirt(flirter, target)
+// 		if("PreviewSound")
+// 			if(!F)
+// 				return
+// 			return F.preview_sound(flirter, target)
+// 		if("ClickedFlirtButton")
+// 			if(!F)
+// 				return
+// 			if(LAZYACCESS(flirt_cooldowns, flirter.ckey) < world.time)
+// 				to_chat(flirter, span_warning("Hold your horses! You're still working on that last flirt!"))
+// 				return
+// 			return F.give_flirter(flirter)
 
-/datum/controller/subsystem/chat/ui_state(mob/user)
-	return GLOB.always_state
+// /datum/controller/subsystem/chat/ui_state(mob/user)
+// 	return GLOB.always_state
 
 /datum/controller/subsystem/chat/proc/start_page(mob/sender, mob/reciever)
 	if(!sender || !reciever)
@@ -1319,39 +1319,39 @@ SUBSYSTEM_DEF(chat)
 	set category = "Preferences"
 	SSchat.HornyPreferences(src)
 
-/mob/verb/check_out(mob/A as mob in view())
-	set name = "Flirt with"
-	set category = "IC"
+// /mob/verb/check_out(mob/A as mob in view())
+// 	set name = "Flirt with"
+// 	set category = "IC"
 
-	if(!SSchat.can_usr_flirt_with_this(A))
-		return
-	to_chat(src, span_notice("I get ready to flirt with [A]. What will you do?"))
-	to_chat(src, span_notice("HOW TO USE: Click on the emote you want to use, and it'll direct a flirtatious message toward them! That's it! \
-		Be sure to respect their OOC preferences, don't be a creep (unless they like it), and <i>have fun!</i>"))
-	SSchat.add_flirt_target(src, A)
-	SSchat.ui_interact(src)
+// 	if(!SSchat.can_usr_flirt_with_this(A))
+// 		return
+// 	to_chat(src, span_notice("I get ready to flirt with [A]. What will you do?"))
+// 	to_chat(src, span_notice("HOW TO USE: Click on the emote you want to use, and it'll direct a flirtatious message toward them! That's it! 
+// 		Be sure to respect their OOC preferences, don't be a creep (unless they like it), and <i>have fun!</i>"))
+// 	SSchat.add_flirt_target(src, A)
+// 	SSchat.ui_interact(src)
 
-/datum/emote/living/flirtlord
-	key = "flirt"
-	no_message = TRUE // we'll handle it from here =3
+// /datum/emote/living/flirtlord
+// 	key = "flirt"
+// 	no_message = TRUE // we'll handle it from here =3
 
-/datum/emote/living/flirtlord/run_emote(mob/user, params) //Player triggers the emote
-	if(isdead(user))
-		to_chat(user, span_warning("Nobody is interested in your cold dead heart, try rising from the grave with a fistful of flowers, should impress someone."))
-		return
-	if(user.stat == DEAD)
-		to_chat(user, span_warning("You've got better things to do than flirt, such as being dead."))
-		return
-	if(LAZYLEN(params))
-		var/whichm = text2num(params)
-		if(isnum(whichm) && whichm > 0 && whichm <= LAZYLEN(SSchat.flirtsByNumbers))
-			var/datum/flirt/F = LAZYACCESS(SSchat.flirtsByNumbers, whichm)
-			if(F)
-				return F.give_flirter(user)
-	to_chat(user, span_notice("I get ready to flirt. What will you do? And who with?"))
-	to_chat(user, span_notice("HOW TO USE: Click on the emote you want to use, and it'll give you a thing in your hand! Just click on whoever you want to send a flirtatious message to, or just use it in hand to send a message to everyone nearby. That's it! \
-		Be sure to respect their OOC preferences, don't be a creep (unless they like it), and <i>have fun!</i>"))
-	SSchat.ui_interact(user)
+// /datum/emote/living/flirtlord/run_emote(mob/user, params) //Player triggers the emote
+// 	if(isdead(user))
+// 		to_chat(user, span_warning("Nobody is interested in your cold dead heart, try rising from the grave with a fistful of flowers, should impress someone."))
+// 		return
+// 	if(user.stat == DEAD)
+// 		to_chat(user, span_warning("You've got better things to do than flirt, such as being dead."))
+// 		return
+// 	if(LAZYLEN(params))
+// 		var/whichm = text2num(params)
+// 		if(isnum(whichm) && whichm > 0 && whichm <= LAZYLEN(SSchat.flirtsByNumbers))
+// 			var/datum/flirt/F = LAZYACCESS(SSchat.flirtsByNumbers, whichm)
+// 			if(F)
+// 				return F.give_flirter(user)
+// 	to_chat(user, span_notice("I get ready to flirt. What will you do? And who with?"))
+// 	to_chat(user, span_notice("HOW TO USE: Click on the emote you want to use, and it'll give you a thing in your hand! Just click on whoever you want to send a flirtatious message to, or just use it in hand to send a message to everyone nearby. That's it! 
+// 		Be sure to respect their OOC preferences, don't be a creep (unless they like it), and <i>have fun!</i>"))
+// 	SSchat.ui_interact(user)
 
 
 /datum/emoticon_bank

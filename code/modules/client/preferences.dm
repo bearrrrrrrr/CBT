@@ -572,7 +572,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				llogin_msg += " ([span_alert("[SSeconomy.format_currency(cash_change, TRUE)]")] inactivity tax)"
 			llogin_msg += "</center>"
 			dat += llogin_msg.Join()
-			dat += "<a href='?_src_=prefs;preference=special;task=menu'><center><b>Character Atributes</b></center></a><br>"
+			dat += "<center><a href='?_src_=prefs;preference=special;task=menu'><b>Character Atributes</b></a></center><br>"
 			if(CONFIG_GET(flag/roundstart_traits))
 				dat += "<center>"
 				if(SSquirks.initialized && !(PMC_QUIRK_OVERHAUL_2K23 in current_version))
@@ -603,10 +603,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					mygender = "Object"
 			dat += "<b>Gender:</b> <a href='?_src_=prefs;preference=gender;task=input'>[mygender]</a><BR>"
 			dat += "<b>Age:</b> <a style='width:60px' href='?_src_=prefs;preference=age;task=input'>[age]</a><BR>"
-			dat += "<b>Species:</b><a href='?_src_=prefs;preference=species;task=input'>[pref_species.name]</a>"
+			dat += "<b>Species:</b><a href='?_src_=prefs;preference=species;task=input'>[pref_species.name]</a><br>"
 			if(LAZYLEN(pref_species.alt_prefixes))
-				dat += "<b>Alt Appearance:</b><a href='?_src_=prefs;preference=species_alt_prefix;task=input'>[alt_appearance ? alt_appearance : "Select"]</a>"
-			dat += "<b>Custom Species Name:</b><a href='?_src_=prefs;preference=custom_species;task=input'>[custom_species ? custom_species : "None"]</a>"
+				dat += "<b>Alt Appearance:</b><a href='?_src_=prefs;preference=species_alt_prefix;task=input'>[alt_appearance ? alt_appearance : "Select"]</a><br>"
+			dat += "<b>Custom Species Name:</b><a href='?_src_=prefs;preference=custom_species;task=input'>[custom_species ? custom_species : "None"]</a><br>"
 			dat += "</td>"
 
 			//Middle Column
@@ -1522,13 +1522,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<h2>Adult content prefs</h2>"
 			dat += "<b>Arousal:</b><a href='?_src_=prefs;preference=arousable'>[arousable == TRUE ? "Enabled" : "Disabled"]</a><BR>"
 			dat += "<b>Genital examine text</b>:<a href='?_src_=prefs;preference=genital_examine'>[(cit_toggles & GENITAL_EXAMINE) ? "Enabled" : "Disabled"]</a><BR>"
-			dat += "<b>Hypno:</b> <a href='?_src_=prefs;preference=never_hypno'>[(cit_toggles & NEVER_HYPNO) ? "Disallowed" : "Allowed"]</a><br>"
 			dat += "<b>Ass Slapping:</b> <a href='?_src_=prefs;preference=ass_slap'>[(cit_toggles & NO_ASS_SLAP) ? "Disallowed" : "Allowed"]</a><br>"
 			dat += "<b>Automatic Wagging:</b> <a href='?_src_=prefs;preference=auto_wag'>[(cit_toggles & NO_AUTO_WAG) ? "Disabled" : "Enabled"]</a><br>"
-			dat += "<b>Forced Feminization:</b> <a href='?_src_=prefs;preference=feminization'>[(cit_toggles & FORCED_FEM) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Forced Masculinization:</b> <a href='?_src_=prefs;preference=masculinization'>[(cit_toggles & FORCED_MASC) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Lewd Hypno:</b> <a href='?_src_=prefs;preference=hypno'>[(cit_toggles & HYPNO) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Bimbofication:</b> <a href='?_src_=prefs;preference=bimbo'>[(cit_toggles & BIMBOFICATION) ? "Allowed" : "Disallowed"]</a><br>"
 			dat += "</td>"
 			dat +="<td width='300px' height='300px' valign='top'>"
 			dat += "<h2>Other content prefs</h2>"

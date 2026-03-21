@@ -282,7 +282,7 @@
 /obj/item/storage/box/tools/stealth/PopulateContents()
 	new /obj/item/binoculars(src)
 	new /obj/item/grenade/smokebomb(src)
-	new /obj/item/stealthboy(src)
+	// new /obj/item/stealthboy(src)
 	new /obj/item/clothing/mask/chameleon(src)
 	new /obj/item/lockpick_set(src)
 

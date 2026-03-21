@@ -9,8 +9,8 @@
 
 /// Attempts to open the tgui menu
 /mob/verb/interact_with()
-	set name = "Mechanically Rolepay With"
-	set desc = "Perform an interaction with someone."
+	set name = "Mechanically ERP With"
+	set desc = "Perform an Erotic action with someone."
 	set category = "Roleplaying"
 	set src in range(10)
 

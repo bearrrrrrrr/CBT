@@ -58,7 +58,6 @@
 				output += "<center><p><a href='byond://?src=[REF(src)];quirkconversion=1'>Click here to do something about that!</a></p>"
 			else
 				output += "<center><p><a href='byond://?src=[REF(src)];quirks=1'>Configure Quirks!</a></p>"
-		output += "<center><p><a href='byond://?src=[REF(src)];show_hornychat=1'>Open VisualChat / Profile Pic Settings!</a></p>"
 		// output += "<center><p><a href='byond://?src=[REF(src)];show_hornychat=1'>Configure Profile Pics!</a></p>"
 
 	if(SSticker.current_state <= GAME_STATE_PREGAME)

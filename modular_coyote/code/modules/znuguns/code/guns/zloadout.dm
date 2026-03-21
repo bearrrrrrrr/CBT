@@ -527,9 +527,9 @@
 	name = "Binoculars"
 	path = /obj/item/binoculars
 	
-/datum/gear/utility/tier4/stealthboy
-	name = "Stealth Module"
-	path = /obj/item/stealthboy
+// /datum/gear/utility/tier4/stealthboy
+// 	name = "Stealth Module"
+// 	path = /obj/item/stealthboy
 	
 
 // TIER 1 STUFF //

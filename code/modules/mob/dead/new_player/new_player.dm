@@ -202,12 +202,6 @@
 		//This is likely not an actual issue but I don't have time to prove that this
 		//no longer is required
 		if(SSticker.current_state <= GAME_STATE_PREGAME)
-			if((length_char(client.prefs.features["flavor_text"])) < MIN_FLAVOR_LEN)
-				to_chat(client.mob, span_danger("Your flavortext does not meet the minimum of [MIN_FLAVOR_LEN] characters."))
-				return
-			if((length_char(client.prefs.features["ooc_notes"])) < MIN_OOC_LEN || client.prefs.features["ooc_notes"] == OOC_NOTE_TEMPLATE)
-				to_chat(client.mob, span_danger("Your ooc notes is empty, please enter information about your roleplaying preferences."))
-				return
 			ready = tready
 		//if it's post initialisation and they're trying to observe we do the needful
 		if(SSticker.current_state >= GAME_STATE_PREGAME && tready == PLAYER_READY_TO_OBSERVE)
@@ -228,14 +222,6 @@
 	if(href_list["late_join"])
 		if(!SSticker || !SSticker.IsRoundInProgress())
 			to_chat(usr, span_danger("The round is either not ready, or has already finished..."))
-			return
-
-		if((length_char(client.prefs.features["flavor_text"])) < MIN_FLAVOR_LEN)
-			to_chat(client.mob, span_danger("Your flavortext does not meet the minimum of [MIN_FLAVOR_LEN] characters."))
-			return
-
-		if((length_char(client.prefs.features["ooc_notes"])) < MIN_OOC_LEN || client.prefs.features["ooc_notes"] == OOC_NOTE_TEMPLATE)
-			to_chat(client.mob, span_danger("Your ooc notes is empty, please enter information about your roleplaying preferences."))
 			return
 
 		if(href_list["late_join"] == "override")
@@ -502,14 +488,6 @@
 		alert(src, "An administrator has disabled late join spawning.")
 		return FALSE
 
-	if((length_char(client.prefs.features["flavor_text"])) < MIN_FLAVOR_LEN)
-		to_chat(client.mob, span_danger("Your flavortext does not meet the minimum of [MIN_FLAVOR_LEN] characters."))
-		return FALSE
-
-	if((length_char(client.prefs.features["ooc_notes"])) < MIN_OOC_LEN || client.prefs.features["ooc_notes"] == OOC_NOTE_TEMPLATE)
-		to_chat(client.mob, span_danger("Your ooc notes is empty, please enter information about your roleplaying preferences."))
-		return
-
 	var/arrivals_docked = TRUE
 	if(SSshuttle.arrivals)
 		close_spawn_windows()	//In case we get held up
@@ -646,9 +624,6 @@
 			client.prefs.ShowChoices(src)
 			return
 		var/datum/preferences/P = client.prefs
-		if(!P.creature_flavor_text || !P.creature_ooc)
-			to_chat(src, span_userdanger("You must set your Creature OOC Notes and Flavor Text before joining as a creature."))
-			return FALSE
 		var/spawn_selection = input(src, "Select a Creature Spawnpoint", "Spawnpoint Selection") as null|anything in GLOB.creature_spawnpoints
 		if(!spawn_selection || QDELETED(src) || !ckey)
 			return FALSE

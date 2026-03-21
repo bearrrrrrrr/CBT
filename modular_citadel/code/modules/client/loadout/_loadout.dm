@@ -30,6 +30,8 @@ GLOBAL_LIST_EMPTY(loadout_whitelist_ids)
 		var/datum/gear/I = item
 		if(!initial(I.name))
 			continue
+		if(initial(I.disabled))
+			continue
 		I = new item
 		LAZYINITLIST(GLOB.loadout_items[I.category])
 		LAZYINITLIST(GLOB.loadout_items[I.category][I.subcategory])
@@ -68,6 +70,9 @@ GLOBAL_LIST_EMPTY(loadout_whitelist_ids)
 
 	var/restricted_desc
 
+	/// Should the gear not show up or be selectable or whatever?
+	var/disabled = FALSE
+
 /datum/gear/New()
 	if(isnull(donoritem))
 		if(donator_group_id || ckeywhitelist)
@@ -80,6 +85,8 @@ GLOBAL_LIST_EMPTY(loadout_whitelist_ids)
 
 //ckey only check
 /datum/gear/proc/donator_ckey_check(key)
+	if(disabled)
+		return FALSE
 	if(LAZYLEN(ckeywhitelist))
 		for(var/needed_key in ckeywhitelist)
 			if(ckey(needed_key) == ckey(key))

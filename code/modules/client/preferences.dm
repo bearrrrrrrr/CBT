@@ -405,7 +405,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/icon/bgstate = "steel"
 	var/list/bgstate_options = list("000", "midgrey", "FFF", "white", "steel", "techmaint", "dark", "plating", "reinforced")
 
-	var/show_mismatched_markings = FALSE //determines whether or not the markings lists should show markings that don't match the currently selected species. Intentionally left unsaved.
+	var/show_mismatched_markings = TRUE //determines whether or not the markings lists should show markings that don't match the currently selected species. Intentionally left unsaved.
 
 	var/no_tetris_storage = FALSE
 
@@ -572,6 +572,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				llogin_msg += " ([span_alert("[SSeconomy.format_currency(cash_change, TRUE)]")] inactivity tax)"
 			llogin_msg += "</center>"
 			dat += llogin_msg.Join()
+			dat += "<a href='?_src_=prefs;preference=special;task=menu'><center><b>Character Atributes</b></center></a><br>"
 			if(CONFIG_GET(flag/roundstart_traits))
 				dat += "<center>"
 				if(SSquirks.initialized && !(PMC_QUIRK_OVERHAUL_2K23 in current_version))
@@ -580,8 +581,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "<h2>Configure Quirks</a></h2><br></center>"
 				dat += "</a>"
 				dat += "<center><b>Current Quirks:</b> [get_my_quirks()]</center>"
-			dat += "<center><h2>Character Atributes</h2>"
-			dat += "<a href='?_src_=prefs;preference=special;task=menu'>Allocate Points</a><br></center>"
 			//Left Column
 			dat += "<table width='100%'><tr>"
 			dat += "<td valign='top'>"
@@ -604,8 +603,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					mygender = "Object"
 			dat += "<b>Gender:</b> <a href='?_src_=prefs;preference=gender;task=input'>[mygender]</a><BR>"
 			dat += "<b>Age:</b> <a style='width:60px' href='?_src_=prefs;preference=age;task=input'>[age]</a><BR>"
-			dat += "<br>"
-			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Configure VisualChat / Profile Pictures!</a><BR>"
+			dat += "<b>Species:</b><a href='?_src_=prefs;preference=species;task=input'>[pref_species.name]</a>"
+			if(LAZYLEN(pref_species.alt_prefixes))
+				dat += "<b>Alt Appearance:</b><a href='?_src_=prefs;preference=species_alt_prefix;task=input'>[alt_appearance ? alt_appearance : "Select"]</a>"
+			dat += "<b>Custom Species Name:</b><a href='?_src_=prefs;preference=custom_species;task=input'>[custom_species ? custom_species : "None"]</a>"
 			dat += "</td>"
 
 			//Middle Column
@@ -619,15 +620,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "[features["flavor_text"]]"
 			else
 				dat += "[TextPreview(features["flavor_text"])]...<BR>"
-			dat += "<h3>Silicon Flavor Text</h3>"
-			dat += "<a href='?_src_=prefs;preference=silicon_flavor_text;task=input'><b>Set Silicon Examine Text</b></a><br>"
-			if(length(features["silicon_flavor_text"]) <= 40)
-				if(!length(features["silicon_flavor_text"]))
-					dat += "\[...\]"
-				else
-					dat += "[features["silicon_flavor_text"]]"
-			else
-				dat += "[TextPreview(features["silicon_flavor_text"])]...<BR>"
 			dat += "<h3>OOC notes</h3>"
 			dat += "<a href='?_src_=prefs;preference=ooc_notes;task=input'><b>Set OOC notes</b></a><br>"
 			var/ooc_notes_len = length(features["ooc_notes"])
@@ -638,6 +630,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "[features["ooc_notes"]]<br>"
 			else
 				dat += "[TextPreview(features["ooc_notes"])]...<br>"
+			dat += "<br>"
+			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Configure VisualChat / Profile Pictures!</a><BR>"
 			dat += "</td>"
 
 			/// Right column
@@ -659,6 +653,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<b>Variance: </b><a href='?_src_=prefs;preference=typing_indicator_variance;task=input'>[ti_variance]</a><br>"
 			dat += "<b>Volume: </b><a href='?_src_=prefs;preference=typing_indicator_volume;task=input'>[ti_volume]</a><br>"
 			dat += "<b>Max Words: </b><a href='?_src_=prefs;preference=typing_indicator_max_words_spoken;task=input'>[ti_max_words_spoken]</a><br>"
+			dat += "<b>Runechat Color:</b><a href='?_src_=prefs;preference=chat_color;task=input;background-color: #[features["chat_color"]]'>#[features["chat_color"]]</span></a><br>"
 			dat += "</td>"
 			dat += "</tr>"
 			dat += "</table>"
@@ -687,153 +682,18 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			//	START COLUMN 1
 			dat += APPEARANCE_CATEGORY_COLUMN
 
-			dat += "<h3>Body</h3>"
-			
-			dat += "<b>Species:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=species;task=input'>[pref_species.name]</a><BR>"
-			
-			if(LAZYLEN(pref_species.alt_prefixes))
-				dat += "<b>Alt Appearance:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=species_alt_prefix;task=input'>[alt_appearance ? alt_appearance : "Select"]</a><BR>"
-
-			dat += "<b>Custom Species Name:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=custom_species;task=input'>[custom_species ? custom_species : "None"]</a><BR>"
-			
-			dat += "<b>Gender:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=gender;task=input'>[gender == MALE ? "Male" : (gender == FEMALE ? "Female" : (gender == PLURAL ? "Non-binary" : "Object"))]</a><br>"
-			
 			if(gender != NEUTER && pref_species.sexes)
-				dat += "<b>Body Model:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=body_model'>[features["body_model"] == MALE ? "Masculine" : "Feminine"]</a><br>"
+				dat += "<h3>Body Model:</h3><a href='?_src_=prefs;preference=body_model'>[features["body_model"] == MALE ? "Masculine" : "Feminine"]</a>"
 			
 			if(length(pref_species.allowed_limb_ids))
 				if(!chosen_limb_id || !(chosen_limb_id in pref_species.allowed_limb_ids))
 					chosen_limb_id = pref_species.limbs_id || pref_species.id
-				dat += "<b>Body Sprite:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=bodysprite;task=input'>[chosen_limb_id]</a><br>"
-			dat += "</td>"
-			dat += APPEARANCE_CATEGORY_COLUMN
-			var/use_skintones = pref_species.use_skintones			
-			var/mutant_colors
-			if((MUTCOLORS in pref_species.species_traits) || (MUTCOLORS_PARTSONLY in pref_species.species_traits))
-				if(!use_skintones)
-					dat += "<b>Primary Color:</b><BR>"
-					dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color;task=input'>Change</a><BR>"
-
-					dat += "<b>Secondary Color:</b><BR>"
-					dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color2;task=input'>Change</a><BR>"
-
-					dat += "<b>Tertiary Color:</b><BR>"
-					dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor3"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color3;task=input'>Change</a><BR>"
-					mutant_colors = TRUE
+				dat += "<h3>Body Sprite:</h3><a href='?_src_=prefs;preference=bodysprite;task=input'>[chosen_limb_id]</a>"
 			
-			if(use_skintones)
-				dat += "<h3>Skin Tone</h3>"
-				dat += "<a style='display:block;width:100px' href='?_src_=prefs;preference=s_tone;task=input'>[use_custom_skin_tone ? "custom: <span style='border:1px solid #161616; background-color: [skin_tone];'>&nbsp;&nbsp;&nbsp;</span>" : skin_tone]</a><BR>"
-			
-			if (CONFIG_GET(number/body_size_min) != CONFIG_GET(number/body_size_max))
-				dat += "<b>Sprite Size:</b> <a href='?_src_=prefs;preference=body_size;task=input'>[features["body_size"]*100]%</a><br>"
-			if (CONFIG_GET(number/body_width_min) != CONFIG_GET(number/body_width_max))
-				dat += "<b>Sprite Width:</b> <a href='?_src_=prefs;preference=body_width;task=input'>[features["body_width"]*100]%</a><br>"
-			dat += "<b>Scaling:</b> <a href='?_src_=prefs;preference=toggle_fuzzy;task=input'>[fuzzy ? "Fuzzy" : "Sharp"]</a><br>"
-
-			dat += "<b>Limb Modification:</b><br>"
-			dat += "<a href='?_src_=prefs;preference=modify_limbs;task=input'>Modify Limbs</a><BR>"
-			for(var/modification in modified_limbs)
-				if(modified_limbs[modification][1] == LOADOUT_LIMB_PROSTHETIC)
-					dat += "<b>[modification]: [modified_limbs[modification][2]]</b><BR>"
-				else
-					dat += "<b>[modification]: [modified_limbs[modification][1]]</b><BR>"
-
-			dat += "</td>"
-			//	END COLUMN 1
-			//  START COLUMN 2
-			dat += APPEARANCE_CATEGORY_COLUMN
-			if(!(NOEYES in pref_species.species_traits))
-				dat += "<h3>Eyes</h3>"
-				dat += "</b><a style='display:block;width:100px' href='?_src_=prefs;preference=eye_type;task=input'>[eye_type]</a>"
-				if((EYECOLOR in pref_species.species_traits))
-					if(!use_skintones && !mutant_colors)
-						dat += APPEARANCE_CATEGORY_COLUMN
-					if(left_eye_color != right_eye_color)
-						split_eye_colors = TRUE
-					dat += "</b><a style='display:block;width:100px' href='?_src_=prefs;preference=toggle_eye_over_hair;task=input'>[eye_over_hair ? "Over Hair" : "Under Hair"]</a>"
-					dat += "<b>Heterochromia</b><br>"
-					dat += "</b><a style='display:block;width:100px' href='?_src_=prefs;preference=toggle_split_eyes;task=input'>[split_eye_colors ? "Enabled" : "Disabled"]</a>"
-					if(!split_eye_colors)
-						dat += "<b>Eye Color</b><br>"
-						dat += "<span style='border: 1px solid #161616; background-color: #[left_eye_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=eyes;task=input'>Change</a><br>"
-					else
-						dat += "<b>Left Color</b><br>"
-						dat += "<span style='border: 1px solid #161616; background-color: #[left_eye_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=eye_left;task=input'>Change</a><br>"
-						dat += "<b>Right Color</b><br>"
-						dat += "<span style='border: 1px solid #161616; background-color: #[right_eye_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=eye_right;task=input'>Change</a><br>"
-			//  END COLUMN 2
-			dat += APPEARANCE_CATEGORY_COLUMN
-			if(HAIR in pref_species.species_traits)
-				dat += "<h3>Hair</h3>"
-				dat += "<b>Style Up:</b><br>"
-				dat += "<a style='display:block;width:100px' href='?_src_=prefs;preference=hair_style;task=input'>[hair_style]<br>"
-				dat += "<a href='?_src_=prefs;preference=previous_hair_style;task=input'>&lt;</a> <a href='?_src_=prefs;preference=next_hair_style;task=input'>&gt;</a><br>"
-				dat += "<span style='border:1px solid #161616; background-color: #[hair_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=hair;task=input'>Change</a><br><BR>"
-
-				// Coyote ADD: Hair gradients
-				dat += "<b>Gradient Up:</b><br>"
-				dat += "<a style='display:block;width:100px' href='?_src_=prefs;preference=grad_style;task=input'>[features_override["grad_style"]]</a>"
-				dat += "<span style='border:1px solid #161616; background-color: #[features_override["grad_color"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=grad_color;task=input'>Change</a><br><BR>"
-				// Coyote ADD: End
-
-				dat += "<b>Style Down:</b><br>"
-				dat += "<a style='display:block;width:100px' href='?_src_=prefs;preference=hair_style_2;task=input'>[features_override["hair_style_2"]]</a>"
-				dat += "<a href='?_src_=prefs;preference=previous_hair_style_2;task=input'>&lt;</a> <a href='?_src_=prefs;preference=next_hair_style_2;task=input'>&gt;</a><br>"
-				dat += "<span style='border:1px solid #161616; background-color: #[features_override["hair_color_2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=hair_color_2;task=input'>Change</a><br><BR>"
-
-				dat += "<b>Gradient Down:</b><br>"
-				dat += "<a style='display:block;width:100px' href='?_src_=prefs;preference=grad_style_2;task=input'>[features_override["grad_style_2"]]</a>"
-				dat += "<span style='border:1px solid #161616; background-color: #[features_override["grad_color_2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=grad_color_2;task=input'>Change</a><br><BR>"
-
-				dat += "<b>Facial Style:</b><br>"
-				dat += "<a style='display:block;width:100px' href='?_src_=prefs;preference=facial_hair_style;task=input'>[facial_hair_style]<br>"
-				dat += "<a href='?_src_=prefs;preference=previous_facehair_style;task=input'>&lt;</a> <a href='?_src_=prefs;preference=next_facehair_style;task=input'>&gt;</a><br>"
-				dat += "<span style='border: 1px solid #161616; background-color: #[facial_hair_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=facial;task=input'>Change</a><br><BR>"
-
-			dat += "<b>Show/hide Undies:</b><br>"
-			dat += "<a style='display:block;width:100px' href='?_src_=prefs;preference=toggle_undie_preview;task=input'>[preview_hide_undies ? "Hidden" : "Visible"]<br>"
-
-			dat += "</td>"
-
-			//end column 3 or something
-			//start column 4
-			dat += APPEARANCE_CATEGORY_COLUMN
-			//Waddling
-			dat += "<h3>Waddling</h3>"
-			dat += "<b>Waddle Amount:</b><a href='?_src_=prefs;preference=waddle_amount;task=input'>[waddle_amount]</a><br>"
-			if(waddle_amount > 0)
-				dat += "</b><a href='?_src_=prefs;preference=up_waddle_time;task=input'>&harr; Speed:[up_waddle_time]</a><br>"
-				dat += "</b><a href='?_src_=prefs;preference=side_waddle_time;task=input'>&#8597 Speed:[side_waddle_time]</a><br>"
-			
-			
-			dat += "<h3>Misc</h3>"
-			dat += "<b>Custom Taste:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=taste;task=input'>[features["taste"] ? features["taste"] : "something"]</a><br>"
-			dat += "<b>Runechat Color:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=chat_color;task=input;background-color: #[features["chat_color"]]'>#[features["chat_color"]]</span></a><br>"
-			dat += "<b>Blood Color:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=blood_color;task=input;background-color: #[features["blood_color"]]'>#[features["blood_color"]]</span></a><br>"
-			dat += "<a href='?_src_=prefs;preference=reset_blood_color;task=input'>Reset Blood Color</A><BR>"
-			dat += "<a href='?_src_=prefs;preference=rainbow_blood_color;task=input'>Rainbow Blood Color</A><BR>"
-			dat += "<b>Background:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=cycle_bg;task=input'>[bgstate]</a><br>"
-			dat += "<b>Pixel Offsets</b><br>"
-			var/px = custom_pixel_x > 0 ? "+[custom_pixel_x]" : "[custom_pixel_x]"
-			var/py = custom_pixel_y > 0 ? "+[custom_pixel_y]" : "[custom_pixel_y]"
-			dat += "<a href='?_src_=prefs;preference=pixel_x;task=input'>&harr;[px]</a><br>"
-			dat += "<a href='?_src_=prefs;preference=pixel_y;task=input'>&#8597;[py]</a><br>"
-			
-			dat += "</td>"
-			//Mutant stuff
-			var/mutant_category = 0
-			mutant_category++
-			if(mutant_category >= MAX_MUTANT_ROWS) //just in case someone sets the max rows to 1 or something dumb like that
-				dat += "</td>"
-				mutant_category = 0
-
+			// MARKINGS BLOCK START HERE
 			// rp marking selection
 			// assume you can only have mam markings or regular markings or none, never both
 			var/marking_type
-			dat += APPEARANCE_CATEGORY_COLUMN
-			dat += "<b>Advanced Coloring:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=color_scheme;task=input'>[(features["color_scheme"] == ADVANCED_CHARACTER_COLORING) ? "Enabled" : "Disabled"]</a>"
-			dat += "<b>Mismatched Markings:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=mismatched_markings;task=input'>[show_mismatched_markings ? "Yes" : "No"]</a>"
 			if(parent.can_have_part("mam_body_markings"))
 				marking_type = "mam_body_markings"
 			if(marking_type)
@@ -882,7 +742,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 								if(MATRIX_GREEN_BLUE)
 									primary_index = 2
 									secondary_index = 3
-
 							// we know it has one matrixed section at minimum
 							color_marking_dat += "<span style='border: 1px solid #161616; background-color: [marking_list[3][primary_index]];'>&nbsp;&nbsp;&nbsp;</span>"
 							// if it has a second section, add it
@@ -896,7 +755,141 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							color_marking_dat += " <a href='?_src_=prefs;preference=marking_color;marking_index=[marking_index];marking_type=[marking_type];number_colors=[number_colors];task=input'>Change</a><BR>"
 						dat += "<tr><td>[marking_list[2]] - [actual_name]</td> <td><a href='?_src_=prefs;preference=marking_down;task=input;marking_index=[marking_index];marking_type=[marking_type];'>&#708;</a> <a href='?_src_=prefs;preference=marking_up;task=input;marking_index=[marking_index];marking_type=[marking_type]'>&#709;</a> <a href='?_src_=prefs;preference=marking_remove;task=input;marking_index=[marking_index];marking_type=[marking_type]'>X</a> [color_marking_dat]</td></tr>"
 					dat += "</table>"
+			// MARKINGS BLOCK END HERE
+			// END COLUMN 1
 
+			// COLUMN 2
+			dat += "</td>"
+			dat += APPEARANCE_CATEGORY_COLUMN
+			var/use_skintones = pref_species.use_skintones
+			var/mutant_colors
+			if((MUTCOLORS in pref_species.species_traits) || (MUTCOLORS_PARTSONLY in pref_species.species_traits))
+				if(!use_skintones)
+
+					dat += "<h3>Primary Color:</h3>"
+					dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color;task=input'>Change</a>"
+
+					dat += "<h3>Secondary Color:</h3>"
+					dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color2;task=input'>Change</a>"
+
+					dat += "<h3>Tertiary Color:</h3>"
+					dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor3"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color3;task=input'>Change</a>"
+					mutant_colors = TRUE
+			
+			if(use_skintones)
+				dat += "<h3>Skin Tone</h3>"
+				dat += "<a href='?_src_=prefs;preference=s_tone;task=input'>[use_custom_skin_tone ? "custom: <span style='border:1px solid #161616; background-color: [skin_tone];'>&nbsp;&nbsp;&nbsp;</span>" : skin_tone]</a>"
+
+			if (CONFIG_GET(number/body_size_min) != CONFIG_GET(number/body_size_max))
+				dat += "<h3>Sprite Height:</h3> <a href='?_src_=prefs;preference=body_size;task=input'>[features["body_size"]*100]%</a>"
+			if (CONFIG_GET(number/body_width_min) != CONFIG_GET(number/body_width_max))
+				dat += "<h3>Sprite Width:</h3> <a href='?_src_=prefs;preference=body_width;task=input'>[features["body_width"]*100]%</a>"
+			dat += "<h3>Scaling:</h3> <a href='?_src_=prefs;preference=toggle_fuzzy;task=input'>[fuzzy ? "Fuzzy" : "Sharp"]</a>"
+			dat += "<h3>Limb Modification:</h3>"
+			dat += "<a href='?_src_=prefs;preference=modify_limbs;task=input'>Modify Limbs</a><BR>"
+			for(var/modification in modified_limbs)
+				if(modified_limbs[modification][1] == LOADOUT_LIMB_PROSTHETIC)
+					dat += "<b>[modification]: [modified_limbs[modification][2]]</b><BR>"
+				else
+					dat += "<b>[modification]: [modified_limbs[modification][1]]</b><BR>"
+			dat += "</td>"
+			//	END COLUMN 2
+
+			// START COLUMN 3
+			dat += APPEARANCE_CATEGORY_COLUMN
+			if(!(NOEYES in pref_species.species_traits))
+				dat += "<h3>Eye Style</h3>"
+				dat += "<a href='?_src_=prefs;preference=eye_type;task=input'>[eye_type]</a>"
+				if((EYECOLOR in pref_species.species_traits))
+					if(!use_skintones && !mutant_colors)
+						dat += APPEARANCE_CATEGORY_COLUMN
+					if(left_eye_color != right_eye_color)
+						split_eye_colors = TRUE
+					dat += "<h3>Eye Position</h3>"
+					dat += "<a href='?_src_=prefs;preference=toggle_eye_over_hair;task=input'>[eye_over_hair ? "Over Hair" : "Under Hair"]</a>"
+					dat += "<h3>Heterochromia</h3>"
+					dat += "<a href='?_src_=prefs;preference=toggle_split_eyes;task=input'>[split_eye_colors ? "Enabled" : "Disabled"]</a>"
+					if(!split_eye_colors)
+						dat += "<h3>Eye Color</h3>"
+						dat += "<span style='border: 1px solid #161616; background-color: #[left_eye_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=eyes;task=input'>Change</a><br>"
+					else
+						dat += "<h3>Left Color</h3>"
+						dat += "<span style='border: 1px solid #161616; background-color: #[left_eye_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=eye_left;task=input'>Change</a><br>"
+						dat += "<h3>Right Color</h3>"
+						dat += "<span style='border: 1px solid #161616; background-color: #[right_eye_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=eye_right;task=input'>Change</a><br>"
+			dat += "<h3>Show/hide Undies:</h3>"
+			dat += "<a href='?_src_=prefs;preference=toggle_undie_preview;task=input'>[preview_hide_undies ? "Hidden" : "Visible"]"
+			// END COLUMN 3
+
+			// START COLUMN 4
+			dat += APPEARANCE_CATEGORY_COLUMN
+			if(HAIR in pref_species.species_traits)
+				dat += "<h3>Hair Style Up:</h3>"
+				dat += "<a href='?_src_=prefs;preference=hair_style;task=input'>[hair_style]<br>"
+				dat += "<a href='?_src_=prefs;preference=previous_hair_style;task=input'>&lt;</a> <a href='?_src_=prefs;preference=next_hair_style;task=input'>&gt;</a><br>"
+				dat += "<span style='border:1px solid #161616; background-color: #[hair_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=hair;task=input'>Change</a>"
+
+				// Coyote ADD: Hair gradients
+				dat += "<h3>Hair Gradient Up:</h3>"
+				dat += "<a href='?_src_=prefs;preference=grad_style;task=input'>[features_override["grad_style"]]</a>"
+				dat += "<span style='border:1px solid #161616; background-color: #[features_override["grad_color"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=grad_color;task=input'>Change</a>"
+				// Coyote ADD: End
+
+				dat += "<h3>Hair Style Down:</h3>"
+				dat += "<a href='?_src_=prefs;preference=hair_style_2;task=input'>[features_override["hair_style_2"]]</a>"
+				dat += "<a href='?_src_=prefs;preference=previous_hair_style_2;task=input'>&lt;</a> <a href='?_src_=prefs;preference=next_hair_style_2;task=input'>&gt;</a><br>"
+				dat += "<span style='border:1px solid #161616; background-color: #[features_override["hair_color_2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=hair_color_2;task=input'>Change</a>"
+
+				dat += "<h3>Hair Gradient Down:</h3>"
+				dat += "<a href='?_src_=prefs;preference=grad_style_2;task=input'>[features_override["grad_style_2"]]</a>"
+				dat += "<span style='border:1px solid #161616; background-color: #[features_override["grad_color_2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=grad_color_2;task=input'>Change</a>"
+
+				dat += "<h3>Facial Hair Style:</h3>"
+				dat += "<a href='?_src_=prefs;preference=facial_hair_style;task=input'>[facial_hair_style]<br>"
+				dat += "<a href='?_src_=prefs;preference=previous_facehair_style;task=input'>&lt;</a> <a href='?_src_=prefs;preference=next_facehair_style;task=input'>&gt;</a><br>"
+				dat += "<span style='border: 1px solid #161616; background-color: #[facial_hair_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=facial;task=input'>Change</a>"
+
+			dat += "</td>"
+			// END COLUMN 4
+
+			// START COLUMN 5
+			dat += APPEARANCE_CATEGORY_COLUMN
+			//Waddling
+			dat += "<h3>Waddle Amount:</h3>"
+			dat += "<a href='?_src_=prefs;preference=waddle_amount;task=input'>[waddle_amount]</a>"
+			if(waddle_amount > 0)
+				dat += "<br>"
+				dat += "<a href='?_src_=prefs;preference=up_waddle_time;task=input'>&harr; Speed:[up_waddle_time]</a><br>"
+				dat += "<a href='?_src_=prefs;preference=side_waddle_time;task=input'>&#8597 Speed:[side_waddle_time]</a>"
+			dat += "<h3>Custom Taste:</h3>"
+			dat += "<a href='?_src_=prefs;preference=taste;task=input'>[features["taste"] ? features["taste"] : "something"]</a>"
+			dat += "<h3>Blood Color:</h3>"
+			dat += "<a href='?_src_=prefs;preference=blood_color;task=input;background-color: #[features["blood_color"]]'>#[features["blood_color"]]</span></a>"
+			dat += "<a href='?_src_=prefs;preference=rainbow_blood_color;task=input'>Rainbow Blood Color</A><BR>"
+			dat += "<a href='?_src_=prefs;preference=reset_blood_color;task=input'>Reset Blood Color</A>"
+			dat += "<h3>Background:</h3>"
+			dat += "<a href='?_src_=prefs;preference=cycle_bg;task=input'>[bgstate]</a>"
+			dat += "<h3>Pixel Offsets</h3>"
+			var/px = custom_pixel_x > 0 ? "+[custom_pixel_x]" : "[custom_pixel_x]"
+			var/py = custom_pixel_y > 0 ? "+[custom_pixel_y]" : "[custom_pixel_y]"
+			dat += "<a href='?_src_=prefs;preference=pixel_x;task=input'>&harr;[px]</a><br>"
+			dat += "<a href='?_src_=prefs;preference=pixel_y;task=input'>&#8597;[py]</a><br>"
+
+			dat += "</td>"
+			// END COLUMN 5
+
+			// START COLUMN 6
+			//Mutant stuff
+			var/mutant_category = 0
+			mutant_category++
+			if(mutant_category >= MAX_MUTANT_ROWS) //just in case someone sets the max rows to 1 or something dumb like that
+				dat += "</td>"
+				mutant_category = 0
+
+
+			dat += APPEARANCE_CATEGORY_COLUMN
+			// dat += "<b>Advanced Coloring:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=color_scheme;task=input'>[(features["color_scheme"] == ADVANCED_CHARACTER_COLORING) ? "Enabled" : "Disabled"]</a>"
+			// dat += "<b>Mismatched Markings:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=mismatched_markings;task=input'>[show_mismatched_markings ? "Yes" : "No"]</a>"
 			for(var/mutant_part in GLOB.all_mutant_parts)
 				if(mutant_part == "mam_body_markings")
 					continue
@@ -2949,7 +2942,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							to_chat(user, span_danger("Invalid color. Your color is not bright enough."))
 
 				if("mismatched_markings")
-					show_mismatched_markings = !show_mismatched_markings
+					// show_mismatched_markings = !show_mismatched_markings
+					show_mismatched_markings = TRUE
 
 				if("ipc_screen")
 					var/new_ipc_screen

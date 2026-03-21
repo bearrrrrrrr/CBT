@@ -106,7 +106,7 @@ SUBSYSTEM_DEF(reticle)
 	var/throw_cursor_icon = 'icons/mouse_icons/throw.dmi'
 
 /client
-	mouse_pointer_icon = 'icons/mouse_icons/mouse.dmi'
+	mouse_pointer_icon = null
 	//These two vars are used to make a special mouse cursor, with a unique icon for clicking
 	var/mouse_up_icon = null
 	var/mouse_down_icon = null
@@ -121,7 +121,7 @@ SUBSYSTEM_DEF(reticle)
 	else if(examine_cursor_icon && client.keys_held["Shift"]) //mouse shit is hardcoded, make this non hard-coded once we make mouse modifiers bindable
 		client.mouse_pointer_icon = examine_cursor_icon
 	else
-		client.mouse_pointer_icon = 'icons/mouse_icons/mouse.dmi'
+		client.mouse_pointer_icon = null
 	// if (ismecha(loc))
 	// 	var/obj/mecha/M = loc
 	// 	if(M.mouse_pointer)

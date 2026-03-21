@@ -723,7 +723,7 @@ SUBSYSTEM_DEF(job)
 		var/list/displaceables = DISPLACEABLE_SLOTS
 		for(var/i in chosen_gear)
 			var/datum/gear/G = istext(i[LOADOUT_ITEM]) ? text2path(i[LOADOUT_ITEM]) : i[LOADOUT_ITEM]
-			if(!G) // aint there? ditch it
+			if(!G || initial(G.disabled)) // aint there? ditch it
 				the_prefs.remove_gear_from_loadout(the_prefs.loadout_slot, i[LOADOUT_ITEM])
 				continue
 			G = GLOB.loadout_items[initial(G.category)][initial(G.subcategory)][initial(G.name)]

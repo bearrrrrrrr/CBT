@@ -984,7 +984,7 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 			if(S.center)
 				accessory_overlay = center_image(accessory_overlay, S.dimension_x, S.dimension_y)
 
-			var/advanced_color_system = (H.dna.features["color_scheme"] == ADVANCED_CHARACTER_COLORING)
+			var/advanced_color_system = TRUE // (H.dna.features["color_scheme"] == ADVANCED_CHARACTER_COLORING)
 
 			var/mutant_string = S.mutant_part_string
 			if(mutant_string == "tailwag") //wagging tails should be coloured the same way as your tail

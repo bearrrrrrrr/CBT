@@ -763,7 +763,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["feature_horns_color"]			>> features["horns_color"]
 	S["feature_blood_color"]			>> features["blood_color"]
 	S["feature_wings_color"]			>> features["wings_color"]
-	S["feature_color_scheme"]			>> features["color_scheme"]
+	// S["feature_color_scheme"]			>> features["color_scheme"]
+	features["color_scheme"] = ADVANCED_CHARACTER_COLORING // its so advanced!
 	S["feature_chat_color"]				>> features["chat_color"]
 	S["feature_derg_body"]				>> features["derg_body"]
 	S["feature_derg_belly"]				>> features["derg_belly"]

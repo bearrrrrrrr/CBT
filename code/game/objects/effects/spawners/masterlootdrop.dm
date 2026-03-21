@@ -549,9 +549,9 @@
 /obj/effect/spawner/lootdrop/f13/trash_mags
 	name = "trash magazines"
 	loot = list(
-		/obj/item/ammo_box/magazine/zipgun = 10,
+		// /obj/item/ammo_box/magazine/zipgun = 10,
 		/obj/item/ammo_box/magazine/uzim9mm/rockwell = 4,
-		/obj/item/ammo_box/magazine/autopipe = 4,
+		// /obj/item/ammo_box/magazine/autopipe = 4,
 		/obj/item/ammo_box/magazine/m556/rifle/small = 1,
 	)
 

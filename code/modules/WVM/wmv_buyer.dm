@@ -159,13 +159,13 @@ GLOBAL_LIST_EMPTY(wasteland_vendor_shop_list)
 		/obj/item/gun/ballistic/revolver/sling/staff = 0,
 		/obj/item/gun/energy/kinetic_accelerator/crossbow/sling = 0,
 		/obj/item/gun/energy/kinetic_accelerator/crossbow/sling/staff = 0,
-		/obj/item/gun/ballistic/automatic/hobo/zipgun = 0,
+		// /obj/item/gun/ballistic/automatic/hobo/zipgun = 0,
 		/obj/item/gun/ballistic/revolver/hobo/piperifle = 0,
 		/obj/item/gun/ballistic/revolver/hobo/piperifle/romckit = 0,
 		/obj/item/gun/ballistic/revolver/hobo/pepperbox = 0,
 		/obj/item/gun/ballistic/revolver/hobo/single_shotgun = 0,
-		/obj/item/gun/ballistic/revolver/hobo/knifegun = 0,
-		/obj/item/gun/ballistic/revolver/hobo/knucklegun = 0,
+		// /obj/item/gun/ballistic/revolver/hobo/knifegun = 0,
+		// /obj/item/gun/ballistic/revolver/hobo/knucklegun = 0,
 		/obj/item/stack/sheet/animalhide/chitin = 1,
 		/obj/item/stack/sheet/animalhide/aethergiest = 20,
 		/obj/item/stack/sheet/animalhide/gecko = 2,
@@ -1013,12 +1013,13 @@ Fence
 /obj/machinery/mineral/wasteland_trader/gunbuyer
 	name = "Gun Repository"
 	desc = "Place weapon inside slot. Weapon is sent out of the region for post-processing. Recieve compensation. Yuma Wasteland Supply Inc. thanks you for disarming the wasteland."
-	buyables_loose = list(/obj/item/gun/ballistic/automatic/hobo/zipgun = 5,
+	buyables_loose = list(
+						// /obj/item/gun/ballistic/automatic/hobo/zipgun = 5,
 						/obj/item/gun/ballistic/revolver/hobo = 5,
 						/obj/item/gun/ballistic/revolver/detective = 5,
 						/obj/item/gun/ballistic/revolver/hobo = 8,
 						/obj/item/gun/ballistic/revolver/hobo/piperifle = 8,
-						/obj/item/gun/ballistic/revolver/hobo/knifegun = 8,
+						// /obj/item/gun/ballistic/revolver/hobo/knifegun = 8,
 						/obj/item/gun/ballistic/revolver/hobo/pepperbox = 8,
 						/obj/item/gun/ballistic/revolver/single_shotgun = 8,
 						/obj/item/gun/ballistic/automatic/pistol/n99 = 8,

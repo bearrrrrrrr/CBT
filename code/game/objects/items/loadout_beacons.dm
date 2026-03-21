@@ -1023,8 +1023,8 @@ GLOBAL_LIST_EMPTY(loadout_boxes)
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/box/gun/hobo/zipgun/PopulateContents()
-	new /obj/item/gun/ballistic/automatic/hobo/zipgun(src)
-	new /obj/item/ammo_box/magazine/zipgun(src)
+	// new /obj/item/gun/ballistic/automatic/hobo/zipgun(src)
+	// new /obj/item/ammo_box/magazine/zipgun(src)
 	new /obj/item/ammo_box/c9mm(src)
 
 /obj/item/storage/box/gun/hobo/piperifle
@@ -1064,7 +1064,7 @@ GLOBAL_LIST_EMPTY(loadout_boxes)
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/box/gun/hobo/knifegun/PopulateContents()
-	new /obj/item/gun/ballistic/revolver/hobo/knifegun(src)
+	// new /obj/item/gun/ballistic/revolver/hobo/knifegun(src)
 	new /obj/item/ammo_box/m44(src)
 	new /obj/item/ammo_box/m44box(src)
 
@@ -1073,7 +1073,7 @@ GLOBAL_LIST_EMPTY(loadout_boxes)
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/box/gun/hobo/knucklegun/PopulateContents()
-	new /obj/item/gun/ballistic/revolver/hobo/knucklegun(src)
+	// new /obj/item/gun/ballistic/revolver/hobo/knucklegun(src)
 	new /obj/item/ammo_box/c45rev(src)
 	new /obj/item/ammo_box/c45(src)
 

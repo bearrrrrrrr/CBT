@@ -183,14 +183,14 @@
 /// Little bitty ammo thingies
 GLOBAL_LIST_INIT(small_ammo_types, typecacheof(list(
 	/obj/item/ammo_box/magazine/m22,
-	/obj/item/ammo_box/magazine/zipgun,
+	// /obj/item/ammo_box/magazine/zipgun,
 	/obj/item/ammo_box/magazine/m9mm,
 	/obj/item/ammo_box/magazine/m10mm,
 	/obj/item/ammo_box/magazine/m45,
 	/obj/item/ammo_box/magazine/m44,
 	/obj/item/ammo_box/magazine/m14mm,
 	/obj/item/ammo_box/magazine/m10mm/rifle,
-	/obj/item/ammo_box/magazine/autopipe,
+	// /obj/item/ammo_box/magazine/autopipe,
 	/obj/item/ammo_box/magazine/m556/rifle/small,
 	/obj/item/ammo_box/l10mm,
 	/obj/item/ammo_box/a357,
@@ -238,7 +238,7 @@ GLOBAL_LIST_INIT(security_hardsuit_allowed, typecacheof(list(
 	/obj/item/gun/ballistic,
 	/obj/item/gun/energy,
 	/obj/item/melee/baton,
-	/obj/item/reagent_containers/spray/pepper,
+	// /obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals
 	)))
@@ -568,7 +568,7 @@ GLOBAL_LIST_INIT(storage_shoes_can_hold, typecacheof(list(
 	/obj/item/weldingtool/mini,
 	/obj/item/pen,
 	/obj/item/gun/ballistic/revolver/detective,
-	/obj/item/gun/ballistic/revolver/hobo/knifegun,
+	// /obj/item/gun/ballistic/revolver/hobo/knifegun,
 	/obj/item/melee/onehanded/knife,
 	/obj/item/melee/smith/dagger,
 	/obj/item/scalpel,
@@ -604,7 +604,7 @@ GLOBAL_LIST_INIT(storage_treasurer_can_hold, typecacheof(list(
 	/obj/item/binoculars,
 	/obj/item/lipstick,
 	/obj/item/pen,
-	/obj/item/melee/smith/dagger,
+	// /obj/item/melee/smith/dagger,
 	)))
 
 GLOBAL_LIST_INIT(storage_wallet_can_hold, typecacheof(list(
@@ -647,7 +647,7 @@ GLOBAL_LIST_INIT(storage_wallet_can_hold, typecacheof(list(
 GLOBAL_LIST_INIT(storage_holdout_can_hold, typecacheof(list(
 	/obj/item/gun/ballistic/automatic/pistol/sig,
 	/obj/item/gun/ballistic/revolver/detective,
-	/obj/item/gun/ballistic/automatic/hobo/zipgun,
+	// /obj/item/gun/ballistic/automatic/hobo/zipgun,
 	/obj/item/gun/ballistic/automatic/pistol/pistol14/compact,
 	/obj/item/gun/ballistic/revolver/police,
 	/obj/item/gun/ballistic/revolver/colt357/lucky,
@@ -667,7 +667,7 @@ GLOBAL_LIST_INIT(storage_produce_bag_can_hold, typecacheof(list(
 	/obj/item/stack/sheet/animalhide,
 	/obj/item/stack/sheet/leatherstrips,
 	/obj/item/stack/sheet/leather,
-	/obj/item/stack/sheet/sinew,
+	// /obj/item/stack/sheet/sinew,
 	/obj/item/stack/sheet/bone,
 	/obj/item/fishy,
 	/obj/item/disk/plantgene,

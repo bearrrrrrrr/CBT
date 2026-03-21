@@ -70,5 +70,4 @@
 		SSrts.GiveCommanderVerb(src)
 		SSrts.UpdateButtons(src)
 
-	if(stat != DEAD)
-		SSlootmanager.send_all_to_player(client)
+	SSlootmanager.send_all_to_player(client)

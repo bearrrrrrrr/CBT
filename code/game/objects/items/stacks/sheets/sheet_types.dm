@@ -415,104 +415,104 @@ GLOBAL_LIST_INIT(bamboo_recipes, list ( \
 
 // Cloth
 
-GLOBAL_LIST_INIT(cloth_recipes, list ( \
-	new/datum/stack_recipe("custom backpack", /obj/item/storage/backpack/chameleon, 4), \
-	new/datum/stack_recipe("custom jumpsuit", /obj/item/clothing/under/chameleon, 5), \
-	new/datum/stack_recipe("custom gloves", /obj/item/clothing/gloves/chameleon, 5), \
-	new/datum/stack_recipe("custom shoes", /obj/item/clothing/shoes/chameleon, 5), \
-	new/datum/stack_recipe("custom neck cloak", /obj/item/clothing/neck/cloak/chameleon, 5), \
-	new/datum/stack_recipe("custom hat", /obj/item/clothing/head/chameleon, 5), \
-	new/datum/stack_recipe("duffel bag", /obj/item/storage/backpack/duffelbag, 6), \
-	null, \
-	new/datum/stack_recipe("produce bag", /obj/item/storage/bag/plants, 4), \
-	new/datum/stack_recipe("mining satchel", /obj/item/storage/bag/ore, 4), \
-	new/datum/stack_recipe("medical bag", /obj/item/storage/bag/chemistry, 4), \
-	new/datum/stack_recipe("bio bag", /obj/item/storage/bag/bio, 4), \
-	new/datum/stack_recipe("casings bag", /obj/item/storage/bag/casings, 4), \
-	new/datum/stack_recipe("salvage bag", /obj/item/storage/bag/salvage, 4), \
-	null, \
-	new/datum/stack_recipe("string", /obj/item/weaponcrafting/string, 1, time = 10), \
-	new/datum/stack_recipe("improvised gauze", /obj/item/stack/medical/gauze/improvised, 1, 2, 6), \
-	new/datum/stack_recipe("improvised suture", /obj/item/stack/medical/suture/emergency, 3), \
-	new/datum/stack_recipe("rag", /obj/item/reagent_containers/rag, 1), \
-	new/datum/stack_recipe("towel", /obj/item/reagent_containers/rag/towel, 3), \
-	new/datum/stack_recipe("empty sandbag", /obj/item/emptysandbag, 4), \
-	new/datum/stack_recipe("padded floor tile", /obj/item/stack/tile/padded, 1, 4, 20), \
-	new/datum/stack_recipe("mattress", /obj/structure/bed/mattress, 2, one_per_turf = TRUE, on_floor = TRUE), \
-	new/datum/stack_recipe("bedroll", /obj/item/roller/bedroll, 4, one_per_turf = TRUE, on_floor = TRUE), \
-	null, \
-	new/datum/stack_recipe("blindfold", /obj/item/clothing/glasses/sunglasses/blindfold, 2), \
-	new/datum/stack_recipe("beekeeping hood", /obj/item/clothing/head/beekeeper_head, 2), \
-	new/datum/stack_recipe("beekeeping suit", /obj/item/clothing/suit/beekeeper_suit, 4), \
-	new/datum/stack_recipe("money pouch", /obj/item/storage/wallet/stash/pouch, 5), \
-	new/datum/stack_recipe("9mm ammo belt", /obj/item/ammo_box/magazine/autopipe/empty, 12), \
-	null, \
-	new/datum/stack_recipe("19x19 Canvas", /obj/item/canvas/nineteenXnineteen, 4), \
-	new/datum/stack_recipe("23x19 Canvas", /obj/item/canvas/twentythreeXnineteen, 4), \
-	new/datum/stack_recipe("23x23 Canvas", /obj/item/canvas/twentythreeXtwentythree, 4), \
-	null, \
-	new/datum/stack_recipe_list("bedsheet", list( \
-			new/datum/stack_recipe("bedsheet", /obj/item/bedsheet, 3), \
-			new/datum/stack_recipe("enclave bedsheet", /obj/item/bedsheet/enclave, 3), \
-			new/datum/stack_recipe("enclave luxury bedsheet", /obj/item/bedsheet/sneedclave, 3), \
-			new/datum/stack_recipe("medical bedsheet", /obj/item/bedsheet/medical, 3), \
-			new/datum/stack_recipe("blue bedsheet", /obj/item/bedsheet/blue, 3), \
-			new/datum/stack_recipe("green bedsheet", /obj/item/bedsheet/green, 3), \
-			new/datum/stack_recipe("grey bedsheet", /obj/item/bedsheet/grey, 3), \
-			new/datum/stack_recipe("orange bedsheet", /obj/item/bedsheet/orange, 3), \
-			new/datum/stack_recipe("purple bedsheet", /obj/item/bedsheet/purple, 3), \
-			new/datum/stack_recipe("red bedsheet", /obj/item/bedsheet/red, 3), \
-			new/datum/stack_recipe("yellow bedsheet", /obj/item/bedsheet/yellow, 3), \
-			new/datum/stack_recipe("brown bedsheet", /obj/item/bedsheet/brown, 3), \
-			new/datum/stack_recipe("black bedsheet", /obj/item/bedsheet/black, 3), \
-			new/datum/stack_recipe("transpride bedsheet", /obj/item/bedsheet/trans, 3), \
-			new/datum/stack_recipe("panpride bedsheet", /obj/item/bedsheet/pan, 3), \
-			new/datum/stack_recipe("bipride bedsheet", /obj/item/bedsheet/bi, 3), \
-			new/datum/stack_recipe("NBpride bedsheet", /obj/item/bedsheet/nonbinary, 3), \
-			new/datum/stack_recipe("canada bedsheet", /obj/item/bedsheet/canadaflag, 3), \
-			new/datum/stack_recipe("british bedsheet", /obj/item/bedsheet/britishflag, 3), \
-			new/datum/stack_recipe("italian bedsheet", /obj/item/bedsheet/italianflag, 3), \
-			new/datum/stack_recipe("deer bedsheet", /obj/item/bedsheet/deer, 3), \
-			new/datum/stack_recipe("deer double bedsheet", /obj/item/bedsheet/deerdouble, 3), \
-			new/datum/stack_recipe("transpride double bedsheet", /obj/item/bedsheet/doubletranspride, 3), \
-			new/datum/stack_recipe("panpride double bedsheet", /obj/item/bedsheet/doublepanpride, 3), \
-			new/datum/stack_recipe("bipride double bedsheet", /obj/item/bedsheet/doublebipride, 3), \
-			new/datum/stack_recipe("NBpride double bedsheet", /obj/item/bedsheet/doublenonbinpride, 3), \
-			new/datum/stack_recipe("royal blue double bedsheet", /obj/item/bedsheet/doublesheetcaptain, 3), \
-			new/datum/stack_recipe("fancy yellow double bedsheet", /obj/item/bedsheet/doublesheetce, 3), \
-			new/datum/stack_recipe("fancy blue double bedsheet", /obj/item/bedsheet/doublesheethop, 3), \
-			new/datum/stack_recipe("orange double bedsheet", /obj/item/bedsheet/doublesheetorange, 3), \
-			new/datum/stack_recipe("rainbow double bedsheet", /obj/item/bedsheet/doublesheetrainbow, 3), \
-			new/datum/stack_recipe("fancy red double bedsheet", /obj/item/bedsheet/doublesheethos, 3), \
-			new/datum/stack_recipe("white double bedsheet", /obj/item/bedsheet/doublesheet, 3), \
-			new/datum/stack_recipe("green double bedsheet", /obj/item/bedsheet/doublesheetgreen, 3), \
-			new/datum/stack_recipe("purple double bedsheet", /obj/item/bedsheet/doublesheetpurple, 3), \
-			new/datum/stack_recipe("clown double bedsheet", /obj/item/bedsheet/doublesheetclown, 3), \
-			new/datum/stack_recipe("ian double bedsheet", /obj/item/bedsheet/doublesheetian, 3), \
-			new/datum/stack_recipe("royal red double bedsheet", /obj/item/bedsheet/doublesheetrd, 3), \
-			new/datum/stack_recipe("mime double bedsheet", /obj/item/bedsheet/doublesheetmime, 3), \
-			new/datum/stack_recipe("blue double bedsheet", /obj/item/bedsheet/doublesheetblue, 3), \
-			new/datum/stack_recipe("red double bedsheet", /obj/item/bedsheet/doublesheetred, 3), \
-			new/datum/stack_recipe("brown double bedsheet", /obj/item/bedsheet/doublesheetbrown, 3), \
-			new/datum/stack_recipe("yellow double bedsheet", /obj/item/bedsheet/doublesheetyellow, 3), \
-		)), \
-		new/datum/stack_recipe_list("rugs and mats", list( \
-			new /datum/stack_recipe("black and red run carpet", /obj/structure/rug/carpet, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("royal purple run carpet", /obj/structure/rug/carpet2, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("red run carpet", /obj/structure/rug/carpet3, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("turquoise run carpet", /obj/structure/rug/carpet4, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			null, \
-			new /datum/stack_recipe("rubber rug", /obj/structure/rug/big/rug_rubber, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("fancy rug", /obj/structure/rug/big/rug_fancy, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("red rug", /obj/structure/rug/big/rug_red, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("yellow rug", /obj/structure/rug/big/rug_yellow, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("blue shag rug", /obj/structure/rug/big/rug_blue_shag, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("blue rug", /obj/structure/rug/big/rug_blue, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			null, \
-			new /datum/stack_recipe("blank mat", /obj/structure/rug/mat, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-			new /datum/stack_recipe("welcome mat", /obj/structure/rug/mat/welcome, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),\
-		)), \
-	null, \
+GLOBAL_LIST_INIT(cloth_recipes, list (
+	new/datum/stack_recipe("custom backpack", /obj/item/storage/backpack/chameleon, 4),
+	new/datum/stack_recipe("custom jumpsuit", /obj/item/clothing/under/chameleon, 5),
+	new/datum/stack_recipe("custom gloves", /obj/item/clothing/gloves/chameleon, 5),
+	new/datum/stack_recipe("custom shoes", /obj/item/clothing/shoes/chameleon, 5),
+	new/datum/stack_recipe("custom neck cloak", /obj/item/clothing/neck/cloak/chameleon, 5),
+	new/datum/stack_recipe("custom hat", /obj/item/clothing/head/chameleon, 5),
+	new/datum/stack_recipe("duffel bag", /obj/item/storage/backpack/duffelbag, 6),
+	null,
+	new/datum/stack_recipe("produce bag", /obj/item/storage/bag/plants, 4),
+	new/datum/stack_recipe("mining satchel", /obj/item/storage/bag/ore, 4),
+	new/datum/stack_recipe("medical bag", /obj/item/storage/bag/chemistry, 4),
+	new/datum/stack_recipe("bio bag", /obj/item/storage/bag/bio, 4),
+	new/datum/stack_recipe("casings bag", /obj/item/storage/bag/casings, 4),
+	new/datum/stack_recipe("salvage bag", /obj/item/storage/bag/salvage, 4),
+	null,
+	new/datum/stack_recipe("string", /obj/item/weaponcrafting/string, 1, time = 10),
+	new/datum/stack_recipe("improvised gauze", /obj/item/stack/medical/gauze/improvised, 1, 2, 6),
+	new/datum/stack_recipe("improvised suture", /obj/item/stack/medical/suture/emergency, 3),
+	new/datum/stack_recipe("rag", /obj/item/reagent_containers/rag, 1),
+	new/datum/stack_recipe("towel", /obj/item/reagent_containers/rag/towel, 3),
+	new/datum/stack_recipe("empty sandbag", /obj/item/emptysandbag, 4),
+	new/datum/stack_recipe("padded floor tile", /obj/item/stack/tile/padded, 1, 4, 20),
+	new/datum/stack_recipe("mattress", /obj/structure/bed/mattress, 2, one_per_turf = TRUE, on_floor = TRUE),
+	new/datum/stack_recipe("bedroll", /obj/item/roller/bedroll, 4, one_per_turf = TRUE, on_floor = TRUE),
+	null,
+	new/datum/stack_recipe("blindfold", /obj/item/clothing/glasses/sunglasses/blindfold, 2),
+	new/datum/stack_recipe("beekeeping hood", /obj/item/clothing/head/beekeeper_head, 2),
+	new/datum/stack_recipe("beekeeping suit", /obj/item/clothing/suit/beekeeper_suit, 4),
+	new/datum/stack_recipe("money pouch", /obj/item/storage/wallet/stash/pouch, 5),
+	// new/datum/stack_recipe("9mm ammo belt", /obj/item/ammo_box/magazine/autopipe/empty, 12),
+	null,
+	new/datum/stack_recipe("19x19 Canvas", /obj/item/canvas/nineteenXnineteen, 4),
+	new/datum/stack_recipe("23x19 Canvas", /obj/item/canvas/twentythreeXnineteen, 4),
+	new/datum/stack_recipe("23x23 Canvas", /obj/item/canvas/twentythreeXtwentythree, 4),
+	null,
+	new/datum/stack_recipe_list("bedsheet", list(
+			new/datum/stack_recipe("bedsheet", /obj/item/bedsheet, 3),
+			new/datum/stack_recipe("enclave bedsheet", /obj/item/bedsheet/enclave, 3),
+			new/datum/stack_recipe("enclave luxury bedsheet", /obj/item/bedsheet/sneedclave, 3),
+			new/datum/stack_recipe("medical bedsheet", /obj/item/bedsheet/medical, 3),
+			new/datum/stack_recipe("blue bedsheet", /obj/item/bedsheet/blue, 3),
+			new/datum/stack_recipe("green bedsheet", /obj/item/bedsheet/green, 3),
+			new/datum/stack_recipe("grey bedsheet", /obj/item/bedsheet/grey, 3),
+			new/datum/stack_recipe("orange bedsheet", /obj/item/bedsheet/orange, 3),
+			new/datum/stack_recipe("purple bedsheet", /obj/item/bedsheet/purple, 3),
+			new/datum/stack_recipe("red bedsheet", /obj/item/bedsheet/red, 3),
+			new/datum/stack_recipe("yellow bedsheet", /obj/item/bedsheet/yellow, 3),
+			new/datum/stack_recipe("brown bedsheet", /obj/item/bedsheet/brown, 3),
+			new/datum/stack_recipe("black bedsheet", /obj/item/bedsheet/black, 3),
+			new/datum/stack_recipe("transpride bedsheet", /obj/item/bedsheet/trans, 3),
+			new/datum/stack_recipe("panpride bedsheet", /obj/item/bedsheet/pan, 3),
+			new/datum/stack_recipe("bipride bedsheet", /obj/item/bedsheet/bi, 3),
+			new/datum/stack_recipe("NBpride bedsheet", /obj/item/bedsheet/nonbinary, 3),
+			new/datum/stack_recipe("canada bedsheet", /obj/item/bedsheet/canadaflag, 3),
+			new/datum/stack_recipe("british bedsheet", /obj/item/bedsheet/britishflag, 3),
+			new/datum/stack_recipe("italian bedsheet", /obj/item/bedsheet/italianflag, 3),
+			new/datum/stack_recipe("deer bedsheet", /obj/item/bedsheet/deer, 3),
+			new/datum/stack_recipe("deer double bedsheet", /obj/item/bedsheet/deerdouble, 3),
+			new/datum/stack_recipe("transpride double bedsheet", /obj/item/bedsheet/doubletranspride, 3),
+			new/datum/stack_recipe("panpride double bedsheet", /obj/item/bedsheet/doublepanpride, 3),
+			new/datum/stack_recipe("bipride double bedsheet", /obj/item/bedsheet/doublebipride, 3),
+			new/datum/stack_recipe("NBpride double bedsheet", /obj/item/bedsheet/doublenonbinpride, 3),
+			new/datum/stack_recipe("royal blue double bedsheet", /obj/item/bedsheet/doublesheetcaptain, 3),
+			new/datum/stack_recipe("fancy yellow double bedsheet", /obj/item/bedsheet/doublesheetce, 3),
+			new/datum/stack_recipe("fancy blue double bedsheet", /obj/item/bedsheet/doublesheethop, 3),
+			new/datum/stack_recipe("orange double bedsheet", /obj/item/bedsheet/doublesheetorange, 3),
+			new/datum/stack_recipe("rainbow double bedsheet", /obj/item/bedsheet/doublesheetrainbow, 3),
+			new/datum/stack_recipe("fancy red double bedsheet", /obj/item/bedsheet/doublesheethos, 3),
+			new/datum/stack_recipe("white double bedsheet", /obj/item/bedsheet/doublesheet, 3),
+			new/datum/stack_recipe("green double bedsheet", /obj/item/bedsheet/doublesheetgreen, 3),
+			new/datum/stack_recipe("purple double bedsheet", /obj/item/bedsheet/doublesheetpurple, 3),
+			new/datum/stack_recipe("clown double bedsheet", /obj/item/bedsheet/doublesheetclown, 3),
+			new/datum/stack_recipe("ian double bedsheet", /obj/item/bedsheet/doublesheetian, 3),
+			new/datum/stack_recipe("royal red double bedsheet", /obj/item/bedsheet/doublesheetrd, 3),
+			new/datum/stack_recipe("mime double bedsheet", /obj/item/bedsheet/doublesheetmime, 3),
+			new/datum/stack_recipe("blue double bedsheet", /obj/item/bedsheet/doublesheetblue, 3),
+			new/datum/stack_recipe("red double bedsheet", /obj/item/bedsheet/doublesheetred, 3),
+			new/datum/stack_recipe("brown double bedsheet", /obj/item/bedsheet/doublesheetbrown, 3),
+			new/datum/stack_recipe("yellow double bedsheet", /obj/item/bedsheet/doublesheetyellow, 3),
+		)),
+		new/datum/stack_recipe_list("rugs and mats", list(
+			new /datum/stack_recipe("black and red run carpet", /obj/structure/rug/carpet, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("royal purple run carpet", /obj/structure/rug/carpet2, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("red run carpet", /obj/structure/rug/carpet3, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("turquoise run carpet", /obj/structure/rug/carpet4, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			null,,
+			new /datum/stack_recipe("rubber rug", /obj/structure/rug/big/rug_rubber, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("fancy rug", /obj/structure/rug/big/rug_fancy, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("red rug", /obj/structure/rug/big/rug_red, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("yellow rug", /obj/structure/rug/big/rug_yellow, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("blue shag rug", /obj/structure/rug/big/rug_blue_shag, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("blue rug", /obj/structure/rug/big/rug_blue, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			null,,
+			new /datum/stack_recipe("blank mat", /obj/structure/rug/mat, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+			new /datum/stack_recipe("welcome mat", /obj/structure/rug/mat/welcome, 10, time = 30, one_per_turf = FALSE, on_floor = TRUE),
+		)),
+	null,
 ))
 
 /obj/item/stack/sheet/cloth

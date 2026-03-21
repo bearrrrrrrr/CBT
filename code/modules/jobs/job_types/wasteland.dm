@@ -44,7 +44,7 @@ Raider
 	backpack_contents = list(
 		///obj/item/gun/ballistic/automatic/varmint = 1,
 		///obj/item/ammo_box/magazine/m556/rifle/assault = 1,
-		/obj/item/gun/ballistic/revolver/hobo/knucklegun = 1,
+		// /obj/item/gun/ballistic/revolver/hobo/knucklegun = 1,
 		/obj/item/ammo_box/c45rev = 2,
 //		/obj/item/gun_upgrade/scope/watchman = 1,
 		/obj/item/reagent_containers/food/drinks/bottle/f13nukacola/radioactive = 1,

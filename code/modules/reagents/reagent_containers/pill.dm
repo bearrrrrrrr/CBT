@@ -22,8 +22,8 @@
 	if(reagents.total_volume && roundstart)
 		name += " ([reagents.total_volume]u)"
 
-/obj/item/reagent_containers/pill/attack_self(mob/user)
-	return
+/obj/item/reagent_containers/pill/attack_self(mob/user as mob)
+	return attack(user, user)
 
 /obj/item/reagent_containers/pill/get_w_volume() // DEFAULT_VOLUME_TINY at 25u, DEFAULT_VOLUME_SMALL at 50u
 	return DEFAULT_VOLUME_TINY/2 + reagents.total_volume / reagents.maximum_volume * DEFAULT_VOLUME_TINY

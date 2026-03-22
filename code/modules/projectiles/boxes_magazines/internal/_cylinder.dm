@@ -6,7 +6,7 @@
 	replace_spent_rounds = TRUE
 	accepted_speedloader = SPEEDLOADER_REVOLVER
 
-/obj/item/ammo_box/magazine/internal/cylinder/ammo_count(countempties = 1)
+/obj/item/ammo_box/magazine/internal/cylinder/ammo_count(countempties = TRUE)
 	var/boolets = 0
 	for(var/obj/item/ammo_casing/bullet in stored_ammo)
 		if(bullet && (bullet.BB || countempties))

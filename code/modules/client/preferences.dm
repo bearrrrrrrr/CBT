@@ -146,7 +146,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	var/UI_style = null
 	var/buttons_locked = FALSE
-	var/hotkeys = FALSE
+	var/hotkeys = TRUE // WHY WS THIS FALSE
 	var/chat_on_map = TRUE
 	var/max_chat_length = CHAT_MESSAGE_LENGTH_DEFAULT
 	var/chat_width = CHAT_MESSAGE_WIDTH

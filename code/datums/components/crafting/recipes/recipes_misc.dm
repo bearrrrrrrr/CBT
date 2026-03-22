@@ -945,7 +945,7 @@
 	reqs = list(
 				/obj/item/instrument/accordion = 1,
 				/obj/item/reagent_containers/food/snacks/meatballspaghetti = 1,
-				/obj/item/toy/plush/mammal/wolf/blue = 2
+				// /obj/item/toy/plush/mammal/wolf/blue = 2
 				)
 	tools = list(TOOL_SCREWDRIVER, TOOL_WELDER)
 	subcategory = CAT_MISCELLANEOUS

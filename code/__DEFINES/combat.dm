@@ -1396,5 +1396,5 @@ GLOBAL_LIST_INIT(main_body_parts2words, list(
 
 #define SPEEDLOADER_CLIP     (1<<0)
 #define SPEEDLOADER_REVOLVER (1<<1)
-#define SPEEDLOADER_TUBE     (1<<1)
+#define SPEEDLOADER_TUBE     (1<<2)
 

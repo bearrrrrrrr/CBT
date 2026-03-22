@@ -190,10 +190,12 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 	if(.)
 		other_casing.forceMove(src)
 
+//Behavior for magazines
+/obj/item/ammo_box/proc/ammo_count()
+	return stored_ammo.len
+
 /obj/item/ammo_box/proc/can_load(mob/user, verbose)
-	if(LAZYLEN(stored_ammo) >= max_ammo)
-		if(verbose)
-			to_chat(user, span_alert("[src] is full!"))
+	if(ammo_count(FALSE) >= max_ammo)
 		return FALSE // its full!
 	if(!can_accept_casings)
 		if(verbose)
@@ -207,7 +209,7 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 	// check the cooldowns or something
 
 /obj/item/ammo_box/proc/can_unload(mob/user, verbose)
-	if(LAZYLEN(stored_ammo) <= 0)
+	if(ammo_count(TRUE) <= 0)
 		if(verbose)
 			to_chat(user, span_alert("[src] is empty!"))
 		return FALSE // its full!
@@ -258,8 +260,12 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 
 	var/speedload = CHECK_BITFIELD(accepted_speedloader, other_ammobox.speedloader_kind)
 	if(speedload) // kinda ironic that speedloading has a do-after
-		if(!load_delay(user))
-			return FALSE
+		if(istype(loc, /obj/item/gun)) // speedloading into a mag in a gun (revolvers, etc) is treated like changing a mag
+			if(!load_into_gun_delay(user)) // aka, you can move while doing it
+				return FALSE
+		else // speedloading into a mag on the ground or in inventory is treated like normal loading
+			if(!load_delay(user))
+				return FALSE
 
 	// main load loop
 	var/safety = 200
@@ -344,7 +350,8 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 		needhand = TRUE,
 		target = src,
 		progress = TRUE,
-		public_progbar = TRUE
+		public_progbar = TRUE,
+		allow_movement = TRUE
 		)
 	GLOB.currently_loading_something -= loader
 	if(!.)
@@ -365,13 +372,13 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 			to_chat(user, span_alert("You couldn't get [other_casing] in there!"))
 		return FALSE
 	// success!
-	user.transferItemToLoc(other_casing, src, TRUE)
 	if(dosound)
 		playsound(src, 'sound/weapons/bulletinsert.ogg', 60, 1)
 	if(dotext)
 		to_chat(user, span_green("Loaded \a [other_casing] into [src]!"))
 	other_casing.update_icon()
 	update_icon()
+	return TRUE
 
 /obj/item/ammo_box/attack_self(mob/user)
 	pop_casing(user)
@@ -440,10 +447,6 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 			else
 				icon_state = "[initial(icon_state)]-[stored_ammo.len]"
 	// UpdateAmmoCountOverlay()
-
-//Behavior for magazines
-/obj/item/ammo_box/magazine/proc/ammo_count()
-	return stored_ammo.len
 
 /obj/item/ammo_box/magazine/proc/empty_magazine()
 	var/turf_mag = get_turf(src)

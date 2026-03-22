@@ -4,6 +4,7 @@
 	caliber = list(CALIBER_SHOTGUN)
 	max_ammo = 4
 	multiload = 0
+	accepted_speedloader = SPEEDLOADER_TUBE
 
 /obj/item/ammo_box/magazine/internal/shot/ammo_count(countempties = 1)
 	if (!countempties)

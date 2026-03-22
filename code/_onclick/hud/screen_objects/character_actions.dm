@@ -691,6 +691,7 @@
 	icon_state = "tend"
 	screen_loc = "CENTER+2:8, SOUTH+1:-6"
 	alpha = 0
+	mouse_opacity = 0
 
 /atom/movable/screen/tend_hud_button/Click(location,control,params)
 	var/mob/living/carbon/human/H = usr

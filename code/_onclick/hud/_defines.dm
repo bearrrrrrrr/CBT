@@ -70,7 +70,7 @@
 //#define ui_zonesel "Center+5:2,SOUTH:3:1"
 #define ui_mood 	"Center-1:5,South+1:11"
 #define ui_healthdoll 	"EAST-3:-7,SOUTH+1:1"
-#define ui_banking "WEST+5:-11,SOUTH+1:-7"
+#define ui_banking "CENTER+2:8,SOUTH+1:-6"
 #define ui_health 	"Right-3:28,South+2:-18"
 #define ui_stamina "Right-2:27,South+1:+3" // replacing internals button
 #define ui_questbook "EAST-3:-4,SOUTH+2:0"

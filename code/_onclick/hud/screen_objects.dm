@@ -443,6 +443,7 @@
 	layer = HUD_LAYER
 	plane = HUD_PLANE
 	alpha = 0
+	mouse_opacity = 0
 
 /atom/movable/screen/questbook/Click()
 	if(isliving(usr))
@@ -455,6 +456,7 @@
 	layer = HUD_LAYER
 	plane = HUD_PLANE
 	alpha = 0
+	mouse_opacity = 0
 
 /atom/movable/screen/scannerpls/Click()
 	if(isliving(usr))

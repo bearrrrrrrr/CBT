@@ -55,14 +55,14 @@
 #define MOB_SPAWNER_GLOBAL_LIST_KIND "mob_list_kind"
 #define MOB_SPAWNER_GLOBAL_LIST_DIFFICULTY "mob_list_difficulty"
 
-/// Mob spawner times
-#define MOB_SPAWNER_TIME_LONGEST 1800
-#define MOB_SPAWNER_TIME_LONGER 600
-#define MOB_SPAWNER_TIME_LONG 400
-#define MOB_SPAWNER_TIME_DEFAULT 200
-#define MOB_SPAWNER_TIME_QUICK 150
-#define MOB_SPAWNER_TIME_QUICKER 100
-#define MOB_SPAWNER_TIME_QUICKEST 50
+/// Mob spawner times, in deciseconds
+#define MOB_SPAWNER_TIME_LONGEST 24000
+#define MOB_SPAWNER_TIME_LONGER 16000
+#define MOB_SPAWNER_TIME_LONG 14000
+#define MOB_SPAWNER_TIME_DEFAULT 12000
+#define MOB_SPAWNER_TIME_QUICK 10000
+#define MOB_SPAWNER_TIME_QUICKER 8000
+#define MOB_SPAWNER_TIME_QUICKEST 5000
 
 /// Mob spawner icon_states
 #define MOB_SPAWNER_ICONSTATE_DEFAULT "hole"
@@ -520,14 +520,14 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/ghoul/reaver = 1,
 		/mob/living/simple_animal/hostile/ghoul/glowing = 1
 		)
-	num_mobs_to_spawn_medium = 2
+	num_mobs_to_spawn_medium = 4
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/ghoul = 10,
 		/mob/living/simple_animal/hostile/ghoul/reaver = 3,
 		/mob/living/simple_animal/hostile/ghoul/glowing = 1
 		)
-	num_mobs_to_spawn_hard = 3
+	num_mobs_to_spawn_hard = 6
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/ghoul = 5,
@@ -543,7 +543,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 2
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/poison/giant_spider/nurse = 5,
@@ -629,14 +629,14 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/mirelurk/hunter = 1,
 		/mob/living/simple_animal/hostile/mirelurk/baby = 10
 		)
-	num_mobs_to_spawn_medium = 2
+	num_mobs_to_spawn_medium = 3
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/mirelurk = 4,
 		/mob/living/simple_animal/hostile/mirelurk/hunter = 2,
 		/mob/living/simple_animal/hostile/mirelurk/baby = 10
 		)
-	num_mobs_to_spawn_hard = 3
+	num_mobs_to_spawn_hard = 4
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/mirelurk = 10,
@@ -663,7 +663,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/aethergiest/mother = 1,
 		/mob/living/simple_animal/hostile/aethergiest = 1
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONGEST
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/aethergiest/mother = 1,
@@ -683,12 +683,12 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/hellpig = 1
 		)
-	num_mobs_to_spawn_medium = 1
+	num_mobs_to_spawn_medium = 2
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONGEST
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/hellpig = 2
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONGEST
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/hellpig = 3
@@ -702,7 +702,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 4
+	num_mobs_to_spawn_easy = 3
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/pillbug = 20
@@ -712,7 +712,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/pillbug = 20
 		)
-	num_mobs_to_spawn_hard = 6
+	num_mobs_to_spawn_hard = 7
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_QUICKER
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/pillbug = 20
@@ -729,14 +729,18 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	num_mobs_to_spawn_easy = 3
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
-		/mob/living/simple_animal/hostile/gecko = 10,
+		/mob/living/simple_animal/hostile/gecko = 4,
 		/mob/living/simple_animal/hostile/gecko/big = 2,
 		/mob/living/simple_animal/hostile/gecko/fire = 2,
 		/mob/living/simple_animal/hostile/gecko/fire/rads = 2,
-		/mob/living/simple_animal/hostile/gecko/legacy = 10,
+		/mob/living/simple_animal/hostile/gecko/legacy = 4,
 		/mob/living/simple_animal/hostile/gecko/legacy/alpha = 4,
+		/mob/living/simple_animal/hostile/gecko/tribal = 4,
+		/mob/living/simple_animal/hostile/gecko/tribal/warrior = 5,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter = 6,
+		/mob/living/simple_animal/hostile/gecko/tribal/head_shaman/small_shaman = 1,
 		)
-	num_mobs_to_spawn_medium = 4
+	num_mobs_to_spawn_medium = 5
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_QUICK
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/gecko = 7,
@@ -744,16 +748,25 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/gecko/fire = 6,
 		/mob/living/simple_animal/hostile/gecko/legacy = 8,
 		/mob/living/simple_animal/hostile/gecko/legacy/alpha = 8,
+		/mob/living/simple_animal/hostile/gecko/tribal = 4,
+		/mob/living/simple_animal/hostile/gecko/tribal/warrior = 8,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter = 10,
+		/mob/living/simple_animal/hostile/gecko/tribal/head_shaman/small_shaman = 2,
 		)
-	num_mobs_to_spawn_hard = 5
+	num_mobs_to_spawn_hard = 7
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_QUICKER
 	mob_list_hard = list(
-		/mob/living/simple_animal/hostile/gecko = 8,
-		/mob/living/simple_animal/hostile/gecko/big = 6,
-		/mob/living/simple_animal/hostile/gecko/fire = 8,
-		/mob/living/simple_animal/hostile/gecko/legacy = 6,
-		/mob/living/simple_animal/hostile/gecko/legacy/alpha = 12,
+		/mob/living/simple_animal/hostile/gecko = 2,
+		/mob/living/simple_animal/hostile/gecko/big = 4,
+		/mob/living/simple_animal/hostile/gecko/fire = 10,
+		/mob/living/simple_animal/hostile/gecko/legacy = 4,
+		/mob/living/simple_animal/hostile/gecko/legacy/alpha = 4,
+		/mob/living/simple_animal/hostile/gecko/tribal = 4,
+		/mob/living/simple_animal/hostile/gecko/tribal/warrior = 10,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter = 14,
+		/mob/living/simple_animal/hostile/gecko/tribal/head_shaman/small_shaman = 3,
 		)
+		
 
 /// Bloatfly (Dan in an airplane)
 /datum/random_mob_spawner/bloatfly
@@ -763,17 +776,17 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 2
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/bloatfly = 5
 		)
-	num_mobs_to_spawn_medium = 3
+	num_mobs_to_spawn_medium = 2
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_QUICK
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/bloatfly = 7
 		)
-	num_mobs_to_spawn_hard = 4
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_QUICKER
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/bloatfly = 9
@@ -790,19 +803,19 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	num_mobs_to_spawn_easy = 3
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
-		/mob/living/simple_animal/hostile/gecko = 10,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter = 4,
 		/mob/living/simple_animal/hostile/bloatfly = 5
 		)
 	num_mobs_to_spawn_medium = 4
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_QUICK
 	mob_list_medium = list(
-		/mob/living/simple_animal/hostile/gecko = 10,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter = 6,
 		/mob/living/simple_animal/hostile/bloatfly = 10
 		)
-	num_mobs_to_spawn_hard = 4
+	num_mobs_to_spawn_hard = 5
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_QUICKER
 	mob_list_hard = list(
-		/mob/living/simple_animal/hostile/gecko = 10,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter = 10,
 		/mob/living/simple_animal/hostile/bloatfly = 10
 		)
 
@@ -814,7 +827,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 4
+	num_mobs_to_spawn_easy = 3
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_QUICK
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/molerat = 10
@@ -824,7 +837,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/molerat = 15
 		)
-	num_mobs_to_spawn_hard = 6
+	num_mobs_to_spawn_hard = 7
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_QUICKEST
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/molerat = 20
@@ -849,7 +862,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/jungle/mook = 3,
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/jungle/mook = 5
@@ -863,7 +876,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 3
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/hivebot = 5
@@ -874,7 +887,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/hivebot = 3,
 		/mob/living/simple_animal/hostile/hivebot/range = 3
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/hivebot/rapid = 3,
@@ -889,21 +902,22 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 3
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
-		/mob/living/simple_animal/hostile/raider/pirate/melee = 5
+		/mob/living/simple_animal/hostile/raider/pirate/melee = 5,
+		/mob/living/simple_animal/hostile/raider/pirate/ranged = 2
 		)
 	num_mobs_to_spawn_medium = 2
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/raider/pirate/melee = 2,
-		/mob/living/simple_animal/hostile/raider/pirate/ranged = 3
+		/mob/living/simple_animal/hostile/raider/pirate/ranged = 4
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
-		/mob/living/simple_animal/hostile/raider/pirate/ranged = 5,
+		/mob/living/simple_animal/hostile/raider/pirate/ranged = 6,
 		)
 
 /// Russians
@@ -926,7 +940,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/russian/ranged = 2,
 		/mob/living/simple_animal/hostile/russian/ranged/mosin = 1
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/russian/ranged/officer = 3,
@@ -941,7 +955,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 2
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/renegade/syndicate/melee/sword/space = 2,
@@ -953,7 +967,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/renegade/syndicate/ranged/smg/space = 2,
 		/mob/living/simple_animal/hostile/renegade/syndicate/ranged/smg/space/stormtrooper = 1
 		)
-	num_mobs_to_spawn_hard = 1
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/renegade/syndicate/ranged/shotgun/space = 2,
@@ -971,20 +985,20 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
-		/mob/living/simple_animal/hostile/cazador/young = 10,
+		/mob/living/simple_animal/hostile/cazador/young = 9,
 		/mob/living/simple_animal/hostile/cazador = 1
 		)
 	num_mobs_to_spawn_medium = 2
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/cazador/young = 5,
-		/mob/living/simple_animal/hostile/cazador = 2
+		/mob/living/simple_animal/hostile/cazador = 5
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
-		/mob/living/simple_animal/hostile/cazador/young = 3,
-		/mob/living/simple_animal/hostile/cazador = 5
+		/mob/living/simple_animal/hostile/cazador/young = 1,
+		/mob/living/simple_animal/hostile/cazador = 9
 		)
 
 /// Scorpins!
@@ -995,7 +1009,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 2
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/radscorpion = 10
@@ -1007,7 +1021,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/radscorpion/black = 5,
 		/mob/living/simple_animal/hostile/radscorpion/blue = 5
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/radscorpion = 3,
@@ -1023,7 +1037,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 2
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/giantant = 10
@@ -1053,18 +1067,18 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/stalker = 1,
-		/mob/living/simple_animal/hostile/stalkeryoung = 10
+		/mob/living/simple_animal/hostile/stalkeryoung = 4
 		)
 	num_mobs_to_spawn_medium = 2
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/stalker = 3,
-		/mob/living/simple_animal/hostile/stalkeryoung = 10
+		/mob/living/simple_animal/hostile/stalkeryoung = 3
 		)
 	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
-		/mob/living/simple_animal/hostile/stalker = 10,
+		/mob/living/simple_animal/hostile/stalker = 5,
 		/mob/living/simple_animal/hostile/stalkeryoung = 3
 		)
 
@@ -1079,8 +1093,8 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
-		/mob/living/simple_animal/hostile/handy/protectron = 5,
-		/mob/living/simple_animal/hostile/eyebot = 5
+		/mob/living/simple_animal/hostile/handy/protectron = 3,
+		/mob/living/simple_animal/hostile/eyebot = 3
 		)
 	num_mobs_to_spawn_medium = 2
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
@@ -1089,7 +1103,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 			/mob/living/simple_animal/hostile/handy = 2,
 			/mob/living/simple_animal/hostile/eyebot/floatingeye = 5
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/handy/robobrain = 5,
@@ -1118,8 +1132,8 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/securitron = 3,
 		/mob/living/simple_animal/hostile/securitron/sentrybot/nsb/riot = 1
 		)
-	num_mobs_to_spawn_hard = 2
-	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
+	num_mobs_to_spawn_hard = 3
+	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONGER
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/handy/robobrain = 10,
 		/mob/living/simple_animal/hostile/securitron = 5,
@@ -1136,22 +1150,22 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
 	num_mobs_to_spawn_easy = 1
-	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
+	mob_respawn_time_easy = MOB_SPAWNER_TIME_LONGEST
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/handy/robobrain = 5,
 		/mob/living/simple_animal/hostile/securitron = 10,
 		/mob/living/simple_animal/hostile/securitron/sentrybot = 4
 		)
 	num_mobs_to_spawn_medium = 2
-	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
+	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONGEST
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/handy/assaultron = 5,
 		/mob/living/simple_animal/hostile/handy/robobrain = 5,
 		/mob/living/simple_animal/hostile/securitron = 10,
 		/mob/living/simple_animal/hostile/securitron/sentrybot = 4
 		)
-	num_mobs_to_spawn_hard = 2
-	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
+	num_mobs_to_spawn_hard = 3
+	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONGEST
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/handy/assaultron = 5,
 		/mob/living/simple_animal/hostile/handy/gutsy = 10,
@@ -1179,7 +1193,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/supermutant/meleemutant = 5,
 		/mob/living/simple_animal/hostile/supermutant/rangedmutant = 5
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONG
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/supermutant/nightkin = 5,
@@ -1203,14 +1217,14 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/supermutant = 3
 		)
 	num_mobs_to_spawn_medium = 3
-	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONG
+	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONGER
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/centaur = 10,
 		/mob/living/simple_animal/hostile/supermutant/meleemutant = 8,
 		/mob/living/simple_animal/hostile/supermutant/rangedmutant = 4
 		)
 	num_mobs_to_spawn_hard = 4
-	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONG
+	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONGEST
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/centaur = 15,
 		/mob/living/simple_animal/hostile/supermutant/nightkin = 8,
@@ -1226,20 +1240,20 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	nest_icon_state = MOB_SPAWNER_ICONSTATE_DEFAULT
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
-	num_mobs_to_spawn_easy = 2
+	num_mobs_to_spawn_easy = 1
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
-		/mob/living/simple_animal/hostile/centaur = 10
+		/mob/living/simple_animal/hostile/centaur = 5
 		)
 	num_mobs_to_spawn_medium = 2
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_medium = list(
-		/mob/living/simple_animal/hostile/centaur = 10
+		/mob/living/simple_animal/hostile/centaur = 7
 		)
 	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
-		/mob/living/simple_animal/hostile/centaur = 10
+		/mob/living/simple_animal/hostile/centaur = 9
 		)
 
 /// melee raiders
@@ -1266,7 +1280,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/raider/baseball = 5,
 		/mob/living/simple_animal/hostile/raider/tribal = 5
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONG
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/raider = 10,
@@ -1299,7 +1313,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/raider/ranged/sulphiteranged = 3,
 		/mob/living/simple_animal/hostile/raider/ranged/biker = 3
 		)
-	num_mobs_to_spawn_hard = 2
+	num_mobs_to_spawn_hard = 3
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONG
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/raider/ranged = 5,
@@ -1326,7 +1340,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/raider/baseball = 2,
 		/mob/living/simple_animal/hostile/raider/tribal = 2
 		)
-	num_mobs_to_spawn_medium = 2
+	num_mobs_to_spawn_medium = 4
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONG
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/raider/ranged = 5,
@@ -1337,7 +1351,7 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/raider/baseball = 5,
 		/mob/living/simple_animal/hostile/raider/tribal = 5
 		)
-	num_mobs_to_spawn_hard = 3
+	num_mobs_to_spawn_hard = 6
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONG
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/raider/ranged = 5,
@@ -1408,17 +1422,17 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	sound_to_play = MOB_SPAWNER_SOUND_DEFAULT
 
 	num_mobs_to_spawn_easy = 1
-	mob_respawn_time_easy = MOB_SPAWNER_TIME_LONG
+	mob_respawn_time_easy = MOB_SPAWNER_TIME_LONGEST
 	mob_list_easy = list(
 		/mob/living/simple_animal/hostile/bear/yaoguai = 1
 		)
 	num_mobs_to_spawn_medium = 2
-	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONG
+	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONGEST
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/bear/yaoguai = 3
 		)
 	num_mobs_to_spawn_hard = 2
-	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONG
+	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONGEST
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/bear/yaoguai = 5
 		)
@@ -1434,18 +1448,18 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 	num_mobs_to_spawn_easy = 2
 	mob_respawn_time_easy = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_easy = list(
-		/mob/living/simple_animal/hostile/wolf = 10
+		/mob/living/simple_animal/hostile/wolf = 7
 		)
 	num_mobs_to_spawn_medium = 3
 	mob_respawn_time_medium = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_medium = list(
-		/mob/living/simple_animal/hostile/wolf = 10,
+		/mob/living/simple_animal/hostile/wolf = 6,
 		/mob/living/simple_animal/hostile/wolf/alpha = 1
 		)
-	num_mobs_to_spawn_hard = 3
+	num_mobs_to_spawn_hard = 4
 	mob_respawn_time_hard = MOB_SPAWNER_TIME_DEFAULT
 	mob_list_hard = list(
-		/mob/living/simple_animal/hostile/wolf = 10,
+		/mob/living/simple_animal/hostile/wolf = 5,
 		/mob/living/simple_animal/hostile/wolf/alpha = 5
 		)
 
@@ -1486,12 +1500,12 @@ GLOBAL_LIST_EMPTY(random_mob_nest_spawner_datums)
 		/mob/living/simple_animal/hostile/texas_rattler = 1
 		)
 	num_mobs_to_spawn_medium = 2
-	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONG
+	mob_respawn_time_medium = MOB_SPAWNER_TIME_LONGER
 	mob_list_medium = list(
 		/mob/living/simple_animal/hostile/texas_rattler = 2
 		)
 	num_mobs_to_spawn_hard = 3
-	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONG
+	mob_respawn_time_hard = MOB_SPAWNER_TIME_LONGEST
 	mob_list_hard = list(
 		/mob/living/simple_animal/hostile/texas_rattler = 3
 		)

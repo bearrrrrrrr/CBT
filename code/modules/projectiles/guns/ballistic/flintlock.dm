@@ -45,26 +45,26 @@
 	gun_tags |= GUN_PROJECTILE
 
 /obj/item/gun/flintlock/UpdateAmmoCountOverlay()
-	if(isturf(loc))//Only show th ammo count if the magazine is, like, in an inventory or something. Mags on the ground don't need a big number on them, that's ugly.
-		maptext = ""
-	else
-		var/txte = ""
-		var/culur = "#FF0000"
-		if(chambered)
-			if(cocked)
-				txte = "1/1 !C!"
-				culur = "#00FFFF"
-			else
-				txte = "1/1"
-				culur = "#FFFF00"
-		else
-			if(cocked)
-				txte = "0/1 !C!"
-				culur = "#FF0000"
-			else
-				txte = "0/1"
-				culur = "#FF0000"
-		maptext = "<font color='[culur]'><b>[txte]</b></font>"
+	// if(isturf(loc))//Only show th ammo count if the magazine is, like, in an inventory or something. Mags on the ground don't need a big number on them, that's ugly.
+	// 	maptext = ""
+	// else
+	// 	var/txte = ""
+	// 	var/culur = "#FF0000"
+	// 	if(chambered)
+	// 		if(cocked)
+	// 			txte = "1/1 !C!"
+	// 			culur = "#00FFFF"
+	// 		else
+	// 			txte = "1/1"
+	// 			culur = "#FFFF00"
+	// 	else
+	// 		if(cocked)
+	// 			txte = "0/1 !C!"
+	// 			culur = "#FF0000"
+	// 		else
+	// 			txte = "0/1"
+	// 			culur = "#FF0000"
+	// 	maptext = "<font color='[culur]'><b>[txte]</b></font>"
 
 
 /obj/item/gun/flintlock/ui_data(mob/user)

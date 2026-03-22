@@ -44,7 +44,6 @@
 	ammo_type = /obj/item/ammo_casing/m5mm
 	caliber = list(CALIBER_556, CALIBER_5MM)
 	max_ammo = 25
-	multiload = FALSE // one at a time~
 
 /obj/item/ammo_box/magazine/internal/mauserinternal
 	name = "C96 Mauser internal magazine"

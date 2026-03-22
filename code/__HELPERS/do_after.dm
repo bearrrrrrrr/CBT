@@ -267,13 +267,12 @@
 /proc/do_after(
 		mob/user, 
 		delay, 
-		needhand = 1, 
+		needhand = TRUE, 
 		atom/target = null, 
-		progress = 1, 
+		progress = TRUE, 
 		datum/callback/extra_checks = null, 
 		required_mobility_flags = (MOBILITY_USE|MOBILITY_MOVE), 
 		resume_time = 0 SECONDS, 
-
 		allow_movement = FALSE,
 		stay_close = TRUE,
 		public_progbar = FALSE,

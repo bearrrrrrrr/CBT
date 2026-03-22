@@ -221,6 +221,9 @@
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SMALL_BOX)
 	randomize_ammo_count = FALSE
 	icon = 'icons/fallout/objects/guns/ammo.dmi'
+	speedloader_kind = SPEEDLOADER_CLIP
+	can_accept_casings = FALSE
+	can_remove_casings = FALSE
 
 /obj/item/ammo_box/needlercapsule/handloaded
 	name = "Capsule full of jade needles"
@@ -1145,12 +1148,14 @@
 //SPEEDLOADERS//
 ////////////////
 
-/obj/item/ammo_box/tube
+/obj/item/ammo_box/tube // toob
 	icon = 'icons/fallout/objects/guns/ammo.dmi'
 	custom_materials = list(/datum/material/iron = MATS_TUBE)
 	w_class = WEIGHT_CLASS_SMALL
 	multiple_sprites = 1
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_TUBE
+
 /*
 //.38
 /obj/item/ammo_box/c38
@@ -1178,7 +1183,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/c22/empty
 	start_empty = 1
@@ -1193,8 +1199,9 @@
 	max_ammo = 12
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron = 2000)
-	randomize_ammo_count = TRUE
+	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/l10mm/empty
 	start_empty = 1
@@ -1211,7 +1218,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/a357/empty
 	start_empty = 1
@@ -1256,7 +1264,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/m44/empty
 	start_empty = 1
@@ -1285,7 +1294,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/c45rev/empty
 	start_empty = 1
@@ -1300,7 +1310,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/a45lcrev/empty
 	start_empty = 1
@@ -1317,7 +1328,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/rev308/empty
 	start_empty = 1
@@ -1333,7 +1345,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_REVOLVER
 
 /obj/item/ammo_box/c4570/ratshot
 	name = "speed loader (.45-70 forager)"
@@ -1420,7 +1433,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_CLIP
 
 /obj/item/ammo_box/a308
 	name = "stripper clip (.308)"
@@ -1432,7 +1446,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_CLIP
 
 /obj/item/ammo_box/a308/empty
 	start_empty = 1
@@ -1446,7 +1461,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_CLIP
 
 /obj/item/ammo_box/a308/doublestacked/empty
 	start_empty = 1
@@ -1460,7 +1476,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_CLIP
 
 /obj/item/ammo_box/a22/Initialize()
 	.=..()
@@ -1478,8 +1495,8 @@
 	multiple_sprites = 1
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	w_class = WEIGHT_CLASS_TINY
-	randomize_ammo_count = TRUE
-
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_CLIP
 
 //Needler
 /obj/item/ammo_box/needle
@@ -1492,7 +1509,8 @@
 	multiple_sprites = 1
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
-	randomize_ammo_count = TRUE
+	randomize_ammo_count = FALSE // was true
+	speedloader_kind = SPEEDLOADER_CLIP
 
 //gauss
 /obj/item/ammo_box/gauss
@@ -1507,6 +1525,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE
+	speedloader_kind = SPEEDLOADER_CLIP
 
 //gauss blander
 /obj/item/ammo_box/gauss_blender
@@ -1520,6 +1539,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE
+	speedloader_kind = SPEEDLOADER_CLIP
 
 //.50 BMG
 /obj/item/ammo_box/a50MG
@@ -1533,6 +1553,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE
+	speedloader_kind = SPEEDLOADER_CLIP
 
 /obj/item/ammo_box/a50MG/incendiary
 	name = "anti-material incendiary ammo rack (.50MG)"
@@ -1575,7 +1596,7 @@
 	icon = 'icons/fallout/objects/guns/ammo.dmi'
 	icon_state = "jerrycan"
 	caliber = list(CALIBER_FUEL)
-	unloadable = TRUE
+	can_remove_casings = FALSE
 	ammo_type = /obj/item/ammo_casing/caseless/flamethrower
 	w_class = WEIGHT_CLASS_SMALL
 	max_ammo = 240

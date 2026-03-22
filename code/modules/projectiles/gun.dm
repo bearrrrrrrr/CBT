@@ -1073,11 +1073,11 @@ ATTACHMENTS
 
 /obj/item/gun/doMove(atom/destination)
 	. = ..()
-	UpdateAmmoCountOverlay()
+	// UpdateAmmoCountOverlay()
 
 /obj/item/gun/update_icon()
 	. = ..()
-	UpdateAmmoCountOverlay()
+	// UpdateAmmoCountOverlay()
 
 /obj/item/gun/proc/toggle_scope(mob/living/user)
 	//looking through a scope limits your periphereal vision
@@ -1544,8 +1544,8 @@ GLOBAL_LIST_INIT(gun_yeet_words, list(
 	else if(istype(src, /obj/item/gun/ballistic))
 		var/obj/item/gun/ballistic/gungun = src
 		thing_2_yeet = gungun.magazine
-		if(!gungun.eject_magazine(user, gungun.en_bloc, FALSE, FALSE))
-			thing_2_yeet = null
+		// if(!gungun.eject_magazine(user, gungun.en_bloc, FALSE, FALSE))
+		// 	thing_2_yeet = null
 		//and your little chambered round as well! huahahaha!
 		gungun.eject_chambered_round(user, FALSE)
 	if(!thing_2_yeet)
@@ -1667,24 +1667,24 @@ GLOBAL_LIST_INIT(gun_yeet_words, list(
 	return FALSE
 
 /mob/living/carbon/human/ReloadGun(throw_if_no_gun_in_active_hand)
-	var/I = get_active_held_item()
-	var/obj/item/gun/G
-	if(istype(I, /obj/item/gun))
-		G = I
-	if(throw_if_no_gun_in_active_hand && isnull(G))
-		src.toggle_throw_mode()
-		return TRUE
-	var/I2 = get_inactive_held_item()
-	var/obj/item/gun/G2
-	if(istype(I2, /obj/item/gun))
-		G2 = I2
-	if(!G && !G2)
-		to_chat(src, span_warning("You aren't holding a gun you can reload!"))
-		return FALSE
-	G?.Reload(src)
-	if(get_inactive_held_item() == G2)//recheck this again because it might have changed since we reloaded the active hand gun.
-		G2?.Reload(src)
-	return TRUE
+	// var/I = get_active_held_item()
+	// var/obj/item/gun/G
+	// if(istype(I, /obj/item/gun))
+	// 	G = I
+	// if(throw_if_no_gun_in_active_hand && isnull(G))
+	// 	src.toggle_throw_mode()
+	// 	return TRUE
+	// var/I2 = get_inactive_held_item()
+	// var/obj/item/gun/G2
+	// if(istype(I2, /obj/item/gun))
+	// 	G2 = I2
+	// if(!G && !G2)
+	// 	to_chat(src, span_warning("You aren't holding a gun you can reload!"))
+	// 	return FALSE
+	// G?.Reload(src)
+	// if(get_inactive_held_item() == G2)//recheck this again because it might have changed since we reloaded the active hand gun.
+	// 	G2?.Reload(src)
+	// return TRUE
 
 ///////////////////
 //GUNCODE ARCHIVE//

@@ -55,32 +55,32 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	return SEND_SIGNAL(magazine, COMSIG_GUN_MAG_ADMIN_RELOAD) // get relayed, noob
 
 /obj/item/gun/ballistic/UpdateAmmoCountOverlay()
-	if(isturf(loc))//Only show th ammo count if the magazine is, like, in an inventory or something. Mags on the ground don't need a big number on them, that's ugly.
-		maptext = ""
-	else 
-		var/ammos = get_ammo()
-		var/ammomax = get_max_ammo()
-		var/textt = ""
-		var/culur = "#FF0000"
-		if(ammomax == 0)
-			culur = "#FFFFFF"
-		else if(ammos == ammomax)
-			culur = "#00FFFF"
-		else if(ammos > ammomax * 0.75)
-			culur = "#00FF00"
-		else if(ammos > ammomax * 0.5)
-			culur = "#FFFF00"
-		else if(ammos > ammomax * 0.25)
-			culur = "#FFA500"
-		else if(ammos > 0)
-			culur = "#FF0000"
-		else
-			culur = "#FF00FF"
-		if(ammos > 0)
-			textt = "[ammos]/[get_max_ammo()]"
-		else
-			textt = "0/[get_max_ammo()]"
-		maptext = "<font color='[culur]'><b>[textt]</b></font>"
+	// if(isturf(loc))//Only show th ammo count if the magazine is, like, in an inventory or something. Mags on the ground don't need a big number on them, that's ugly.
+	// 	maptext = ""
+	// else 
+	// 	var/ammos = get_ammo()
+	// 	var/ammomax = get_max_ammo()
+	// 	var/textt = ""
+	// 	var/culur = "#FF0000"
+	// 	if(ammomax == 0)
+	// 		culur = "#FFFFFF"
+	// 	else if(ammos == ammomax)
+	// 		culur = "#00FFFF"
+	// 	else if(ammos > ammomax * 0.75)
+	// 		culur = "#00FF00"
+	// 	else if(ammos > ammomax * 0.5)
+	// 		culur = "#FFFF00"
+	// 	else if(ammos > ammomax * 0.25)
+	// 		culur = "#FFA500"
+	// 	else if(ammos > 0)
+	// 		culur = "#FF0000"
+	// 	else
+	// 		culur = "#FF00FF"
+	// 	if(ammos > 0)
+	// 		textt = "[ammos]/[get_max_ammo()]"
+	// 	else
+	// 		textt = "0/[get_max_ammo()]"
+	// 	maptext = "<font color='[culur]'><b>[textt]</b></font>"
 
 /obj/item/gun/ballistic/update_icon_state()
 	if(SEND_SIGNAL(src, COMSIG_ITEM_UPDATE_RESKIN))
@@ -133,87 +133,85 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)
 	..()
-	if(istype(A, /obj/item/stack/crafting/metalparts))
-		if(istype(magazine))
-			magazine.attackby(A, user)
-
 	if(istype(A, /obj/item/ammo_casing))
-		if(istype(magazine))
-			if(magazine.caliber_change_step == MAGAZINE_CALIBER_CHANGE_STEP_3)
-				magazine.attackby(A, user)
-				return TRUE
-			if(magazine.fixed_mag) // fixed mag, just load bullets in
-				magazine.load_from_casing(A, user, FALSE)
-				chamber_round(0)
-				update_icon()
-				return TRUE
-
+		return load_casing_into_internal_magazine(A, user)
 	if(istype(A, /obj/item/ammo_box))
-		var/obj/item/ammo_box/new_mag = A
-		if(magazine?.fixed_mag) // fixed mag, just load bullets in
-			magazine.load_from_box(A, user, FALSE)
-			chamber_round(0)
-			update_icon()
-			return TRUE
-		// removable mag, eject the mag
-		if(!is_magazine_allowed(new_mag, user)) // But only if the new mag would fit
-			return FALSE
-		var/obj/item/ammo_box/oldmag
-		if(istype(magazine))
-			oldmag = magazine
-			eject_magazine(user, en_bloc, !en_bloc, TRUE) //stop ejecting perfectly good shells!
-		if(user.transferItemToLoc(new_mag, src))
-			magazine = new_mag
-			if(oldmag && user.put_in_hands(oldmag))
-				to_chat(user, span_notice("You load a new magazine into \the [src], keeping hold of the old one."))
-			else
-				to_chat(user, span_notice("You load a new magazine into \the [src]."))
-		else
-			to_chat(user, span_warning("You cannot seem to get \the [new_mag] out of your hands!"))
-			return FALSE
-		if(magazine.ammo_count())
-			playsound(src, "gun_insert_full_magazine", 70, 1)
-			if(!chambered)
-				chamber_round()
-				addtimer(CALLBACK(usr, GLOBAL_PROC_REF(playsound), src, 'sound/weapons/gun_chamber_round.ogg', 100, 1), 3)
-		else
-			playsound(src, "gun_insert_empty_magazine", 70, 1)
-		new_mag.update_icon()
-		update_icon()
-		do_squish(0.75,0.75,0.25 SECONDS)
+		return use_ammobox_on_gun(A, user)
+
+/obj/item/gun/ballistic/proc/use_ammobox_on_gun(obj/item/ammo_box/A, mob/user)
+	if(!istype(A, /obj/item/ammo_box))
+		return FALSE
+	if(load_internal_magazine(A, user))
+		return TRUE
+	if(load_external_magazine(A, user))
 		return TRUE
 	return FALSE
 
-/obj/item/gun/ballistic/screwdriver_act(mob/living/user, obj/item/I)
-	. = ..()
-	if(.)
+/obj/item/gun/ballistic/proc/load_casing_into_internal_magazine(obj/item/ammo_casing/A, mob/user)
+	if(!istype(magazine))
+		// todo: let people stick loose bullets into their mag-less gun
 		return
-
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!magazine.fixed_mag)
 		return
+	if(magazine.load_from_casing(A, user, FALSE))
+		chamber_round()
+	update_icon()
+	return TRUE
 
-	if(magazine)
-		magazine.screwdriver_act(user, I)
-		return
+/obj/item/gun/ballistic/proc/load_internal_magazine(obj/item/ammo_box/A, mob/user)
+	if(!istype(magazine))
+		return FALSE
+	if(!magazine.fixed_mag)
+		return FALSE
+	if(magazine.load_from_box(A, user, FALSE))
+		chamber_round()
+	update_icon()
+	return TRUE
 
-/obj/item/gun/ballistic/welder_act(mob/living/user, obj/item/I)
-	. = ..()
-	if(.)
-		return
+/obj/item/gun/ballistic/proc/load_external_magazine(obj/item/ammo_box/A, mob/user)
+	if(!is_magazine_allowed(A, user)) // But only if the new mag would fit
+		return FALSE
+	var/obj/item/ammo_box/magazine/new_mag = A
+	if(HAS_TRAIT(new_mag, TRAIT_NODROP))
+		to_chat(user, span_warning("You cannot seem to get \the [new_mag] out of your hands!"))
+		return FALSE
+	// eject and remember the old mag, if any (and toss on the ground)
+	var/obj/item/ammo_box/oldmag = eject_magazine(user, FALSE, TRUE) //stop ejecting perfectly good shells!
+	if(!new_mag.load_into_gun_delay(user))
+		to_chat(user, span_alert("You were interrupted!"))
+		return FALSE
+	// put the new mag in there
+	if(!user.transferItemToLoc(new_mag, src))
+		to_chat(user, span_warning("You cannot seem to get \the [new_mag] to go in there!"))
+		return FALSE
+	magazine = new_mag
+	if(oldmag)
+		if(user.put_in_hands(oldmag))
+			to_chat(user, span_notice("You load \a [new_mag] into \the [src], keeping hold of the old one."))
+		else
+			to_chat(user, span_notice("You load \a [new_mag] into \the [src]."))
 
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
-		return
-
-	if(magazine)
-		magazine.welder_act(user, I)
-		return
-
+	if(magazine.ammo_count())
+		playsound(src, "gun_insert_full_magazine", 70, 1)
+		if(!chambered)
+			chamber_round()
+			addtimer(CALLBACK(usr, GLOBAL_PROC_REF(playsound), src, 'sound/weapons/gun_chamber_round.ogg', 100, 1), 3)
+	else
+		playsound(src, "gun_insert_empty_magazine", 70, 1)
+	new_mag.update_icon()
+	update_icon()
+	do_squish(0.75,0.75,0.25 SECONDS)
+	return TRUE
 
 /obj/item/gun/ballistic/proc/is_magazine_allowed(obj/item/ammo_box/mag_to_check, mob/user)
 	. = FALSE
 	if(!istype(mag_to_check))
 		if(user)
 			to_chat(user, span_phobia("Whatever you tried to stuff into \the [src] wasn't a thing! This is a bug~"))
+		return FALSE
+	if(istype(magazine) && magazine.fixed_mag)
+		if(user)
+			to_chat(user, span_alert("\the [magazine] is permanently fixed to \the [src], your [mag_to_check] won't fit in there!"))
 		return FALSE
 	if(mag_to_check.type in allowed_mags)
 		return TRUE
@@ -269,7 +267,7 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 			pump(user, TRUE)
 			update_icon()
 		else
-			eject_magazine(user, en_bloc, !en_bloc, TRUE)
+			eject_magazine(user, !en_bloc, TRUE)
 			update_icon()
 		return
 	if(chambered)
@@ -283,7 +281,7 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 ///obj/item/gun/ballistic/AltClick(mob/living/user)
 //	pump(user, TRUE)
 
-/obj/item/gun/ballistic/proc/eject_magazine(mob/living/user, is_enbloc, put_it_in_their_hand, sounds_and_words)
+/obj/item/gun/ballistic/proc/eject_magazine(mob/living/user, put_it_in_their_hand, makesound, maketext)
 	if(magazine.fixed_mag)
 		return FALSE
 	magazine.forceMove(drop_location())
@@ -291,19 +289,21 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		user.put_in_hands(magazine)
 	else
 		user.dropItemToGround(magazine)
-	if(sounds_and_words)
+	var/obj/item/ammo_box/oldmag = magazine
+	if(makesound)
 		if(en_bloc)
 			playsound(src, "sound/f13weapons/garand_ping.ogg", 70, 1)
 		else if(magazine.ammo_count())
 			playsound(src, 'sound/weapons/gun_magazine_remove_full.ogg', 70, 1)
 		else
 			playsound(src, "gun_remove_empty_magazine", 70, 1)
+	if(maketext)
 		to_chat(user, span_notice("You eject \the [magazine] from \the [src]."))
 	magazine.update_icon()
 	magazine = null
 	update_icon()
 	do_squish(0.75,0.75,0.25 SECONDS)
-	return TRUE
+	return oldmag
 
 /// Pump if click with empty thing
 /obj/item/gun/ballistic/shoot_with_empty_chamber(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0)
@@ -586,3 +586,70 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 
 	busy_action = FALSE
 	return TRUE
+
+/////////// DEBUG STUFF
+
+/obj/item/storage/debug/debug_ballistic_clutch
+	name = "Bag of Debug Ballistic Stuff"
+	desc = "A cool bag of guns to test guns and gun stuff!!!"
+
+/obj/item/storage/debug/debug_ballistic_clutch/PopulateContents()
+	. = ..()
+	new /obj/item/storage/debug_box/guns_ballistic_2(src)
+	new /obj/item/storage/debug_box/ammo_ballistic_2(src)
+	new /obj/item/storage/debug_box/tools(src)
+
+/obj/item/storage/debug_box/guns_ballistic_2
+	name = "Debug Guns 2"
+	desc = "A box of debug guns for devs to test gun!"
+
+/obj/item/storage/debug_box/guns_ballistic_2/PopulateContents()
+	. = ..()
+	var/list/spawned = list()
+	spawned += new /obj/item/gun/ballistic/automatic/smg/american180(src)
+	spawned += new /obj/item/gun/ballistic/automatic/assault_rifle(src)
+	spawned += new /obj/item/gun/ballistic/automatic/shotgun/pancor(src)
+	spawned += new /obj/item/gun/ballistic/rifle/repeater/brush(src)
+	spawned += new /obj/item/gun/ballistic/rifle/hunting(src)
+	spawned += new /obj/item/gun/ballistic/shotgun/hunting(src)
+	spawned += new /obj/item/gun/ballistic/revolver/colt357(src)
+	spawned += new /obj/item/gun/ballistic/revolver/detective(src)
+	for(var/obj/item/thingy in spawned)
+		SEND_SIGNAL(thingy, COMSIG_GUN_MAG_ADMIN_RELOAD)
+
+/obj/item/storage/debug_box/ammo_ballistic_2
+	name = "Debug Ammo"
+	desc = "A box of debug ammo for devs to gun!"
+
+/obj/item/storage/debug_box/ammo_ballistic_2/PopulateContents()
+	. = ..()
+	var/list/spawned = list()
+	spawned += new /obj/item/ammo_box/magazine/m22smg(src)
+	spawned += new /obj/item/ammo_box/magazine/m22smg(src)
+	spawned += new /obj/item/ammo_box/magazine/m556/rifle/extended(src)
+	spawned += new /obj/item/ammo_box/magazine/m556/rifle/extended(src)
+	spawned += new /obj/item/ammo_box/magazine/d12g/buck(src)
+	spawned += new /obj/item/ammo_box/magazine/d12g/buck(src)
+	spawned += new /obj/item/ammo_box/magazine/d12g/buck(src)
+	spawned += new /obj/item/ammo_box/magazine/d12g/buck(src)
+
+	spawned += new /obj/item/ammo_box/c22(src)
+	spawned += new /obj/item/ammo_box/c22(src)
+	spawned += new /obj/item/ammo_box/c22(src)
+	spawned += new /obj/item/ammo_box/c22(src)
+	spawned += new /obj/item/ammo_box/a357(src)
+	spawned += new /obj/item/ammo_box/a357(src)
+	spawned += new /obj/item/ammo_box/a357(src)
+	spawned += new /obj/item/ammo_box/a357(src)
+	spawned += new /obj/item/ammo_box/tube/c4570(src)
+	spawned += new /obj/item/ammo_box/tube/c4570(src)
+	spawned += new /obj/item/ammo_box/c4570box(src)
+
+
+	for(var/obj/item/thingy in spawned)
+		SEND_SIGNAL(thingy, COMSIG_GUN_MAG_ADMIN_RELOAD)
+
+
+
+
+

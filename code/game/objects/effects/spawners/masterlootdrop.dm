@@ -28,23 +28,23 @@
 	delay_spawn = TRUE
 	fan_out_turfs_range = 1
 
-/obj/effect/spawner/lootdrop/f13/common
+/obj/effect/spawner/lootdrop/f13/common //Fuzz, I know you're gonna come back and look at these, but I really want to test some stuff out.  Feel free to do whatever you need to do here, and ignore what I did. Luv u tho, ~Fenny, 3/21/26
 	name = "common loot, found everywhere"
 	icon_state = "x5"
 	loot = list(
-		/obj/effect/spawner/lootdrop/f13/common_weps = 10,
-		/obj/item/salvage/ammo = 10,
+		// /obj/effect/spawner/lootdrop/f13/common_weps = 10,
+		// /obj/item/salvage/ammo = 10,
 		/obj/effect/spawner/lootdrop/f13/common_medicine = 10,
-		/obj/effect/spawner/lootdrop/f13/common_drugs = 8,
-		/obj/effect/spawner/lootdrop/f13/common_armor = 10,
-		/obj/effect/spawner/lootdrop/f13/common_toys = 4,
-		/obj/effect/spawner/lootdrop/f13/common_mats = 10,
+		// /obj/effect/spawner/lootdrop/f13/common_drugs = 8,
+		// /obj/effect/spawner/lootdrop/f13/common_armor = 10,
+		// /obj/effect/spawner/lootdrop/f13/common_toys = 4,
+		// /obj/effect/spawner/lootdrop/f13/common_mats = 10,
 		/obj/effect/spawner/lootdrop/f13/common_parts = 10,
 		/obj/effect/spawner/lootdrop/f13/common_tools = 10,
 		/obj/effect/spawner/lootdrop/f13/common_money = 10,
-		/obj/effect/spawner/lootdrop/f13/common_bombs = 10,
+		// /obj/effect/spawner/lootdrop/f13/common_bombs = 10,
 		/obj/effect/spawner/lootdrop/f13/common_food = 10,
-		/obj/item/trash/f13/electronic/toaster = 10,
+		// /obj/item/trash/f13/electronic/toaster = 10,
 	)
 	downtier_chance = 10 // 10% chance to downtier to trash
 	downtier_list = list(
@@ -55,19 +55,19 @@
 	name = "uncommon loot, found in dungeons"
 	icon_state = "x6"
 	loot = list(
-		/obj/effect/spawner/lootdrop/f13/uncommon_weps = 10,
-		/obj/item/salvage/ammo = 10,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_weps = 10,
+		// /obj/item/salvage/ammo = 10,
 		/obj/effect/spawner/lootdrop/f13/uncommon_medicine = 10,
-		/obj/effect/spawner/lootdrop/f13/uncommon_drugs = 8,
-		/obj/effect/spawner/lootdrop/f13/uncommon_armor = 10,
-		/obj/effect/spawner/lootdrop/f13/uncommon_toys = 3,
-		/obj/effect/spawner/lootdrop/f13/uncommon_mats = 10,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_drugs = 8,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_armor = 10,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_toys = 3,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_mats = 10,
 		/obj/effect/spawner/lootdrop/f13/uncommon_parts = 10,
-		/obj/effect/spawner/lootdrop/f13/uncommon_tools = 10,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_tools = 10,
 		/obj/effect/spawner/lootdrop/f13/uncommon_money = 10,
-		/obj/effect/spawner/lootdrop/f13/uncommon_bombs = 10,
-		/obj/effect/spawner/lootdrop/f13/uncommon_food = 10,
-		/obj/effect/spawner/lootdrop/f13/uncommon_artifacts = 5,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_bombs = 10,
+		// /obj/effect/spawner/lootdrop/f13/uncommon_food = 10,
+		/obj/effect/spawner/lootdrop/f13/uncommon_artifacts = 3,
 	)
 	uptier_chance = 1 // 1% chance to uptier to a restricted rare
 	uptier_list = list(
@@ -92,7 +92,7 @@
 	name = "rare loot, found in dangerous dungeons"
 	icon_state = "x7"
 	loot = list(
-		/obj/effect/spawner/lootdrop/f13/rare_primary = 10,
+		// /obj/effect/spawner/lootdrop/f13/rare_primary = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_secondary = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_tertiary = 10,
 	)
@@ -118,10 +118,10 @@
 	icon_state = "x7"
 	loot = list(
 		/obj/effect/spawner/lootdrop/f13/rare_medicine = 20,
-		/obj/effect/spawner/lootdrop/f13/rare_drugs = 10,
+		// /obj/effect/spawner/lootdrop/f13/rare_drugs = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_mats = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_parts = 10,
-		/obj/effect/spawner/lootdrop/f13/rare_tools = 10,
+		// /obj/effect/spawner/lootdrop/f13/rare_tools = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_money = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_bombs = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_artifacts = 5,
@@ -134,10 +134,10 @@
 	loot = list(
 		/obj/effect/spawner/lootdrop/f13/rare_medicine = 15,
 		/obj/effect/spawner/lootdrop/f13/rare_drugs = 10,
-		/obj/effect/spawner/lootdrop/f13/rare_toys = 5,
+		// /obj/effect/spawner/lootdrop/f13/rare_toys = 5,
 		/obj/effect/spawner/lootdrop/f13/rare_parts = 10,
 		/obj/effect/spawner/lootdrop/f13/rare_money = 15,
-		/obj/effect/spawner/lootdrop/f13/rare_food = 5,
+		// /obj/effect/spawner/lootdrop/f13/rare_food = 5,
 	)
 
 ////////////////////////////

@@ -1228,28 +1228,21 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 
 /datum/species/proc/get_comfy(mob/living/carbon/human/H)
 	//If you haven't walked into a different tile in 5 minutes, don't drain hunger.
-	if(H.client && (((world.time - H.client?.last_move)) > 5 MINUTES))
+	if(H.client && (((world.time - H.client?.last_move)) > (2 SECONDS)))
 		if(!H.insanelycomfy)
-			to_chat(H, span_notice("You feel comfy."))
+			// to_chat(H, span_notice("You feel comfy."))
 			H.insanelycomfy = TRUE
-			for(var/mob/living/somone in range(1, H))
-				if(somone == H)
-					continue
-				if(!somone.client)
-					continue
-				break // And the horny demographic thing is to get people who arent fuking to find people to fuk, so if theyre fuking, remove them from the list of people lookin to fuk
+			ADD_TRAIT(H, TRAIT_NICE_SHOT, src)
+			// for(var/mob/living/somone in range(1, H))
+			// 	if(somone == H)
+			// 		continue
+			// 	if(!somone.client)
+			// 		continue
+			// 	break // And the horny demographic thing is to get people who arent fuking to find people to fuk, so if theyre fuking, remove them from the list of people lookin to fuk
 	else if(H.insanelycomfy)
-		to_chat(H, span_notice("You no longer feel comfy."))
+		// to_chat(H, span_notice("You no longer feel comfy."))
 		H.insanelycomfy = FALSE
-	/// and, the even comfier thing
-	if(H.client && ((world.time - H.client?.last_meaningful_action) > 7 MINUTES) && (world.time - H.client?.last_move) > 5 MINUTES)
-		if(!H.afk)
-			to_chat(H, span_notice("You feel cozy."))
-			H.afk = TRUE
-	else if(H.afk)
-		to_chat(H, span_notice("You no longer feel cozy."))
-		H.afk = FALSE
-
+		REMOVE_TRAIT(H, TRAIT_NICE_SHOT, src)
 
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
 	if(H)

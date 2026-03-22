@@ -945,7 +945,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	lose_text = span_danger("You forget how Power Armor works...")
 	medical_record_text = "Patient claims to wear a powerful suit of metal."
 	locked = FALSE
-
+	disabled = TRUE
 
 /datum/quirk/hard_yards
 	name = "Mobility - Faster"
@@ -959,11 +959,12 @@ GLOBAL_LIST_INIT(security_expert, list(
 		/datum/quirk/slow,
 		/datum/quirk/paraplegic,
 	)
-	mob_trait = TRAIT_HARD_YARDS
-	gain_text = span_notice("Rain or shine, nothing slows you down!")
-	lose_text = span_danger("The world beneath your heels suddenly feels like its pinning you down...")
+	mob_trait = TRAIT_HARD_YARDS //BEGONE THOT, IF YOU CAME HERE TO TURN THIS ON GO FUCK YOURSELF.  JACKASS.  YOU ARE TRYING TO RELEASE AN ANCIENT MONSTER THAT INVALIDATES YOUR OWN MAP DESIGNS, DO NOT DO IT.  IT IS NOT GOOD. NO YOU CAN'T MAKE IT WORK.  YOU LOW IQ FO13 SHITSTAIN. ~FENNY
+	gain_text = span_notice("Rain or shine, nothing slows you down!") // well thats not very nice
+	lose_text = span_danger("The world beneath your heels suddenly feels like its pinning you down...") //FUCK FO13
 	medical_record_text = "Patient describes going on hikes very often."
 	locked = FALSE
+	disabled = TRUE
 
 /datum/quirk/soft_yards
 	name = "Mobility - Fast"
@@ -983,7 +984,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	lose_text = span_danger("The world beneath your heels suddenly feels like tugging you down...")
 	medical_record_text = "Patient describes going on walks."
 	locked = FALSE
-
+	disabled = TRUE
 
 /datum/quirk/lifegiver
 	name = "Health - Tough"

@@ -17,7 +17,7 @@
 	pixel_x = -16
 	mob_armor = ARMOR_VALUE_RAIDER_COMBAT_ARMOR_BOSS
 	maxHealth = 80
-	health = 80
+	health = 60
 	melee_damage_lower = 15
 	melee_damage_upper = 36
 	pixel_y = -8

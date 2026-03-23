@@ -438,9 +438,9 @@
 	give_button.hud = src
 	infodisplay += give_button	
 	
-	reload_button = new /atom/movable/screen/reload_button()
-	reload_button.hud = src
-	infodisplay += reload_button
+	// reload_button = new /atom/movable/screen/reload_button()
+	// reload_button.hud = src
+	// infodisplay += reload_button
 
 	// beans_hud_button = new /atom/movable/screen/beans_hud_button()
 	// beans_hud_button.hud = src

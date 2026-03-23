@@ -16,6 +16,7 @@
 	caliber = list(CALIBER_SHOTGUN)
 	w_class = WEIGHT_CLASS_SMALL
 	randomize_ammo_count = FALSE
+	icon_state = "mbox"
 
 /obj/item/ammo_box/shotgun/slug
 	name = "Slug shotgun ammo box"

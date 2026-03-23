@@ -442,6 +442,8 @@
 	icon_state = "act_resist"
 	layer = HUD_LAYER
 	plane = HUD_PLANE
+	alpha = 0
+	mouse_opacity = 0
 
 /atom/movable/screen/questbook/Click()
 	if(isliving(usr))
@@ -453,6 +455,8 @@
 	icon_state = "act_scannerpls"
 	layer = HUD_LAYER
 	plane = HUD_PLANE
+	alpha = 0
+	mouse_opacity = 0
 
 /atom/movable/screen/scannerpls/Click()
 	if(isliving(usr))

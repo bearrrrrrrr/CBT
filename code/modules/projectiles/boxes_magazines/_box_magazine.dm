@@ -40,10 +40,7 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 	maptext_width = 48 //prevents ammo count from wrapping down into two lines
 	var/can_remove_casings = TRUE
 	var/can_accept_casings = TRUE // for mags that cannot have ammo loaded back into them
-	// this is the kind of ammoholder this is
-	var/container_kind = AH_BOX
-	// this is how other ammoholders load ammo from THEM into US
-	var/load_behavior  = AMMOB_DEFAULT
+	var/load_behavior  = AMMOB_BOX
 	var/magazine_load_delay_mult = 1
 
 
@@ -345,7 +342,7 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 		user,
 		dosound = l_dosound,
 		dotext = FALSE,
-		bypass_doafter = FALSE,
+		bypass_doafter = speedload,
 		move_n_load = move_n_load,
 		transfer_in_delay = transfer_in_delay,
 		))
@@ -368,11 +365,14 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 /obj/item/ammo_box/proc/load_delay(mob/user, load_in_delay, move_n_load)
 	var/datum/weakref/loader = WEAKREF(user)
 	GLOB.currently_loading_something[loader] = world.time + (load_in_delay)
+	var/atom/whereshow = src
+	if(istype(loc, /obj/item/gun))
+		whereshow = loc // show the progress bar on the gun, not the mag, if its in a gun
 	. = do_after(
 		user,
 		delay = load_in_delay,
 		needhand = TRUE,
-		target = src,
+		target = whereshow,
 		progress = TRUE,
 		public_progbar = TRUE,
 		allow_movement = move_n_load,
@@ -479,7 +479,6 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 	// UpdateAmmoCountOverlay()
 
 /obj/item/ammo_box/magazine
-	container_kind = AH_MAGAZINE
 	load_behavior = AMMOB_MAGAZINE
 
 /obj/item/ammo_box/magazine/proc/empty_magazine()

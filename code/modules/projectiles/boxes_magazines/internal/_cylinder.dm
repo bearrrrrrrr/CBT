@@ -4,7 +4,6 @@
 	caliber = list(CALIBER_357)
 	max_ammo = 7
 	replace_spent_rounds = TRUE
-	container_kind = AH_INTERNAL
 	load_behavior = AMMOB_INTERNAL_REVOLVER_CYLINDER
 
 

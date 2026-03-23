@@ -177,7 +177,13 @@
 				if (box.stored_ammo.len >= box.max_ammo)
 					break
 				if (bullet.BB)
-					if (box.give_round(bullet, 0))
+					if (box.load_from_casing(
+						bullet,
+						user,
+						dosound = TRUE,
+						dotext = TRUE,
+						bypass_doafter = FALSE,
+						))
 						boolets++
 				else
 					continue
@@ -186,12 +192,12 @@
 				to_chat(user, span_notice("You collect [boolets] shell\s. [box] now contains [box.stored_ammo.len] shell\s."))
 			else
 				to_chat(user, span_warning("You fail to collect anything!"))
-	else
-		if(istype(I, /obj/item/wrench)) //FO13 - salvaging blackpowder/metal from ammo
-			for(var/obj/item/ammo_casing/C in src.loc.contents)
-				new /obj/item/stack/crafting/powder(user.drop_location())
-				qdel(C)
-		return ..()
+	// else
+	// 	if(istype(I, /obj/item/wrench)) //FO13 - salvaging blackpowder/metal from ammo
+	// 		for(var/obj/item/ammo_casing/C in src.loc.contents)
+	// 			new /obj/item/stack/crafting/powder(user.drop_location())
+	// 			qdel(C)
+	return ..()
 
 /obj/item/ammo_casing/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(heavy_metal)

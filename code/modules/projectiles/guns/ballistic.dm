@@ -154,7 +154,13 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return
 	if(!magazine.fixed_mag)
 		return
-	if(magazine.load_from_casing(A, user, FALSE))
+	if(magazine.load_from_casing(
+		A,
+		user,
+		dosound = TRUE,
+		dotext = TRUE,
+		bypass_doafter = FALSE,
+		))
 		chamber_round()
 	update_icon()
 	return TRUE
@@ -208,7 +214,7 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return FALSE
 	magazine = new_mag
 	if(oldmag)
-		if(user.put_in_hands(oldmag))
+		if(user.put_in_hands(oldmag) && get_dist(user, oldmag) <= 1)
 			to_chat(user, span_notice("You load \a [new_mag] into \the [src], keeping hold of the old one."))
 		else
 			to_chat(user, span_notice("You load \a [new_mag] into \the [src]."))

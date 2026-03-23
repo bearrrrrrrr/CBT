@@ -32,6 +32,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/shotgun/buck
 	name = "Buckshot shotgun ammo box"
@@ -47,6 +48,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/shotgun/magnum
 	name = "Magnum buckshot shotgun ammo box"
@@ -68,6 +70,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/shotgun/rubber
 	name = "Rubbershot shotgun ammo box"
@@ -83,6 +86,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/shotgun/improvised
 	name = "homemade shotgun shells"
@@ -100,6 +104,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/shotgun/incendiary
 	name = "Box of incendiary shotgun shells"
@@ -171,6 +176,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 600
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/m22/rubber
 	name = "ammo box (.22lr rubber)"
@@ -186,6 +192,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 600
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/m22/shock
 	name = "ammo box (.22lr electroshock)"
@@ -207,6 +214,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 600
+	load_behavior = AMMOB_CRATE
 
 //needle ammo
 
@@ -222,7 +230,6 @@
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SMALL_BOX)
 	randomize_ammo_count = FALSE
 	icon = 'icons/fallout/objects/guns/ammo.dmi'
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 	can_accept_casings = FALSE
 	can_remove_casings = FALSE
@@ -287,6 +294,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 450
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c9mm/rubber
 	name = "ammo box (9mm rubber)"
@@ -303,6 +311,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 450
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c9mm/incendiary
 	name = "ammo box (9mm incendiary-tipped)"
@@ -323,6 +332,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 450
+	load_behavior = AMMOB_CRATE
 
 /*
 /obj/item/ammo_box/c38box
@@ -377,6 +387,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c10mm/fire
 	name = "ammo box (10mm incendiary-tipped)"
@@ -396,6 +407,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c10mm/improvised
 	name = "bag with reloaded 10mm bullets"
@@ -411,6 +423,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 //.357 Magnum
 /obj/item/ammo_box/a357box
@@ -433,6 +446,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a357box/ratshot
 	name = "ammo box (.357 Magnum Ratshot)"
@@ -447,6 +461,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a357box/ricochet
 	name = "ammo box (.357 Magnum ricochet)"
@@ -473,6 +488,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 //.44 Magnum
 /obj/item/ammo_box/m44box
@@ -495,6 +511,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 240
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/m44box/incendiary
 	name = "ammo box (.44 magnum incendiary-tipped)"
@@ -516,6 +533,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 240
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a45lcbox
 	name = "ammo box (.45 Long Colt)"
@@ -536,6 +554,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a45lcbox/improvised
 	name = "bag with reloaded .45 Long Colt bullets"
@@ -550,6 +569,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 // .45 ACP
 /obj/item/ammo_box/c45
@@ -572,6 +592,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c45/rubber
 	name = "ammo box (.45 rubber)"
@@ -588,6 +609,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c45/incendiary
 	name = "ammo box (.45 incendiary-tipped)"
@@ -608,6 +630,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 //.45-70 Gov't
 /obj/item/ammo_box/c4570box
@@ -630,6 +653,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 150
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c4570box/ratshot
 	name = "ammo box (.45-70 Forager)"
@@ -644,6 +668,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 150
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/c4570box/explosive
 	name = "ammo box (.45-70 HE)"
@@ -669,6 +694,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 150
+	load_behavior = AMMOB_CRATE
 
 //5mm
 
@@ -692,6 +718,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/m5mmbox/shock
 	name = "ammo box (5mm ESD)"
@@ -712,6 +739,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 //5.56x45
 /obj/item/ammo_box/a556
@@ -734,6 +762,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 /*
 /obj/item/ammo_box/a556/sport
@@ -755,6 +784,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a556/microshrapnel
 	name = "ammo box (5.56 microshrapnel)"
@@ -793,6 +823,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 250
+	load_behavior = AMMOB_CRATE
 
 //7.62x51, .308 Winchester
 /obj/item/ammo_box/a308box
@@ -815,6 +846,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 200
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a308box/improvised
 	name = "bag with reloaded .308 bullets"
@@ -830,6 +862,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 200
+	load_behavior = AMMOB_CRATE
 
 //7.62x51, .30-06
 /obj/item/ammo_box/a3006box
@@ -852,6 +885,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 150
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a3006box/rubber
 	name = "ammo box (.30-06 rubber)"
@@ -865,6 +899,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 150
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a3006box/improvised
 	name = "bag with reloaded .30-06 bullets"
@@ -880,6 +915,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 150
+	load_behavior = AMMOB_CRATE
 
 /*
 /obj/item/ammo_box/a762box
@@ -929,6 +965,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 200
+	load_behavior = AMMOB_CRATE
 
 //.50 MG and 14mm
 /obj/item/ammo_box/a50MGbox
@@ -951,6 +988,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a50MGbox/rubber
 	name = "ammo box (.50 rubber)"
@@ -967,6 +1005,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a50MGbox/improvised
 	name = "bag with reloaded .50MG slugs"
@@ -981,6 +1020,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 120
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/a50MGbox/contam
 	name = "ammo box (12.7mm contaminated)"
@@ -1016,6 +1056,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 180
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/m14mm/contam
 	name = "ammo box (14mm contaminated)"
@@ -1036,6 +1077,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 180
+	load_behavior = AMMOB_CRATE
 
 //Misc.
 /obj/item/ammo_box/m473
@@ -1058,6 +1100,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/m473/rubber
 	name = "ammo box (4.73mm less-than-lethal)"
@@ -1071,6 +1114,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	multiple_sprites = 4
 	max_ammo = 300
+	load_behavior = AMMOB_CRATE
 
 /obj/item/ammo_box/m473/incendiary
 	name = "ammo box (4.73mm incendiary)"
@@ -1156,7 +1200,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	multiple_sprites = 1
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDTUBE
 	load_behavior = AMMOB_REPEATER_SPEEDTUBE
 
 /*
@@ -1187,7 +1230,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/c22/empty
 	start_empty = 1
@@ -1204,7 +1247,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/l10mm/empty
 	start_empty = 1
@@ -1222,7 +1265,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/a357/empty
 	start_empty = 1
@@ -1268,7 +1311,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/m44/empty
 	start_empty = 1
@@ -1298,7 +1341,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/c45rev/empty
 	start_empty = 1
@@ -1314,7 +1357,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/a45lcrev/empty
 	start_empty = 1
@@ -1332,7 +1375,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/rev308/empty
 	start_empty = 1
@@ -1349,7 +1392,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_PISTOL_SPEEDLOADER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_SPEEDLOADER
+	load_behavior = AMMOB_REVOLVER_SPEEDLOADER
 
 /obj/item/ammo_box/c4570/ratshot
 	name = "speed loader (.45-70 forager)"
@@ -1437,7 +1480,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 /obj/item/ammo_box/a308
@@ -1451,7 +1493,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 /obj/item/ammo_box/a308/empty
@@ -1467,7 +1508,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 /obj/item/ammo_box/a308/doublestacked/empty
@@ -1483,7 +1523,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 /obj/item/ammo_box/a22/Initialize()
@@ -1503,7 +1542,6 @@
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	w_class = WEIGHT_CLASS_TINY
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 //Needler
@@ -1518,7 +1556,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE // was true
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 //gauss
@@ -1534,7 +1571,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 //gauss blander
@@ -1549,7 +1585,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 //.50 BMG
@@ -1564,7 +1599,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = MATS_STRIPPER)
 	randomize_ammo_count = FALSE
-	container_kind = AH_CLIP
 	load_behavior = AMMOB_STRIPPER_CLIP
 
 /obj/item/ammo_box/a50MG/incendiary

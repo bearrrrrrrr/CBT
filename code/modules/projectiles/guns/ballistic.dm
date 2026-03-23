@@ -24,6 +24,7 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	/// Which direction do the casings fly out?
 	var/handedness = GUN_EJECTOR_RIGHT
 	var/cock_sound = "gun_slide_lock"
+	var/insert_magazine_delay = 1 SECONDS
 	fire_sound = null //null tells the gun to draw from the casing instead of the gun for sound
 
 /obj/item/gun/ballistic/Initialize()
@@ -168,6 +169,25 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	update_icon()
 	return TRUE
 
+// gets the delay for you stuffing that ammobox into this gun
+/obj/item/gun/ballistic/proc/load_into_gun_delay(mob/user, obj/item/ammo_box/A)
+	var/datum/weakref/loader = WEAKREF(user)
+	var/insert_delay = insert_magazine_delay * A.magazine_load_delay_mult
+	GLOB.currently_loading_something[loader] = world.time + (insert_delay)
+	. = do_after(
+		user,
+		delay = insert_delay,
+		needhand = TRUE,
+		target = src,
+		progress = TRUE,
+		public_progbar = TRUE,
+		allow_movement = TRUE,
+		progbar_on_target = TRUE,
+		)
+	GLOB.currently_loading_something -= loader
+	if(!.)
+		to_chat(user, span_alert("You were interrupted!"))
+
 /obj/item/gun/ballistic/proc/load_external_magazine(obj/item/ammo_box/A, mob/user)
 	if(!is_magazine_allowed(A, user)) // But only if the new mag would fit
 		return FALSE
@@ -175,9 +195,11 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	if(HAS_TRAIT(new_mag, TRAIT_NODROP))
 		to_chat(user, span_warning("You cannot seem to get \the [new_mag] out of your hands!"))
 		return FALSE
+	if(!check_loading(user, TRUE))
+		return FALSE
 	// eject and remember the old mag, if any (and toss on the ground)
 	var/obj/item/ammo_box/oldmag = eject_magazine(user, FALSE, TRUE) //stop ejecting perfectly good shells!
-	if(!new_mag.load_into_gun_delay(user))
+	if(!load_into_gun_delay(user, A))
 		to_chat(user, span_alert("You were interrupted!"))
 		return FALSE
 	// put the new mag in there

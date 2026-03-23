@@ -136,9 +136,9 @@
 	path = /obj/item/clothing/mask/fakemoustache
 	subcategory = LOADOUT_SUBCATEGORY_MASK_GENERAL
 
-/datum/gear/mask/broken_goner_mask
-	name = "aesthetic gas mask"
-	path = /obj/item/clothing/mask/gas/goner/aesthetic
+// /datum/gear/mask/broken_goner_mask
+// 	name = "aesthetic gas mask"
+// 	path = /obj/item/clothing/mask/gas/goner/aesthetic
 
 /datum/gear/mask/clown_hat
 	name = "clown gas mask"

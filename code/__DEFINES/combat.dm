@@ -1394,7 +1394,23 @@ GLOBAL_LIST_INIT(main_body_parts2words, list(
 #define MATCHLOCK_MUSKET_PREFIRE_STD 0.5 SECONDS
 #define MATCHLOCK_BOMBARD_PREFIRE_STD 0.8 SECONDS
 
-#define SPEEDLOADER_CLIP     (1<<0)
-#define SPEEDLOADER_REVOLVER (1<<1)
-#define SPEEDLOADER_TUBE     (1<<2)
+// the kinds of ammoholders
+#define AH_CLIP          "stripper_clip"
+#define AH_SPEEDLOADER   "revolver_speedloader"
+#define AH_SPEEDTUBE     "tube_loader"
+#define AH_BOX           "ammo_box"
+#define AH_CRATE         "ammo_crate"
+#define AH_MAGAZINE      "external_magazine"
+#define AH_INTERNAL      "internal"
 
+// how certain ammoholders react to OTHER ammoholders trying to put ammo in US
+#define AMMOB_DEFAULT                     "AMMOB_DEFAULT"
+#define AMMOB_BOX                         "AMMOB_BOX"
+#define AMMOB_CRATE                       "AMMOB_CRATE"
+#define AMMOB_MAGAZINE                    "AMMOB_MAGAZINE"
+#define AMMOB_INTERNAL_CLIPLOADER         "AMMOB_INTERNAL_CLIPLOADER"
+#define AMMOB_INTERNAL_REVOLVER_CYLINDER  "AMMOB_INTERNAL_REVOLVER_CYLINDER"
+#define AMMOB_INTERNAL_REPEATER_TUBE      "AMMOB_INTERNAL_REPEATER_TUBE"
+#define AMMOB_STRIPPER_CLIP               "AMMOB_STRIPPER_CLIP"
+#define AMMOB_REVOLVER_SPEEDLOADER        "AMMOB_REVOLVER_SPEEDLOADER"
+#define AMMOB_REPEATER_SPEEDTUBE          "AMMOB_REPEATER_SPEEDTUBE"

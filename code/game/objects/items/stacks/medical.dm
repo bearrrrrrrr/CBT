@@ -189,7 +189,7 @@
 	if(start_sound)
 		playsound(get_turf(user), start_sound, 50, 1, SOUND_DISTANCE(4))
 	if(istype(src, /obj/item/stack/medical/bruise_pack/lick))
-		if(!do_after(user, get_delay_time(user, C, 1), TRUE, C, required_mobility_flags = NONE, allow_movement = TRUE,))
+		if(!do_after(user, get_delay_time(user, C, 1), TRUE, C, required_mobility_flags = NONE, allow_movement = FALSE,))
 			to_chat(user, span_warning("You were interrupted!"))
 			is_healing = FALSE
 			return FALSE

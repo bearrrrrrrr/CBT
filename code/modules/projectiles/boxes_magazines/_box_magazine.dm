@@ -34,18 +34,18 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 	/// If its been rebored, dont add any more rebored to its everything
 	var/been_rebored = FALSE
 	var/start_empty = FALSE
-	var/list/bullet_cost
-	var/list/base_cost// override this one as well if you override bullet_cost
 	var/start_ammo_count
 	var/randomize_ammo_count = FALSE //am evil~ --too evil
 	var/supposedly_a_problem = 0
 	maptext_width = 48 //prevents ammo count from wrapping down into two lines
-	var/casing_insert_time = (0.5 SECONDS)
-	var/load_into_gun_time = (1 SECONDS)
 	var/can_remove_casings = TRUE
 	var/can_accept_casings = TRUE // for mags that cannot have ammo loaded back into them
-	var/accepted_speedloader = SPEEDLOADER_CLIP
-	var/speedloader_kind = NONE
+	// this is the kind of ammoholder this is
+	var/container_kind = AH_BOX
+	// this is how other ammoholders load ammo from THEM into US
+	var/load_behavior  = AMMOB_DEFAULT
+	var/magazine_load_delay_mult = 1
+
 
 /obj/item/ammo_box/Initialize(mapload, ...)
 	. = ..()
@@ -223,30 +223,46 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 		return FALSE // too far away
 	return check_loading(user, verbose)
 
-/obj/item/ammo_box/proc/check_loading(mob/user, verbose)
-	var/datum/weakref/them = WEAKREF(user)
-	if (!GLOB.currently_loading_something[them])
-		return TRUE
-	if (GLOB.currently_loading_something[them] < world.time)
-		GLOB.currently_loading_something -= them
-		return TRUE
-	if (GLOB.currently_loading_something[them] >= world.time)
-		if(verbose)
-			to_chat(user, span_alert("You're already loading something!"))
-		return FALSE
-	return TRUE
-
 /obj/item/ammo_box/attackby(obj/item/A, mob/user, params)
 	. = ..()
-	if(istype(A, /obj/item/ammo_casing/))
-		if(load_from_casing(A, user, TRUE, TRUE, FALSE))
+	if(istype(A, /obj/item/ammo_casing))
+		if(load_from_casing(
+			A,
+			user,
+			dosound = TRUE,
+			dotext = TRUE,
+			bypass_doafter = FALSE,
+			))
 			return TRUE
-	if(istype(A, /obj/item/ammo_box/))
+	if(istype(A, /obj/item/ammo_box))
 		if(load_from_box(A, user, TRUE))
 			return TRUE
 	// if(COOLDOWN_FINISHED(src, supposedly_a_problem) && istype(A, /obj/item/gun))
 	// 	COOLDOWN_START(src, supposedly_a_problem, 1) // just a brief thing so that the game has time to load the thing before you try to load the thing again, thanks automatics
 	// 	return A.attackby(src, user, params, silent, replace_spent)
+
+/obj/item/ammo_box/proc/get_load_behavior()
+	if(!load_behavior)
+		load_behavior = AMMOB_DEFAULT
+	var/datum/ammoholder_behavior/ab = GLOB.ammoholder_behaviors[load_behavior]
+	if(istype(ab))
+		return ab
+	// init them
+	for(var/ammobee in typesof(/datum/ammoholder_behavior))
+		var/datum/ammoholder_behavior/newammobee = ammobee
+		if(GLOB.ammoholder_behaviors[initial(newammobee.key)])
+			continue
+		GLOB.ammoholder_behaviors[newammobee.key] = new newammobee()
+	ab = GLOB.ammoholder_behaviors[load_behavior]
+	if(istype(ab))
+		return ab
+	// problem! this thing doesnt exist in the thing!!!
+	message_admins(span_phobia("[src] '[type]' had a BAD LOAD_BEHAVIOR!! it is [load_behavior]!!!"))
+	load_behavior = "[name]"
+	ab = new()
+	ab.key = load_behavior
+	GLOB.ammoholder_behaviors[ab.key] = ab
+	return ab
 
 /obj/item/ammo_box/proc/load_from_box(obj/item/ammo_box/other_ammobox, mob/user, verbose)
 	if(!istype(other_ammobox, /obj/item/ammo_box))
@@ -258,18 +274,25 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 	// format: "9mm pingusbellend" = 1
 	var/list/loaded = list()
 
-	var/speedload = CHECK_BITFIELD(accepted_speedloader, other_ammobox.speedloader_kind)
+	var/datum/ammoholder_behavior/my_ab = get_load_behavior()
+
+	var/speedload =          my_ab.is_speedloader(other_ammobox)
+	var/move_n_load =        my_ab.can_move_while_loading(other_ammobox)
+	var/transfer_in_delay =  my_ab.get_delay(other_ammobox)
 	if(speedload) // kinda ironic that speedloading has a do-after
-		if(istype(loc, /obj/item/gun)) // speedloading into a mag in a gun (revolvers, etc) is treated like changing a mag
-			if(!load_into_gun_delay(user)) // aka, you can move while doing it
-				return FALSE
-		else // speedloading into a mag on the ground or in inventory is treated like normal loading
-			if(!load_delay(user))
-				return FALSE
+		if(!load_delay(user, transfer_in_delay, move_n_load))
+			return FALSE
 
 	// main load loop
-	var/safety = 200
-	while(transfer_casing_in(other_ammobox, user, verbose, speedload, loaded) && (safety-- > 0))
+	var/safety = 200 // yes
+	while(transfer_casing_in(
+		other_ammobox,
+		user,
+		verbose,
+		speedload,
+		move_n_load,
+		transfer_in_delay,
+		loaded)	&& (safety-- > 0))
 		continue
 
 	// finish up
@@ -293,7 +316,15 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 
 // transfer one single round from an ammobox to this ammobox
 // returns bool, loaded is optional... sorta
-/obj/item/ammo_box/proc/transfer_casing_in(obj/item/ammo_box/other_box, mob/user, verbose, speedload, list/loaded)
+/obj/item/ammo_box/proc/transfer_casing_in(
+	obj/item/ammo_box/other_box,
+	mob/user,
+	verbose,
+	speedload,
+	move_n_load,
+	transfer_in_delay,
+	list/loaded
+	)
 	// can both boxes share ammo?
 	if(!can_load(user, TRUE))
 		return FALSE
@@ -309,7 +340,15 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 	
 	var/l_dosound = !speedload
 	// have an ammo, do the transfer dance
-	if(!load_from_casing(ammo, user, l_dosound, FALSE, speedload))
+	if(!load_from_casing(
+		ammo,
+		user,
+		dosound = l_dosound,
+		dotext = FALSE,
+		bypass_doafter = FALSE,
+		move_n_load = move_n_load,
+		transfer_in_delay = transfer_in_delay,
+		))
 		return FALSE
 	if(islist(loaded))
 		var/loadname = ammo.name
@@ -326,38 +365,32 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 /obj/item/ammo_box/proc/remove_casing(obj/item/ammo_casing/other_casing)
 	stored_ammo -= other_casing
 
-/obj/item/ammo_box/proc/load_delay(mob/user)
+/obj/item/ammo_box/proc/load_delay(mob/user, load_in_delay, move_n_load)
 	var/datum/weakref/loader = WEAKREF(user)
-	GLOB.currently_loading_something[loader] = world.time + (casing_insert_time)
+	GLOB.currently_loading_something[loader] = world.time + (load_in_delay)
 	. = do_after(
 		user,
-		delay = casing_insert_time,
-		needhand = TRUE,
-		target = src,
-		progress = TRUE,
-		public_progbar = TRUE
-		)
-	GLOB.currently_loading_something -= loader
-	if(!.)
-		to_chat(user, span_alert("You were interrupted!"))
-
-/obj/item/ammo_box/proc/load_into_gun_delay(mob/user)
-	var/datum/weakref/loader = WEAKREF(user)
-	GLOB.currently_loading_something[loader] = world.time + (load_into_gun_time)
-	. = do_after(
-		user,
-		delay = load_into_gun_time,
+		delay = load_in_delay,
 		needhand = TRUE,
 		target = src,
 		progress = TRUE,
 		public_progbar = TRUE,
-		allow_movement = TRUE
+		allow_movement = move_n_load,
+		progbar_on_target = TRUE,
 		)
 	GLOB.currently_loading_something -= loader
 	if(!.)
 		to_chat(user, span_alert("You were interrupted!"))
 
-/obj/item/ammo_box/proc/load_from_casing(obj/item/ammo_casing/other_casing, mob/user, dosound, dotext, bypass_doafter)
+/obj/item/ammo_box/proc/load_from_casing(
+	obj/item/ammo_casing/other_casing,
+	mob/user,
+	dosound,
+	dotext,
+	bypass_doafter,
+	move_n_load,
+	transfer_in_delay,
+	)
 	if(!can_load(user, dotext))
 		return FALSE
 	if(!does_that_fit_in_this(other_casing))
@@ -365,7 +398,11 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 			to_chat(user, span_alert("[other_casing] doesn't fit in this!"))
 		return FALSE
 	if(!bypass_doafter)
-		if(!load_delay(user))
+		if(isnull(transfer_in_delay))
+			var/datum/ammoholder_behavior/my_ab = get_load_behavior()
+			transfer_in_delay = my_ab.get_delay(other_casing)
+			move_n_load = my_ab.can_move_while_loading(other_casing)
+		if(!load_delay(user, transfer_in_delay, move_n_load))
 			return FALSE
 	if(!give_round(other_casing, replace_spent_rounds))
 		if(dotext)
@@ -402,13 +439,6 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 /obj/item/ammo_box/update_icon()
 	. = ..()
 	// UpdateAmmoCountOverlay()
-/* 	if(length(bullet_cost))
-		var/temp_materials = custom_materials.Copy()
-		for (var/material in bullet_cost)
-			var/material_amount = bullet_cost[material]
-			material_amount = (material_amount*stored_ammo.len) + base_cost[material]
-			temp_materials[material] = material_amount
-		set_custom_materials(temp_materials) */
 
 /obj/item/ammo_box/examine(mob/user)
 	. = ..()
@@ -448,6 +478,10 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 				icon_state = "[initial(icon_state)]-[stored_ammo.len]"
 	// UpdateAmmoCountOverlay()
 
+/obj/item/ammo_box/magazine
+	container_kind = AH_MAGAZINE
+	load_behavior = AMMOB_MAGAZINE
+
 /obj/item/ammo_box/magazine/proc/empty_magazine()
 	var/turf_mag = get_turf(src)
 	for(var/obj/item/ammo in stored_ammo)
@@ -459,3 +493,21 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 /obj/item/ammo_box/magazine/handle_atom_del(atom/A)
 	stored_ammo -= A
 	update_icon()
+
+
+
+
+
+// This proc is important!!
+/proc/check_loading(mob/user, verbose)
+	var/datum/weakref/them = WEAKREF(user)
+	if (!GLOB.currently_loading_something[them])
+		return TRUE
+	if (GLOB.currently_loading_something[them] < world.time)
+		GLOB.currently_loading_something -= them
+		return TRUE
+	if (GLOB.currently_loading_something[them] >= world.time)
+		if(verbose)
+			to_chat(user, span_alert("You're already loading something!"))
+		return FALSE
+	return TRUE

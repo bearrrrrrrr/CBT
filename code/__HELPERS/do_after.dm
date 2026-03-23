@@ -278,10 +278,11 @@
 		public_progbar = FALSE,
 		allow_lying = TRUE,
 		allow_incap = FALSE,
+		progbar_on_target = FALSE,
 	)
 
 	if(!user)
-		return 0
+		return FALSE
 	var/usercoords = atom2coords(user)
 	if(!usercoords)
 		CRASH("do_after: user has no coordsable loc!!!")
@@ -308,11 +309,14 @@
 		var/list/who_see = list()
 		if(!public_progbar)
 			who_see = list(user)
-		my_bar = SSprogress_bars.add_bar(user, who_see, delay, TRUE, TRUE)
+		var/atom/whereat = user
+		if(progbar_on_target && istype(target))
+			whereat = target
+		my_bar = SSprogress_bars.add_bar(whereat, who_see, delay, TRUE, TRUE)
 
 	var/endtime = world.time + delay
-	. = 1
-	var/mob/living/L = isliving(user) && user			//evals to last thing eval'd // this proc right here changed my life, thank you kevinz000
+	. = TRUE
+	var/mob/living/L = isliving(user) && user //evals to last thing eval'd // this proc right here changed my life, thank you kevinz000
 	while (world.time + resume_time < endtime)
 		stoplag(1)
 		if(L && !CHECK_ALL_MOBILITY(L, required_mobility_flags))
@@ -339,7 +343,7 @@
 		if(stay_close && get_dist(get_turf(user), get_turf(target)) > 1) // I dropped out in kindergarten
 			DIE
 		if(target && !(target in user.do_afters))
-			DIE // DIE DIE DIE DIE DI
+			DIE
 		if(needhand)
 			//This might seem like an odd check, but you can still need a hand even when it's empty
 			//i.e the hand is used to pull some item/tool out of the construction
@@ -347,7 +351,7 @@
 				if(!holding)
 					DIE
 			if(user.get_active_held_item() != holding)
-				DIE
+				DIE // DIE DIE DIE DIE DI
 	SSprogress_bars.remove_bar(my_bar)
 	if(!QDELETED(target))
 		LAZYREMOVE(user.do_afters, target)

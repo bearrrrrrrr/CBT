@@ -4,7 +4,9 @@
 	caliber = list(CALIBER_357)
 	max_ammo = 7
 	replace_spent_rounds = TRUE
-	accepted_speedloader = SPEEDLOADER_REVOLVER
+	container_kind = AH_INTERNAL
+	load_behavior = AMMOB_INTERNAL_REVOLVER_CYLINDER
+
 
 /obj/item/ammo_box/magazine/internal/cylinder/ammo_count(countempties = TRUE)
 	var/boolets = 0

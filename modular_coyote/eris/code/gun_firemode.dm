@@ -8,6 +8,10 @@
  * - Damage multiplier
  * - etc
  */
+
+// marge, get my gun
+#define GET_GUN var/obj/item/gun/gun = GET_WEAKREF(my_gun); if(!gun) {stack_trace("[src]'s gun is null in [name] firemode [type]!! OH NO"); qdel(src); return}
+
 /datum/firemode
 	var/name = "default"
 	var/desc = "The default firemode"
@@ -41,6 +45,31 @@
 	/// THe gun this is attached to
 	var/datum/weakref/my_gun
 
+	// gun action stuff! lets you have like, a shotgun that can be pump action and semiauto!
+	/* ACTION STUFF
+	 * This module defines gun action styles that control how firearms operate
+	 * when fired. Each style determines:
+	 *   - Whether the hammer needs to be cocked before firing
+	 *   - Whether the gun recocks automatically after firing
+	 *   - When cartridges are ejected (after firing or manually)
+	 *   - Whether the action requires racking (semi-auto) or cocking (revolver)
+	 *
+	 * Examples:
+	 *   - Autoloaders: Ignore hammer, automatic recock, rack-based
+	 *     - vast majority of guns, includes semiauto, auto, burst, etc
+	 *   - Single-action revolvers: Require manual cocking, manual ejection only
+	 *   - Pump shotguns: Ignore cocking, eject after racking
+	 *   - Bolt-action rifles: Ignore cocking, eject after racking
+	 */
+	/// Should we consult the hammer state when firing? If true, we defer to the hammer state to see if we can try to shoot
+	var/ignore_hammer          = TRUE
+	/// Should we automatically recock after firing, if the hammer is consulted? False means you have to click again to recock
+	var/hammer_recock_on_fire  = TRUE
+	/// When do we eject casings? Immediately after firing, or after racking, or only manually? (manually when you re/unload it)
+	var/ejector_behavior       = GEJECTOR_AFTER_FIRING
+	/// For flavoring, do we pull back the hammer, or rack the gun when we jerk off the gun?
+	var/rack_or_cock           = G_RACK
+
 /datum/firemode/New(obj/item/gun/_gun, atom/movable/_dependant)
 	..()
 	fire_type = fire_type_default
@@ -53,6 +82,8 @@
 	my_gun = WEAKREF(_gun)
 	if(_dependant)
 		my_dependant = WEAKREF(_dependant)
+	if(prob(1))
+		desc += " Bitch."
 
 /datum/firemode/Destroy()
 	var/obj/item/gun/gun = GET_WEAKREF(my_gun)
@@ -63,11 +94,7 @@
 	return ..()
 
 /datum/firemode/proc/apply_firemode()
-	var/obj/item/gun/gun = GET_WEAKREF(my_gun)
-	if(!gun)
-		stack_trace("[src]'s gun is null in apply_firemode()! OH FUCK")
-		qdel(src)
-		return
+	GET_GUN
 	update_mods()
 	gun.automatic = (fire_type == GUN_FIREMODE_AUTO)
 	gun.burst_size = burst_count
@@ -76,11 +103,7 @@
 	gun.damage_multiplier = damage_multiplier
 
 /datum/firemode/proc/update_mods()
-	var/obj/item/gun/gun = GET_WEAKREF(my_gun)
-	if(!gun)
-		stack_trace("[src]'s gun is null in update_mods()! OH FUCK")
-		qdel(src)
-		return
+	GET_GUN
 	if(my_dependant)
 		var/atom/movable/papa_mod = GET_WEAKREF(my_dependant)
 		if(!papa_mod || !(papa_mod in gun.item_upgrades))
@@ -117,6 +140,44 @@
 /datum/firemode/proc/update()
 	return
 
+/* ACTION STUFF */
+// Called when the gun's trigger is pulled, to see if we can actually fire or not
+// Handles hammer state, returns boolean whether or not we can shoot the thing
+/datum/firemode/proc/try_hammer(drop_hammer = FALSE)
+	GET_GUN
+	if(ignore_hammer)
+		gun.hammer_state = GHAMMER_COCKED
+		return TRUE
+	if(gun.hammer_state == GHAMMER_COCKED)
+		if(drop_hammer)
+			if(!hammer_recock_on_fire)
+				gun.hammer_state = GHAMMER_UNCOCKED
+		return TRUE
+	return FALSE
+
+// Called when the gun is shot, to see if we need to eject casings or not
+/datum/firemode/proc/eject_on_fire()
+	GET_GUN
+	if(ejector_behavior == GEJECTOR_AFTER_FIRING)
+		return TRUE
+	return FALSE
+
+// Called when the gun is racked, to see if we need to eject casings or not
+/datum/firemode/proc/eject_on_rack()
+	GET_GUN
+	if(ejector_behavior == GEJECTOR_AFTER_RACK)
+		return TRUE
+	return FALSE
+
+// called when racked
+/datum/firemode/proc/on_rack()
+	GET_GUN
+	if(hammer_state == GHAMMER_COCKED || ignore_hammer)
+		hammer_state = GHAMMER_COCKED
+		return FALSE
+	hammer_state = GHAMMER_COCKED
+	return TRUE
+
 /datum/firemode/semi_auto
 	name = "Semi Automatic"
 	desc = "Shoot one shot per trigger pull."
@@ -128,9 +189,52 @@
 	shoot_delay_default = GUN_FIRE_DELAY_NORMAL
 	burst_count_default = 1
 
+/datum/firemode/single_action
+	name = "Single Action"
+	desc = "Shoot one shot, pull back the hammer, repeat."
+	extra_tip = "Fires when you release the mouse button. Note that on any intent other than Harm, \
+		if you move your mouse before releasing the button, or your mouse is over a different 'thing' \
+		when let go, you will probably not fire. To more reliably fire, use the Harm intent when shooting!\n\n\
+		Also, remember that you have to pull back the hammer manually after every shot!"
+	icon_state = "semi"
+	fire_type_default = GUN_FIREMODE_SEMIAUTO
+	shoot_delay_default = GUN_FIRE_DELAY_NORMAL
+	burst_count_default = 1
+	hammer_recock_on_fire = FALSE
+	ignore_hammer = FALSE
+	ejector_behavior = GEJECTOR_MANUAL
+	rack_or_cock = G_COCK
+
+/datum/firemode/single_action/pump_action
+	name = "Single Shot - Pump Action"
+	desc = "Shoot one shot, pump the pumper, repeat."
+	extra_tip = "Fires when you release the mouse button. Note that on any intent other than Harm, \
+		if you move your mouse before releasing the button, or your mouse is over a different 'thing' \
+		when let go, you will probably not fire. To more reliably fire, use the Harm intent when shooting!\n\n\
+		Also, remember that you have to rack the gun manually after every shot!"
+	ejector_behavior = GEJECTOR_AFTER_COCKING
+	rack_or_cock = G_RACK
+
+/datum/firemode/single_action/pump_action/bolt_action
+	name = "Single Shot - Bolt Action"
+	desc = "Shoot one shot, do the bolt thing, repeat."
+	extra_tip = "Fires when you release the mouse button. Note that on any intent other than Harm, \
+		if you move your mouse before releasing the button, or your mouse is over a different 'thing' \
+		when let go, you will probably not fire. To more reliably fire, use the Harm intent when shooting!\n\n\
+		Also, remember that you have to bolt the gun manually after every shot!"
+
+/datum/firemode/single_action/pump_action/lever_action
+	name = "Single Shot - Lever Action"
+	desc = "Shoot one shot, tweak the lever, repeat."
+	extra_tip = "Fires when you release the mouse button. Note that on any intent other than Harm, \
+		if you move your mouse before releasing the button, or your mouse is over a different 'thing' \
+		when let go, you will probably not fire. To more reliably fire, use the Harm intent when shooting!\n\n\
+		Also, remember that you have to lever the gun manually after every shot!"
+
 /datum/firemode/semi_auto/shotgun_fixed
-	name = "One at a time"
-	desc = "Send vagabonds flying back several paces"
+	name = "Single-Barrel Shot"
+	desc = "Blast 'em with one of those barrels!"
+	ejector_behavior = GEJECTOR_MANUAL
 
 /datum/firemode/semi_auto/fastest
 	shoot_delay_default = GUN_FIRE_DELAY_FASTEST
@@ -251,9 +355,10 @@
 
 /datum/firemode/burst/two/shotgun_fixed
 	name = "Both barrels"
-	desc = "Give them the side-by-side"
+	desc = "Fire both barrels at once!"
 	burst_delay_default = GUN_BURSTFIRE_DELAY_FASTEST
 	burst_count_default = 2
+	ejector_behavior = GEJECTOR_MANUAL
 
 /datum/firemode/burst/two/slower
 	name = "2-Round Burst"

@@ -494,11 +494,6 @@
 	casing_ejector = TRUE // makes it eject casings -- and not need pumping!!!
 	fire_sound = 'sound/f13weapons/auto5.ogg'
 
-
-/* /obj/item/gun/ballistic/shotgun/automatic/combat/auto5/shoot_live_shot(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0)
-	..()
-	src.pump(user) */
-
 /* * * * * * * * * * *
  * Lever-Action shotgun
  * Speedy pump shotgun

@@ -8,7 +8,7 @@
  * and accessed by key (we're a 32 bit nightmare after all!)
  *
  * also defines what it accepts as a speedloader, in which case the delay is used
- * for transfering the whole thing into this thing
+ * for transfering the whole thing into this thing 
  */
 
 // format: "string" = initted /datum/ammoholder_behavior,

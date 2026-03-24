@@ -29,6 +29,8 @@
 		return
 	if(QDELETED(src) || QDELETED(target))
 		return
+	if(. & PREVENT_AFTERATTACK)
+		return
 	. |= afterattack(target, user, TRUE, params)
 
 /// Like melee_attack_chain but for ranged.

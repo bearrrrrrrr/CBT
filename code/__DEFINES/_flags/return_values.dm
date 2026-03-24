@@ -16,6 +16,8 @@
 #define ATTACK_IGNORE_CLICKDELAY				(1<<5)
 /// This attack is from a parry counterattack
 #define ATTACK_IS_PARRY_COUNTERATTACK			(1<<6)
+/// Prevent afterattack() from being called. used for guns used in melee on harm intend, or somethign
+#define PREVENT_AFTERATTACK			(1<<7)
 
 // obj/item/dropped()
 /// dropped() relocated this item, return FALSE for doUnEquip.

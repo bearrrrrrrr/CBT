@@ -74,7 +74,7 @@ ATTACHMENTS
 	var/fire_delay = GUN_FIRE_DELAY_NORMAL
 	/// Time between individual shots when firing full-auto.
 	var/autofire_shot_delay = GUN_AUTOFIRE_DELAY_NORMAL
-	var/automatic = 0 // Does the gun fire when the clicker's held down?
+	var/automatic = FALSE // Does the gun fire when the clicker's held down?
 
 	/// Last world.time this was fired
 	var/last_fire = 0
@@ -84,8 +84,6 @@ ATTACHMENTS
 	var/busy_action = FALSE
 	/// used for inaccuracy and wielding requirements/penalties
 	var/weapon_weight = GUN_ONE_HAND_AKIMBO
-	/// Adds this speed to the bullet, in pixels per second
-	var/extra_speed = 0
 
 	lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
@@ -134,12 +132,13 @@ ATTACHMENTS
 	var/zoom_amt = 3 //Distance in TURFs to move the user's screen forward (the "zoom" effect)
 	var/zoom_out_amt = 0
 
-	var/worn_out = FALSE	//If true adds overlay with suffix _worn, and a slight malus to stats
+	var/worn_out = FALSE //If true adds overlay with suffix _worn, and a slight malus to stats
+	
 	var/dryfire_sound = "gun_dry_fire"
-	var/dryfire_text = ""
+	var/dryfire_text  = "*click!*"
 
 	/// Time that much pass between cocking your gun, if it supports it
-	var/cock_delay = GUN_COCK_SHOTGUN_BASE //haha cock
+	var/cock_delay = GUN_COCK_SHOTGUN_BASE //haha cock, also unused
 
 	/// Gun's inherent inaccuracy, basically the minimum spread
 	var/added_spread = GUN_SPREAD_NONE
@@ -147,15 +146,16 @@ ATTACHMENTS
 	var/recoil_tag
 	/// List of args to be fed into SSrecoil to generate the appropriate recoil tag
 	var/list/init_recoil = list(1,1) // For updating weapon mods
-	var/braced = FALSE
-	var/braceable = 1 //can the gun be used for gun_brace proc, modifies recoil. If the gun has foregrip mod installed, it's not braceable. Bipod mod increases value by 1.
 
-	var/safety = FALSE
+	var/safety          = FALSE
 	var/restrict_safety = FALSE //To restrict the users ability to toggle the safety
 
 	var/sel_mode = 1 //index of the currently selected mode
 	var/list/firemodes = list()
 	var/list/init_firemodes = list(/datum/firemode/semi_auto)
+
+	/// What the hammer is currently in. Treated as always cocked if ignore_hammer is true on the firemode
+	var/hammer_state = GHAMMER_COCKED
 
 	var/list/gun_tags = list() //Attributes of the gun, used to see if an upgrade can be applied to this weapon.
 	var/gilded = FALSE
@@ -164,7 +164,7 @@ ATTACHMENTS
 	var/fire_sound_silenced = 'modular_coyote/eris/sound/Gunshot_silenced.ogg' //Firing sound used when silenced
 	var/zoom_factor = 0 //How much to scope in when using weapons
 	var/rigged = FALSE
-	var/vision_flags = 0
+	var/vision_flags = NONE
 	var/projectile_speed_multiplier = 1
 	/// How should this gun prefer to weight what limbs they hit
 	var/gun_accuracy_zone_type = ZONE_WEIGHT_SEMI_AUTO
@@ -183,7 +183,7 @@ ATTACHMENTS
 	/// Allow quickdraw (delay to draw the gun is 0s)
 	var/allow_quickdraw = FALSE
 	/// This variable is used by crankable laser guns {/obj/item/gun/energy/laser/cranklasergun}
-	var/recharge_queued = 1
+	var/recharge_queued = TRUE
 	/// Cooldown between times the gun will tell you it shot, 0.5 seconds cus its not super duper important
 	COOLDOWN_DECLARE(shoot_message_antispam)
 
@@ -212,10 +212,10 @@ ATTACHMENTS
 		var/atom/movable/screen/item_action/action = new /atom/movable/screen/item_action/top_bar/gun/safety
 		action.owner = src
 		hud_actions += action
-
 	var/atom/movable/screen/item_action/action = new /atom/movable/screen/item_action/top_bar/weapon_info
 	action.owner = src
 	hud_actions += action
+	initialize_action()
 	initialize_firemodes()
 	initialize_scope()
 	if(LAZYLEN(firemodes))
@@ -331,45 +331,12 @@ ATTACHMENTS
 
 //check if there's enough ammo/energy/whatever to shoot one time
 //i.e if clicking would make it shoot
+// doesnt care if its loaded, just if pulling the trigger would do anything
 /obj/item/gun/proc/can_shoot()
-	return TRUE
-
-/obj/item/gun/proc/shoot_with_empty_chamber(mob/living/user as mob|obj)
-	to_chat(user, span_danger("[dryfire_text]"))
-	playsound(src, dryfire_sound, 30, 1)
-	update_firemode()
-	update_icon()
-	user.ReloadGun()
-
-/obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0, obj/item/projectile/P, casing_sound)
-	if(stam_cost && istype(user)) //CIT CHANGE - makes gun recoil cause staminaloss
-		var/safe_cost = clamp(stam_cost, 0, STAMINA_NEAR_CRIT - user.getStaminaLoss())*(firing && burst_size >= 2 ? 1/burst_size : 1)
-		user.adjustStaminaLossBuffered(safe_cost) //CIT CHANGE - ditto
-
-	var/datum/ammo_sound_properties/soundies = GLOB.casing_sound_properties[casing_sound]
-	if(!soundies)
-		return
-	var/list/shootprops = soundies.shootlist(silenced)
-	if(!isnull(fire_sound))
-		shootprops[CSP_INDEX_SOUND_OUT] = silenced ? fire_sound_silenced : fire_sound
-
-	playsound(
-		src,
-		shootprops[CSP_INDEX_SOUND_OUT],
-		shootprops[CSP_INDEX_VOLUME],
-		shootprops[CSP_INDEX_VARY],
-		shootprops[CSP_INDEX_DISTANCE],
-		ignore_walls = shootprops[CSP_INDEX_IGNORE_WALLS],
-		distant_sound = shootprops[CSP_INDEX_DISTANT_SOUND],
-		distant_range = shootprops[CSP_INDEX_DISTANT_RANGE]
-		)
-//	if(!silenced && message && COOLDOWN_FINISHED(src, shoot_message_antispam))
-//		COOLDOWN_START(src, shoot_message_antispam, GUN_SHOOT_MESSAGE_ANTISPAM_TIME)
-//		if(pointblank)
-//			user.visible_message(span_danger("[user] fires [src] point blank at [pbtarget]!"), null, null, COMBAT_MESSAGE_RANGE)
-//		else
-//			user.visible_message(span_danger("[user] fires [src]!"), null, null, COMBAT_MESSAGE_RANGE)
-	SSrecoil.kickback(user, src, recoil_tag, P?.recoil)
+	var/datum/firemode/my_mode = LAZYACCESS(firemodes, sel_mode)
+	if(!my_mode)
+		return TRUE // idk
+	return my_mode.try_hammer(FALSE)
 
 //Adds logging to the attack log whenever anyone draws a gun, adds a pause after drawing a gun before you can do anything based on it's size
 /obj/item/gun/pickup(mob/living/user)
@@ -383,76 +350,69 @@ ATTACHMENTS
 			O.emp_act(severity)
 	update_icon()
 
+// these two are part of the Melee Attack Chain
+// used for melee attacks against mobs
+// In harm intent, you always try to hit the mob with the bayonet if you have one
+// otherwise you hit with the gun itself
+// other intents, if the gun is loaded, shoot pointblank, otherwise hit with the gun itself
 /obj/item/gun/attack(mob/living/M, mob/user)
-	if(bayonet && user.a_intent == INTENT_HARM)
-		M.attackby(bayonet, user) // handles cooldown
-		return
-	. = ..()
+	if(user.a_intent == INTENT_HARM)
+		. |= PREVENT_AFTERATTACK
+		if(bayonet)
+			M.attackby(bayonet, user) // handles cooldown
+			update_icon()
+			return
+		. |= ..()
+	else
+		if (chambered?.BB)
+			if(!(. & DISCARD_LAST_ACTION))
+				user.DelayNextAction(fire_delay)
+			return
+		. |= PREVENT_AFTERATTACK
+		. |= ..()
 	if(!(. & DISCARD_LAST_ACTION))
 		user.DelayNextAction(attack_speed)
 	update_icon()
 
+// used for melee attacks against objects
+// simpler, generally people dont want to pointblank shoot a wall, they want to hit it with their gun
 /obj/item/gun/attack_obj(obj/O, mob/user)
-	if(bayonet && user.a_intent == INTENT_HARM) // Must run BEFORE parent call, so we don't smack them with the gun body too.
+	. |= PREVENT_AFTERATTACK
+	if(bayonet) // Must run BEFORE parent call, so we don't smack them with the gun body too.
 		O.attackby(bayonet, user) // handles cooldown
 		return
-	. = ..()
+	. |= ..()
 	if(!(. & DISCARD_LAST_ACTION))
 		user.DelayNextAction(attack_speed)
 	update_icon()
 
+// used for shooting, happens when clicking anything with the gun in your hand
+// cept for melee range clicks on mobs, which call the above two procs instead
 /obj/item/gun/afterattack(atom/target, mob/living/user, flag, params)
 	. = ..()
-	if(!CheckAttackCooldown(user, target))
-		return
 	process_afterattack(target, user, flag, params)
 
-/obj/item/gun/proc/process_afterattack(atom/target, mob/living/user, flag, params)
+/// The common entryway to going from *click* to *bang*
+/obj/item/gun/proc/process_afterattack(atom/target, mob/living/user, flag, params, allow_akimbo = TRUE)
 	if(!target)
 		return
 	if(firing)
 		return
-	if(flag) //It's adjacent, is the user, or is on the user's person
-		if(target in user.contents) //can't shoot stuff inside us.
-			return
-		if(!ismob(target) || user.a_intent == INTENT_HARM) //melee attack
-			return
-		if(target == user && user.zone_selected != BODY_ZONE_PRECISE_MOUTH && (user.a_intent != INTENT_DISARM)) //so we can't shoot ourselves (unless mouth selected or disarm intent)
-			return
-		if(iscarbon(target))
-			var/mob/living/carbon/C = target
-			for(var/i in C.all_wounds)
-				var/datum/wound/W = i
-				if(W.try_treating(src, user))
-					return // another coward cured!
-	if(user && user.incapacitated(allow_crit = TRUE))
-		to_chat(user, span_danger("You're too messed up to shoot [src]!"))
+	if(!CheckAttackCooldown(user, target))
 		return
 
-	if(istype(user))//Check if the user can use the gun, if the user isn't alive(turrets) assume it can.
+	if(isliving(user))//Check if the user can use the gun, if the user isn't alive(turrets) assume it can.
 		var/mob/living/L = user
 		if(!can_trigger_gun(L))
 			return
 
+	if(user && user.incapacitated(allow_crit = TRUE))
+		to_chat(user, span_danger("You're too messed up to shoot [src]!"))
+		return
+
 	if(!can_shoot()) //Just because you can pull the trigger doesn't mean it can shoot.
 		shoot_with_empty_chamber(user)
 		return
-
-	//Exclude lasertag guns from the TRAIT_CLUMSY check.
-	if(clumsy_check)
-		if(istype(user))
-			if (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
-				to_chat(user, span_userdanger("You shoot yourself in the foot with [src]!"))
-				var/shot_leg = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
-				process_fire(user, user, FALSE, params, shot_leg)
-				user.dropItemToGround(src, TRUE)
-				return
-
-	// if(weapon_weight == GUN_TWO_HAND_ONLY && !wielded)
-	// 	wield(user)
-	// 	if(!wielded)
-	// 		to_chat(user, span_userdanger("You need both hands free to fire \the [src]!"))
-	// 		return
 
 	if(rigged)
 		user.visible_message(
@@ -464,10 +424,31 @@ ATTACHMENTS
 			explosion(get_turf(src),0,0,2,1)
 		return
 
-	if (automatic == 0)
-		user.DelayNextAction(1)
-	if (automatic == 1)
-		user.DelayNextAction(fire_delay)
+	if(clumsy_check)
+		if(istype(user))
+			if (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
+				to_chat(user, span_userdanger("You shoot yourself in the foot with [src]!"))
+				var/shot_leg = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+				process_fire(user, user, FALSE, params, shot_leg)
+				user.dropItemToGround(src, TRUE)
+				return
+
+	var/point_blank = flag // flag means we're adjacent to the target
+	if(point_blank) //It's adjacent, is the user, or is on the user's person
+		if(target in user.contents) //can't shoot stuff inside us.
+			return
+		if(!ismob(target)) //melee attack
+			return
+		if(target == user) //so we can't shoot ourselves
+			return
+		if(iscarbon(target) && user.a_intent == INTENT_HELP)
+			var/mob/living/carbon/C = target
+			for(var/i in C.all_wounds)
+				var/datum/wound/W = i
+				if(W.try_treating(src, user))
+					return // another coward cured!
+
+	user.DelayNextAction(fire_delay)
 
 	//DUAL (or more!) WIELDING
 	var/loop_counter = 0
@@ -480,13 +461,12 @@ ATTACHMENTS
 			else if(G.can_trigger_gun(user))
 				loop_counter++
 				var/stam_cost = G.getstamcost(user)
-				addtimer(CALLBACK(G, TYPE_PROC_REF(/obj/item/gun,process_fire), target, user, TRUE, params, null, stam_cost), loop_counter)
+				addtimer(CALLBACK(G, TYPE_PROC_REF(/obj/item/gun,process_afterattack), target, user, flag, params, FALSE), loop_counter)
 
 	var/stam_cost = getstamcost(user)
 
 	process_fire(target, user, TRUE, params, null, stam_cost)
 	update_icon()
-
 
 /obj/item/gun/can_trigger_gun(mob/living/user)
 	. = ..()
@@ -534,10 +514,53 @@ ATTACHMENTS
 	return
 
 /obj/item/gun/proc/on_cooldown(mob/user)
-	if (automatic == 0)
-		return reloading || busy_action || firing || ((last_fire + get_fire_delay(user)) > world.time)
-	if (automatic == 1)
-		return reloading || busy_action || firing
+	if (reloading || busy_action || firing)
+		return TRUE
+	if (!automatic)
+		return (last_fire + get_fire_delay(user)) > world.time
+
+/obj/item/gun/proc/drop_hammer()
+	var/datum/firemode/my_mode = LAZYACCESS(firemodes, sel_mode)
+	if(my_mode)
+		return my_mode.try_hammer(TRUE) // this will drop the hammer if possible, but wont do anything if the gun doesnt have a hammer or something is wrong with the firemode
+
+// handles the theatrics of dryfiring; sound, messages, etc
+// also the hammer for some reason
+/obj/item/gun/proc/shoot_with_empty_chamber(mob/living/user, drop_hammer = TRUE)
+	to_chat(user, span_danger("[dryfire_text]"))
+	playsound(src, dryfire_sound, 30, 1)
+	if(drop_hammer)
+		drop_hammer()
+	update_firemode()
+	update_icon()
+
+// handles the theatrics of shooting; sound, recoil, etc
+// also the hammer for some reason
+// does NOT actually fire anything
+/obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0, obj/item/projectile/P, casing_sound)
+	if(stam_cost && istype(user)) //CIT CHANGE - makes gun recoil cause staminaloss
+		var/safe_cost = clamp(stam_cost, 0, STAMINA_NEAR_CRIT - user.getStaminaLoss())*(firing && burst_size >= 2 ? 1/burst_size : 1)
+		user.adjustStaminaLossBuffered(safe_cost) //CIT CHANGE - ditto
+
+	var/datum/ammo_sound_properties/soundies = GLOB.casing_sound_properties[casing_sound]
+	if(!soundies)
+		return
+	var/list/shootprops = soundies.shootlist(silenced)
+	if(!isnull(fire_sound))
+		shootprops[CSP_INDEX_SOUND_OUT] = silenced ? fire_sound_silenced : fire_sound
+	playsound(
+		src,
+		shootprops[CSP_INDEX_SOUND_OUT],
+		shootprops[CSP_INDEX_VOLUME],
+		shootprops[CSP_INDEX_VARY],
+		shootprops[CSP_INDEX_DISTANCE],
+		ignore_walls = shootprops[CSP_INDEX_IGNORE_WALLS],
+		distant_sound = shootprops[CSP_INDEX_DISTANT_SOUND],
+		distant_range = shootprops[CSP_INDEX_DISTANT_RANGE]
+		)
+	drop_hammer()
+	update_firemode()
+	update_icon()
 
 /*
  * So here is the list of proc calls that happen when you fire a gun:
@@ -569,6 +592,7 @@ ATTACHMENTS
  * (props to github's copilot for more or less writing this comment)
  */
 
+// Another wrapper proc for firing, more prechecks, and handles the cooldown and safety checks for guns
 /obj/item/gun/proc/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", stam_cost = 0)
 	add_fingerprint(user)
 
@@ -587,10 +611,6 @@ ATTACHMENTS
 					to_chat(user, span_danger("You don't know how to use magic wands!"))
 					return
 
-	if(safety)
-		to_chat(user, span_danger("The gun's safety is on!"))
-		shoot_with_empty_chamber(user)
-		return
 	var/time_till_draw = user.AmountWeaponDrawDelay()
 	if(time_till_draw)
 		to_chat(user, span_notice("You're still drawing your [src]! It'll take another <u>[time_till_draw*0.1] seconds</u> until it's ready!"))
@@ -609,34 +629,53 @@ ATTACHMENTS
 /obj/item/gun/proc/pre_fire(mob/user, atom/target, params, zone_override, stam_cost, message = TRUE)
 	return FALSE
 
+// actually shoots the projectile, handles recoil, misfire, and all that stuff
+// also handles burst fire
 /obj/item/gun/proc/do_fire(atom/target, mob/living/user, message = TRUE, params, zone_override = "", stam_cost = 0)
 	/// recoil is read before a burst, so all subsequent shots in a burst will have the same recoil
 	/// This is the mob shooting's aggregate recoil
 	var/sprd = SSrecoil.get_offset(user) /// its still *added* with each shot, so the next burst will be higher
+	var/datum/firemode/my_mode = LAZYACCESS(firemodes, sel_mode)
 	for(var/i in 1 to burst_size)
+		if(safety)
+			to_chat(user, span_danger("The gun's safety is on!"))
+			shoot_with_empty_chamber(user, FALSE)
+			return
 		misfire_act(user)
-		if(chambered)
-			LAZYOR(GLOB.gun2projectile["[type]"], "[chambered.type]")
-			before_firing(target,user)
-			var/BB = chambered.BB
-			var/casing_sound = chambered.sound_properties
-			if(!chambered.fire_casing(target, user, params, added_spread, silenced, zone_override, sprd, damage_multiplier, penetration_multiplier, projectile_speed_multiplier, src))
-				shoot_with_empty_chamber(user)
-				update_icon()
-				return
-			else
-				if(get_dist((user || get_turf(src)), target) <= 1) //Making sure whether the target is in vicinity for the pointblank shot
-					shoot_live_shot(user, 1, target, message, stam_cost, BB, casing_sound)
-				else
-					shoot_live_shot(user, 0, target, message, stam_cost, BB, casing_sound)
-				user?.in_crit_HP_penalty = 25
-		else
+		var/cooked = drop_hammer()
+		if(!chambered || !chambered.BB || !cooked)
+			shoot_with_empty_chamber(user)
+			return
+		before_firing(target,user)
+		var/BB = chambered.BB
+		var/casing_sound = chambered.sound_properties
+		// this shoots the chambered ammo --v
+		var/it_shot = chambered.fire_casing(
+			target                       = target,
+			user                         = user,
+			params                       = params,
+			distro                       = added_spread,
+			quiet                        = silenced,
+			zone_override                = zone_override,
+			spread                       = sprd,
+			damage_multiplier            = damage_multiplier,
+			penetration_multiplier       = penetration_multiplier,
+			projectile_speed_multiplier  = projectile_speed_multiplier,
+			fired_from                   = src
+		)
+		// did we shoot??
+		if(!it_shot) // nope!
 			shoot_with_empty_chamber(user)
 			update_icon()
 			return
+		// yeah!
+		var/pointblank = get_dist(get_turf(src), target) <= 1
+		shoot_live_shot(user, pointblank, target, message, stam_cost, BB, casing_sound)
+		SSrecoil.kickback(user, src, recoil_tag, BB.recoil)
+		process_chamber(user)
+		user?.in_crit_HP_penalty = 25
 		if(i < burst_size)
 			sleep(burst_shot_delay)
-		process_chamber(user)
 		update_icon()
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
 	return TRUE
@@ -1026,22 +1065,6 @@ ATTACHMENTS
 	else
 		user.update_cursor(src)
 
-/obj/item/gun/proc/gun_brace(mob/living/user, atom/target)
-	if(braceable && !braced)
-		var/atom/original_loc = user.loc
-		var/brace_direction = get_dir(user, target)
-		to_chat(user, span_notice("You brace your weapon on \the [target]."))
-		braced = TRUE
-		while(user.loc == original_loc && user.dir == brace_direction)
-			sleep(2)
-		to_chat(user, span_notice("You stop bracing your weapon."))
-		braced = FALSE
-	else
-		if(braced)
-			to_chat(user, span_notice("You are already bracing your weapon!"))
-		else
-			to_chat(user, span_notice("You can\'t properly place your weapon on \the [target] because of the foregrip!"))
-
 /obj/item/gun/swapped_from()
 	.=..()
 	update_firemode(FALSE)
@@ -1293,7 +1316,6 @@ ATTACHMENTS
 			force = WEAPON_FORCE_BLUNT_SMALL
 	armour_penetration = initial(armour_penetration)
 	sharpness = initial(sharpness)
-	braced = initial(braced)
 	recoil_tag = SSrecoil.give_recoil_tag(init_recoil)
 
 	//attack_verb = list()

@@ -131,7 +131,7 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return FALSE
 	if(!casing_ejector)
 	return TRUE */
-
+// god i smell ~Fenny
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)
 	..()
 	if(istype(A, /obj/item/ammo_casing))

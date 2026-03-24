@@ -165,7 +165,7 @@
 // Called when the gun is racked, to see if we need to eject casings or not
 /datum/firemode/proc/eject_on_rack()
 	GET_GUN
-	if(ejector_behavior == GEJECTOR_AFTER_RACK)
+	if(ejector_behavior == GEJECTOR_AFTER_COCKING)
 		return TRUE
 	return FALSE
 

@@ -187,6 +187,9 @@ ATTACHMENTS
 	/// Cooldown between times the gun will tell you it shot, 0.5 seconds cus its not super duper important
 	COOLDOWN_DECLARE(shoot_message_antispam)
 
+	/// sound it plays when you manually put a casing into the chamber by using bullet on gun
+	var/manual_chamber_sound = 'sound/weapons/bulletinsert.ogg'
+
 	/// Is the player currently reloading this gun?
 	var/reloading = FALSE
 	/// This is the base reload speed, which is modified by things like the size of the magazine in use.
@@ -215,7 +218,6 @@ ATTACHMENTS
 	var/atom/movable/screen/item_action/action = new /atom/movable/screen/item_action/top_bar/weapon_info
 	action.owner = src
 	hud_actions += action
-	initialize_action()
 	initialize_firemodes()
 	initialize_scope()
 	if(LAZYLEN(firemodes))
@@ -393,13 +395,14 @@ ATTACHMENTS
 	process_afterattack(target, user, flag, params)
 
 /// The common entryway to going from *click* to *bang*
-/obj/item/gun/proc/process_afterattack(atom/target, mob/living/user, flag, params, allow_akimbo = TRUE)
+/obj/item/gun/proc/process_afterattack(atom/target, mob/living/user, flag, params, is_akimbo = FALSE)
 	if(!target)
 		return
 	if(firing)
 		return
-	if(!CheckAttackCooldown(user, target))
-		return
+	if(!is_akimbo)
+		if(!CheckAttackCooldown(user, target))
+			return
 
 	if(isliving(user))//Check if the user can use the gun, if the user isn't alive(turrets) assume it can.
 		var/mob/living/L = user
@@ -425,7 +428,7 @@ ATTACHMENTS
 		return
 
 	if(clumsy_check)
-		if(istype(user))
+		if(istype(user, /mob/living/carbon/human))
 			if (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
 				to_chat(user, span_userdanger("You shoot yourself in the foot with [src]!"))
 				var/shot_leg = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -450,23 +453,34 @@ ATTACHMENTS
 
 	user.DelayNextAction(fire_delay)
 
-	//DUAL (or more!) WIELDING
-	var/loop_counter = 0
-
-	if(ishuman(user) && user.a_intent == INTENT_HARM && weapon_weight <= GUN_ONE_HAND_AKIMBO)
-		var/mob/living/carbon/human/H = user
-		for(var/obj/item/gun/G in H.held_items)
-			if(G == src || G.weapon_weight == GUN_TWO_HAND_ONLY)
-				continue
-			else if(G.can_trigger_gun(user))
-				loop_counter++
-				var/stam_cost = G.getstamcost(user)
-				addtimer(CALLBACK(G, TYPE_PROC_REF(/obj/item/gun,process_afterattack), target, user, flag, params, FALSE), loop_counter)
+	try_akimbo(target, user, flag, params, is_akimbo)
 
 	var/stam_cost = getstamcost(user)
-
 	process_fire(target, user, TRUE, params, null, stam_cost)
 	update_icon()
+
+
+/obj/item/gun/proc/try_akimbo(atom/target, mob/living/user, flag, params, is_akimbo)
+	if(is_akimbo)
+		return
+	if(!ishuman(user))
+		return
+	if(user.a_intent != INTENT_HARM)
+		return
+	if(weapon_weight != GUN_ONE_HAND_AKIMBO)
+		return
+	var/mob/living/carbon/human/H = user
+	//DUAL (or more!) WIELDING
+	var/loop_counter = 0
+	for(var/obj/item/gun/G in H.held_items)
+		if(G == src)
+			continue
+		if (G.weapon_weight != GUN_ONE_HAND_AKIMBO)
+			continue
+		if(!G.can_trigger_gun(user))
+			continue
+		loop_counter++
+		addtimer(CALLBACK(G, TYPE_PROC_REF(/obj/item/gun,process_afterattack), target, user, flag, params, TRUE), loop_counter)
 
 /obj/item/gun/can_trigger_gun(mob/living/user)
 	. = ..()
@@ -643,14 +657,16 @@ ATTACHMENTS
 			return
 		misfire_act(user)
 		var/cooked = drop_hammer()
-		if(!chambered || !chambered.BB || !cooked)
+		var/obj/item/ammo_casing/thing_in_chamber = get_chambered()
+		if(!thing_in_chamber || !istype(thing_in_chamber.BB) || !cooked)
 			shoot_with_empty_chamber(user)
 			return
 		before_firing(target,user)
-		var/BB = chambered.BB
-		var/casing_sound = chambered.sound_properties
+		var/recoil = thing_in_chamber.BB.recoil || 0
+		// if the bullet has a recoil value, use it, otherwise default to 0, which means the gun's recoil will be the only recoil
+		var/casing_sound = thing_in_chamber.sound_properties
 		// this shoots the chambered ammo --v
-		var/it_shot = chambered.fire_casing(
+		var/it_shot = thing_in_chamber.fire_casing(
 			target                       = target,
 			user                         = user,
 			params                       = params,
@@ -661,7 +677,7 @@ ATTACHMENTS
 			damage_multiplier            = damage_multiplier,
 			penetration_multiplier       = penetration_multiplier,
 			projectile_speed_multiplier  = projectile_speed_multiplier,
-			fired_from                   = src
+			fired_from                   = src,
 		)
 		// did we shoot??
 		if(!it_shot) // nope!
@@ -669,16 +685,33 @@ ATTACHMENTS
 			update_icon()
 			return
 		// yeah!
-		var/pointblank = get_dist(get_turf(src), target) <= 1
-		shoot_live_shot(user, pointblank, target, message, stam_cost, BB, casing_sound)
-		SSrecoil.kickback(user, src, recoil_tag, BB.recoil)
-		process_chamber(user)
+		var/pointblank = (get_dist(get_turf(src), target) <= 1)
+		shoot_live_shot(
+			user,
+			pointblank,
+			target,
+			message,
+			stam_cost,
+			thing_in_chamber.BB,
+			casing_sound)
+		SSrecoil.kickback(user, src, recoil_tag, recoil)
+		if(!my_mode || my_mode.ignore_hammer || my_mode.ejector_behavior == GEJECTOR_AFTER_FIRING)
+			process_chamber(user)
+			chamber_round(user)
 		user?.in_crit_HP_penalty = 25
 		if(i < burst_size)
 			sleep(burst_shot_delay)
 		update_icon()
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
 	return TRUE
+
+/// If the chamber is empty, take a round from the magazine and put it in there
+/// If the chamber is not empty, or theres no magazine, do nothing
+/obj/item/gun/proc/chamber_round()
+	return TRUE
+
+/obj/item/gun/proc/get_chambered()
+	return chambered
 
 /obj/item/gun/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)

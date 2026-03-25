@@ -4,7 +4,7 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 
 //Boxes of ammo
 /obj/item/ammo_box
-	name = "ammo box (null_reference_exception)"
+	name = "ammo box that SOMEONE didnt put the right variables on! call 1-800-IMCODER!"
 	desc = "A box of ammo."
 	icon = 'icons/obj/ammo.dmi'
 	flags_1 = CONDUCT_1

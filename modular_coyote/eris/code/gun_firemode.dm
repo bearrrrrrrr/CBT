@@ -172,10 +172,10 @@
 // called when racked
 /datum/firemode/proc/on_rack()
 	GET_GUN
-	if(hammer_state == GHAMMER_COCKED || ignore_hammer)
-		hammer_state = GHAMMER_COCKED
+	if(gun.hammer_state == GHAMMER_COCKED || ignore_hammer)
+		gun.hammer_state = GHAMMER_COCKED
 		return FALSE
-	hammer_state = GHAMMER_COCKED
+	gun.hammer_state = GHAMMER_COCKED
 	return TRUE
 
 /datum/firemode/semi_auto
@@ -202,7 +202,7 @@
 	burst_count_default = 1
 	hammer_recock_on_fire = FALSE
 	ignore_hammer = FALSE
-	ejector_behavior = GEJECTOR_MANUAL
+	ejector_behavior = GEJECTOR_MANUAL_ONLY
 	rack_or_cock = G_COCK
 
 /datum/firemode/single_action/pump_action
@@ -234,7 +234,7 @@
 /datum/firemode/semi_auto/shotgun_fixed
 	name = "Single-Barrel Shot"
 	desc = "Blast 'em with one of those barrels!"
-	ejector_behavior = GEJECTOR_MANUAL
+	ejector_behavior = GEJECTOR_MANUAL_ONLY
 
 /datum/firemode/semi_auto/fastest
 	shoot_delay_default = GUN_FIRE_DELAY_FASTEST
@@ -358,7 +358,7 @@
 	desc = "Fire both barrels at once!"
 	burst_delay_default = GUN_BURSTFIRE_DELAY_FASTEST
 	burst_count_default = 2
-	ejector_behavior = GEJECTOR_MANUAL
+	ejector_behavior = GEJECTOR_MANUAL_ONLY
 
 /datum/firemode/burst/two/slower
 	name = "2-Round Burst"

@@ -299,6 +299,10 @@
 #define COMSIG_PROCESS_BORGCHARGER_OCCUPANT "living_charge"
 ///from base of mob/AltClickOn(): (atom/A)
 #define COMSIG_MOB_ALTCLICKON "mob_altclickon"
+///Sent by /mob/proc/MouseWheelOn when a mob uses the scroll wheel on something: (datum/source, atom/A, delta_x, delta_y, params)
+#define COMSIG_MOB_MOUSEWHEEL "mob_mousewheel" // (datum/source, atom/A, delta_x, delta_y, params)
+///Called by /mob/proc/MiddleClick when a mob middle clicks on something: (datum/source, atom/A)
+#define COMSIG_MOB_MIDDLECLICKON "mob_middleclickon" // from base of /atom/MiddleClick(): (datum/source, mob/clicker)
 
 // /client signals
 #define COMSIG_MOB_CLIENT_LOGIN "mob_client_login"					//sent when a mob/login() finishes: (client)

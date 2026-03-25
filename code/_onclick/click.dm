@@ -264,24 +264,33 @@
 	Only used for swapping hands
 */
 /mob/proc/MiddleClickOn(atom/A)
+	. = SEND_SIGNAL(A, COMSIG_MOB_MIDDLECLICKON, src)
+	if(. & COMSIG_MOB_CANCEL_CLICKON)
+		return
+	. |= A.MiddleClick(src)
 	return
 
-/mob/living/carbon/MiddleClickOn(atom/A)
+/mob/living/MiddleClickOn(atom/A)
+	. = ..()
+	if(. & COMSIG_MOB_CANCEL_CLICKON)
+		return
+	if(incapacitated(allow_crit = TRUE))
+		swap_hand()
+		return
 	if(!stat && mind && iscarbon(A) && A != src)
 		var/datum/antagonist/changeling/C = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(C && C.chosen_sting)
 			C.chosen_sting.try_to_sting(src,A)
 			return
-	swap_hand()
 
 /mob/living/simple_animal/drone/MiddleClickOn(atom/A)
 	swap_hand()
 
 // In case of use break glass
-/*
-/atom/proc/MiddleClick(mob/M as mob)
+// glass: broken
+/atom/proc/MiddleClick(mob/M)
 	return
-*/
+
 
 /*
 	Shift click
@@ -483,6 +492,7 @@
 /* MouseWheelOn */
 
 /mob/proc/MouseWheelOn(atom/A, delta_x, delta_y, params)
+	SEND_SIGNAL(src, COMSIG_MOB_MOUSEWHEEL, A, delta_x, delta_y, params)
 	return
 
 /mob/dead/observer/MouseWheelOn(atom/A, delta_x, delta_y, params)

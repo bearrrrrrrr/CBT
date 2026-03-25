@@ -1434,3 +1434,18 @@ GLOBAL_LIST_INIT(main_body_parts2words, list(
 #define G_RACK "YOU_RACK_THIS_GUN"
 #define G_COCK "YOU_COCK_THIS_GUN"
 
+// revolver stuff
+/// alt-clicking the gun makes the cylinder come out
+#define REV_SWING_OUT "REV_SWING_OUT"
+/// alt-clicking the gun makes the cylinder spew everything out
+#define REV_BREAK_ACTION "REV_BREAK_ACTION"
+/// hypercomplicated one-at-a-time thing
+#define REV_SINGLE_LOAD "REV_SINGLE_LOAD"
+
+#define REV_ADVANCE_FORWARD 1
+#define REV_ADVANCE_BACKWARD -1
+
+/* sets which text to do when you mess with the gun */
+#define REV_FLAVOR_OPEN_GENERIC "REV_FLAVOR_OPEN_GENERIC"
+#define REV_FLAVOR_CLOSE_GENERIC "REV_FLAVOR_CLOSE_GENERIC"
+

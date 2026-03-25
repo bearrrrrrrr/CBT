@@ -1,4 +1,5 @@
 GLOBAL_LIST_EMPTY(gun_accepted_magazines)
+GLOBAL_LIST_EMPTY(gun_accepted_casings)
 
 /obj/item/gun/ballistic
 	desc = "Now comes in flavors like GUN. Uses 10mm ammo, for some reason."
@@ -24,28 +25,14 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	/// Which direction do the casings fly out?
 	var/handedness = GUN_EJECTOR_RIGHT
 	var/cock_sound = "gun_slide_lock"
-	var/insert_magazine_delay = 1 SECONDS
+	var/insert_magazine_delay = 0.5 SECONDS
+	var/remove_magazine_delay = 0.5 SECONDS
 	fire_sound = null //null tells the gun to draw from the casing instead of the gun for sound
 
 /obj/item/gun/ballistic/Initialize()
 	. = ..()
-	if(spawnwithmagazine)
-		if (!magazine)
-			if(init_mag_type)
-				magazine = new init_mag_type(src)
-			else
-				magazine = new mag_type(src)
-			if(magazine.fixed_mag)
-				gun_tags |= GUN_INTERNAL_MAG
-	allowed_mags |= mag_type
-	allowed_mags |= subtypesof(mag_type)
-	if(extra_mag_types)
-		if(islist(extra_mag_types) && LAZYLEN(extra_mag_types))
-			allowed_mags |= extra_mag_types
-		else if (ispath(extra_mag_types))
-			allowed_mags |= typesof(extra_mag_types)
-	if(LAZYLEN(disallowed_mags))
-		allowed_mags -= disallowed_mags
+	give_magazine()
+	handle_accepted_magazines()
 	register_magazines()
 	chamber_round()
 	update_icon()
@@ -54,6 +41,28 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	if(!istype(magazine))
 		return
 	return SEND_SIGNAL(magazine, COMSIG_GUN_MAG_ADMIN_RELOAD) // get relayed, noob
+
+/obj/item/gun/ballistic/proc/give_magazine()
+	if(!spawnwithmagazine)
+		return
+	if (magazine)
+		return
+	if(init_mag_type)
+		magazine = new init_mag_type(src)
+	else
+		magazine = new mag_type(src)
+	if(magazine.fixed_mag)
+		gun_tags |= GUN_INTERNAL_MAG
+
+/obj/item/gun/ballistic/proc/handle_accepted_magazines()
+	allowed_mags |= typesof(mag_type)
+	if(extra_mag_types)
+		if(islist(extra_mag_types) && LAZYLEN(extra_mag_types))
+			allowed_mags |= extra_mag_types
+		else if (ispath(extra_mag_types))
+			allowed_mags |= typesof(extra_mag_types)
+	if(LAZYLEN(disallowed_mags))
+		allowed_mags -= disallowed_mags
 
 /obj/item/gun/ballistic/UpdateAmmoCountOverlay()
 	// if(isturf(loc))//Only show th ammo count if the magazine is, like, in an inventory or something. Mags on the ground don't need a big number on them, that's ugly.
@@ -115,14 +124,14 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 			chambered = null
 	chamber_round()
 
-/// If the chamber is empty, take a round from the magazine and put it in there
-/// If the chamber is not empty, or theres no magazine, do nothing
-/obj/item/gun/ballistic/proc/chamber_round()
-	if (chambered || !magazine)
+/obj/item/gun/ballistic/chamber_round(obj/item/ammo_casing/load_this)
+	if (chambered)
 		return
-	else if (magazine.ammo_count())
+	if (load_this)
+		chambered = load_this
+	else if(magazine && magazine.fixed_mag)
 		chambered = magazine.get_round()
-		chambered.forceMove(src)
+	chambered.forceMove(src)
 	update_icon()
 
 /obj/item/gun/ballistic/can_shoot()
@@ -131,11 +140,11 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return FALSE
 	if(!casing_ejector)
 	return TRUE */
-// god i smell ~Fenny
+
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)
 	..()
 	if(istype(A, /obj/item/ammo_casing))
-		return load_casing_into_internal_magazine(A, user)
+		return use_casing_on_gun(A, user)
 	if(istype(A, /obj/item/ammo_box))
 		return use_ammobox_on_gun(A, user)
 
@@ -148,12 +157,11 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return TRUE
 	return FALSE
 
-/obj/item/gun/ballistic/proc/load_casing_into_internal_magazine(obj/item/ammo_casing/A, mob/user)
-	if(!istype(magazine))
-		// todo: let people stick loose bullets into their mag-less gun
-		return
+/obj/item/gun/ballistic/proc/use_casing_on_gun(obj/item/ammo_casing/A, mob/user)
+	if(try_load_chamber_with_casing(A, user))
+		return TRUE
 	if(!magazine.fixed_mag)
-		return
+		return FALSE
 	if(magazine.load_from_casing(
 		A,
 		user,
@@ -163,6 +171,30 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		))
 		chamber_round()
 	update_icon()
+	return TRUE
+
+/obj/item/gun/ballistic/proc/try_load_chamber_with_casing(obj/item/ammo_casing/A, mob/user)
+	if (!istype(A))
+		return FALSE
+	if (!casing_probably_fits_in_chamber(A))
+		return FALSE
+	var/obj/item/ammo_casing/cbrd = get_chambered()
+	var/obj/item/ammo_casing/ejected
+	if(cbrd) // if its loaded with something, make it not be loaded with something
+		ejected = pump(cbrd, visible = FALSE, rechamber = FALSE, hard_eject = TRUE)
+	chamber_round(A)
+	playsound(src, manual_chamber_sound, 70, 1)
+	addtimer(CALLBACK(usr, GLOBAL_PROC_REF(playsound), src, 'sound/weapons/gun_chamber_round.ogg', 100, 1), 3)
+	update_icon()
+	if(!user)
+		return TRUE
+	if(ejected)
+		if (get_dist(user, ejected) <= 1 && user.put_in_hands(ejected))
+			to_chat(user, span_notice("You tactically swap \the [A] for \the [ejected] in the chamber of \the [src]."))
+		else
+			to_chat(user, span_notice("You load \the [A] into the chamber of \the [src], ejecting \the [ejected] onto the ground."))
+	else
+		to_chat(user, span_notice("You load \the [A] into the chamber of \the [src]."))
 	return TRUE
 
 /obj/item/gun/ballistic/proc/load_internal_magazine(obj/item/ammo_box/A, mob/user)
@@ -177,8 +209,33 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 
 // gets the delay for you stuffing that ammobox into this gun
 /obj/item/gun/ballistic/proc/load_into_gun_delay(mob/user, obj/item/ammo_box/A)
+	if(insert_magazine_delay <= 0)
+		return TRUE
 	var/datum/weakref/loader = WEAKREF(user)
 	var/insert_delay = insert_magazine_delay * A.magazine_load_delay_mult
+	GLOB.currently_loading_something[loader] = world.time + (insert_delay)
+	. = do_after(
+		user,
+		delay = insert_delay,
+		needhand = TRUE,
+		target = src,
+		progress = TRUE,
+		public_progbar = TRUE,
+		allow_movement = TRUE,
+		progbar_on_target = TRUE,
+		)
+	GLOB.currently_loading_something -= loader
+	if(!.)
+		to_chat(user, span_alert("You were interrupted!"))
+
+// gets the delay for you removing the magazine from this gun
+/obj/item/gun/ballistic/proc/remove_magazine_delay(mob/user)
+	if(!istype(magazine))
+		return FALSE
+	if(remove_magazine_delay <= 0)
+		return TRUE
+	var/datum/weakref/loader = WEAKREF(user)
+	var/insert_delay = remove_magazine_delay * magazine.magazine_load_delay_mult
 	GLOB.currently_loading_something[loader] = world.time + (insert_delay)
 	. = do_after(
 		user,
@@ -231,6 +288,47 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	do_squish(0.75,0.75,0.25 SECONDS)
 	return TRUE
 
+// goes through the magazines this gun accepts, and checks if this thing fits in that thing
+// then caches the result in a list
+// format: /path/to/gun = list(/path/to/thing_that_fits = "yes", /path/to/thing_that_also_fits = "yes", etc)
+// also records if this *doesnt* fit, in which case its cached as "no", so we dont have to keep checking every time
+/obj/item/gun/ballistic/proc/casing_probably_fits_in_chamber(obj/item/ammo_casing/A)
+	if(!A)
+		return FALSE
+	if(!islist(GLOB.gun_accepted_casings[type]))
+		GLOB.gun_accepted_casings[type] = list()
+	var/list/whatitake = GLOB.gun_accepted_casings[type]
+	if(whatitake[type])
+		return whatitake[type] == "yes"
+	// new thing to check! first lets see if we have a loaded magazine and mess with that
+	if(istype(magazine))
+		if(magazine.does_that_fit_in_this(A))
+			whatitake[A.type] = "yes"
+			return TRUE
+		else
+			whatitake[A.type] = "no"
+			return FALSE
+	// unloaded, more likely to be the case(ing)
+	// go through the magazines this gun accepts and see if the round would fit in any of those
+	// does a lot of initializations but, should only happen once per gun per ammo
+	var/yes
+	for(var/mag in allowed_mags - disallowed_mags)
+		if(!ispath(mag))
+			continue
+		var/obj/item/ammo_box/magazine/magtest = new mag() // nullspace it
+		// go through the ammo that starts in that mag, and just sorta record them
+		for(var/obj/item/ammo_casing/bullet in magtest.stored_ammo)
+			whatitake[bullet.type] = "yes"
+		if(magtest.does_that_fit_in_this(A))
+			whatitake[A.type] = "yes"
+			yes = TRUE
+		else
+			whatitake[A.type] = "no"
+		qdel(magtest)
+		if(yes)
+			return TRUE
+	return FALSE
+
 /obj/item/gun/ballistic/proc/is_magazine_allowed(obj/item/ammo_box/mag_to_check, mob/user)
 	. = FALSE
 	if(!istype(mag_to_check))
@@ -246,36 +344,27 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	if(user)
 		to_chat(user, span_alert("You can't seem to fit \the [mag_to_check] into \the [src]."))
 
-/obj/item/gun/ballistic/proc/load_fixed_magazine(obj/item/casing_or_magazine, user, params)
-	if(istype(casing_or_magazine, /obj/item/ammo_casing) || istype(casing_or_magazine, /obj/item/ammo_box))
-		var/num_loaded = magazine.attackby(casing_or_magazine, user, params, 1)
-		if(num_loaded)
-			to_chat(user, span_notice("You load [num_loaded] shell\s into \the [src]!"))
-			playsound(user, 'sound/weapons/shotguninsert.ogg', 60, 1)
-			casing_or_magazine.update_icon()
-			update_icon()
-			chamber_round(0)
-			return TRUE
-		else
-			to_chat(user, span_alert("You can't fit \the [casing_or_magazine] into \the [src]!"))
-			return FALSE
-
-/obj/item/gun/ballistic/proc/pump(mob/living/M, visible = TRUE)
+/obj/item/gun/ballistic/proc/pump(mob/living/M, visible = TRUE, rechamber = TRUE, hard_eject = FALSE)
 	if(visible)
 		M.visible_message(span_warning("[M] [cock_wording]\s \the [src]."), span_warning("You [cock_wording] \the [src]."))
 		playsound(M, cock_sound, 60, 1)
-	pump_unload(M)
-	pump_reload(M)
+	var/obj/item/ammo_casing/unloaded = pump_unload(M, hard_eject)
+	if (rechamber)
+		pump_reload(M)
 	update_icon()	//I.E. fix the desc
 	update_firemode()
 	do_squish(0.75,0.75,0.25 SECONDS)
-	return 1
+	return unloaded
 
-/obj/item/gun/ballistic/proc/pump_unload(mob/M)
-	if(chambered)//We have a shell in the chamber
-		chambered.forceMove(drop_location())//Eject casing
+/obj/item/gun/ballistic/proc/pump_unload(mob/M, hard_eject = FALSE)
+	if(!chambered)//We have a shell in the chamber
+		return
+	chambered.forceMove(drop_location())//Eject casing
+	if(hard_eject)
 		chambered.bounce_away()
-		chambered = null
+	var/obj/item/ammo_casing/ejected = chambered
+	chambered = null
+	return ejected
 
 /obj/item/gun/ballistic/proc/pump_reload(mob/M)
 	if(chambered)
@@ -290,27 +379,22 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return TRUE
 
 /obj/item/gun/ballistic/attack_self(mob/living/user)
-	if(magazine)
-		if(magazine.fixed_mag || !casing_ejector)
-			pump(user, TRUE)
-			update_icon()
-		else
-			eject_magazine(user, !en_bloc, TRUE)
-			update_icon()
-		return
-	if(chambered)
-		pump(user, TRUE)
-		update_icon()
-		return
-	to_chat(user, span_notice("There's no magazine in \the [src]."))
+	pump(user, TRUE)
 	update_icon()
 	return
 
-///obj/item/gun/ballistic/AltClick(mob/living/user)
-//	pump(user, TRUE)
+/obj/item/gun/ballistic/AltClick(mob/living/user)
+	if(magazine!)
+		return
+	if(magazine.fixed_mag)
+		return
+	eject_magazine(user, !en_bloc, TRUE)
+	update_icon()
 
 /obj/item/gun/ballistic/proc/eject_magazine(mob/living/user, put_it_in_their_hand, makesound, maketext)
 	if(magazine.fixed_mag)
+		return FALSE
+	if(!remove_magazine_delay(user))
 		return FALSE
 	magazine.forceMove(drop_location())
 	if(put_it_in_their_hand)
@@ -397,14 +481,6 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		damage_multiplier *= GUN_LESS_DAMAGE_T2 // -15% damage
 		sawn_off = TRUE
 		gun_accuracy_zone_type = ZONE_WEIGHT_SHOTGUN
-		/*
-		init_firemodes = list(
-			list(mode_name="Single-fire", mode_desc="Send Vagabonds flying back several paces", burst_size=1, icon="semi"),
-		)
-		initialize_firemodes()
-		if(firemodes.len)
-			set_firemode(sel_mode)
-			*/
 		update_icon()
 		return 1
 		
@@ -676,8 +752,4 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 
 	for(var/obj/item/thingy in spawned)
 		SEND_SIGNAL(thingy, COMSIG_GUN_MAG_ADMIN_RELOAD)
-
-
-
-
 

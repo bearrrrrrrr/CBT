@@ -98,7 +98,9 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 	. = list("<span class='info'>*---------*\n")
 	if(P)
 		var/followers_clinic_full_of_big_strong_gay_dogs_in_it = SSchat.GetPicForMode(src, MODE_PROFILE_PIC)
-		. += "<img src='[followers_clinic_full_of_big_strong_gay_dogs_in_it]' height='auto' width='auto' max-width='[P.see_pfp_max_widht]px' max-height='[P.see_pfp_max_hight]px'>"
+		var/pfp = followers_clinic_full_of_big_strong_gay_dogs_in_it
+		if(pfp != "https://files.catbox.moe/jgxtpe.png" && pfp != "https://files.catbox.moe/1i1zom.png")
+			. += "<img src='[followers_clinic_full_of_big_strong_gay_dogs_in_it]' height='300px' width='auto' max-width='[P.see_pfp_max_widht]px' max-height='[P.see_pfp_max_hight]px'>"
 	. += span_info("<font size=2>This is <EM>[!obscure_name ? name : "Unknown"]</EM>! [t_He] [t_is] a [dna.custom_species ? dna.custom_species : dna.species.name]!</font>")
 
 	var/vampDesc = ReturnVampExamine(user) // Vamps recognize the names of other vamps.

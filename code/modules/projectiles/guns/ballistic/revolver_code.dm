@@ -27,6 +27,10 @@
  * Some of the revolvers are not! this is intended for people who like fighting the game to do basic things
  * 
  * Also covers stuff like double barrel guns, cus why not
+ * 
+ * todo:
+ * - implement boxes / speedloaders automatically opening the gun
+ *   - maybe with a delay since you didnt do it as intended
  */
 
 /obj/item/gun/ballistic/revolver
@@ -44,15 +48,22 @@
 		/datum/firemode/semi_auto
 	)
 	handedness = GUN_EJECTOR_ANY
+	revolver = TRUE
 	// which chamber is currently lined up with the barrel
 	var/chamber_index = 1
 	var/load_index_offset = 3
 	var/rotate_direction = REV_ADVANCE_FORWARD // defines for 1 or -1. see combat.dm
-	var/swung = FALSE // has the cylinder been swung out? only used for revolvers that require it to eject
+	/// is the cylinder out / action broken / half-cocked? mainly indicates the ammo is accessible and the shooting isnt
+	var/load_hole_open = FALSE
 	var/load_style = REV_SWING_OUT // how the gun handles loading and ejecting, see combat.dm for details
+	var/single_load = FALSE
+	var/can_speedload = FALSE
+	var/eject_style = REV_EJECT_ADVANCED
 	/* sounds! */
 	var/rotate_forward_sound =       'sound/weapons/biblically_accurate_revolver/revolveradvance.ogg'
 	var/rotate_backward_sound =      'sound/weapons/biblically_accurate_revolver/revolveradvance_reverse.ogg'
+	var/cock_hammer_sound =          'sound/weapons/biblically_accurate_revolver/revolvercock.ogg'
+	var/uncock_hammer_sound =        'sound/weapons/biblically_accurate_revolver/revolveruncock.ogg'
 	/// for when we put the gun into a state where we can access the ammo, like swinging out the cylinder or half-cocking
 	var/open_gun_sound =             'sound/weapons/biblically_accurate_revolver/revolveropenswing.ogg'
 	/// for making it not accessible anymore
@@ -133,6 +144,11 @@
 		return null // shouldnt happen but just in case
 	return LAZYACCESS(magazine.stored_ammo, chamber_index)
 
+/obj/item/gun/ballistic/revolver/proc/get_chambered_at_load_index()
+	if(!magazine)
+		return null
+	return LAZYACCESS(magazine.stored_ammo, get_load_offset_index())
+
 // handled elsewhere
 /obj/item/gun/ballistic/revolver/chamber_round()
 	return get_chambered()
@@ -162,6 +178,102 @@
 	else
 		playsound(src, snd, 30, 1)
 
+// finds which index is the one that we can load/unload from
+// naturally, only relevant for single-load guns
+/obj/item/gun/ballistic/revolver/proc/get_load_offset_index()
+	if(!magazine)
+		return null
+	var/offset_index = chamber_index + load_index_offset
+	if(offset_index > magazine.capacity)
+		offset_index -= magazine.capacity
+	else if(offset_index < 1)
+		offset_index += magazine.capacity
+	return offset_index
+
+/// handles swinging the cylinder out / half-cocking the hammer, or closing it again
+/obj/item/gun/ballistic/revolver/proc/handle_swing(mob/doer)
+	if(load_hole_open)
+		close_gun(doer)
+	else
+		open_gun(doer)
+	update_icon()
+
+// opens the gun, allowing access to the ammo and whatnot
+/obj/item/gun/ballistic/revolver/proc/open_gun(mob/doer)
+	load_hole_open = TRUE
+	hammer_state = GHAMMER_HALFCOCK
+	playsound(doer, open_gun_sound, 30, 1)
+	eject_casings(doer, TRUE)
+
+// closes the gun, making it ready to fire again
+/obj/item/gun/ballistic/revolver/proc/close_gun(mob/doer)
+	load_hole_open = FALSE
+	hammer_state = GHAMMER_UNCOCKED
+	playsound(doer, close_gun_sound, 30, 1)
+
+// ejects casings according to the gun's eject style!
+/obj/item/gun/ballistic/revolver/proc/eject_casings(mob/doer, do_words)
+	// indexes!
+	if(!magazine)
+		return
+	if(!load_hole_open)
+		return
+	var/list/toeject = list()
+	var/spew_everywhere = FALSE
+	var/what_ejected = "empties"
+	var/obj/item/ammo_casing/singlebie
+	switch(eject_style)
+		if(REV_EJECT_SINGLE)
+			var/lindex = get_load_offset_index()
+			toeject |= lindex
+			singlebie = LAZYACCESS(magazine.stored_ammo, lindex)
+		if(REV_EJECT_ALL)
+			for(var/i in 1 to magazine.capacity)
+				toeject |= i
+			var/spew_everywhere = TRUE
+			what_ejected = "everything"
+		if(REV_EJECT_ADVANCED)
+			// eject empties first, then loadeds if there are no empties
+			var/list/loaded = list()
+			var/list/empties = list()
+			for(var/i in 1 to magazine.capacity)
+				var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
+				if(istype(CB, /obj/item/ammo_casing))
+					if(CB.BB)
+						loaded |= i
+					else
+						empties |= i
+			if(LAZYLEN(empties))
+				toeject |= empties
+				what_ejected = "empties"
+			else
+				toeject |= loaded
+				what_ejected = "loadeds"
+	//nothing?
+	if(!LAZYLEN(toeject))
+		if(do_words)
+			to_chat(doer, span_notice("There are no casings to eject!"))
+		return
+	for(var/i in toeject)
+		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
+		if(istype(CB, /obj/item/ammo_casing))
+			CB.forceMove(drop_location())
+			if(spew_everywhere && !CB.BB) // loadeds are a bit heavier, fling the rest everywhere
+				var/randodir = pick(GLOB.alldirs)
+				CB.bounce_away(FALSE, toss_direction = randodir)
+			// chambered is handled by a proc, its auto-updated!
+			magazine.stored_ammo[i] = null // eject a shell, it leaves a gap
+	update_icon()
+	if(do_words)
+		if(singlebie)
+			to_chat(doer, span_notice("You eject \a [singlebie]."))
+		else if(eject_style == REV_EJECT_ALL)
+			to_chat(doer, span_notice("[src] ejects everything!"))
+		else if(what_ejected == "empties")
+			to_chat(doer, span_notice("You eject all the empty bullets."))
+		else if(what_ejected == "loadeds")
+			to_chat(doer, span_notice("You eject all the live bullets.")) // sugma bullerts
+
 /obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	..()
 	advance_chamber()
@@ -173,39 +285,23 @@
 	update_icon()
 
 /obj/item/gun/ballistic/revolver/attack_self(mob/living/user)
+	if(load_hole_open)
+		eject_casings(user)
+		update_icon()
+		return
 	toggle_hammer(user)
 	update_icon()
 
 /obj/item/gun/ballistic/revolver/toggle_hammer(mob/living/user)
-	var/
-
-/obj/item/gun/ballistic/revolver/proc/eject_shells(mob/living/user, just_empties = TRUE)
-	if(!magazine)
-		return FALSE
-	var/num_unloaded = 0
-	var/list/ammo_mag = magazine.stored_ammo
-	for(var/index in 1 to LAZYLEN(ammo_mag))
-		if(!istype(ammo_mag[index], /obj/item/ammo_casing))
-			continue
-		var/obj/item/ammo_casing/bluuet = ammo_mag[index]
-		if(just_empties && bluuet.BB)
-			continue
-		bluuet.forceMove(drop_location())
-		bluuet.bounce_away(FALSE, NONE)
-		if(chambered == bluuet)
-			chambered = null
-		ammo_mag[index] = null // eject a shell, it leaves a gap
-		num_unloaded++
-	update_icon()
-	if (num_unloaded)
-		if(just_empties)
-			to_chat(user, span_notice("You unload [num_unloaded] empty shell\s from [src]."))
-			return TRUE
-		else
-			to_chat(user, span_notice("You unload [num_unloaded] live round\s from [src]."))
-			return TRUE
-	else if(just_empties)
-		return eject_shells(user, FALSE) // try again!
+	if(load_hole_open)
+		return
+	switch(hammer_state)
+		if(GHAMMER_UNCOCKED)
+			hammer_state = GHAMMER_COCKED
+		if(GHAMMER_COCKED)
+			hammer_state = GHAMMER_UNCOCKED
+	var/snd = hammer_state == GHAMMER_COCKED ? cock_hammer_sound : uncock_hammer_sound
+	playsound(user, snd, 30, 1)
 
 /obj/item/gun/ballistic/revolver/verb/spin()
 	set name = "Spin Chamber"
@@ -218,33 +314,67 @@
 		return
 
 	if(do_spin())
-		usr.visible_message("[usr] spins [src]'s chamber.", span_notice("You spin [src]'s chamber."))
+		M.visible_message("[M] spins [src]'s chamber.", span_notice("You spin [src]'s chamber."))
 		playsound(src, 'sound/f13weapons/revolverspin.ogg', 30, 1)
 	else
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
 /obj/item/gun/ballistic/revolver/proc/do_spin()
-	var/obj/item/ammo_box/magazine/internal/cylinder/C = magazine
-	. = istype(C)
-	if(.)
-		C.spin()
-		chamber_round(0)
+	chamber_index = rand(1, magazine.capacity)
 
 /obj/item/gun/ballistic/revolver/can_shoot()
-	return get_ammo(0,0)
-
-/obj/item/gun/ballistic/revolver/get_ammo(countchambered = 0, countempties = 1)
-	var/boolets = 0 //mature var names for mature people
-	if (chambered && countchambered)
-		boolets++
-	if (magazine)
-		boolets += magazine.ammo_count(countempties)
-	return boolets
+	if(load_hole_open)
+		return FALSE
+	. = ..()
 
 /obj/item/gun/ballistic/revolver/examine(mob/user)
 	. = ..()
-	. += "[get_ammo(0,0)] of those are live rounds."
+	. += get_ammo_readout()
 
+// welcome to a cool readout of what's in ur gun!
+/obj/item/gun/ballistic/revolver/proc/get_ammo_readout()
+	. = ""
+	if(!magazine)
+		. = "The gun is empty on a very deep buggy level."
+		return
+	var/load_offset = get_load_offset_index()
+	var/shots_left = 0
+	var/chambered_is_loaded = FALSE
+	for(var/i in 1 to magazine.capacity)
+		var/blt = ""
+		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
+		var/color = "white"
+		if(istype(CB, /obj/item/ammo_casing))
+			if(CB.BB)
+				blt = "█"
+				color = "teal"
+				shots_left++
+				if(i == chamber_index)
+					chambered_is_loaded = TRUE
+			else
+				blt = "▄"
+				color = "purple"
+		else
+			blt = "░"
+			color = "white"
+		if(i == chamber_index)
+			blt = "\[" + blt + "\]"
+		if(eject_style == REV_EJECT_SINGLE && i == load_offset)
+			blt = "(" + blt + ")"
+		blt += "<span style='color:[color]'>[blt]</span>"
+		. += blt
+	// the number readout
+	var/shots_color = shots_left > 0 ? "teal" : "red"
+	. += "\n"
+	. += " <span style='color:[shots_color]'>[shots_left]</span> / [span_notice(magazine.capacity)] shots left."
+	if(chambered_is_loaded)
+		. += "\n"
+		. += "The chambered round is [span_good("loaded and ready to fire!")]"
+	// and some help on how to read the damn thing
+	. += "\n"
+	. += "\[ \] - Chambered round"
+	if(eject_style == REV_EJECT_SINGLE)
+		. += ", ( ) - Round that can be ejected."
 
 
 //////////////////

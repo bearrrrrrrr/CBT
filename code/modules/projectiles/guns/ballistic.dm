@@ -27,6 +27,7 @@ GLOBAL_LIST_EMPTY(gun_accepted_casings)
 	var/cock_sound = "gun_slide_lock"
 	var/insert_magazine_delay = 0.5 SECONDS
 	var/remove_magazine_delay = 0.5 SECONDS
+	var/revolver = FALSE // hack
 	fire_sound = null //null tells the gun to draw from the casing instead of the gun for sound
 
 /obj/item/gun/ballistic/Initialize()
@@ -135,7 +136,10 @@ GLOBAL_LIST_EMPTY(gun_accepted_casings)
 	update_icon()
 
 /obj/item/gun/ballistic/can_shoot()
-	return !!chambered?.BB
+	var/obj/item/ammo_casing/AC = get_chambered()
+	if(!!AC?.BB)
+		return TRUE
+	. = ..()
 /* 	if(!magazine || !magazine.ammo_count(0))
 		return FALSE
 	if(!casing_ejector)
@@ -143,6 +147,8 @@ GLOBAL_LIST_EMPTY(gun_accepted_casings)
 
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)
 	..()
+	if(revolver) // it uh, does things differently
+		return
 	if(istype(A, /obj/item/ammo_casing))
 		return use_casing_on_gun(A, user)
 	if(istype(A, /obj/item/ammo_box))

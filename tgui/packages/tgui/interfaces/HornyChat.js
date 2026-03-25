@@ -1150,14 +1150,14 @@ const ProfilePicsTab = (props, context) => {
             <Table.Row
               key="stock">
               <Table.Cell >
-                <Button
+                {/* <Button
                   icon="plus"
                   fluid
                   fontSize="1.5em"
                   content="Add New Entry!"
                   onClick={() => act('AddProfileEntry', {
                     UserCkey: UserCKEY,
-                  })} />
+                  })} /> */}
               </Table.Cell>
               <Table.Cell />
               <Table.Cell />

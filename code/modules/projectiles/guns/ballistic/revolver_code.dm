@@ -28,9 +28,24 @@
  * 
  * Also covers stuff like double barrel guns, cus why not
  * 
+ * notes:
+ * - There is no Halfcock state for the hammer!
+ *   - not all revolvers and such have a halfcock, but all of them require some sort of jerking off to load
+ *   - instead, loader_exposed is our half-cock state!
+ * 
+ * Revolver defaults to:
+ * - double-action
+ * - flip out ammo thing
+ * - can rotate either way
+ * 
  * todo:
  * - implement boxes / speedloaders automatically opening the gun
  *   - maybe with a delay since you didnt do it as intended
+ * - implement an instruction manual to this nightmare of UX
+ *   - a link in examine to blurt out a bunch of instruction
+ * - a middle-mouse listener to open the thing
+ * - make it need to be half-cocked to manually rotate (on guns that require it)
+ *   - double actions and webleys or whatever can be worked with jerking the hammer off
  */
 
 /obj/item/gun/ballistic/revolver
@@ -49,36 +64,37 @@
 	)
 	handedness = GUN_EJECTOR_ANY
 	revolver = TRUE
+	var/kind = REVKIND_SWINGOUT_DOUBLE_ACTION
 	// which chamber is currently lined up with the barrel
 	var/chamber_index = 1
-	var/load_index_offset = 3
+	var/load_index_offset = 0 
 	var/rotate_direction = REV_ADVANCE_FORWARD // defines for 1 or -1. see combat.dm
 	/// is the cylinder out / action broken / half-cocked? mainly indicates the ammo is accessible and the shooting isnt
-	var/load_hole_open = FALSE
-	var/load_style = REV_SWING_OUT // how the gun handles loading and ejecting, see combat.dm for details
+	var/loader_exposed = FALSE
 	var/single_load = FALSE
-	var/can_speedload = FALSE
+	var/can_speedload = TRUE
+	var/how_rotatable = REV_BOTH_ALWAYS
 	var/eject_style = REV_EJECT_ADVANCED
 	/* sounds! */
-	var/rotate_forward_sound =       'sound/weapons/biblically_accurate_revolver/revolveradvance.ogg'
-	var/rotate_backward_sound =      'sound/weapons/biblically_accurate_revolver/revolveradvance_reverse.ogg'
-	var/cock_hammer_sound =          'sound/weapons/biblically_accurate_revolver/revolvercock.ogg'
-	var/uncock_hammer_sound =        'sound/weapons/biblically_accurate_revolver/revolveruncock.ogg'
+	var/rotate_forward_sound =       null
+	var/rotate_backward_sound =      null
+	var/cock_hammer_sound =          null
+	var/uncock_hammer_sound =        null
 	/// for when we put the gun into a state where we can access the ammo, like swinging out the cylinder or half-cocking
-	var/open_gun_sound =             'sound/weapons/biblically_accurate_revolver/revolveropenswing.ogg'
+	var/open_gun_sound =             null
 	/// for making it not accessible anymore
-	var/close_gun_sound =            'sound/weapons/biblically_accurate_revolver/revolvercloseswing.ogg'
-	var/insert_single_round_sound =  'sound/weapons/biblically_accurate_revolver/revolverload.ogg'
-	var/eject_single_round_sound =   'sound/weapons/biblically_accurate_revolver/revolverunload.ogg'
-	var/speedloader_sound =          'sound/weapons/biblically_accurate_revolver/revolverspeedloader.ogg'
-	var/eject_all_sound =            'sound/weapons/biblically_accurate_revolver/revolvereject.ogg'
+	var/close_gun_sound =            null
+	var/insert_single_round_sound =  null
+	var/eject_single_round_sound =   null
+	var/speedloader_sound =          null
+	var/eject_all_sound =            null
 	/* flavor stuff! */
-	var/open_flavor_mode = REV_FLAVOR_OPEN_GENERIC
-	var/close_flavor_mode = REV_FLAVOR_CLOSE_GENERIC
+	var/flavor_mode = REV_FLAVOR_MODE_GENERIC
 	var/datum/weakref/listening_to = null // for knowing whose mousewheels to listen to
 	equipsound = 'sound/f13weapons/equipsounds/pistolequip.ogg'
 
 /obj/item/gun/ballistic/revolver/Initialize()
+	init_kind()
 	. = ..()
 	if(!istype(magazine, /obj/item/ammo_box/magazine/internal/cylinder))
 		verbs += /obj/item/gun/ballistic/revolver/verb/spin
@@ -104,6 +120,33 @@
 		UnregisterSignal(listening_to_mob, COMSIG_MOB_MOUSEWHEEL)
 		listening_to = null
 
+/obj/item/gun/ballistic/revolver/proc/init_kind()
+	switch(kind)
+		if(REVKIND_SWINGOUT_DOUBLE_ACTION)
+			single_load = FALSE
+			can_speedload = TRUE
+			how_rotatable = REV_BOTH_ALWAYS
+			eject_style = REV_EJECT_ADVANCED
+			load_index_offset = 0
+		if(REVKIND_SINGLE_ACTION_REVOLVER)
+			single_load = TRUE
+			can_speedload = FALSE
+			how_rotatable = REV_BOTH_HALFCOCK_ONLY
+			eject_style = REV_EJECT_SINGLE
+			load_index_offset = 3
+		if(REVKIND_BREAK_ACTION_REVOLVER)
+			single_load = FALSE
+			can_speedload = TRUE
+			how_rotatable = REV_ADVANCE_ONLY
+			eject_style = REV_EJECT_ALL
+			load_index_offset = 0
+		if(REVKIND_BREAK_ACTION_SHOTGUN)
+			single_load = FALSE
+			can_speedload = TRUE
+			how_rotatable = REV_BOTH_ALWAYS
+			eject_style = REV_EJECT_ADVANCED
+			load_index_offset = 0
+
 /obj/item/gun/ballistic/revolver/proc/mouse_wheel_signal_handler(
 	datum/source,
 	mob/living/user,
@@ -116,28 +159,36 @@
 	if(user != GET_WEAKREF(listening_to))
 		return
 	if(user.get_active_held_item() == src)
-		advance_chamber(user, delta_y)
+		advance_chamber(user, delta_y, TRUE)
 
 /// When something scrollwheels while the mouse is on the gun
 /// allows rotating it even if its not in your hand!
 /obj/item/gun/ballistic/revolver/MouseWheel(delta_x,delta_y,location,control,params)
 	// we have everything but who did it.
 	// HOWEVER CAN WE FIGURE THIS OUT oh byond is based and has a way
-	advance_chamber(usr, delta_y)
+	advance_chamber(usr, delta_y, TRUE)
 
 /// does one of three things:
 /// - if the gun is a single load one,  half-cocks the gun and allows you to load or eject from the single chamber
 /// - if the gun is a break action, swings the cylinder open and sprays casings everywhere
 /// - if the gun is a normal revolver, swings the cylinder open and waits for you to do things
 /obj/item/gun/ballistic/revolver/MiddleClick(mob/living/doer)
-	if(!isliving(doer))
+	if(!can_interact_with_this(doer, TRUE, NONE))
 		return
-	if(!Adjacent(user))
-		return
-	if(doer.incapacitated(allow_crit = TRUE))
-		return
-	handle_swing(doer)
+	toggle_loader_exposure(doer)
 	return COMSIG_MOB_CANCEL_CLICKON
+
+/obj/item/gun/ballistic/revolver/AltClick(mob/living/doer)
+	return MiddleClick(doer) // alt-click does the same thing as middle click, just for people who dont have a middle mouse button
+	// also i couldnt figure something to do with the alt-click that middle-click wasnt already doing, so might as well
+
+/obj/item/gun/ballistic/revolver/dont_shoot(mob/living/user)
+	if(loader_exposed)
+		// instead of shooting, try ejecting something!
+		eject_casings(user, TRUE, TRUE, FALSE)
+		update_icon()
+		return
+	. = ..()
 
 /obj/item/gun/ballistic/revolver/get_chambered()
 	if(!magazine)
@@ -156,13 +207,19 @@
 /// doer and direction are optional
 /// direction can be 1 or -1, and if not provided it will just use the gun's default direction
 /// doer just determines who gets the sound
-/obj/item/gun/ballistic/revolver/proc/advance_chamber(mob/doer, direction)
+/obj/item/gun/ballistic/revolver/proc/advance_chamber(mob/doer, direction, manually)
 	if(!magazine)
+		return
+	if(manually && how_rotatable == REV_BOTH_HALFCOCK_ONLY && !loader_exposed)
+		inform_user(doer, REV_ALERT_NEED_LOADER_EXPOSED_TO_ROTATE)
 		return
 	var/dir2moveit = rotate_direction
 	if(direction)
 		dir2moveit = direction
 	chamber_index += dir2moveit
+	if(manually && how_rotatable == REV_ADVANCE_ONLY && dir2moveit != rotate_direction)
+		inform_user(doer, REV_ALERT_CAN_ONLY_ROTATE_IN_ADVANCE_DIRECTION)
+		return
 	if(chamber_index > magazine.capacity)
 		chamber_index = 1
 	else if(chamber_index < 1)
@@ -191,42 +248,76 @@
 	return offset_index
 
 /// handles swinging the cylinder out / half-cocking the hammer, or closing it again
-/obj/item/gun/ballistic/revolver/proc/handle_swing(mob/doer)
-	if(load_hole_open)
+/obj/item/gun/ballistic/revolver/proc/toggle_loader_exposure(mob/doer)
+	if(loader_exposed)
 		close_gun(doer)
 	else
 		open_gun(doer)
 	update_icon()
 
 // opens the gun, allowing access to the ammo and whatnot
-/obj/item/gun/ballistic/revolver/proc/open_gun(mob/doer)
-	load_hole_open = TRUE
-	hammer_state = GHAMMER_HALFCOCK
+/obj/item/gun/ballistic/revolver/proc/open_gun(mob/doer, delay_the_thing)
+	if(delay_the_thing)
+		if(!cause_delay(doer, TRUE))
+			return
+	loader_exposed = TRUE
 	playsound(doer, open_gun_sound, 30, 1)
-	eject_casings(doer, TRUE)
+	if(eject_style == REV_EJECT_ALL)
+		auto_eject_casings(doer, TRUE)
+	else
+		inform_user(doer, REV_INFO_OPENED_GUN)
 
 // closes the gun, making it ready to fire again
-/obj/item/gun/ballistic/revolver/proc/close_gun(mob/doer)
-	load_hole_open = FALSE
-	hammer_state = GHAMMER_UNCOCKED
+/obj/item/gun/ballistic/revolver/proc/close_gun(mob/doer, delay_the_thing)
+	if(delay_the_thing)
+		if(!cause_delay(doer, FALSE))
+			return
+	loader_exposed = FALSE
+	hammer_state = GHAMMER_COCKED
 	playsound(doer, close_gun_sound, 30, 1)
+	inform_user(doer, REV_INFO_CLOSED_GUN)
+
+/// happens when you do something to automatically trigger the gun to open or close
+// such as using an ammo on it, without opening it manually
+/obj/item/gun/ballistic/revolver/proc/cause_delay(mob/doer, opening)
+	if(doing_something_with_guns(doer))
+		to_chat(doer, span_warning("You're already doing something!"))
+		return
+	var/datum/weakref/loader = WEAKREF(doer)
+	GLOB.currently_loading_something[loader] = world.time + (0.5 SECONDS)
+	. = do_after(
+		doer,
+		delay = (0.5 SECONDS),
+		needhand = TRUE,
+		target = src,
+		progress = TRUE,
+		public_progbar = TRUE,
+		allow_movement = TRUE,
+		progbar_on_target = TRUE,
+		)
+	GLOB.currently_loading_something -= loader
+	if(!.)
+		to_chat(doer, span_alert("You were interrupted!"))
 
 // ejects casings according to the gun's eject style!
-/obj/item/gun/ballistic/revolver/proc/eject_casings(mob/doer, do_words)
+/obj/item/gun/ballistic/revolver/proc/auto_eject_casings(mob/doer, do_words, do_sound, force_all_of_them)
 	// indexes!
-	if(!magazine)
-		return
-	if(!load_hole_open)
+	if(!can_interact_with_this(doer, do_words, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
 		return
 	var/list/toeject = list()
 	var/spew_everywhere = FALSE
 	var/what_ejected = "empties"
+	var/snd = eject_all_sound
+	var/eject_how = eject_style
+	if(force_all_of_them)
+		eject_how = REV_EJECT_ALL
 	var/obj/item/ammo_casing/singlebie
-	switch(eject_style)
+	switch(eject_how)
 		if(REV_EJECT_SINGLE)
 			var/lindex = get_load_offset_index()
 			toeject |= lindex
 			singlebie = LAZYACCESS(magazine.stored_ammo, lindex)
+			snd = eject_single_round_sound
 		if(REV_EJECT_ALL)
 			for(var/i in 1 to magazine.capacity)
 				toeject |= i
@@ -256,23 +347,53 @@
 		return
 	for(var/i in toeject)
 		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
-		if(istype(CB, /obj/item/ammo_casing))
-			CB.forceMove(drop_location())
-			if(spew_everywhere && !CB.BB) // loadeds are a bit heavier, fling the rest everywhere
-				var/randodir = pick(GLOB.alldirs)
-				CB.bounce_away(FALSE, toss_direction = randodir)
-			// chambered is handled by a proc, its auto-updated!
-			magazine.stored_ammo[i] = null // eject a shell, it leaves a gap
+		if(!istype(CB, /obj/item/ammo_casing))
+			continue
+		var/fling = spew_everywhere && !CB.BB
+		eject_casing_at_index(doer, i, fling)
 	update_icon()
 	if(do_words)
 		if(singlebie)
-			to_chat(doer, span_notice("You eject \a [singlebie]."))
-		else if(eject_style == REV_EJECT_ALL)
-			to_chat(doer, span_notice("[src] ejects everything!"))
+			inform_user(doer, REV_INFO_EJECTED_SINGLEBIE, singlebie)
+		else if(eject_how == REV_EJECT_ALL)
+			inform_user(doer, REV_INFO_EJECTED_ALL)
 		else if(what_ejected == "empties")
-			to_chat(doer, span_notice("You eject all the empty bullets."))
+			inform_user(doer, REV_INFO_EJECTED_EMPTIES)
 		else if(what_ejected == "loadeds")
-			to_chat(doer, span_notice("You eject all the live bullets.")) // sugma bullerts
+			inform_user(doer, REV_INFO_EJECTED_LOADEDS)
+	if(do_sound)
+		playsound(doer, snd, 30, 1)
+
+/obj/item/gun/ballistic/revolver/proc/eject_casing_at_index(mob/doer, i, fling)
+	if(!can_interact_with_this(doer, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
+	if(!istype(CB, /obj/item/ammo_casing))
+		return
+	CB.forceMove(drop_location())
+	if(fling) // loadeds are a bit heavier, fling the rest everywhere
+		var/randodir = pick(GLOB.alldirs)
+		CB.bounce_away(FALSE, toss_direction = randodir)
+	// chambered is handled by a proc, its auto-updated!
+	magazine.stored_ammo[i] = null // eject a shell, it leaves a gap
+
+/obj/item/gun/ballistic/revolver/proc/eject_specific_casing(mob/doer, obj/item/ammo_casing/CB, fling)
+	if(!can_interact_with_this(doer, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	// find the casing and eject it, used for the alt-click-to-eject-a-specific-round style of revolver
+	for(var/i in 1 to magazine.capacity)
+		var/obj/item/ammo_casing/CB2 = LAZYACCESS(magazine.stored_ammo, i)
+		if(CB2 == CB)
+			eject_casing_at_index(doer, i, fling)
+			return
+
+/obj/item/gun/ballistic/revolver/proc/load_casing_at_index(mob/doer, obj/item/ammo_casing/CB, i)
+	if(!can_interact_with_this(doer, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	if(istype(LAZYACCESS(magazine.stored_ammo, i), /obj/item/ammo_casing))
+		return // shouldnt load on top of an existing round
+	magazine.stored_ammo[i] = CB
+	CB.forceMove(magazine)
 
 /obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	..()
@@ -285,15 +406,212 @@
 	update_icon()
 
 /obj/item/gun/ballistic/revolver/attack_self(mob/living/user)
-	if(load_hole_open)
-		eject_casings(user)
+	if(loader_exposed)
+		eject_casings(user, TRUE, TRUE, FALSE)
 		update_icon()
 		return
 	toggle_hammer(user)
 	update_icon()
 
+/obj/item/gun/ballistic/revolver/attackby(obj/item/A, mob/user, params)
+	if(istype(A, /obj/item/ammo_casing))
+		return use_casing_on_gun(user, A)
+	if(istype(A, /obj/item/ammo_box))
+		return use_ammobox_on_gun(user, A)
+	. = ..()
+
+// the stuff before actually loading it into the gun
+/obj/item/gun/ballistic/revolver/use_casing_on_gun(mob/user, obj/item/ammo_casing/A_casing)
+	if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	if(!room_in_gun_to_load_something())
+		to_chat(user, span_warning("There is no room in [src] to load [A_casing]!"))
+		return
+	// does it fit?
+	if(!magazine.does_that_fit_in_this(A_casing))
+		to_chat(user, span_warning("[A_casing] doesn't fit in [src]!"))
+		return
+	if(!loader_exposed)
+		open_gun(user, delay_the_thing = TRUE)
+	insert_casing(A_casing, user)
+
+/obj/item/gun/ballistic/revolver/use_ammobox_on_gun(mob/user, obj/item/ammo_box/A_box)
+	if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	if(!room_in_gun_to_load_something())
+		to_chat(user, span_warning("There is no room in [src] to load anything in [A_box]!"))
+		return
+	var/can_load_something = FALSE
+	for(var/obj/item/ammo_casing/bullet in A_box.stored_ammo)
+		if(magazine.does_that_fit_in_this(bullet))
+			can_load_something = TRUE
+			break
+	if(!can_load_something)
+		to_chat(user, span_warning("[A_box] can't fit anything in [src]!"))
+	if(!loader_exposed)
+		open_gun(user, delay_the_thing = TRUE)
+	insert_casings_from_box(user, A_box)
+
+// single loaders just load one round, then stop
+// otherwise, one of two things happens based on what the box is
+// if it is a compatable speedloader for the gumagazine, and we accept speedloaders
+//  - short delay, then all the rounds get loaded and empties get ejected with no extra delay
+// otherwise, we just keep loading rounds one at a time until the box is empty or the gun is full
+//  - with delays and sounds for each round
+/obj/item/gun/ballistic/revolver/proc/insert_casings_from_box(mob/user, obj/item/ammo_box/A_box)
+	if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	if(!room_in_gun_to_load_something())
+		return
+	var/list/loadeds = list()
+	// okay see if this thing is a speedloader
+	var/speedload = FALSE
+	if(can_speedload)
+		var/datum/ammoholder_behavior/my_mag = magazine.get_load_behavior()
+		speedload = my_mag.is_speedloader(A_box)
+	if(speedload)
+		cause_delay(user, TRUE)
+		auto_eject_casings(user, FALSE, TRUE, TRUE)
+	
+	var/safety = 100 // just in case, to prevent infinite loops. should never happen unless something is very wrong
+	while(safety--)
+		if(!speedload && cause_delay(user, TRUE))
+			break
+		var/obj/item/ammo_casing/bullet = null
+		for(var/obj/item/ammo_casing/candidate in A_box.stored_ammo)
+			if(!candidate.BB) // only try to load live rounds, not empties
+				continue
+			if(!magazine.does_that_fit_in_this(candidate))
+				continue
+			bullet = candidate
+			break
+		if(!bullet)
+			if(!LAZYLEN(loadeds))
+				to_chat(user, span_warning("There is nothing in [A_box] that can fit in [src]!"))
+			else
+				to_chat(user, span_warning("[A_box] no longer has anything that can fit in [src]!"))
+			break // nothing left to load!
+		// load it somewhere!
+		var/obj/item/ammo_casing/loaded_casing = insert_casing(user, bullet, !speedload, A_box)
+		if(!istype(loaded_casing, /obj/item/ammo_casing))
+			break // didnt load anything, so abort
+		loadeds |= loaded_casing
+		if(!speedload)
+			advance_chamber(user)
+	if(speedload)
+		playsound(user, speedloader_sound, 30, 1)
+	if(LAZYLEN(loadeds))
+		//format "5x 9mm pingusbellend", "15x 9mm overpingus"
+		var/list/loadnames = list()
+		for(var/strng in loadeds)
+			var/lcount = loadeds[strng]
+			loadnames += "[lcount]x [strng]"
+		var/what_i_loaded = english_list(loadnames)
+		to_chat(user, span_green("Loaded [what_i_loaded]!"))
+	else
+		to_chat(user, span_alert("Couldn't load anything from [A_box]"))
+		return FALSE
+	update_icon()
+	A_box.update_icon()
+	return TRUE
+
+/obj/item/gun/ballistic/revolver/proc/room_in_gun_to_load_something()
+	for(var/i in 1 to magazine.capacity)
+		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
+		if(!istype(CB, /obj/item/ammo_casing))
+			return TRUE
+		if(!CB.BB)
+			return TRUE
+	return FALSE
+
+// works differently based on the load style of the gun! generally tries to insert a casing somewhere it can go
+// notably is only really different for single-load guns
+/obj/item/gun/ballistic/revolver/proc/insert_casing(mob/user, obj/item/ammo_casing/A_casing, delay_the_thing, obj/item/ammo_box/camefrom)
+	if(!can_interact_with_this(user, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	if(!magazine.does_that_fit_in_this(A_casing)) // another check to be safe
+		to_chat(user, span_warning("[A_casing] doesn't fit in [src]!"))
+		return
+	if(single_load)
+		var/lindex = get_load_offset_index()
+		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, lindex)
+		if(istype(CB, /obj/item/ammo_casing))
+			eject_casing_at_index(user, lindex, FALSE)
+			playsound(user, eject_single_round_sound, 30, 1)
+			if(!cause_delay(user, TRUE))
+				return
+		if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+			return
+		if(camefrom)
+			camefrom.remove_casing(A_casing)
+		load_casing_at_index(user, A_casing, lindex)
+		playsound(user, insert_single_round_sound, 30, 1)
+		inform_user(user, REV_INFO_LOADED_SINGLE, A_casing)
+		return A_casing
+	var/index_offset = chamber_index // this way if the chamber index is 5 and the gun capacity is 6, it checks in this order: 5, 6, 1, 2, 3, 4
+	// they also can rotate in two directions, so we can check in the opposite direction as well if its set to rotate backwards
+	var/list/check_order = list()
+	for(var/i in 1 to magazine.capacity)
+		// for an index of 4 on a 6 capacity gun
+		// would output for forward rotation: 4, 5, 6, 1, 2, 3
+		// and for backward rotation: 4, 3, 2, 1, 6, 5
+		var/real_index = index_offset + (i * rotate_direction)
+		if(real_index > magazine.capacity)
+			real_index -= magazine.capacity
+		else if(real_index < 1)
+			real_index += magazine.capacity
+		check_order |= real_index
+	var/bestslot = 1
+	var/obj/item/ammo_casing/casing_at_bestslot
+	// try to load the slot at the shoot index first, then wrap around from there
+	// lower indexes in the check order are prioritized over higher ones
+	for(var/i in 1 to LAZYLEN(check_order))
+		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, LAZYACCESS(check_order, i))
+		if(!istype(CB, /obj/item/ammo_casing)) // empty slot, probably
+			bestslot = LAZYACCESS(check_order, i)
+			break
+		else if(!CB.BB) // if its an empty casing, prioritize it for loading over loaded slots, since it frees up space
+			bestslot = LAZYACCESS(check_order, i)
+			casing_at_bestslot = CB
+			break
+	if(istype(casing_at_bestslot, /obj/item/ammo_casing))
+		cause_delay(user, TRUE)
+		eject_casing_at_index(user, bestslot, FALSE)
+		playsound(user, eject_single_round_sound, 30, 1)
+	if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	if(camefrom)
+		camefrom.remove_casing(A_casing)
+	load_casing_at_index(user, A_casing, bestslot)
+	playsound(user, insert_single_round_sound, 30, 1)
+	inform_user(user, REV_INFO_LOADED_SINGLE, A_casing)
+	return A_casing
+
+/obj/item/gun/ballistic/revolver/proc/can_interact_with_this(mob/living/user, do_words, inter_flags = NONE)
+	if(user.incapacitated(allow_crit = TRUE))
+		if(do_words)
+			to_chat(user, span_warning("You're way too messed up to muck with [src]!"))
+		return FALSE
+	if(!Adjacent(user))
+		if(do_words)
+			to_chat(user, span_warning("You need to be closer to [src] to muck with it!"))
+		return FALSE
+	if((inter_flags & REV_FLAG_NEEDS_MAGAZINE) && !magazine)
+		if(do_words)
+			to_chat(user, span_warning("[src] doesn't have a magazine!"))
+		return FALSE
+	if((inter_flags & REV_FLAG_NEEDS_LOADER_EXPOSED) && !loader_exposed)
+		if(do_words)
+			inform_user(user, REV_ALERT_NEED_LOADER_EXPOSED_TO_DO_THAT)
+		return FALSE
+	if(doing_something_with_guns(user))
+		if(do_words)
+			to_chat(user, span_warning("You're already doing something!"))
+		return FALSE
+	return TRUE
+
 /obj/item/gun/ballistic/revolver/toggle_hammer(mob/living/user)
-	if(load_hole_open)
+	if(loader_exposed)
 		return
 	switch(hammer_state)
 		if(GHAMMER_UNCOCKED)
@@ -323,13 +641,14 @@
 	chamber_index = rand(1, magazine.capacity)
 
 /obj/item/gun/ballistic/revolver/can_shoot()
-	if(load_hole_open)
+	if(loader_exposed)
 		return FALSE
 	. = ..()
 
 /obj/item/gun/ballistic/revolver/examine(mob/user)
 	. = ..()
 	. += get_ammo_readout()
+
 
 // welcome to a cool readout of what's in ur gun!
 /obj/item/gun/ballistic/revolver/proc/get_ammo_readout()
@@ -377,178 +696,51 @@
 		. += ", ( ) - Round that can be ejected."
 
 
-//////////////////
-// CODE ARCHIVE //
-//////////////////
 
-/*SLING CODE
-/obj/item/gun/ballistic/revolver/doublebarrel/improvised/attackby(obj/item/A, mob/user, params)
-	..()
-	if(istype(A, /obj/item/stack/cable_coil) && !sawn_off)
-		if(A.use_tool(src, user, 0, 10, skill_gain_mult = EASY_USE_TOOL_MULT))
-			slot_flags = INV_SLOTBIT_BACK
-			to_chat(user, span_notice("You tie the lengths of cable to the shotgun, making a sling."))
-			slung = TRUE
-			update_icon()
-		else
-			to_chat(user, span_warning("You need at least ten lengths of cable if you want to make a sling!"))
+/obj/item/gun/ballistic/revolver/debug
+	name = "Debug Revolver"
+	desc = "This is a really cool gun! Its here to test revolvery things! Dan is cool!"
+	icon_state = "357colt"
+	inhand_icon_state = "357colt"
+	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev357
+	weapon_class = WEAPON_CLASS_SMALL
+	weapon_weight = GUN_ONE_HAND_AKIMBO
+	damage_multiplier = GUN_EXTRA_DAMAGE_0
+	init_firemodes = list(
+		/datum/firemode/semi_auto/fast
+	)
+	fire_sound = 'sound/f13weapons/357magnum.ogg'
+	kind = REVKIND_SWINGOUT_DOUBLE_ACTION
+	rotate_forward_sound =       'sound/effects/bamf.ogg'
+	rotate_backward_sound =      'sound/effects/alert.ogg'
+	cock_hammer_sound =          'sound/effects/bang.ogg'
+	uncock_hammer_sound =        'sound/effects/beeper7.ogg'
+	open_gun_sound =             'sound/effects/bin_open.ogg'
+	close_gun_sound =            'sound/effects/bin_close.ogg'
+	insert_single_round_sound =  'sound/effects/bleeblee.ogg'
+	eject_single_round_sound =   'sound/effects/body_fall_over_dead.ogg'
+	speedloader_sound =          'sound/effects/boowomp.ogg'
+	eject_all_sound =            'sound/effects/break_stone.ogg'
+	flavor_mode = REV_FLAVOR_MODE_GENERIC
 
-/obj/item/gun/ballistic/revolver/doublebarrel/improvised/update_overlays()
-	. = ..()
-	if(slung)
-		. += "[icon_state]sling"
+/obj/item/gun/ballistic/revolver/debug/single_action
+	name = "Debug Single-Action Revolver"
+	desc = "This is a single action gun that demonstrates the single-load style of revolver. Fuzzy's got a cute butt!"
+	kind = REVKIND_SINGLE_ACTION_REVOLVER
 
-/obj/item/gun/ballistic/revolver/doublebarrel/improvised/sawoff(mob/user)
-	. = ..()
-	if(. && slung) //sawing off the gun removes the sling
-		new /obj/item/stack/cable_coil(get_turf(src), 10)
-		slung = 0
-		update_icon()
-
-//BREAK ACTION CODE
-/obj/item/gun/ballistic/revolver/doublebarrel/attack_self(mob/living/user)
-	var/num_unloaded = 0
-	while (get_ammo() > 0)
-		var/obj/item/ammo_casing/CB
-		CB = magazine.get_round(0)
-		chambered = null
-		CB.forceMove(drop_location())
-		CB.update_icon()
-		num_unloaded++
-	if (num_unloaded)
-		to_chat(user, span_notice("You break open \the [src] and unload [num_unloaded] shell\s."))
-	else
-		to_chat(user, span_warning("[src] is empty!"))
-
-//DODGE CODE
-/obj/item/gun/ballistic/revolver/colt357/lucky/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(attack_type == PROJECTILE_ATTACK)
-		if(prob(block_chance))
-			owner.visible_message(span_danger("[owner] seems to dodge [attack_text] entirely thanks to [src]!"))
-			playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, 1)
-			return 1
-	return 0
+/obj/item/gun/ballistic/revolver/debug/break_action
+	name = "Debug Break-Action Revolver"
+	desc = "This is a break-action gun that demonstrates the break-action style of revolver. Fenny is very stank!"
+	kind = REVKIND_BREAK_ACTION_REVOLVER
 
 
-// -------------- HoS Modular Weapon System -------------
-// ---------- Code originally from VoreStation ----------
-/obj/item/gun/ballistic/revolver/mws
-	name = "MWS-01 'Big Iron'"
-	desc = "Modular Weapons System"
-
-	icon = 'icons/obj/guns/projectile.dmi'
-	icon_state = "mws"
-
-	fire_sound = 'sound/weapons/Taser.ogg'
-
-	mag_type = /obj/item/ammo_box/magazine/mws_mag
-	spawnwithmagazine = FALSE
-
-	recoil = 0
-
-	var/charge_sections = 6
-
-/obj/item/gun/ballistic/revolver/mws/examine(mob/user)
-	. = ..()
-	. += span_notice("Alt-click to remove the magazine.")
-
-/obj/item/gun/ballistic/revolver/mws/shoot_with_empty_chamber(mob/living/user as mob|obj)
-	process_chamber(user)
-	if(!chambered || !chambered.BB)
-		to_chat(user, span_danger("*click*"))
-		playsound(src, "gun_dry_fire", 30, 1)
 
 
-/obj/item/gun/ballistic/revolver/mws/process_chamber(mob/living/user)
-	if(chambered && !chambered.BB) //if BB is null, i.e the shot has been fired...
-		var/obj/item/ammo_casing/mws_batt/shot = chambered
-		if(shot.cell.charge >= shot.e_cost)
-			shot.chargeshot()
-		else
-			for(var/B in magazine.stored_ammo)
-				var/obj/item/ammo_casing/mws_batt/other_batt = B
-				if(istype(other_batt,shot) && other_batt.cell.charge >= other_batt.e_cost)
-					switch_to(other_batt, user)
-					break
-	update_icon()
-
-/obj/item/gun/ballistic/revolver/mws/proc/switch_to(obj/item/ammo_casing/mws_batt/new_batt, mob/living/user)
-	if(ishuman(user))
-		if(chambered && new_batt.type == chambered.type)
-			to_chat(user,span_warning("[src] is now using the next [new_batt.type_name] power cell."))
-		else
-			to_chat(user,span_warning("[src] is now firing [new_batt.type_name]."))
-
-	chambered = new_batt
-	update_icon()
-
-/obj/item/gun/ballistic/revolver/mws/attack_self(mob/living/user)
-	if(!chambered)
-		return
-
-	var/list/stored_ammo = magazine.stored_ammo
-
-	if(stored_ammo.len == 1)
-		return //silly you.
-
-	//Find an ammotype that ISN'T the same, or exhaust the list and don't change.
-	var/our_slot = stored_ammo.Find(chambered)
-
-	for(var/index in 1 to stored_ammo.len)
-		var/true_index = ((our_slot + index - 1) % stored_ammo.len) + 1 // Stupid ONE BASED lists!
-		var/obj/item/ammo_casing/mws_batt/next_batt = stored_ammo[true_index]
-		if(chambered != next_batt && !istype(next_batt, chambered.type) && next_batt.cell.charge >= next_batt.e_cost)
-			switch_to(next_batt, user)
-			break
-
-/obj/item/gun/ballistic/revolver/mws/AltClick(mob/living/user)
-	.=..()
-	if(magazine)
-		user.put_in_hands(magazine)
-		magazine.update_icon()
-		if(magazine.ammo_count())
-			playsound(src, 'sound/weapons/gun_magazine_remove_full.ogg', 70, 1)
-		else
-			playsound(src, "gun_remove_empty_magazine", 70, 1)
-		magazine = null
-		to_chat(user, span_notice("You pull the magazine out of [src]."))
-		if(chambered)
-			chambered = null
-		update_icon()
-
-/obj/item/gun/ballistic/revolver/mws/update_overlays()
-	.=..()
-	if(!chambered)
-		return
-
-	var/obj/item/ammo_casing/mws_batt/batt = chambered
-	var/batt_color = batt.type_color //Used many times
-
-	//Mode bar
-	var/image/mode_bar = image(icon, icon_state = "[initial(icon_state)]_type")
-	mode_bar.color = batt_color
-	. += mode_bar
-
-	//Barrel color
-	var/mutable_appearance/barrel_color = mutable_appearance(icon, "[initial(icon_state)]_barrel", color = batt_color)
-	barrel_color.alpha = 150
-	. += barrel_color
-
-	//Charge bar
-	var/ratio = can_shoot() ? CEILING(clamp(batt.cell.charge / batt.cell.maxcharge, 0, 1) * charge_sections, 1) : 0
-	for(var/i = 0, i < ratio, i++)
-		var/mutable_appearance/charge_bar = mutable_appearance(icon,  "[initial(icon_state)]_charge", color = batt_color)
-		charge_bar.pixel_x = i
-		. += charge_bar
 
 
-//ACCIDENTALLY SHOOT YOURSELF IN THE FACE CODE
-/obj/item/gun/ballistic/revolver/reverse/can_trigger_gun(mob/living/user)
-	if((HAS_TRAIT(user, TRAIT_CLUMSY)) || (user.mind && HAS_TRAIT(user.mind, TRAIT_CLOWN_MENTALITY)))
-		return ..()
-	if(process_fire(user, user, FALSE, null, BODY_ZONE_HEAD))
-		user.visible_message(span_warning("[user] somehow manages to shoot [user.p_them()]self in the face!"), span_userdanger("You somehow shoot yourself in the face! How the hell?!"))
-		user.emote("scream")
-		user.drop_all_held_items()
-		user.DefaultCombatKnockdown(80)
-*/
+
+
+
+
+
+

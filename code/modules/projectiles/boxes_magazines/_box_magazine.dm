@@ -361,6 +361,7 @@ GLOBAL_LIST_EMPTY(currently_loading_something)
 // proc so that revolvers can do their thing right
 /obj/item/ammo_box/proc/remove_casing(obj/item/ammo_casing/other_casing)
 	stored_ammo -= other_casing
+	update_icon()
 
 /obj/item/ammo_box/proc/load_delay(mob/user, load_in_delay, move_n_load)
 	var/datum/weakref/loader = WEAKREF(user)

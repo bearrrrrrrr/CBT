@@ -413,8 +413,8 @@ ATTACHMENTS
 		to_chat(user, span_danger("You're too messed up to shoot [src]!"))
 		return
 
-	if(!can_shoot()) //Just because you can pull the trigger doesn't mean it can shoot.
-		shoot_with_empty_chamber(user)
+	if(!can_shoot())
+		dont_shoot(user)
 		return
 
 	if(rigged)
@@ -459,6 +459,9 @@ ATTACHMENTS
 	process_fire(target, user, TRUE, params, null, stam_cost)
 	update_icon()
 
+/obj/item/gun/proc/dont_shoot(mob/living/user)
+	shoot_with_empty_chamber(user)
+	update_icon()
 
 /obj/item/gun/proc/try_akimbo(atom/target, mob/living/user, flag, params, is_akimbo)
 	if(is_akimbo)

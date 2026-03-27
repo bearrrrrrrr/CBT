@@ -382,12 +382,31 @@
 	var/status = 0  //basically if the number increases it means that the projectile for some reason has to miss
 
 	status += check_pacifism_lesser(src, firer, target)
+	status += check_awareness_hit_chance(target)
 	status += multichance_projectile_hit_behaviour(src, firer, target, status)
 
 	if(!status)
 		return TRUE
 	else
 		return FALSE
+
+/obj/item/projectile/proc/check_awareness_hit_chance(atom/target)
+	if(!isliving(target))
+		return FALSE
+	if(!istype(fired_from, /obj/item/gun))
+		return FALSE
+	if(!isliving(firer))
+		return FALSE
+
+	var/obj/item/gun/firing_gun = fired_from
+	var/mob/living/living_firer = firer
+
+	var/awareness = isnull(living_firer.stat_perception) ? 0 : max(0, living_firer.stat_perception)
+	var/hit_chance = min(100, firing_gun.base_accuracy + (awareness * 5))
+
+	if(prob(hit_chance))
+		return FALSE
+	return TRUE
 
 /obj/item/projectile/proc/on_hit(atom/target, blocked = FALSE)
 	if(fired_from)

@@ -262,9 +262,11 @@
 /*
 	Middle click
 	Only used for swapping hands
+	and opening ur gunhole
 */
 /mob/proc/MiddleClickOn(atom/A)
 	. = SEND_SIGNAL(A, COMSIG_MOB_MIDDLECLICKON, src)
+	. = SEND_SIGNAL(src, COMSIG_MOB_MIDDLECLICKED_SOMETHING, A)
 	if(. & COMSIG_MOB_CANCEL_CLICKON)
 		return
 	. |= A.MiddleClick(src)

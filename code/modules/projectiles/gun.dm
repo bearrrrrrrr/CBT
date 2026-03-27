@@ -316,7 +316,8 @@ ATTACHMENTS
 	. = ..()
 	if(!no_pin_required)
 		if(pin)
-			. += "It has \a [pin] installed."
+			if(!pin.hide)
+				. += "It has \a [pin] installed."
 		else
 			. += "It doesn't have a firing pin installed, and won't fire."
 	if(gun_light)

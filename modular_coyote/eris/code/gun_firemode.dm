@@ -155,6 +155,16 @@
 		return TRUE
 	return FALSE
 
+/datum/firemode/proc/toggle_hammer()
+	GET_GUN
+	if(ignore_hammer)
+		gun.hammer_state = GHAMMER_COCKED
+		return
+	if(gun.hammer_state == GHAMMER_COCKED)
+		gun.hammer_state = GHAMMER_UNCOCKED
+	else
+		gun.hammer_state = GHAMMER_COCKED
+
 // Called when the gun is shot, to see if we need to eject casings or not
 /datum/firemode/proc/eject_on_fire()
 	GET_GUN

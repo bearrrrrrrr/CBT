@@ -185,7 +185,7 @@
 	if(clicked_on == src)
 		return // prevent double-doing
 	var/obj/item/in_active_hand = user.get_active_held_item()
-	var/gun_is_in_active_hand = in_active_hand == src
+	// var/gun_is_in_active_hand = in_active_hand == src
 	var/obj/item/in_inactive_hand = user.get_inactive_held_item()
 	var/gun_is_in_inactive_hand = in_inactive_hand == src
 	if(!istype(in_active_hand) && !istype(in_inactive_hand))
@@ -244,6 +244,9 @@
 /obj/item/gun/ballistic/revolver/proc/advance_chamber(mob/doer, direction, manually)
 	if(!magazine)
 		return
+	if(doing_something_with_guns(doer))
+		to_chat(doer, span_warning("You're already doing something!"))
+		return
 	if(manually && how_rotatable == REV_BOTH_HALFCOCK_ONLY && !loader_exposed)
 		inform_user(doer, REV_ALERT_NEED_LOADER_EXPOSED_TO_ROTATE)
 		return
@@ -291,9 +294,8 @@
 
 // opens the gun, allowing access to the ammo and whatnot
 /obj/item/gun/ballistic/revolver/proc/open_gun(mob/doer, delay_the_thing)
-	if(delay_the_thing)
-		if(!cause_delay(doer, 0.5 SECONDS))
-			return
+	if(!cause_delay(doer, 0.5 SECONDS))
+		return
 	loader_exposed = TRUE
 	playsound(doer, open_gun_sound, 30, 1)
 	if(eject_style == REV_EJECT_ALL)
@@ -302,10 +304,7 @@
 		inform_user(doer, REV_INFO_OPENED_GUN)
 
 // closes the gun, making it ready to fire again
-/obj/item/gun/ballistic/revolver/proc/close_gun(mob/doer, delay_the_thing)
-	if(delay_the_thing)
-		if(!cause_delay(doer, 0.5 SECONDS))
-			return
+/obj/item/gun/ballistic/revolver/proc/close_gun(mob/doer)
 	loader_exposed = FALSE
 	hammer_state = GHAMMER_COCKED
 	playsound(doer, close_gun_sound, 30, 1)
@@ -337,6 +336,8 @@
 /obj/item/gun/ballistic/revolver/proc/auto_eject_casings(mob/doer, do_words, do_sound, force_all_of_them)
 	// indexes!
 	if(!can_interact_with_this(doer, do_words, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+		return
+	if(!cause_delay(doer, 0.5 SECONDS))
 		return
 	var/list/toeject = list()
 	var/spew_everywhere = FALSE
@@ -530,10 +531,10 @@
 				anything_loaded = TRUE
 				break
 		if(anything_loaded)
-			if(!cause_delay(user, 0.5 SECONDS))
+			if(!cause_delay(user, 0.8 SECONDS))
 				return
 			auto_eject_casings(user, FALSE, TRUE, TRUE)
-		if(!cause_delay(user, 0.5 SECONDS))
+		if(!cause_delay(user, 0.8 SECONDS))
 			return
 	
 	var/safety = LAZYLEN(magazine.stored_ammo) // just in case, to prevent infinite loops. should never happen unless something is very wrong
@@ -567,7 +568,7 @@
 					if(!istype(CB, /obj/item/ammo_casing) || !CB.BB) // if its empty or already has the same type of round, we can load into it
 						found_a_slot = TRUE
 						break
-					if(!cause_delay(user, (0.2 SECONDS)))
+					if(!cause_delay(user, (0.4 SECONDS)))
 						break mainloop
 					advance_chamber(user)
 				if(!found_a_slot)
@@ -627,7 +628,8 @@
 	mob/user,
 	obj/item/ammo_casing/A_casing,
 	delay_the_thing,
-	obj/item/ammo_box/camefrom
+	obj/item/ammo_box/camefrom,
+	initial_delay = TRUE,
 	)
 	if(!can_interact_with_this(user, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
 		return
@@ -648,6 +650,9 @@
 			return
 		if(camefrom)
 			camefrom.remove_casing(A_casing)
+		if(initial_delay)
+			if(!cause_delay(user, (0.4 SECONDS)))
+				return
 		load_casing_at_index(user, A_casing, lindex)
 		playsound(user, insert_single_round_sound, 30, 1)
 		inform_user(user, REV_INFO_LOADED_SINGLE, A_casing)
@@ -682,10 +687,15 @@
 		return FALSE
 	if(istype(casing_at_bestslot, /obj/item/ammo_casing))
 		delay_the_thing = TRUE
+		if(delay_the_thing)
+			if(!cause_delay(user, (0.8 SECONDS)))
+				return
+		if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
+			return
 		eject_casing_at_index(user, bestslot, FALSE)
 		playsound(user, eject_single_round_sound, 30, 1)
-	if(delay_the_thing)
-		if(!cause_delay(user, (0.8 SECONDS)))
+	if(initial_delay)
+		if(!cause_delay(user, (0.4 SECONDS)))
 			return
 	if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
 		return
@@ -701,13 +711,13 @@
 		if(do_words)
 			to_chat(user, span_warning("You're way too messed up to muck with [src]!"))
 		return FALSE
-	if(!Adjacent(user))
+	if(!user.can_reach(src, INVENTORY_DEPTH, user.reach))
 		if(do_words)
-			to_chat(user, span_warning("You need to be closer to [src] to muck with it!"))
+			to_chat(user, span_warning("You can't reach [src]!"))
 		return FALSE
 	if((inter_flags & REV_FLAG_NEEDS_MAGAZINE) && !magazine)
 		if(do_words)
-			to_chat(user, span_warning("[src] doesn't have a magazine!"))
+			to_chat(user, span_warning("[src] doesn't have anywhere to put the ammo!"))
 		return FALSE
 	if((inter_flags & REV_FLAG_NEEDS_LOADER_EXPOSED) && !loader_exposed)
 		if(do_words)
@@ -752,7 +762,13 @@
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
 /obj/item/gun/ballistic/revolver/proc/do_spin()
-	chamber_index = rand(1, LAZYLEN(magazine.stored_ammo))
+	if(!loader_exposed)
+		to_chat(usr, span_alert("You gotta open the gun first!"))
+		return
+	var/magcap = LAZYLEN(magazine.stored_ammo)
+	for(var/i in 1 to rand(magcap, magcap*2))
+		advance_chamber(usr)
+	return TRUE // one more time, fen
 
 /obj/item/gun/ballistic/revolver/can_shoot()
 	if(loader_exposed)

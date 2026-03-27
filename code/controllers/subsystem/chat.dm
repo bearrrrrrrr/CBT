@@ -129,7 +129,7 @@ SUBSYSTEM_DEF(chat)
 	/// how long between flirts can we flirt
 	var/flirt_cooldown_time = 5 SECONDS
 	var/debug_character_directory = 0
-	var/same_mode_timeout = 0 //1 MINUTES
+	var/same_mode_timeout = (20 SECONDS)
 	var/max_horny_distance = 2
 
 	var/list/stock_image_packs = list() // see: [code\__DEFINES\mommychat_image_packs.dm]
@@ -164,10 +164,6 @@ SUBSYSTEM_DEF(chat)
 			"Host" = "https://files.catbox.moe",
 			"URL" = "fcm6yw.jpg",
 		),
-		":example:" = list(
-			"Host" = "https://files.catbox.moe",
-			"URL" = "fcm6yw.jpg",
-		),
 	)
 
 	var/list/default_pfps = list(
@@ -181,8 +177,8 @@ SUBSYSTEM_DEF(chat)
 		)
 	)
 
-	var/img_size = 125
-	var/headspace = 4
+	var/img_size = 100
+	var/headspace = 2
 	var/debug_chud = FALSE
 	var/debug_use_cool_los_proc = FALSE
 	var/list/colorable_keys = list(
@@ -253,46 +249,46 @@ SUBSYSTEM_DEF(chat)
 // 		stock_image_packs += list(P.ListifyPack())
 
 /datum/controller/subsystem/chat/proc/setup_emoticon_cache()
-	emoticon_cache.Cut()
-	var/json_emoticons = file2text("strings/sausage_rolls.json") // am hungy
-	/// there was a comment here, but it was fukcing enormous and made it hard to read
-	var/list/emoticons = safe_json_decode(json_emoticons)
-	if(!LAZYLEN(emoticons))
-		return // :(
-	for(var/emo in emoticons)
-		var/list/emotilist = emoticons[emo]
-		var/list/emoties = list()
-		emoties |= emo
-		for(var/emotie in emotilist["ALIASES"])
-			emoties |= emotie
-		for(var/emotie in emoties)
-			var/datum/emoticon_bank/E = new(emo, emotilist)
-			emoticon_cache[html_decode(emotie)] = E
+	// emoticon_cache.Cut()
+	// var/json_emoticons = file2text("strings/sausage_rolls.json") // am hungy
+	// /// there was a comment here, but it was fukcing enormous and made it hard to read
+	// var/list/emoticons = safe_json_decode(json_emoticons)
+	// if(!LAZYLEN(emoticons))
+	// 	return // :(
+	// for(var/emo in emoticons)
+	// 	var/list/emotilist = emoticons[emo]
+	// 	var/list/emoties = list()
+	// 	emoties |= emo
+	// 	for(var/emotie in emotilist["ALIASES"])
+	// 		emoties |= emotie
+	// 	for(var/emotie in emoties)
+	// 		var/datum/emoticon_bank/E = new(emo, emotilist)
+	// 		emoticon_cache[html_decode(emotie)] = E
 
 /datum/controller/subsystem/chat/proc/emoticonify(atom/movable/sayer, message, messagemode, list/spans, datum/rental_mommy/chat/momchat)
-	if(!sayer)
-		return
-	if(istype(sayer, /mob))
-		var/mob/they = sayer
-		if(!they.client)
-			return
-	if(!(messagemode in list(MODE_SAY, MODE_WHISPER, MODE_SING, MODE_ASK, MODE_EXCLAIM, MODE_YELL)))
-		return
-	var/out
-	var/datum/emoticon_bank/E
-	for(var/key in emoticon_cache) // if this gets laggy, lol idk
-		if(findtext(message, key))
-			E = LAZYACCESS(emoticon_cache, key)
-			if(!E)
-				continue
-			out = E.verbify(sayer, message, messagemode, spans)
-			if(out)
-				break
-	if(!out)
-		return
-	for(var/key in emoticon_cache)
-		out = replacetext(out, key, "") // remove the rest of the emoticons
-	return out
+	// if(!sayer)
+	// 	return
+	// if(istype(sayer, /mob))
+	// 	var/mob/they = sayer
+	// 	if(!they.client)
+	// 		return
+	// if(!(messagemode in list(MODE_SAY, MODE_WHISPER, MODE_SING, MODE_ASK, MODE_EXCLAIM, MODE_YELL)))
+	// 	return
+	// var/out
+	// var/datum/emoticon_bank/E
+	// for(var/key in emoticon_cache) // if this gets laggy, lol idk
+	// 	if(findtext(message, key))
+	// 		E = LAZYACCESS(emoticon_cache, key)
+	// 		if(!E)
+	// 			continue
+	// 		out = E.verbify(sayer, message, messagemode, spans)
+	// 		if(out)
+	// 			break
+	// if(!out)
+	// 	return
+	// for(var/key in emoticon_cache)
+	// 	out = replacetext(out, key, "") // remove the rest of the emoticons
+	// return out
 
 /datum/controller/subsystem/chat/fire()
 	for(var/key in payload_by_client)
@@ -595,7 +591,7 @@ SUBSYSTEM_DEF(chat)
 	D.forceMove(get_turf(target))
 	var/msg = message ? message : "Hey there! How's it going? I was thinking we could go on a date sometime. I'm a vampire and"
 	if(message_mode)
-		switch(message_mode) // dan // I mean, it is, isnt it?
+		switch(message_mode) // dan // I mean, it is, isnt it? // i want to dig in the sand too
 			if(MODE_SAY)
 				msg = msg
 			if(MODE_WHISPER)
@@ -608,8 +604,6 @@ SUBSYSTEM_DEF(chat)
 				msg = "[msg]!"
 			if(MODE_YELL)
 				msg = "$[msg]"
-			else
-				msg = "[msg][message_mode]" // to catch any custom modes
 
 	var/datum/rental_mommy/chat/mommy = D.say(msg, direct_to_mob = D) // silent screaming (??)
 	D.moveToNullspace()
@@ -712,7 +706,7 @@ SUBSYSTEM_DEF(chat)
 	/// - A color for the text background
 	/// - A color for the header background
 	/// and from this, we will make a furry dating sim style message that will be sent to the target *and* the speaker
-	ExtractCustomVerb(mommy)
+	// ExtractCustomVerb(mommy) // broken af
 	var/m_name       = mommy.speakername || mommy.source.name
 	var/m_verb       = mommy.message_saymod_comma || "says, "
 	var/m_rawmessage = mommy.original_message
@@ -863,7 +857,7 @@ SUBSYSTEM_DEF(chat)
 		cum += "<div style='width: auto; background: linear-gradient([tgangle]deg, [tgc_1], [tgc_2]); border: [tbs]px [tbt] [tbc]; display: flex; flex-direction: row;'>"
 		// now the profile picture
 		// cum += "<div style='width: auto; margin: 5px; padding: 5px;'>"
-		cum += "<img src='[m_pfp]' alt='x.x;' style='height: [img_size]px; width: [img_size]px; border-radius: 10px; margin-left: auto; margin-right: auto; margin-bottom: auto; text-align: center; object-fit: contain; padding: 7px'>"
+		cum += "<img src='[m_pfp]' alt='x.x;' style='height: [img_size]px; width: [img_size]px; border-radius: [headspace]px; margin-left: auto; margin-right: auto; margin-bottom: auto; text-align: center; object-fit: contain; padding: 1px'>"
 		// cum += "</div>"
 		cum += "</div>"
 
@@ -1817,6 +1811,8 @@ SUBSYSTEM_DEF(chat)
 	for(var/mmode in P.mommychat_settings)
 		if(mmode == MODE_PROFILE_PIC)
 			continue // tchia uncle chuck
+		if(!(mmode in SSchat.mandatory_modes))
+			continue
 		// First, the top box settings
 		var/list/topfox = list()
 		topfox["Mode"] = mmode
@@ -1854,7 +1850,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Image Box Outer Border Color",
 				"Val" = P.mommychat_settings[mmode]["TopBoxBorderColor"],
 				"Type" = "COLOR",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "TopBoxBorderColor",
 				"Desc" = "The color of the border for the section that contains the image for this message mode.",
 				"Default" = "000000"
@@ -1863,7 +1859,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Image Box Outer Border Width",
 				"Val" = P.mommychat_settings[mmode]["TopBoxBorderWidth"],
 				"Type" = "NUMBER",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "TopBoxBorderWidth",
 				"Desc" = "The width of the border for the section that contains the image for this message mode. Set to 0 to disable.",
 				"Default" = "1"
@@ -1872,7 +1868,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Image Box Outer Border Style",
 				"Val" = P.mommychat_settings[mmode]["TopBoxBorderStyle"],
 				"Type" = "SELECT",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "TopBoxBorderStyle",
 				"Desc" = "The style of the border for the section that contains the image for this message mode.",
 				"Default" = "solid",
@@ -1917,7 +1913,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Message Box Outer Border Color",
 				"Val" = P.mommychat_settings[mmode]["BottomBoxBorderColor"],
 				"Type" = "COLOR",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "BottomBoxBorderColor",
 				"Desc" = "The color of the border for the box that will contain your message.",
 				"Default" = "000000"
@@ -1926,7 +1922,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Message Box Outer Border Width",
 				"Val" = P.mommychat_settings[mmode]["BottomBoxBorderWidth"],
 				"Type" = "NUMBER",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "BottomBoxBorderWidth",
 				"Desc" = "The width of the border for the box that will contain your message. Set to 0 to disable.",
 				"Default" = "1"
@@ -1935,7 +1931,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Message Box Outer Border Style",
 				"Val" = P.mommychat_settings[mmode]["BottomBoxBorderStyle"],
 				"Type" = "SELECT",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "BottomBoxBorderStyle",
 				"Desc" = "The style of the border for the box that will contain your message.",
 				"Default" = "solid",
@@ -1980,7 +1976,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Border Color",
 				"Val" = P.mommychat_settings[mmode]["ButtonBorderColor"],
 				"Type" = "COLOR",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "ButtonBorderColor",
 				"Desc" = "The color of the border for the buttons.",
 				"Default" = "000000"
@@ -1989,7 +1985,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Border Width",
 				"Val" = P.mommychat_settings[mmode]["ButtonBorderWidth"],
 				"Type" = "NUMBER",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "ButtonBorderWidth",
 				"Desc" = "The width of the border for the buttons.",
 				"Default" = "1"
@@ -1998,7 +1994,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Border Style",
 				"Val" = P.mommychat_settings[mmode]["ButtonBorderStyle"],
 				"Type" = "SELECT",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "ButtonBorderStyle",
 				"Desc" = "The style of the border for the buttons.",
 				"Default" = "solid",
@@ -2016,7 +2012,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Border Color",
 				"Val" = P.mommychat_settings[mmode]["ImageBorderBorderColor"],
 				"Type" = "COLOR",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "ImageBorderBorderColor",
 				"Desc" = "The color of the border for the images.",
 				"Default" = "000000"
@@ -2025,7 +2021,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Border Width",
 				"Val" = P.mommychat_settings[mmode]["ImageBorderBorderWidth"],
 				"Type" = "NUMBER",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "ImageBorderBorderWidth",
 				"Desc" = "The width of the border for the images.",
 				"Default" = "1"
@@ -2034,7 +2030,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Border Style",
 				"Val" = P.mommychat_settings[mmode]["ImageBorderBorderStyle"],
 				"Type" = "SELECT",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "ImageBorderBorderStyle",
 				"Desc" = "The style of the border for the images.",
 				"Default" = "solid",
@@ -2052,7 +2048,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Outer Box Border Color",
 				"Val" = P.mommychat_settings[mmode]["OuterBoxBorderColor"],
 				"Type" = "COLOR",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "OuterBoxBorderColor",
 				"Desc" = "The color of the border that will go around the entire message box.",
 				"Default" = "000000"
@@ -2061,7 +2057,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Outer Box Border Width",
 				"Val" = P.mommychat_settings[mmode]["OuterBoxBorderWidth"],
 				"Type" = "NUMBER",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "OuterBoxBorderWidth",
 				"Desc" = "The width of the border that will go around the entire message box. Set to 0 to disable.",
 				"Default" = "1"
@@ -2070,7 +2066,7 @@ SUBSYSTEM_DEF(chat)
 				"Name" = "Outer Box Border Style",
 				"Val" = P.mommychat_settings[mmode]["OuterBoxBorderStyle"],
 				"Type" = "SELECT",
-				"Loc" = "R",
+				"Loc" = "L", // was R
 				"PKey" = "OuterBoxBorderStyle",
 				"Desc" = "The style of the border that will go around the entire message box.",
 				"Default" = "solid",

@@ -575,7 +575,7 @@
 					to_chat(user, span_warning("There is no room in [src] to load [bullet]!"))
 					break
 			// load it somewhere!
-			var/obj/item/ammo_casing/loaded_casing = insert_casing(user, bullet, FALSE, A_box)
+			var/obj/item/ammo_casing/loaded_casing = insert_casing(user, bullet, FALSE, A_box, !speedload)
 			if(!istype(loaded_casing, /obj/item/ammo_casing) && (!speedload || single_load))
 				break // didnt load anything, so abort
 			loadeds |= loaded_casing

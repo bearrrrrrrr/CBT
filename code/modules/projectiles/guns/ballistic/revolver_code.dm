@@ -72,18 +72,19 @@
 	var/how_rotatable = REV_BOTH_ALWAYS
 	var/eject_style = REV_EJECT_ADVANCED
 	/* sounds! */
-	var/rotate_forward_sound =       null
-	var/rotate_backward_sound =      null
-	var/cock_hammer_sound =          null
-	var/uncock_hammer_sound =        null
+	var/rotate_forward_sound =       'sound/weapons/ba_revolver/rotate_forward.ogg'
+	var/rotate_backward_sound =      'sound/weapons/ba_revolver/rotate_backward.ogg'
+	var/cock_hammer_sound =          'sound/weapons/ba_revolver/singleaction_cock.ogg'
+	var/uncock_hammer_sound =        'sound/weapons/ba_revolver/singleaction_un_cock.ogg'
 	/// for when we put the gun into a state where we can access the ammo, like swinging out the cylinder or half-cocking
-	var/open_gun_sound =             null
+	var/open_gun_sound =             'sound/weapons/ba_revolver/cylinder_open.ogg'
 	/// for making it not accessible anymore
-	var/close_gun_sound =            null
-	var/insert_single_round_sound =  null
-	var/eject_single_round_sound =   null
-	var/speedloader_sound =          null
-	var/eject_all_sound =            null
+	var/close_gun_sound =            'sound/weapons/ba_revolver/cylinder_close.ogg'
+	var/insert_single_round_sound =  'sound/weapons/ba_revolver/loadrevolver.ogg'
+	var/eject_single_round_sound =   'sound/weapons/ba_revolver/eject_single.ogg'
+	var/speedloader_sound =          'sound/weapons/ba_revolver/speedloader_act.ogg'
+	var/eject_all_sound =            'sound/weapons/ba_revolver/eject_multiple.ogg'
+	var/eject_all_no_shells_sound =  'sound/weapons/ba_revolver/eject_multiple_no_shells.ogg'
 	var/datum/weakref/listening_to = null // for knowing whose mousewheels to listen to
 	equipsound = 'sound/f13weapons/equipsounds/pistolequip.ogg'
 
@@ -132,6 +133,17 @@
 			eject_style = REV_EJECT_SINGLE
 			cock_method = REVCOCK_SINGLE_ACTION
 			load_index_offset = 3
+			rotate_forward_sound =       'sound/weapons/ba_revolver/rotate_forward.ogg'
+			rotate_backward_sound =      'sound/weapons/ba_revolver/rotate_backward.ogg'
+			cock_hammer_sound =          'sound/weapons/ba_revolver/singleaction_cock.ogg'
+			uncock_hammer_sound =        'sound/weapons/ba_revolver/singleaction_uncock.ogg'
+			open_gun_sound =             'sound/weapons/ba_revolver/singleload_halfcock_open.ogg'
+			close_gun_sound =            'sound/weapons/ba_revolver/singleload_halfcock_close.ogg'
+			insert_single_round_sound =  'sound/weapons/ba_revolver/loadrevolver.ogg'
+			eject_single_round_sound =   'sound/weapons/ba_revolver/eject_single.ogg'
+			speedloader_sound =          'sound/weapons/ba_revolver/speedloader_act.ogg'
+			eject_all_sound =            'sound/weapons/ba_revolver/eject_multiple.ogg'
+			eject_all_no_shells_sound =  'sound/weapons/ba_revolver/eject_multiple_no_shells.ogg'
 		if(REVKIND_BREAK_ACTION_REVOLVER)
 			single_load = FALSE
 			can_speedload = TRUE
@@ -527,8 +539,9 @@
 	var/safety = LAZYLEN(magazine.stored_ammo) // just in case, to prevent infinite loops. should never happen unless something is very wrong
 	mainloop:
 		while(safety--)
-			if(!speedload && !cause_delay(user, 0.2 SECONDS))
-				return
+			if(!speedload)
+				if(!cause_delay(user, 0.2 SECONDS))
+					return
 			var/obj/item/ammo_casing/bullet = null
 			for(var/obj/item/ammo_casing/candidate in A_box.stored_ammo)
 				if(!candidate.BB) // only try to load live rounds, not empties
@@ -913,16 +926,6 @@
 	)
 	fire_sound = 'sound/f13weapons/357magnum.ogg'
 	kind = REVKIND_SWINGOUT_DOUBLE_ACTION
-	rotate_forward_sound =       'sound/effects/portalboy_hit.ogg'
-	rotate_backward_sound =      'sound/effects/portalboy_death.ogg'
-	cock_hammer_sound =          'sound/effects/clownstep1.ogg'
-	uncock_hammer_sound =        'sound/effects/clownstep2.ogg'
-	open_gun_sound =             'sound/effects/bin_open.ogg'
-	close_gun_sound =            'sound/effects/bin_close.ogg'
-	insert_single_round_sound =  'sound/effects/bleeblee.ogg'
-	eject_single_round_sound =   'sound/effects/body_fall_over_dead.ogg'
-	speedloader_sound =          'sound/effects/boowomp.ogg'
-	eject_all_sound =            'sound/effects/break_stone.ogg'
 
 /obj/item/gun/ballistic/revolver/debug/Initialize()
 	. = ..()

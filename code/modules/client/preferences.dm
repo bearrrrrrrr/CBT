@@ -421,7 +421,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/screenshake = 100
 	var/damagescreenshake = 2
 	var/arousable = TRUE
-	var/widescreenpref = FALSE
+	var/widescreenpref = TRUE // OOOOOO
 	var/end_of_round_deathmatch = FALSE
 	var/autostand = TRUE
 	var/auto_ooc = FALSE
@@ -1624,7 +1624,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		dat += "<a href='?_src_=prefs;preference=save'>Save Setup</a> "
 
 	dat += "<a href='?_src_=prefs;preference=reset_all'>Reset Setup</a>"
-	if(check_rights_for(user.client, R_DEFAULT))
+	if(check_rights_for(user.client, R_DEBUG))
 		dat += "<a href='?_src_=prefs;preference=export_icon'>Export Icon</a>"
 	dat += "</center>"
 

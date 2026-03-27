@@ -136,7 +136,7 @@
 			rotate_forward_sound =       'sound/weapons/ba_revolver/rotate_forward.ogg'
 			rotate_backward_sound =      'sound/weapons/ba_revolver/rotate_backward.ogg'
 			cock_hammer_sound =          'sound/weapons/ba_revolver/singleaction_cock.ogg'
-			uncock_hammer_sound =        'sound/weapons/ba_revolver/singleaction_uncock.ogg'
+			uncock_hammer_sound =        'sound/weapons/ba_revolver/singleaction_un_cock.ogg'
 			open_gun_sound =             'sound/weapons/ba_revolver/singleload_halfcock_open.ogg'
 			close_gun_sound =            'sound/weapons/ba_revolver/singleload_halfcock_close.ogg'
 			insert_single_round_sound =  'sound/weapons/ba_revolver/loadrevolver.ogg'
@@ -268,9 +268,9 @@
 	else
 		snd = rotate_backward_sound
 	if(doer)
-		doer.playsound_local(doer, snd, 30, 1)
+		doer.playsound_local(doer, snd, 80, FALSE)
 	else
-		playsound(src, snd, 30, 1)
+		playsound(src, snd, 80, FALSE)
 
 // finds which index is the one that we can load/unload from
 // naturally, only relevant for single-load guns
@@ -297,7 +297,7 @@
 	if(!cause_delay(doer, 0.5 SECONDS))
 		return
 	loader_exposed = TRUE
-	playsound(doer, open_gun_sound, 30, 1)
+	playsound(doer, open_gun_sound, 80, FALSE)
 	if(eject_style == REV_EJECT_ALL)
 		auto_eject_casings(doer, TRUE)
 	else
@@ -307,7 +307,7 @@
 /obj/item/gun/ballistic/revolver/proc/close_gun(mob/doer)
 	loader_exposed = FALSE
 	hammer_state = GHAMMER_COCKED
-	playsound(doer, close_gun_sound, 30, 1)
+	playsound(doer, close_gun_sound, 80, FALSE)
 	inform_user(doer, REV_INFO_CLOSED_GUN)
 
 /// happens when you do something to automatically trigger the gun to open or close
@@ -376,16 +376,23 @@
 				toeject |= loaded
 				what_ejected = "loadeds"
 	//nothing?
-	if(!LAZYLEN(toeject))
+	// ejected anything?
+	var/ejected_something = FALSE
+	for(var/i in toeject)
+		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
+		if(istype(CB, /obj/item/ammo_casing))
+			snd = eject_all_no_shells_sound
+			ejected_something = TRUE
+	if(!ejected_something)
 		if(do_words)
-			to_chat(doer, span_notice("There are no casings to eject!"))
+			to_chat(doer, span_notice("Couldn't eject anything!"))
 		return
 	for(var/i in toeject)
 		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
 		if(!istype(CB, /obj/item/ammo_casing))
 			continue
 		var/fling = spew_everywhere && !CB.BB
-		eject_casing_at_index(doer, i, fling)
+		eject_casing_at_index(doer, i, fling, TRUE)
 	update_icon()
 	if(do_words)
 		if(singlebie)
@@ -397,9 +404,9 @@
 		else if(what_ejected == "loadeds")
 			inform_user(doer, REV_INFO_EJECTED_LOADEDS)
 	if(do_sound)
-		playsound(doer, snd, 30, 1)
+		playsound(doer, snd, 80, FALSE)
 
-/obj/item/gun/ballistic/revolver/proc/eject_casing_at_index(mob/doer, i, fling)
+/obj/item/gun/ballistic/revolver/proc/eject_casing_at_index(mob/doer, i, fling, do_sound = TRUE)
 	if(!can_interact_with_this(doer, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
 		return
 	var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, i)
@@ -411,24 +418,18 @@
 		CB.bounce_away(FALSE, toss_direction = randodir)
 	// chambered is handled by a proc, its auto-updated!
 	magazine.stored_ammo[i] = null // eject a shell, it leaves a gap
+	if(do_sound)
+		playsound(doer, eject_single_round_sound, 80, FALSE)
 
-/obj/item/gun/ballistic/revolver/proc/eject_specific_casing(mob/doer, obj/item/ammo_casing/CB, fling)
-	if(!can_interact_with_this(doer, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
-		return
-	// find the casing and eject it, used for the alt-click-to-eject-a-specific-round style of revolver
-	for(var/i in 1 to LAZYLEN(magazine.stored_ammo))
-		var/obj/item/ammo_casing/CB2 = LAZYACCESS(magazine.stored_ammo, i)
-		if(CB2 == CB)
-			eject_casing_at_index(doer, i, fling)
-			return
-
-/obj/item/gun/ballistic/revolver/proc/load_casing_at_index(mob/doer, obj/item/ammo_casing/CB, i)
+/obj/item/gun/ballistic/revolver/proc/load_casing_at_index(mob/doer, obj/item/ammo_casing/CB, i, do_sound = TRUE)
 	if(!can_interact_with_this(doer, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
 		return
 	if(istype(LAZYACCESS(magazine.stored_ammo, i), /obj/item/ammo_casing))
 		return // shouldnt load on top of an existing round
 	magazine.stored_ammo[i] = CB
 	CB.forceMove(magazine)
+	if(do_sound)
+		playsound(doer, insert_single_round_sound, 80, FALSE)
 
 /obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	..()
@@ -452,7 +453,7 @@
 
 /obj/item/gun/ballistic/revolver/attackby(obj/item/A, mob/user, params)
 	if(istype(A, /obj/item/ammo_casing))
-		return use_casing_on_gun(user, A)
+		return use_casing_on_gun(user, A, do_sound = TRUE)
 	if(istype(A, /obj/item/ammo_box))
 		return use_ammobox_on_gun(user, A)
 	. = ..()
@@ -575,14 +576,15 @@
 					to_chat(user, span_warning("There is no room in [src] to load [bullet]!"))
 					break
 			// load it somewhere!
-			var/obj/item/ammo_casing/loaded_casing = insert_casing(user, bullet, FALSE, A_box, !speedload)
+			var/do_sound = (speedload ? LAZYLEN(loadeds) <= 1 : TRUE) // if speedloading, only play the sound on the first one, otherwise play for each one
+			var/obj/item/ammo_casing/loaded_casing = insert_casing(user, bullet, FALSE, A_box, !speedload, do_sound)
 			if(!istype(loaded_casing, /obj/item/ammo_casing) && (!speedload || single_load))
 				break // didnt load anything, so abort
 			loadeds |= loaded_casing
 			advance_chamber(user)
 
 	if(speedload)
-		playsound(user, speedloader_sound, 30, 1)
+		playsound(user, speedloader_sound, 80, FALSE)
 	if(LAZYLEN(loadeds))
 		var/list/load_cool = list()
 		for(var/obj/item/ammo_casing/CB in loadeds)
@@ -630,7 +632,7 @@
 	delay_the_thing,
 	obj/item/ammo_box/camefrom,
 	initial_delay = TRUE,
-	)
+	do_sound = TRUE)
 	if(!can_interact_with_this(user, FALSE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
 		return
 	if(!magazine.does_that_fit_in_this(A_casing)) // another check to be safe
@@ -640,8 +642,7 @@
 		var/lindex = get_load_offset_index()
 		var/obj/item/ammo_casing/CB = LAZYACCESS(magazine.stored_ammo, lindex)
 		if(istype(CB, /obj/item/ammo_casing) && (!CB.BB || CB.type != A_casing.type)) // if the thing in the load index is an incompatible round, eject it first
-			eject_casing_at_index(user, lindex, FALSE)
-			playsound(user, eject_single_round_sound, 30, 1)
+			eject_casing_at_index(user, lindex, FALSE, do_sound)
 			delay_the_thing = TRUE
 		if(delay_the_thing)
 			if(!cause_delay(user, (0.8 SECONDS)))
@@ -653,8 +654,7 @@
 		if(initial_delay)
 			if(!cause_delay(user, (0.4 SECONDS)))
 				return
-		load_casing_at_index(user, A_casing, lindex)
-		playsound(user, insert_single_round_sound, 30, 1)
+		load_casing_at_index(user, A_casing, lindex, do_sound)
 		inform_user(user, REV_INFO_LOADED_SINGLE, A_casing)
 		return A_casing
 	var/index_offset = chamber_index // this way if the chamber index is 5 and the gun capacity is 6, it checks in this order: 5, 6, 1, 2, 3, 4
@@ -692,8 +692,7 @@
 				return
 		if(!can_interact_with_this(user, TRUE, REV_FLAG_NEEDS_MAGAZINE | REV_FLAG_NEEDS_LOADER_EXPOSED))
 			return
-		eject_casing_at_index(user, bestslot, FALSE)
-		playsound(user, eject_single_round_sound, 30, 1)
+		eject_casing_at_index(user, bestslot, FALSE, do_sound)
 	if(initial_delay)
 		if(!cause_delay(user, (0.4 SECONDS)))
 			return
@@ -701,8 +700,7 @@
 		return
 	if(camefrom)
 		camefrom.remove_casing(A_casing)
-	load_casing_at_index(user, A_casing, bestslot)
-	playsound(user, insert_single_round_sound, 30, 1)
+	load_casing_at_index(user, A_casing, bestslot, do_sound)
 	inform_user(user, REV_INFO_LOADED_SINGLE, A_casing)
 	return A_casing
 
@@ -743,7 +741,7 @@
 	if(hammer_state == GHAMMER_COCKED)
 		advance_chamber(user)
 	var/snd = hammer_state == GHAMMER_COCKED ? cock_hammer_sound : uncock_hammer_sound
-	playsound(user, snd, 30, 1)
+	playsound(user, snd, 80, FALSE)
 
 /obj/item/gun/ballistic/revolver/verb/spin()
 	set name = "Spin Chamber"
@@ -757,7 +755,7 @@
 
 	if(do_spin())
 		M.visible_message("[M] spins [src]'s chamber.", span_notice("You spin [src]'s chamber."))
-		playsound(src, 'sound/f13weapons/revolverspin.ogg', 30, 1)
+		playsound(src, 'sound/f13weapons/revolverspin.ogg', 80, FALSE)
 	else
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 

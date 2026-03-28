@@ -1,4 +1,5 @@
 GLOBAL_LIST_EMPTY(gun_accepted_magazines)
+GLOBAL_LIST_EMPTY(gun_accepted_casings)
 
 /obj/item/gun/ballistic
 	desc = "Now comes in flavors like GUN. Uses 10mm ammo, for some reason."
@@ -24,28 +25,15 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	/// Which direction do the casings fly out?
 	var/handedness = GUN_EJECTOR_RIGHT
 	var/cock_sound = "gun_slide_lock"
-	var/insert_magazine_delay = 1 SECONDS
+	var/insert_magazine_delay = 0.5 SECONDS
+	var/remove_magazine_delay = 0.5 SECONDS
+	var/revolver = FALSE // hack
 	fire_sound = null //null tells the gun to draw from the casing instead of the gun for sound
 
 /obj/item/gun/ballistic/Initialize()
 	. = ..()
-	if(spawnwithmagazine)
-		if (!magazine)
-			if(init_mag_type)
-				magazine = new init_mag_type(src)
-			else
-				magazine = new mag_type(src)
-			if(magazine.fixed_mag)
-				gun_tags |= GUN_INTERNAL_MAG
-	allowed_mags |= mag_type
-	allowed_mags |= subtypesof(mag_type)
-	if(extra_mag_types)
-		if(islist(extra_mag_types) && LAZYLEN(extra_mag_types))
-			allowed_mags |= extra_mag_types
-		else if (ispath(extra_mag_types))
-			allowed_mags |= typesof(extra_mag_types)
-	if(LAZYLEN(disallowed_mags))
-		allowed_mags -= disallowed_mags
+	give_magazine()
+	handle_accepted_magazines()
 	register_magazines()
 	chamber_round()
 	update_icon()
@@ -54,6 +42,28 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	if(!istype(magazine))
 		return
 	return SEND_SIGNAL(magazine, COMSIG_GUN_MAG_ADMIN_RELOAD) // get relayed, noob
+
+/obj/item/gun/ballistic/proc/give_magazine()
+	if(!spawnwithmagazine)
+		return
+	if (magazine)
+		return
+	if(init_mag_type)
+		magazine = new init_mag_type(src)
+	else
+		magazine = new mag_type(src)
+	if(magazine.fixed_mag)
+		gun_tags |= GUN_INTERNAL_MAG
+
+/obj/item/gun/ballistic/proc/handle_accepted_magazines()
+	allowed_mags |= typesof(mag_type)
+	if(extra_mag_types)
+		if(islist(extra_mag_types) && LAZYLEN(extra_mag_types))
+			allowed_mags |= extra_mag_types
+		else if (ispath(extra_mag_types))
+			allowed_mags |= typesof(extra_mag_types)
+	if(LAZYLEN(disallowed_mags))
+		allowed_mags -= disallowed_mags
 
 /obj/item/gun/ballistic/UpdateAmmoCountOverlay()
 	// if(isturf(loc))//Only show th ammo count if the magazine is, like, in an inventory or something. Mags on the ground don't need a big number on them, that's ugly.
@@ -115,18 +125,21 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 			chambered = null
 	chamber_round()
 
-/// If the chamber is empty, take a round from the magazine and put it in there
-/// If the chamber is not empty, or theres no magazine, do nothing
-/obj/item/gun/ballistic/proc/chamber_round()
-	if (chambered || !magazine)
+/obj/item/gun/ballistic/chamber_round(obj/item/ammo_casing/load_this)
+	if (chambered)
 		return
-	else if (magazine.ammo_count())
+	if (load_this)
+		chambered = load_this
+	else if(magazine && magazine.fixed_mag)
 		chambered = magazine.get_round()
-		chambered.forceMove(src)
+	chambered.forceMove(src)
 	update_icon()
 
 /obj/item/gun/ballistic/can_shoot()
-	return !!chambered?.BB
+	var/obj/item/ammo_casing/AC = get_chambered()
+	if(!!AC?.BB)
+		return TRUE
+	. = ..()
 /* 	if(!magazine || !magazine.ammo_count(0))
 		return FALSE
 	if(!casing_ejector)
@@ -134,8 +147,10 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)
 	..()
+	if(revolver) // it uh, does things differently
+		return
 	if(istype(A, /obj/item/ammo_casing))
-		return load_casing_into_internal_magazine(A, user)
+		return use_casing_on_gun(A, user)
 	if(istype(A, /obj/item/ammo_box))
 		return use_ammobox_on_gun(A, user)
 
@@ -148,12 +163,11 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return TRUE
 	return FALSE
 
-/obj/item/gun/ballistic/proc/load_casing_into_internal_magazine(obj/item/ammo_casing/A, mob/user)
-	if(!istype(magazine))
-		// todo: let people stick loose bullets into their mag-less gun
-		return
+/obj/item/gun/ballistic/proc/use_casing_on_gun(obj/item/ammo_casing/A, mob/user)
+	if(try_load_chamber_with_casing(A, user))
+		return TRUE
 	if(!magazine.fixed_mag)
-		return
+		return FALSE
 	if(magazine.load_from_casing(
 		A,
 		user,
@@ -163,6 +177,30 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		))
 		chamber_round()
 	update_icon()
+	return TRUE
+
+/obj/item/gun/ballistic/proc/try_load_chamber_with_casing(obj/item/ammo_casing/A, mob/user)
+	if (!istype(A))
+		return FALSE
+	if (!casing_probably_fits_in_chamber(A))
+		return FALSE
+	var/obj/item/ammo_casing/cbrd = get_chambered()
+	var/obj/item/ammo_casing/ejected
+	if(cbrd) // if its loaded with something, make it not be loaded with something
+		ejected = pump(cbrd, visible = FALSE, rechamber = FALSE, hard_eject = TRUE)
+	chamber_round(A)
+	playsound(src, manual_chamber_sound, 70, 1)
+	addtimer(CALLBACK(usr, GLOBAL_PROC_REF(playsound), src, 'sound/weapons/gun_chamber_round.ogg', 100, 1), 3)
+	update_icon()
+	if(!user)
+		return TRUE
+	if(ejected)
+		if (get_dist(user, ejected) <= 1 && user.put_in_hands(ejected))
+			to_chat(user, span_notice("You tactically swap \the [A] for \the [ejected] in the chamber of \the [src]."))
+		else
+			to_chat(user, span_notice("You load \the [A] into the chamber of \the [src], ejecting \the [ejected] onto the ground."))
+	else
+		to_chat(user, span_notice("You load \the [A] into the chamber of \the [src]."))
 	return TRUE
 
 /obj/item/gun/ballistic/proc/load_internal_magazine(obj/item/ammo_box/A, mob/user)
@@ -175,10 +213,49 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	update_icon()
 	return TRUE
 
+/proc/doing_something_with_guns(mob/user)
+	var/datum/weakref/loader = WEAKREF(user)
+	if(GLOB.currently_loading_something[loader] > world.time)
+		return TRUE
+	if(GLOB.currently_loading_something[loader] < world.time)
+		GLOB.currently_loading_something -= loader
+	return FALSE
+
 // gets the delay for you stuffing that ammobox into this gun
 /obj/item/gun/ballistic/proc/load_into_gun_delay(mob/user, obj/item/ammo_box/A)
+	if(insert_magazine_delay <= 0)
+		return TRUE
+	if(doing_something_with_guns(user))
+		to_chat(user, span_warning("You're already doing something!"))
+		return FALSE
 	var/datum/weakref/loader = WEAKREF(user)
 	var/insert_delay = insert_magazine_delay * A.magazine_load_delay_mult
+	GLOB.currently_loading_something[loader] = world.time + (insert_delay)
+	. = do_after(
+		user,
+		delay = insert_delay,
+		needhand = TRUE,
+		target = src,
+		progress = TRUE,
+		public_progbar = TRUE,
+		allow_movement = TRUE,
+		progbar_on_target = TRUE,
+		)
+	GLOB.currently_loading_something -= loader
+	if(!.)
+		to_chat(user, span_alert("You were interrupted!"))
+
+// gets the delay for you removing the magazine from this gun
+/obj/item/gun/ballistic/proc/remove_magazine_delay(mob/user)
+	if(!istype(magazine))
+		return FALSE
+	if(remove_magazine_delay <= 0)
+		return TRUE
+	if(doing_something_with_guns(user))
+		to_chat(user, span_warning("You're already doing something!"))
+		return FALSE
+	var/datum/weakref/loader = WEAKREF(user)
+	var/insert_delay = remove_magazine_delay * magazine.magazine_load_delay_mult
 	GLOB.currently_loading_something[loader] = world.time + (insert_delay)
 	. = do_after(
 		user,
@@ -231,6 +308,47 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	do_squish(0.75,0.75,0.25 SECONDS)
 	return TRUE
 
+// goes through the magazines this gun accepts, and checks if this thing fits in that thing
+// then caches the result in a list
+// format: /path/to/gun = list(/path/to/thing_that_fits = "yes", /path/to/thing_that_also_fits = "yes", etc)
+// also records if this *doesnt* fit, in which case its cached as "no", so we dont have to keep checking every time
+/obj/item/gun/ballistic/proc/casing_probably_fits_in_chamber(obj/item/ammo_casing/A)
+	if(!A)
+		return FALSE
+	if(!islist(GLOB.gun_accepted_casings[type]))
+		GLOB.gun_accepted_casings[type] = list()
+	var/list/whatitake = GLOB.gun_accepted_casings[type]
+	if(whatitake[type])
+		return whatitake[type] == "yes"
+	// new thing to check! first lets see if we have a loaded magazine and mess with that
+	if(istype(magazine))
+		if(magazine.does_that_fit_in_this(A))
+			whatitake[A.type] = "yes"
+			return TRUE
+		else
+			whatitake[A.type] = "no"
+			return FALSE
+	// unloaded, more likely to be the case(ing)
+	// go through the magazines this gun accepts and see if the round would fit in any of those
+	// does a lot of initializations but, should only happen once per gun per ammo
+	var/yes
+	for(var/mag in allowed_mags - disallowed_mags)
+		if(!ispath(mag))
+			continue
+		var/obj/item/ammo_box/magazine/magtest = new mag() // nullspace it
+		// go through the ammo that starts in that mag, and just sorta record them
+		for(var/obj/item/ammo_casing/bullet in magtest.stored_ammo)
+			whatitake[bullet.type] = "yes"
+		if(magtest.does_that_fit_in_this(A))
+			whatitake[A.type] = "yes"
+			yes = TRUE
+		else
+			whatitake[A.type] = "no"
+		qdel(magtest)
+		if(yes)
+			return TRUE
+	return FALSE
+
 /obj/item/gun/ballistic/proc/is_magazine_allowed(obj/item/ammo_box/mag_to_check, mob/user)
 	. = FALSE
 	if(!istype(mag_to_check))
@@ -246,36 +364,27 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 	if(user)
 		to_chat(user, span_alert("You can't seem to fit \the [mag_to_check] into \the [src]."))
 
-/obj/item/gun/ballistic/proc/load_fixed_magazine(obj/item/casing_or_magazine, user, params)
-	if(istype(casing_or_magazine, /obj/item/ammo_casing) || istype(casing_or_magazine, /obj/item/ammo_box))
-		var/num_loaded = magazine.attackby(casing_or_magazine, user, params, 1)
-		if(num_loaded)
-			to_chat(user, span_notice("You load [num_loaded] shell\s into \the [src]!"))
-			playsound(user, 'sound/weapons/shotguninsert.ogg', 60, 1)
-			casing_or_magazine.update_icon()
-			update_icon()
-			chamber_round(0)
-			return TRUE
-		else
-			to_chat(user, span_alert("You can't fit \the [casing_or_magazine] into \the [src]!"))
-			return FALSE
-
-/obj/item/gun/ballistic/proc/pump(mob/living/M, visible = TRUE)
+/obj/item/gun/ballistic/proc/pump(mob/living/M, visible = TRUE, rechamber = TRUE, hard_eject = FALSE)
 	if(visible)
 		M.visible_message(span_warning("[M] [cock_wording]\s \the [src]."), span_warning("You [cock_wording] \the [src]."))
 		playsound(M, cock_sound, 60, 1)
-	pump_unload(M)
-	pump_reload(M)
+	var/obj/item/ammo_casing/unloaded = pump_unload(M, hard_eject)
+	if (rechamber)
+		pump_reload(M)
 	update_icon()	//I.E. fix the desc
 	update_firemode()
 	do_squish(0.75,0.75,0.25 SECONDS)
-	return 1
+	return unloaded
 
-/obj/item/gun/ballistic/proc/pump_unload(mob/M)
-	if(chambered)//We have a shell in the chamber
-		chambered.forceMove(drop_location())//Eject casing
+/obj/item/gun/ballistic/proc/pump_unload(mob/M, hard_eject = FALSE)
+	if(!chambered)//We have a shell in the chamber
+		return
+	chambered.forceMove(drop_location())//Eject casing
+	if(hard_eject)
 		chambered.bounce_away()
-		chambered = null
+	var/obj/item/ammo_casing/ejected = chambered
+	chambered = null
+	return ejected
 
 /obj/item/gun/ballistic/proc/pump_reload(mob/M)
 	if(chambered)
@@ -290,27 +399,22 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		return TRUE
 
 /obj/item/gun/ballistic/attack_self(mob/living/user)
-	if(magazine)
-		if(magazine.fixed_mag || !casing_ejector)
-			pump(user, TRUE)
-			update_icon()
-		else
-			eject_magazine(user, !en_bloc, TRUE)
-			update_icon()
-		return
-	if(chambered)
-		pump(user, TRUE)
-		update_icon()
-		return
-	to_chat(user, span_notice("There's no magazine in \the [src]."))
+	pump(user, TRUE)
 	update_icon()
 	return
 
-///obj/item/gun/ballistic/AltClick(mob/living/user)
-//	pump(user, TRUE)
+/obj/item/gun/ballistic/AltClick(mob/living/user)
+	if(!magazine)
+		return
+	if(magazine.fixed_mag)
+		return
+	eject_magazine(user, !en_bloc, TRUE)
+	update_icon()
 
 /obj/item/gun/ballistic/proc/eject_magazine(mob/living/user, put_it_in_their_hand, makesound, maketext)
 	if(magazine.fixed_mag)
+		return FALSE
+	if(!remove_magazine_delay(user))
 		return FALSE
 	magazine.forceMove(drop_location())
 	if(put_it_in_their_hand)
@@ -397,14 +501,6 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 		damage_multiplier *= GUN_LESS_DAMAGE_T2 // -15% damage
 		sawn_off = TRUE
 		gun_accuracy_zone_type = ZONE_WEIGHT_SHOTGUN
-		/*
-		init_firemodes = list(
-			list(mode_name="Single-fire", mode_desc="Send Vagabonds flying back several paces", burst_size=1, icon="semi"),
-		)
-		initialize_firemodes()
-		if(firemodes.len)
-			set_firemode(sel_mode)
-			*/
 		update_icon()
 		return 1
 		
@@ -466,154 +562,154 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 				return turn(user.dir, pick(0, -90, 90, 180))
 	return angle2dir_cardinal(rand(0,360)) // something fucked up, just send a direction
 
-/obj/item/gun/ballistic/Reload(mob/user)
-	if(!ishuman(user))
-		return FALSE
-	if(on_cooldown(user) || !user.has_direct_access_to(src, STORAGE_VIEW_DEPTH))
-		to_chat(user, span_notice("You can't reload \the [src] right now!"))
-		return FALSE
-	//Shotguns, bolt action rifles, etc.
-	if(magazine?.fixed_mag)
-		return InternalReload(user)
-	//External magazine weapons
-	else
-		return MagReload(user)
+// /obj/item/gun/ballistic/Reload(mob/user)
+// 	if(!ishuman(user))
+// 		return FALSE
+// 	if(on_cooldown(user) || !user.has_direct_access_to(src, STORAGE_VIEW_DEPTH))
+// 		to_chat(user, span_notice("You can't reload \the [src] right now!"))
+// 		return FALSE
+// 	//Shotguns, bolt action rifles, etc.
+// 	if(magazine?.fixed_mag)
+// 		return InternalReload(user)
+// 	//External magazine weapons
+// 	else
+// 		return MagReload(user)
 
-/*
-* Reloads an internal magazine of a weapon with boxes of ammo in your inventory or loose rounds. Unsafe, call Reload() instead.
-*/
-/obj/item/gun/ballistic/proc/InternalReload(mob/user)
-	//typecast the user as a human
-	var/mob/living/carbon/human/H = user
+// /*
+// * Reloads an internal magazine of a weapon with boxes of ammo in your inventory or loose rounds. Unsafe, call Reload() instead.
+// */
+// /obj/item/gun/ballistic/proc/InternalReload(mob/user)
+// 	//typecast the user as a human
+// 	var/mob/living/carbon/human/H = user
 
-	//Wait a second or two so we can't spam reload too quickly. Also if this runtimes then the gun will never be reloadable again with this proc so rip
-	busy_action = TRUE
-	playsound(get_turf(H), "rustle", rand(50,100), 1, SOUND_DISTANCE(7))
-	H.visible_message(span_notice("[H] starts reloading \the [src]..."), span_notice("You start looking for a magazine to reload \the [src] with..."), span_notice("You hear the clinking of metal..."))
-	if(!do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE))
-		busy_action = FALSE
-		return FALSE
+// 	//Wait a second or two so we can't spam reload too quickly. Also if this runtimes then the gun will never be reloadable again with this proc so rip
+// 	busy_action = TRUE
+// 	playsound(get_turf(H), "rustle", rand(50,100), 1, SOUND_DISTANCE(7))
+// 	H.visible_message(span_notice("[H] starts reloading \the [src]..."), span_notice("You start looking for a magazine to reload \the [src] with..."), span_notice("You hear the clinking of metal..."))
+// 	if(!do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE))
+// 		busy_action = FALSE
+// 		return FALSE
 
-	var/isrevolver = FALSE
-	if(istype(src, /obj/item/gun/ballistic/revolver) || istype(magazine, /obj/item/ammo_box/magazine/internal/cylinder))//Pull any loose shells out, first.
-		var/obj/item/gun/ballistic/revolver/R = src
-		isrevolver = TRUE
-		R.eject_shells(H, TRUE)
-	else if((chambered && !chambered?.BB) || (!chambered && LAZYLEN(magazine?.stored_ammo)))//Eject any empty shells from the chamber
-		attack_self(H)
+// 	var/isrevolver = FALSE
+// 	if(istype(src, /obj/item/gun/ballistic/revolver) || istype(magazine, /obj/item/ammo_box/magazine/internal/cylinder))//Pull any loose shells out, first.
+// 		var/obj/item/gun/ballistic/revolver/R = src
+// 		isrevolver = TRUE
+// 		R.eject_shells(H, TRUE)
+// 	else if((chambered && !chambered?.BB) || (!chambered && LAZYLEN(magazine?.stored_ammo)))//Eject any empty shells from the chamber
+// 		attack_self(H)
 
-	var/list/validboxes = list()
-	var/boxedrounds = 0 //If we don't have enough boxed rounds, look for loose rounds as well
-	var/list/validcasings = list()
-	var/list/yourstuff = H?.contents + H?.belt?.contents + H?.back?.contents + H?.wear_suit?.contents + H?.shoes?.contents + H?.head?.contents + H?.l_store?.contents + H?.r_store?.contents + H?.s_store?.contents + H?.wear_neck?.contents
-	//find compatible boxes of ammo
-	for(var/obj/item/ammo_box/B in yourstuff)
-		var/rounds = LAZYLEN(B.stored_ammo)
-		if(rounds > 0 && B.caliber?[1] == magazine.caliber?[1] && !isgun(B.loc))
-			boxedrounds += rounds
-			validboxes += B
-			validboxes[B] = rounds
-	//find loose rounds if there aren't enough boxed rounds to fill the magazine
-	if(LAZYLEN(validboxes) == 0 || boxedrounds < (magazine.max_ammo - magazine.ammo_count()))
-		for(var/obj/item/ammo_casing/AC in yourstuff)
-			if(AC.BB && (AC.caliber in magazine?.caliber) && !isgun(AC.loc))//Not spent, correct caliber
-				if(AC.loc in validboxes)//don't count these twice
-					continue
-				validcasings += AC
+// 	var/list/validboxes = list()
+// 	var/boxedrounds = 0 //If we don't have enough boxed rounds, look for loose rounds as well
+// 	var/list/validcasings = list()
+// 	var/list/yourstuff = H?.contents + H?.belt?.contents + H?.back?.contents + H?.wear_suit?.contents + H?.shoes?.contents + H?.head?.contents + H?.l_store?.contents + H?.r_store?.contents + H?.s_store?.contents + H?.wear_neck?.contents
+// 	//find compatible boxes of ammo
+// 	for(var/obj/item/ammo_box/B in yourstuff)
+// 		var/rounds = LAZYLEN(B.stored_ammo)
+// 		if(rounds > 0 && B.caliber?[1] == magazine.caliber?[1] && !isgun(B.loc))
+// 			boxedrounds += rounds
+// 			validboxes += B
+// 			validboxes[B] = rounds
+// 	//find loose rounds if there aren't enough boxed rounds to fill the magazine
+// 	if(LAZYLEN(validboxes) == 0 || boxedrounds < (magazine.max_ammo - magazine.ammo_count()))
+// 		for(var/obj/item/ammo_casing/AC in yourstuff)
+// 			if(AC.BB && (AC.caliber in magazine?.caliber) && !isgun(AC.loc))//Not spent, correct caliber
+// 				if(AC.loc in validboxes)//don't count these twice
+// 					continue
+// 				validcasings += AC
 
-	if(LAZYLEN(validboxes) || LAZYLEN(validcasings))
-		if(LAZYLEN(validboxes) && magazine.ammo_count() < magazine.max_ammo)
-			sortTim(validboxes, /proc/cmp_numeric_asc, TRUE)//Sort them by least to most filled so we empty the least filled ones first.
-			for(var/obj/item/ammo_box/B in validboxes)
-				if(isnull(B) || QDELETED(B))
-					continue
-				//reload from this ammo box multiple times if our magazine doesn't get filled in one go or we need to chamber a round and then fill up.
-				if(!magazine?.multiload)//internal magazines that don't load multiple rounds at once
-					var/numroundstoload = clamp((magazine.max_ammo - magazine.ammo_count()), 1, LAZYLEN(B.stored_ammo))
-					for(var/i = 1; i <= numroundstoload; i++)
-						if(do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && H.has_direct_access_to(B, STORAGE_VIEW_DEPTH) && attackby(B, user))
-							continue
-						else
-							break
-				else// magazines that accept multiple rounds at once
-					if(do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && H.has_direct_access_to(B, STORAGE_VIEW_DEPTH) && attackby(B, user))
-						if(!isrevolver && ((chambered && !chambered?.BB) || !chambered))//spent round or an empty chamber
-							attack_self(H)//rack the bolt
-							//Insert another round to top us off since we just chambered a round
-							if(LAZYLEN(B.stored_ammo) && do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && magazine.ammo_count() < magazine.max_ammo && LAZYLEN(B.stored_ammo))
-								attackby(B, user)
-						var/newammo = LAZYLEN(B.stored_ammo)
-						if(newammo == 0)
-							validboxes -= B
-						else
-							validboxes[B] = newammo //update this box's ammo count
-							sortTim(validboxes, /proc/cmp_numeric_asc, TRUE)			
-				if(LAZYLEN(magazine.stored_ammo) < magazine.max_ammo)
-					continue
-				else
-					break
-		if(LAZYLEN(validcasings) && magazine.ammo_count() < magazine.max_ammo)
-			for(var/obj/item/ammo_casing/AC in validcasings)
-				if(isnull(AC) || QDELETED(AC) || !AC.BB)
-					continue
-				if(do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && H.has_direct_access_to(AC, STORAGE_VIEW_DEPTH) && attackby(AC, user))
-					validcasings -= AC
-					if(!isrevolver && ((chambered && !chambered?.BB) || !chambered))//spent round or an empty chamber
-						attack_self(H)//rack the bolt
-				if(magazine.ammo_count() < magazine.max_ammo)
-					continue
-				else
-					break
-	else
-		to_chat(H, span_alert("You couldn't find any ammunition that fits into \the [src]!"))
+// 	if(LAZYLEN(validboxes) || LAZYLEN(validcasings))
+// 		if(LAZYLEN(validboxes) && magazine.ammo_count() < magazine.max_ammo)
+// 			sortTim(validboxes, /proc/cmp_numeric_asc, TRUE)//Sort them by least to most filled so we empty the least filled ones first.
+// 			for(var/obj/item/ammo_box/B in validboxes)
+// 				if(isnull(B) || QDELETED(B))
+// 					continue
+// 				//reload from this ammo box multiple times if our magazine doesn't get filled in one go or we need to chamber a round and then fill up.
+// 				if(!magazine?.multiload)//internal magazines that don't load multiple rounds at once
+// 					var/numroundstoload = clamp((magazine.max_ammo - magazine.ammo_count()), 1, LAZYLEN(B.stored_ammo))
+// 					for(var/i = 1; i <= numroundstoload; i++)
+// 						if(do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && H.has_direct_access_to(B, STORAGE_VIEW_DEPTH) && attackby(B, user))
+// 							continue
+// 						else
+// 							break
+// 				else// magazines that accept multiple rounds at once
+// 					if(do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && H.has_direct_access_to(B, STORAGE_VIEW_DEPTH) && attackby(B, user))
+// 						if(!isrevolver && ((chambered && !chambered?.BB) || !chambered))//spent round or an empty chamber
+// 							attack_self(H)//rack the bolt
+// 							//Insert another round to top us off since we just chambered a round
+// 							if(LAZYLEN(B.stored_ammo) && do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && magazine.ammo_count() < magazine.max_ammo && LAZYLEN(B.stored_ammo))
+// 								attackby(B, user)
+// 						var/newammo = LAZYLEN(B.stored_ammo)
+// 						if(newammo == 0)
+// 							validboxes -= B
+// 						else
+// 							validboxes[B] = newammo //update this box's ammo count
+// 							sortTim(validboxes, /proc/cmp_numeric_asc, TRUE)			
+// 				if(LAZYLEN(magazine.stored_ammo) < magazine.max_ammo)
+// 					continue
+// 				else
+// 					break
+// 		if(LAZYLEN(validcasings) && magazine.ammo_count() < magazine.max_ammo)
+// 			for(var/obj/item/ammo_casing/AC in validcasings)
+// 				if(isnull(AC) || QDELETED(AC) || !AC.BB)
+// 					continue
+// 				if(do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE) && H.has_direct_access_to(AC, STORAGE_VIEW_DEPTH) && attackby(AC, user))
+// 					validcasings -= AC
+// 					if(!isrevolver && ((chambered && !chambered?.BB) || !chambered))//spent round or an empty chamber
+// 						attack_self(H)//rack the bolt
+// 				if(magazine.ammo_count() < magazine.max_ammo)
+// 					continue
+// 				else
+// 					break
+// 	else
+// 		to_chat(H, span_alert("You couldn't find any ammunition that fits into \the [src]!"))
 
-	busy_action = FALSE
-	return TRUE
+// 	busy_action = FALSE
+// 	return TRUE
 
-/// Reloads a magazine into a gun that uses external magazines. Unsafe, call Reload() instead.
-/obj/item/gun/ballistic/proc/MagReload(mob/user)
-	if(!mag_type)
-		return FALSE
-	//typecast the user as a human
-	var/mob/living/carbon/human/H = user
+// /// Reloads a magazine into a gun that uses external magazines. Unsafe, call Reload() instead.
+// /obj/item/gun/ballistic/proc/MagReload(mob/user)
+// 	if(!mag_type)
+// 		return FALSE
+// 	//typecast the user as a human
+// 	var/mob/living/carbon/human/H = user
 
-	//Wait a second or two so we can't spam reload too quickly. Also if this runtimes then the gun will never be reloadable again with this proc so rip
-	busy_action = TRUE
-	playsound(get_turf(H), "rustle", rand(50,100), 1, SOUND_DISTANCE(7))
-	H.visible_message(span_notice("[H] starts reloading \the [src]..."), span_notice("You start looking for some ammunition to reload \the [src] with..."), span_notice("You hear the clinking of metal..."))
-	if(!do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE))
-		busy_action = FALSE
-		return FALSE
+// 	//Wait a second or two so we can't spam reload too quickly. Also if this runtimes then the gun will never be reloadable again with this proc so rip
+// 	busy_action = TRUE
+// 	playsound(get_turf(H), "rustle", rand(50,100), 1, SOUND_DISTANCE(7))
+// 	H.visible_message(span_notice("[H] starts reloading \the [src]..."), span_notice("You start looking for some ammunition to reload \the [src] with..."), span_notice("You hear the clinking of metal..."))
+// 	if(!do_after(H, reloading_time, TRUE, src, TRUE, allow_movement = TRUE, stay_close = TRUE, public_progbar = TRUE))
+// 		busy_action = FALSE
+// 		return FALSE
 
-	//First, search for compatible magazines in some predictable locations. Let's not search every item on them to save compute time. Skips organs and other weird stuff by doing it this way.
-	var/list/validmags = list()
-	var/list/yourstuff = H?.contents + H?.belt?.contents + H?.back?.contents + H?.wear_suit?.contents + H?.shoes?.contents + H?.head?.contents + H?.l_store?.contents + H?.r_store?.contents + H?.s_store?.contents + H?.wear_neck?.contents
-	for(var/obj/item/ammo_box/magazine/M in yourstuff)
-		var/rounds = LAZYLEN(M.stored_ammo)
-		if(rounds > 0 && is_magazine_allowed(M))//valid mags have ammo and are allowed to be inserted into your gun
-			validmags[M] = rounds
-	yourstuff = null
+// 	//First, search for compatible magazines in some predictable locations. Let's not search every item on them to save compute time. Skips organs and other weird stuff by doing it this way.
+// 	var/list/validmags = list()
+// 	var/list/yourstuff = H?.contents + H?.belt?.contents + H?.back?.contents + H?.wear_suit?.contents + H?.shoes?.contents + H?.head?.contents + H?.l_store?.contents + H?.r_store?.contents + H?.s_store?.contents + H?.wear_neck?.contents
+// 	for(var/obj/item/ammo_box/magazine/M in yourstuff)
+// 		var/rounds = LAZYLEN(M.stored_ammo)
+// 		if(rounds > 0 && is_magazine_allowed(M))//valid mags have ammo and are allowed to be inserted into your gun
+// 			validmags[M] = rounds
+// 	yourstuff = null
 
-	//Then, try to insert the one with the most ammo in it.
-	if(LAZYLEN(validmags))
-		sortTim(validmags, /proc/cmp_numeric_dsc, TRUE)//Sort them by most filled to least filled.
-		for(var/obj/item/ammo_box/magazine/M in validmags)
-			var/obj/magloc = isobj(M.loc) ? M.loc : null
-			if(isgun(magloc))// Don't swap magazines with two guns.
-				continue
-			var/obj/oldmag = isobj(magazine) ? magazine : null
-			if(H.has_direct_access_to(M, STORAGE_VIEW_DEPTH) && attackby(M, user))//Actually reload the gun
-				if(magloc && oldmag)
-					if(!magloc.attackby(oldmag, user))// Try to put your old mag in the new one's place
-						H.quick_equip(oldmag)// If that fails, quick equip it.
-				break//If we loaded a new mag successfully, stop
-	else
-		to_chat(H, span_alert("You couldn't find any filled magazines that fit \the [src]!"))
-		busy_action = FALSE
-		return FALSE
+// 	//Then, try to insert the one with the most ammo in it.
+// 	if(LAZYLEN(validmags))
+// 		sortTim(validmags, /proc/cmp_numeric_dsc, TRUE)//Sort them by most filled to least filled.
+// 		for(var/obj/item/ammo_box/magazine/M in validmags)
+// 			var/obj/magloc = isobj(M.loc) ? M.loc : null
+// 			if(isgun(magloc))// Don't swap magazines with two guns.
+// 				continue
+// 			var/obj/oldmag = isobj(magazine) ? magazine : null
+// 			if(H.has_direct_access_to(M, STORAGE_VIEW_DEPTH) && attackby(M, user))//Actually reload the gun
+// 				if(magloc && oldmag)
+// 					if(!magloc.attackby(oldmag, user))// Try to put your old mag in the new one's place
+// 						H.quick_equip(oldmag)// If that fails, quick equip it.
+// 				break//If we loaded a new mag successfully, stop
+// 	else
+// 		to_chat(H, span_alert("You couldn't find any filled magazines that fit \the [src]!"))
+// 		busy_action = FALSE
+// 		return FALSE
 
-	busy_action = FALSE
-	return TRUE
+// 	busy_action = FALSE
+// 	return TRUE
 
 /////////// DEBUG STUFF
 
@@ -676,8 +772,4 @@ GLOBAL_LIST_EMPTY(gun_accepted_magazines)
 
 	for(var/obj/item/thingy in spawned)
 		SEND_SIGNAL(thingy, COMSIG_GUN_MAG_ADMIN_RELOAD)
-
-
-
-
 

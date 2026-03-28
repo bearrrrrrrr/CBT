@@ -1,5 +1,5 @@
 /obj/item/firing_pin
-	name = "electronic firing pin"
+	name = "firing pin"
 	desc = "A small authentication device, to be inserted into a firearm receiver to allow operation. NT safety regulations require all new designs to incorporate one."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "firing_pin"
@@ -7,6 +7,7 @@
 	flags_1 = CONDUCT_1
 	w_class = WEIGHT_CLASS_TINY
 	attack_verb = list("poked")
+	var/hide = TRUE
 	var/fail_message = span_warning("INVALID USER.")
 	var/selfdestruct = 0 // Explode when user check is failed.
 	var/force_replace = 0 // Can forcefully replace other pins.

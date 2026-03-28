@@ -18,11 +18,18 @@
 	maxHealth = 40 
 	health = 40
 	robust_searching = 1
-	move_to_delay = 5
+	move_to_delay = 8
 	turns_per_move = 5
 	waddle_amount = 2
 	waddle_up_time = 1
 	waddle_side_time = 1
+	randpixel = 12
+	density = FALSE
+	aggro_vision_range = 4 
+	//tiles within they start attacking, doesn't count the mobs tile
+
+	vision_range = 5
+	//tiles within they start making noise, does count the mobs tile
 	speak_emote = list(
 		"growls",
 		"murrs",

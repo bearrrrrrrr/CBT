@@ -35,70 +35,11 @@
 	)
 	reloading_time = 0.5 SECONDS
 
-/* /obj/item/gun/ballistic/shotgun/process_chamber(mob/living/user, empty_chamber = 0)
-	return ..() //changed argument value
-
-/obj/item/gun/ballistic/shotgun/can_shoot()
-	return !!chambered?.BB
-
-/obj/item/gun/ballistic/shotgun/attack_self(mob/living/user)
-	update_icon()
-	//if(recentpump > world.time)
-	//	return
-	if(IS_STAMCRIT(user))//CIT CHANGE - makes pumping shotguns impossible in stamina softcrit
-		to_chat(user, span_warning("You're too exhausted for that."))//CIT CHANGE - ditto
-		return//CIT CHANGE - ditto
-	pump(user, TRUE)
-	//if(HAS_TRAIT(user, TRAIT_FAST_PUMP))
-	//	recentpump = world.time + GUN_COCK_SHOTGUN_LIGHTNING
-	//else
-	//	recentpump = world.time + cock_delay
-	if(istype(user))//CIT CHANGE - makes pumping shotguns cost a lil bit of stamina.
-		user.adjustStaminaLossBuffered(2) //CIT CHANGE - DITTO. make this scale inversely to the strength stat when stats/skills are added
-	return
- */
 /obj/item/gun/ballistic/shotgun/blow_up(mob/user)
 	. = 0
 	if(chambered && chambered.BB)
 		process_fire(user, user, FALSE)
 		. = 1
-
-/* /obj/item/gun/ballistic/shotgun/proc/pump(mob/M, visible = TRUE)
-	if(visible)
-		M.visible_message(span_warning("[M] racks [src]."), span_warning("You rack [src]."))
-	playsound(M, cock_sound, 60, 1)
-	pump_unload(M)
-	pump_reload(M)
-	update_icon()	//I.E. fix the desc
-	update_firemode()
-	return 1
-
-/obj/item/gun/ballistic/shotgun/proc/pump_unload(mob/M)
-	if(chambered)//We have a shell in the chamber
-		chambered.forceMove(drop_location())//Eject casing
-		chambered.bounce_away()
-		chambered = null
-
-/obj/item/gun/ballistic/shotgun/proc/pump_reload(mob/M)
-	if(!magazine.ammo_count())
-		return 0
-	var/obj/item/ammo_casing/AC = magazine.get_round() //load next casing.
-	chambered = AC
-
-/obj/item/gun/ballistic/shotgun/examine(mob/user)
-	. = ..()
-	if (chambered)
-		. += "A [chambered.BB ? "live" : "spent"] one is in the chamber."
-
- *//obj/item/gun/ballistic/shotgun/lethal
-	mag_type = /obj/item/ammo_box/magazine/internal/shot/lethal
-
-/* /// Pump if click with empty thing
-/obj/item/gun/ballistic/shotgun/shoot_with_empty_chamber(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0)
-	if(chambered && HAS_TRAIT(user, TRAIT_FAST_PUMP))
-		attack_self(user)
-	else
-		..() */
 
 /* * * * * * * * * * * * * *
  * Double barrel shotguns  *
@@ -493,11 +434,6 @@
 
 	casing_ejector = TRUE // makes it eject casings -- and not need pumping!!!
 	fire_sound = 'sound/f13weapons/auto5.ogg'
-
-
-/* /obj/item/gun/ballistic/shotgun/automatic/combat/auto5/shoot_live_shot(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0)
-	..()
-	src.pump(user) */
 
 /* * * * * * * * * * *
  * Lever-Action shotgun

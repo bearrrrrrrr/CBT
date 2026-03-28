@@ -52,88 +52,88 @@
 
 	Do note that this is when the mouseclick is *released*, after a drag has been made.
 */
-/mob/proc/ClickOn(atom/A, params)
+/mob/proc/ClickOn(atom/atom_clicked, params)
 	//SHOULD_NOT_SLEEP(TRUE)
-	if(check_click_intercept(params,A))
+	if(check_click_intercept(params,atom_clicked))
 		return
 
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"] && modifiers["middle"])
-		return ShiftMiddleClickOn(A)
+		return ShiftMiddleClickOn(atom_clicked)
 	if(modifiers["shift"] && modifiers["ctrl"])
-		return CtrlShiftClickOn(A)
+		return CtrlShiftClickOn(atom_clicked)
 	if(modifiers["middle"])
-		return MiddleClickOn(A)
+		return MiddleClickOn(atom_clicked)
 	if(modifiers["shift"] && (client && client.show_popup_menus || modifiers["right"])) //CIT CHANGE - makes shift-click examine use right click instead of left click in combat mode
-		return ShiftClickOn(A)
+		return ShiftClickOn(atom_clicked)
 	if(modifiers["alt"]) // alt and alt-gr (rightalt)
-		return AltClickOn(A)
+		return AltClickOn(atom_clicked)
 	if(modifiers["ctrl"])
-		return CtrlClickOn(A)
+		return CtrlClickOn(atom_clicked)
 
 	if(modifiers["right"]) //CIT CHANGE - allows right clicking to perform actions
-		return RightClickOn(A, params) //CIT CHANGE - ditto
+		return RightClickOn(atom_clicked, params) //CIT CHANGE - ditto
 
 	if(incapacitated(ignore_restraints = 1, allow_crit = TRUE))
 		return
 
-	face_atom(A)
+	face_atom(atom_clicked)
 
 	if(!CheckActionCooldown(immediate = TRUE))
 		return
 
-	if(!modifiers["catcher"] && A.IsObscured())
+	if(!modifiers["catcher"] && atom_clicked.IsObscured())
 		return
 
 	if(ismecha(loc))
 		var/obj/mecha/M = loc
-		M.click_action(A,src,params)
+		M.click_action(atom_clicked,src,params)
 		return TRUE
 
 	if(restrained())
 		DelayNextAction(CLICK_CD_HANDCUFFED)
-		return RestrainedClickOn(A)
+		return RestrainedClickOn(atom_clicked)
 
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		DelayNextAction(CLICK_CD_HANDCUFFED)   //Doing shit in cuffs shall be vey slow
-		UnarmedAttack(A, FALSE, modifiers)
+		UnarmedAttack(atom_clicked, FALSE, modifiers)
 		return
 
 	if(in_throw_mode)
-		throw_item(A)
+		throw_item(atom_clicked)
 		return
 
-	var/obj/item/W = get_active_held_item()
-	var/obj/item/V = get_inactive_held_item()
+	var/obj/item/active_item = get_active_held_item()
+	var/obj/item/offhand_item = get_inactive_held_item()
 
-	if(W == A)
-		W.attack_self(src)
+	if(active_item == atom_clicked)
+		active_item.attack_self(src)
 		update_inv_hands()
 		return
 
 	//These are always reachable.
 	//User itself, current loc, and user inventory
-	if(has_direct_access_to(A, FAR_DEPTH))
-		if(W)
-			if(V)
-				if(W.is_dual_wielded && V.is_dual_wielded) 
+	if(has_direct_access_to(atom_clicked, FAR_DEPTH))
+		if(active_item)
+			if(offhand_item)
+				if(active_item.is_dual_wielded && offhand_item.is_dual_wielded) 
 					if(!dual_wield_queue_swap)
-						dual_wield_queue_swap = 1
-						W.melee_attack_chain(src, A, params)
-						DelayNextAction(W.attack_speed)
+						dual_wield_queue_swap = TRUE
+						active_item.melee_attack_chain(src, atom_clicked, params)
+						DelayNextAction(active_item.attack_speed)
 						return
 					else
-						dual_wield_queue_swap = 0
+						dual_wield_queue_swap = FALSE
 						swap_hand()
-						V.melee_attack_chain(src, A, params)
+						offhand_item.melee_attack_chain(src, atom_clicked, params)
 						swap_hand()
-						DelayNextAction(V.attack_speed)
+						DelayNextAction(offhand_item.attack_speed)
 						return
 
-			return W.melee_attack_chain(src, A, params)
+			return active_item.melee_attack_chain(src, atom_clicked, params)
 		else
-			. = UnarmedAttack(A, TRUE, a_intent)
-			if(!(. & NO_AUTO_CLICKDELAY_HANDLING) && ismob(A))
+			. = UnarmedAttack(atom_clicked, TRUE, a_intent)
+			if(!(. & NO_AUTO_CLICKDELAY_HANDLING) && ismob(atom_clicked))
 				// from huntinghorn.dm and huntinghorneffects.dm
 				if(HAS_TRAIT(src, TRAIT_HH_COOLDOWN_IGNORE) && prob(40))
 					return
@@ -145,54 +145,57 @@
 		return
 
 	//Standard reach turf to turf or reaching inside storage
-	if(can_reach(A, INVENTORY_DEPTH, reach))
-		if(W)
-			if(V)
-				if(W.is_dual_wielded && V.is_dual_wielded) 
+	if(can_reach(atom_clicked, INVENTORY_DEPTH, reach))
+		if(active_item)
+			if(offhand_item)
+				if(active_item.is_dual_wielded && offhand_item.is_dual_wielded) 
 					if(!dual_wield_queue_swap)
-						dual_wield_queue_swap = 1
-						W.melee_attack_chain(src, A, params)
-						DelayNextAction(W.attack_speed)
+						dual_wield_queue_swap = TRUE
+						active_item.melee_attack_chain(src, atom_clicked, params)
+						DelayNextAction(active_item.attack_speed)
 						return
 					else
-						dual_wield_queue_swap = 0
+						dual_wield_queue_swap = FALSE
 						swap_hand()
-						V.melee_attack_chain(src, A, params)
+						offhand_item.melee_attack_chain(src, atom_clicked, params)
 						swap_hand()
-						DelayNextAction(V.attack_speed)
+						DelayNextAction(offhand_item.attack_speed)
 						return
 
-			return W.melee_attack_chain(src, A, params)
+			return active_item.melee_attack_chain(src, atom_clicked, params)
 		else
-			. = UnarmedAttack(A, TRUE, a_intent)
-			if(!(. & NO_AUTO_CLICKDELAY_HANDLING) && ismob(A))
+			. = UnarmedAttack(atom_clicked, TRUE, a_intent)
+			if(!(. & NO_AUTO_CLICKDELAY_HANDLING) && ismob(atom_clicked))
 				// from huntinghorn.dm and huntinghorneffects.dm
 				if(HAS_TRAIT(src, TRAIT_HH_COOLDOWN_IGNORE) && prob(40))
 					return
 				DelayNextAction(CLICK_CD_MELEE)
 			return
+	
+	// Atom is out of reach, treat as a ranged click if possible
+	// Makes guns shoot
 	else
-		if(!isturf(A) && !isturf(A.loc))
+		if(!isturf(atom_clicked) && !isturf(atom_clicked.loc))
 			return
-		if(W)
-			if(V)
-				if(W.is_dual_wielded && V.is_dual_wielded) 
+		if(active_item)
+			if(offhand_item)
+				if(active_item.is_dual_wielded && offhand_item.is_dual_wielded) 
 					if(!dual_wield_queue_swap)
-						dual_wield_queue_swap = 1
-						W.ranged_attack_chain(src, A, params)
-						DelayNextAction(W.attack_speed)
+						dual_wield_queue_swap = TRUE
+						active_item.ranged_attack_chain(src, atom_clicked, params)
+						DelayNextAction(active_item.attack_speed)
 						return
 					else
-						dual_wield_queue_swap = 0
+						dual_wield_queue_swap = FALSE
 						swap_hand()
-						V.ranged_attack_chain(src, A, params)
+						offhand_item.ranged_attack_chain(src, atom_clicked, params)
 						swap_hand()
-						DelayNextAction(V.attack_speed)
+						DelayNextAction(offhand_item.attack_speed)
 						return
 
-			return W.ranged_attack_chain(src, A, params)
+			return active_item.ranged_attack_chain(src, atom_clicked, params)
 		else
-			return RangedAttack(A,params)
+			return RangedAttack(atom_clicked,params)
 
 //Is the atom obscured by a PREVENT_CLICK_UNDER_1 object above it
 /atom/proc/IsObscured()
@@ -259,26 +262,37 @@
 /*
 	Middle click
 	Only used for swapping hands
+	and opening ur gunhole
 */
 /mob/proc/MiddleClickOn(atom/A)
+	. = SEND_SIGNAL(A, COMSIG_MOB_MIDDLECLICKON, src)
+	. = SEND_SIGNAL(src, COMSIG_MOB_MIDDLECLICKED_SOMETHING, A)
+	if(. & COMSIG_MOB_CANCEL_CLICKON)
+		return
+	. |= A.MiddleClick(src)
 	return
 
-/mob/living/carbon/MiddleClickOn(atom/A)
+/mob/living/MiddleClickOn(atom/A)
+	. = ..()
+	if(. & COMSIG_MOB_CANCEL_CLICKON)
+		return
+	if(incapacitated(allow_crit = TRUE))
+		swap_hand()
+		return
 	if(!stat && mind && iscarbon(A) && A != src)
 		var/datum/antagonist/changeling/C = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(C && C.chosen_sting)
 			C.chosen_sting.try_to_sting(src,A)
 			return
-	swap_hand()
 
 /mob/living/simple_animal/drone/MiddleClickOn(atom/A)
 	swap_hand()
 
 // In case of use break glass
-/*
-/atom/proc/MiddleClick(mob/M as mob)
+// glass: broken
+/atom/proc/MiddleClick(mob/M)
 	return
-*/
+
 
 /*
 	Shift click
@@ -480,6 +494,7 @@
 /* MouseWheelOn */
 
 /mob/proc/MouseWheelOn(atom/A, delta_x, delta_y, params)
+	SEND_SIGNAL(src, COMSIG_MOB_MOUSEWHEEL, A, delta_x, delta_y, params)
 	return
 
 /mob/dead/observer/MouseWheelOn(atom/A, delta_x, delta_y, params)

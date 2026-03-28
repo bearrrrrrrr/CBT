@@ -1,7 +1,7 @@
 PROCESSING_SUBSYSTEM_DEF(progress_bars)
 	name = "ProgBars" // jitter jitter jitter
 	flags = SS_NO_INIT
-	wait = 0.2 SECONDS
+	wait = 0.1 SECONDS
 
 	/// List of bar_ids and their corresponding progress bars
 	/// format: list("bar_id" = /datum/progressbar-initted)

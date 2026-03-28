@@ -382,7 +382,7 @@
 	var/status = 0  //basically if the number increases it means that the projectile for some reason has to miss
 
 	status += check_pacifism_lesser(src, firer, target)
-	status += check_awareness_hit_chance(target)
+	status += check_hitormiss_gun(target)
 	status += multichance_projectile_hit_behaviour(src, firer, target, status)
 
 	if(!status)
@@ -390,7 +390,7 @@
 	else
 		return FALSE
 
-/obj/item/projectile/proc/check_awareness_hit_chance(atom/target)
+/obj/item/projectile/proc/check_hitormiss_gun(atom/target)
 	if(!isliving(target))
 		return FALSE
 	if(!istype(fired_from, /obj/item/gun))
@@ -486,7 +486,7 @@
 				playsound(loc, hitsound, volume, 1, -1)
 			if(COOLDOWN_FINISHED(L, projectile_message_antispam))
 				COOLDOWN_START(L, projectile_message_antispam, ATTACK_MESSAGE_ANTISPAM_TIME)
-				// L.visible_message(span_danger("[L] is hit by \a [src][organ_hit_text]!"), 
+				// L.visible_message(span_danger("[L] is hit by \a [src][organ_hit_text]!"),
 				// 		span_userdanger("[L] is hit by \a [src][organ_hit_text]!"), null, COMBAT_MESSAGE_RANGE)
 		// if(candink && def_zone == BODY_ZONE_HEAD) //fortuna edit
 		// 	var/playdink = rand(1, 10)
@@ -1171,7 +1171,7 @@
 		var/newdam = rand(damage_low, damage_high)
 		if(newdam > dam_out)
 			dam_out = newdam
-	
+
 
 /obj/item/projectile/proc/prep_list_crits()
 	var/highest = 0

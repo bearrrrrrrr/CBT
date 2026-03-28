@@ -402,7 +402,7 @@
 	var/mob/living/living_firer = firer
 
 	var/awareness = isnull(living_firer.stat_perception) ? 0 : max(0, living_firer.stat_perception)
-	var/hit_chance = min(100, firing_gun.base_accuracy + (awareness * 5))
+	var/hit_chance = clamp(firing_gun.base_accuracy + (awareness * 5), 10, 95)
 
 	if(prob(hit_chance))
 		return FALSE

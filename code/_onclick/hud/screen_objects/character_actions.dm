@@ -93,17 +93,17 @@
 // 			I = H.get_active_held_item()
 // 			I?.melee_attack_chain(H, H, params)
 
-/atom/movable/screen/aooc_hud_button
-	name = "AOOC"
-	icon_state = "aooc"
-	screen_loc = ui_character_actions
-	alpha = 0 
-	mouse_opacity = 0
+// /atom/movable/screen/aooc_hud_button
+// 	name = "AOOC"
+// 	icon_state = "aooc"
+// 	screen_loc = ui_character_actions
+// 	alpha = 0 
+// 	mouse_opacity = 0
 
-/atom/movable/screen/aooc_hud_button/Click(location,control,params)
-	if(usr.client)
-		var/msg = input(usr, "AOOC Message", "AOOC", null)
-		usr.client.aooc(msg)
+// /atom/movable/screen/aooc_hud_button/Click(location,control,params)
+// 	if(usr.client)
+// 		var/msg = input(usr, "AOOC Message", "AOOC", null)
+// 		usr.client.aooc(msg)
 
 /atom/movable/screen/newbie_hud_button
 	name = "Help/Newbie"

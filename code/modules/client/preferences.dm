@@ -1225,7 +1225,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							</a>"}
 					dat += "</td>"
 					dat += "<td class='undies_cell'>"
-					dat += "<div class='undies_label'>PDA Style</div>"
+					dat += "<div class='undies_label'>Phone Style</div>"
 					dat += {"<a 
 								class='undies_link' 
 								href='
@@ -1235,7 +1235,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							</a>"}
 					dat += "</td>"
 					dat += "<td class='undies_cell'>"
-					dat += "<div class='undies_label'>PDA Ringmessage</div>"
+					dat += "<div class='undies_label'>Phone Ringmessage</div>"
 					dat += {"<a 
 								class='undies_link' 
 								href='
@@ -1267,15 +1267,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<br>"
 			dat += "<b>Action Buttons:</b> <a href='?_src_=prefs;preference=action_buttons'>[(buttons_locked) ? "Locked In Place" : "Unlocked"]</a><br>"
 			dat += "<br>"
-			dat += "<b>PDA Color:</b> <span style='border:1px solid #161616; background-color: [pda_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=pda_color;task=input'>Change</a><BR>"
-			//dat += "<b>PDA Style:</b> <a href='?_src_=prefs;task=input;preference=pda_style'>[pda_style]</a><br>"
-			//dat += "<b>PDA Reskin:</b> <a href='?_src_=prefs;task=input;preference=pda_skin'>[pda_skin]</a><br>"
+			dat += "<b>Phone Color:</b> <span style='border:1px solid #161616; background-color: [pda_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=pda_color;task=input'>Change</a><BR>"
+			//dat += "<b>Phone Style:</b> <a href='?_src_=prefs;task=input;preference=pda_style'>[pda_style]</a><br>"
+			//dat += "<b>Phone Reskin:</b> <a href='?_src_=prefs;task=input;preference=pda_skin'>[pda_skin]</a><br>"
 			dat += "<br>"
 			dat += "<b>Ghost Ears:</b> <a href='?_src_=prefs;preference=ghost_ears'>[(chat_toggles & CHAT_GHOSTEARS) ?  "All Speech":"Nearest Creatures"]</a><br>"
 			dat += "<b>Ghost Radio:</b> <a href='?_src_=prefs;preference=ghost_radio'>[(chat_toggles & CHAT_GHOSTRADIO) ? "All Messages":"No Messages"]</a><br>"
 			dat += "<b>Ghost Sight:</b> <a href='?_src_=prefs;preference=ghost_sight'>[(chat_toggles & CHAT_GHOSTSIGHT) ? "All Emotes":"Nearest Creatures" ]</a><br>"
 			dat += "<b>Ghost Whispers:</b> <a href='?_src_=prefs;preference=ghost_whispers'>[(chat_toggles & CHAT_GHOSTWHISPER) ? "All Speech":"Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost PDA:</b> <a href='?_src_=prefs;preference=ghost_pda'>[(chat_toggles & CHAT_GHOSTPDA) ? "All Messages" : "Nearest Creatures"]</a><br>"
+			dat += "<b>Ghost Phone:</b> <a href='?_src_=prefs;preference=ghost_pda'>[(chat_toggles & CHAT_GHOSTPDA) ? "All Messages" : "Nearest Creatures"]</a><br>"
 			//dat += "<b>Window Flashing:</b> <a href='?_src_=prefs;preference=winflash'>[(windowflashing) ? "Enabled":"Disabled"]</a><br>"
 			dat += "<br>"
 			dat += "<b>Play Hunting Horn Sounds:</b> <a href='?_src_=prefs;preference=hear_hunting_horns'>[(toggles & SOUND_HUNTINGHORN) ? "Enabled":"Disabled"]</a><br>"
@@ -2380,15 +2380,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		TOGGLE_VAR(preview_hide_undies)
 
 	if(href_list["preference"] == "choose_pda_skin")
-		var/pickedPDASkin = input(user, "Choose your DataPal appearance. (You can change this in-game by ctrl-shift-clicking the DataPal!)", "Character Preference", pda_skin) as null|anything in GLOB.pda_skins
+		var/pickedPDASkin = input(user, "Choose your Phone appearance. (You can change this in-game by ctrl-shift-clicking the Phone!)", "Character Preference", pda_skin) as null|anything in GLOB.pda_skins
 		if(pickedPDASkin)
 			pda_skin = pickedPDASkin
 
 	if(href_list["preference"] == "choose_pda_message")
 		var/new_message = stripped_multiline_input_or_reflect(
 			user, 
-			"What message would you like to display when someone rings your DataPal? (Leave blank to disable)",
-			"DataPal Ring Message",
+			"What message would you like to display when someone rings your Phone? (Leave blank to disable)",
+			"Phone Ring Message",
 			pda_ringmessage,
 			30)
 		if(!isnull(new_message))
@@ -3592,11 +3592,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						if (parent && parent.mob && parent.mob.hud_used)
 							parent.mob.hud_used.update_ui_style(ui_style2icon(UI_style))
 				if("pda_style")
-					var/pickedPDAStyle = input(user, "Choose your PDA style.", "Character Preference", pda_style)  as null|anything in GLOB.pda_styles
+					var/pickedPDAStyle = input(user, "Choose your Phone style.", "Character Preference", pda_style)  as null|anything in GLOB.pda_styles
 					if(pickedPDAStyle)
 						pda_style = pickedPDAStyle
 				if("pda_color")
-					var/pickedPDAColor = input(user, "Choose your PDA Interface color.", "Character Preference",pda_color) as color|null
+					var/pickedPDAColor = input(user, "Choose your Phone Interface color.", "Character Preference",pda_color) as color|null
 					if(pickedPDAColor)
 						pda_color = pickedPDAColor
 				if ("max_chat_length")

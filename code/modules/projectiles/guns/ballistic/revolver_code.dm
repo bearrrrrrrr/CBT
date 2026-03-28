@@ -157,8 +157,18 @@
 			how_rotatable = REV_BOTH_ALWAYS
 			eject_style = REV_EJECT_ADVANCED
 			cock_method = REVCOCK_DOUBLE_ACTION
-
 			load_index_offset = 0
+			rotate_forward_sound =       'sound/weapons/ba_revolver/shotgun_rotate_forward.ogg'
+			rotate_backward_sound =      'sound/weapons/ba_revolver/shotgun_rotate_backward.ogg'
+			cock_hammer_sound =          'sound/weapons/ba_revolver/singleaction_cock.ogg'
+			uncock_hammer_sound =        'sound/weapons/ba_revolver/singleaction_un_cock.ogg'
+			open_gun_sound =             'sound/weapons/ba_revolver/shotgun_open.ogg'
+			close_gun_sound =            'sound/weapons/ba_revolver/shotgun_close.ogg'
+			insert_single_round_sound =  'sound/weapons/ba_revolver/shotgun_casing_in.ogg'
+			eject_single_round_sound =   'sound/weapons/ba_revolver/shotgun_casing_eject.ogg'
+			speedloader_sound =          'sound/weapons/ba_revolver/speedloader_act.ogg'
+			eject_all_sound =            'sound/weapons/ba_revolver/shotgun_casing_eject.ogg'
+			eject_all_no_shells_sound =  'sound/weapons/ba_revolver/shotgun_casing_eject.ogg'
 
 /obj/item/gun/ballistic/revolver/proc/mouse_wheel_signal_handler(
 	mob/living/user,
@@ -243,6 +253,8 @@
 /// doer just determines who gets the sound
 /obj/item/gun/ballistic/revolver/proc/advance_chamber(mob/doer, direction, manually)
 	if(!magazine)
+		return
+	if(LAZYLEN(magazine.stored_ammo) < 2) // just one shoot hole, cant exactly change what you shoot
 		return
 	if(doing_something_with_guns(doer))
 		to_chat(doer, span_warning("You're already doing something!"))
@@ -453,7 +465,7 @@
 
 /obj/item/gun/ballistic/revolver/attackby(obj/item/A, mob/user, params)
 	if(istype(A, /obj/item/ammo_casing))
-		return use_casing_on_gun(user, A, do_sound = TRUE)
+		return use_casing_on_gun(user, A)
 	if(istype(A, /obj/item/ammo_box))
 		return use_ammobox_on_gun(user, A)
 	. = ..()
@@ -600,14 +612,6 @@
 		to_chat(user, span_green("Loaded [what_i_loaded]!"))
 		update_icon()
 		A_box.update_icon()
-		if(speedload)
-			var/fully_loaded = TRUE
-			for(var/obj/item/ammo_casing/inside in magazine.stored_ammo)
-				if(istype(inside, /obj/item/ammo_casing) && inside.BB)
-					continue
-				fully_loaded = FALSE
-			if(fully_loaded)
-				close_gun(user) // make it somewhat more streamlined
 		return TRUE
 	else
 		to_chat(user, span_alert("Couldn't load anything from [A_box]"))
@@ -963,6 +967,27 @@
 	init_firemodes = list(
 		/datum/firemode/single_action
 	)
+
+/obj/item/gun/ballistic/revolver/debug/break_shotgun
+	name = "Debug Break-Action Shotgun"
+	desc = "This is a break-action gun that demonstrates the break-action style of shotgun. squish dans butt!"
+	kind = REVKIND_BREAK_ACTION_SHOTGUN
+	icon = 'icons/fallout/objects/guns/ballistic.dmi'
+	lefthand_file = 'icons/fallout/onmob/weapons/guns_lefthand.dmi'
+	righthand_file = 'icons/fallout/onmob/weapons/guns_righthand.dmi'
+	icon_state = "widowmaker"
+	inhand_icon_state = "shotgundouble"
+	mag_type = /obj/item/ammo_box/magazine/internal/shot/dual
+	weapon_class = WEAPON_CLASS_CARBINE
+	weapon_weight = GUN_TWO_HAND_ONLY
+	damage_multiplier = GUN_EXTRA_DAMAGE_0
+	gun_accuracy_zone_type = ZONE_WEIGHT_PRECISION
+	init_firemodes = list(
+		/datum/firemode/semi_auto/shotgun_fixed,
+		/datum/firemode/burst/two/shotgun_fixed,
+	)
+	sawn_desc = "Someone took the time to chop the last few inches off the barrel and stock of this shotgun. Now, the wide spread of this hand-cannon's short-barreled shots makes it perfect for short-range crowd control."
+	fire_sound = 'sound/f13weapons/max_sawn_off.ogg'
 
 
 

@@ -97,6 +97,8 @@
 	name = "AOOC"
 	icon_state = "aooc"
 	screen_loc = ui_character_actions
+	alpha = 0 
+	mouse_opacity = 0
 
 /atom/movable/screen/aooc_hud_button/Click(location,control,params)
 	if(usr.client)

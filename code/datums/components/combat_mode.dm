@@ -72,19 +72,19 @@
 	mode_flags |= COMBAT_MODE_ACTIVE
 	mode_flags &= ~COMBAT_MODE_INACTIVE
 	SEND_SIGNAL(source, COMSIG_LIVING_COMBAT_ENABLED, forced)
-	if(!silent)
-		var/self_message = forced? span_warning("Your muscles reflexively tighten!") : span_warning("You drop into a combative stance!")
-		if(visible && (forced || world.time >= combatmessagecooldown))
-			combatmessagecooldown = world.time + 10 SECONDS
-			if(!forced)
-				if(source.a_intent != INTENT_HELP)
-					source.visible_message(span_warning("[source] [source.resting ? "tenses up" : "drops into a combative stance"]."), self_message)
-				else
-					source.visible_message(span_notice("[source] [pick("looks","seems","goes")] [pick("alert","attentive","vigilant")]."))
-			else
-				source.visible_message(span_warning("[source] drops into a combative stance!"), self_message)
-		else
-			to_chat(source, self_message)
+	// if(!silent)
+	// 	var/self_message = forced? span_warning("Your muscles reflexively tighten!") : span_warning("You drop into a combative stance!")
+	// 	if(visible && (forced || world.time >= combatmessagecooldown))
+	// 		combatmessagecooldown = world.time + 10 SECONDS
+	// 		if(!forced)
+	// 			if(source.a_intent != INTENT_HELP)
+	// 				source.visible_message(span_warning("[source] [source.resting ? "tenses up" : "drops into a combative stance"]."), self_message)
+	// 			else
+	// 				source.visible_message(span_notice("[source] [pick("looks","seems","goes")] [pick("alert","attentive","vigilant")]."))
+	// 		else
+	// 			source.visible_message(span_warning("[source] drops into a combative stance!"), self_message)
+	// 	else
+	// 		to_chat(source, self_message)
 		//if(playsound)
 			//source.playsound_local(source, 'sound/misc/ui_toggle_vats.ogg', 50, FALSE, pressure_affected = FALSE) //Sound from interbay!
 	RegisterSignal(source, COMSIG_MOB_CLIENT_MOUSEMOVE,PROC_REF(onMouseMove))
@@ -128,8 +128,8 @@
 
 ///Changes the user direction to (try) match the pointer.
 /datum/component/combat_mode/proc/onMouseMove(mob/source, object, location, control, params)
-	if(source.client.show_popup_menus)
-		return
+	// if(source.client.show_popup_menus)
+	// 	return
 	source.face_atom(object, TRUE)
 	lastmousedir = source.dir
 
@@ -146,8 +146,8 @@
 		return TRUE
 	mode_flags |= COMBAT_MODE_TOGGLED
 	enable_combat_mode(source, silent, FALSE, visible, HAS_TRAIT(source, TRAIT_COMBAT_MODE_LOCKED), TRUE)
-	if(source.client)
-		source.client.show_popup_menus = FALSE
+	// if(source.client)
+	// 	source.client.show_popup_menus = FALSE
 	return TRUE
 
 /// Disables intentionally being in combat mode. Please try to use the COMSIG_COMBAT_MODE_CHECK signal for feedback when possible.
@@ -156,8 +156,8 @@
 		return TRUE
 	mode_flags &= ~COMBAT_MODE_TOGGLED
 	disable_combat_mode(source, silent, FALSE, visible, !(mode_flags & COMBAT_MODE_ACTIVE), TRUE)
-	if(source.client)
-		source.client.show_popup_menus = TRUE
+	// if(source.client)
+	// 	source.client.show_popup_menus = TRUE
 	return TRUE
 
 /// Returns a field of flags that are contained in both the second arg and our bitfield variable.

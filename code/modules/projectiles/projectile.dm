@@ -382,12 +382,31 @@
 	var/status = 0  //basically if the number increases it means that the projectile for some reason has to miss
 
 	status += check_pacifism_lesser(src, firer, target)
+	status += check_hitormiss_gun(target)
 	status += multichance_projectile_hit_behaviour(src, firer, target, status)
 
 	if(!status)
 		return TRUE
 	else
 		return FALSE
+
+/obj/item/projectile/proc/check_hitormiss_gun(atom/target)
+	if(!isliving(target))
+		return FALSE
+	if(!istype(fired_from, /obj/item/gun))
+		return FALSE
+	if(!isliving(firer))
+		return FALSE
+
+	var/obj/item/gun/firing_gun = fired_from
+	var/mob/living/living_firer = firer
+
+	var/awareness = isnull(living_firer.stat_perception) ? 0 : max(0, living_firer.stat_perception)
+	var/hit_chance = clamp(firing_gun.base_accuracy + (awareness * 5), 10, 95)
+
+	if(prob(hit_chance))
+		return FALSE
+	return TRUE
 
 /obj/item/projectile/proc/on_hit(atom/target, blocked = FALSE)
 	if(fired_from)
@@ -467,7 +486,7 @@
 				playsound(loc, hitsound, volume, 1, -1)
 			if(COOLDOWN_FINISHED(L, projectile_message_antispam))
 				COOLDOWN_START(L, projectile_message_antispam, ATTACK_MESSAGE_ANTISPAM_TIME)
-				// L.visible_message(span_danger("[L] is hit by \a [src][organ_hit_text]!"), 
+				// L.visible_message(span_danger("[L] is hit by \a [src][organ_hit_text]!"),
 				// 		span_userdanger("[L] is hit by \a [src][organ_hit_text]!"), null, COMBAT_MESSAGE_RANGE)
 		// if(candink && def_zone == BODY_ZONE_HEAD) //fortuna edit
 		// 	var/playdink = rand(1, 10)
@@ -1152,7 +1171,7 @@
 		var/newdam = rand(damage_low, damage_high)
 		if(newdam > dam_out)
 			dam_out = newdam
-	
+
 
 /obj/item/projectile/proc/prep_list_crits()
 	var/highest = 0

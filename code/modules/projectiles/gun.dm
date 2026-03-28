@@ -58,6 +58,10 @@ ATTACHMENTS
 	var/damage_multiplier = 1 //Multiplies damage of projectiles fired from this gun
 	var/penetration_multiplier = 1 //Multiplies armor penetration of projectiles fired from this gun
 
+	/// Baseline percent chance for a projectile from this gun to hit a mob before awareness scaling.
+	var/base_accuracy = 90
+	var/gun_archetype = "normal" //normal, swift, precise, heavy.
+
 	/// can we be put into a turret
 	var/can_turret = TRUE
 	/// can we be put in a circuit

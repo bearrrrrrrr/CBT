@@ -52,16 +52,15 @@
 	if(client?.prefs)
 		output += "<center><p>Welcome, <b>[client.prefs.be_random_name ? "random name player" : client.prefs.real_name]</b></p>"
 		output += "<center><p><a href='byond://?src=[REF(src)];show_preferences=1'>Setup Character</a></p>"
-		if(SSquirks.initialized)
-			if(!(PMC_QUIRK_OVERHAUL_2K23 in client.prefs.current_version))
-				output += "<center><p>[span_alert("You have quirks from the old system that haven't been converted!")]</p>"
-				output += "<center><p><a href='byond://?src=[REF(src)];quirkconversion=1'>Click here to do something about that!</a></p>"
-			else
-				output += "<center><p><a href='byond://?src=[REF(src)];quirks=1'>Configure Quirks!</a></p>"
+		// if(SSquirks.initialized)
+		// 	if(!(PMC_QUIRK_OVERHAUL_2K23 in client.prefs.current_version))
+		// 		output += "<center><p>[span_alert("You have quirks from the old system that haven't been converted!")]</p>"
+		// 		output += "<center><p><a href='byond://?src=[REF(src)];quirkconversion=1'>Click here to do something about that!</a></p>"
+		// 	else
+		// 		output += "<center><p><a href='byond://?src=[REF(src)];quirks=1'>Configure Quirks!</a></p>"
 		// output += "<center><p><a href='byond://?src=[REF(src)];show_hornychat=1'>Configure Profile Pics!</a></p>"
 
 	if(SSticker.current_state <= GAME_STATE_PREGAME)
-		output += "<p>Please be patient, the game is starting soon!</p>"
 		output += "<p><a href='byond://?src=[REF(src)];refresh=1'>(Refresh)</a></p>"
 		output += "<p><a href='byond://?src=[REF(src)];refresh_chat=1)'>(Fix Chat Window)</a></p>"
 		output += "<p><a href='byond://?src=[REF(src)];fit_viewport_lobby=1)'>(Fit Viewport)</a></p>"
@@ -78,7 +77,7 @@
 
 	output += "</center>"
 
-	var/datum/browser/popup = new(src, "playersetup", "<div align='center'>Game Preferences</div>", 400, 600)
+	var/datum/browser/popup = new(src, "playersetup", "<div align='center'>Coy-Co Cryogenics Soul Selector</div>", 200, 280)
 	popup.set_window_options("can_close=0")
 	popup.set_content(output.Join())
 	popup.open(FALSE)

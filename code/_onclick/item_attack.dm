@@ -231,8 +231,8 @@
 	if(!attacker.client || !hurted.client)
 		return TRUE // one of them lacks a clint
 	// now the real PVP check
-	if(attacker.enabled_combat_indicator && hurted.enabled_combat_indicator)
-		return TRUE
+	// if(attacker.enabled_combat_indicator && hurted.enabled_combat_indicator)
+	// 	return TRUE
 	return FALSE
 
 //the equivalent of the standard version of attack() but for object targets.

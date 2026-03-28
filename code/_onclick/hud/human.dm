@@ -382,9 +382,9 @@
 	// triage.hud = src
 	// infodisplay += triage
 
-	aooc_hud_button = new /atom/movable/screen/aooc_hud_button()
-	aooc_hud_button.hud = src
-	infodisplay += aooc_hud_button
+	// aooc_hud_button = new /atom/movable/screen/aooc_hud_button()
+	// aooc_hud_button.hud = src
+	// infodisplay += aooc_hud_button
 
 	newbie_hud_button = new /atom/movable/screen/newbie_hud_button()
 	newbie_hud_button.hud = src

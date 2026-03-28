@@ -16,43 +16,43 @@
 	if(enabled_combat_indicator == state)
 		return
 
-	if(!combat_indicator)
-		//visible_message("loading combat indictaor")
-		combat_indicator = mutable_appearance('icons/mob/talk.dmi', "combat", FLY_LAYER)
+	// if(!combat_indicator)
+	// 	//visible_message("loading combat indictaor")
+	// 	combat_indicator = mutable_appearance('icons/mob/talk.dmi', "combat", FLY_LAYER)
 	//	combat_indicator.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART
 
 	if(state && stat != DEAD)
-		add_overlay(combat_indicator)
+		// add_overlay(combat_indicator)
 	//	visible_message("enabling")
 		enabled_combat_indicator = TRUE
 	else
 		//visible_message("disabling")
-		cut_overlay(combat_indicator)
+		// cut_overlay(combat_indicator)
 		enabled_combat_indicator = FALSE
 
 /mob/living/proc/change_combat_indicator(state)
-	if(world.time >= combatmessagecooldown) //If combat mode didn't make a message
-		combatmessagecooldown = world.time + 10 SECONDS
-		nextcombatpopup = world.time + 10 SECONDS
-		if(state)
-			if (prob(50))
-				playsound(src, 'modular_coyote/sound/combatintent/waawaa2.ogg', 50)
-			else
-				playsound(src, 'modular_coyote/sound/combatintent/waawaa1.ogg', 50)
-			//flick_overlay(src, "combat", 20)
-			visible_message(span_warning("[src] gets ready for combat!"))
-		else if(!state)
-			playsound(src, 'modular_coyote/sound/combatintent/waawaa3.ogg', 20)
-			visible_message(span_warning("[src] relaxes their stance, seemingly at ease."))
+	// if(world.time >= combatmessagecooldown) //If combat mode didn't make a message
+	// 	combatmessagecooldown = world.time + 10 SECONDS
+	// 	nextcombatpopup = world.time + 10 SECONDS
+	// 	if(state)
+	// 		if (prob(50))
+	// 			playsound(src, 'modular_coyote/sound/combatintent/waawaa2.ogg', 0)
+	// 		else
+	// 			playsound(src, 'modular_coyote/sound/combatintent/waawaa1.ogg', 0)
+	// 		flick_overlay(src, "combat", 20)
+	// 		visible_message(span_warning("[src] gets ready for combat!"))
+	// 	else if(!state)
+	// 		playsound(src, 'modular_coyote/sound/combatintent/waawaa3.ogg', 0)
+	// 		visible_message(span_warning("[src] relaxes their stance, seemingly at ease."))
 	set_combat_indicator(state)
 
 /mob/living/proc/disable_combat_mode(silent = TRUE, was_forced = FALSE, visible = FALSE, update_icon = TRUE)
 	set_combat_indicator(FALSE)
-	change_combat_indicator(FALSE)
+	// change_combat_indicator(FALSE)
 
 /mob/living/proc/enable_combat_mode(silent = TRUE, was_forced = FALSE, visible = FALSE, update_icon = TRUE)
 	set_combat_indicator(TRUE)
-	change_combat_indicator(TRUE)
+	// change_combat_indicator(TRUE)
 
 /mob/living/proc/toggle_combat_mode(silent = TRUE, was_forced = FALSE, visible = FALSE, update_icon = TRUE)
 	if (!enabled_combat_indicator)

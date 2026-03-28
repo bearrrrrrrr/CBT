@@ -281,16 +281,16 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings, listen_newbie)()
 /datum/verbs/menu/Settings/listen_newbie/Get_checked(client/C)
 	return C.prefs.chat_toggles & CHAT_NEWBIE
 
-TOGGLE_CHECKBOX(/datum/verbs/menu/Settings, listen_anonooc)()
-	set name = "Show/Hide AnonOOC"
-	set category = "Preferences"
-	set desc = "Toggles seeing Anonymous Out Of Character chat"
-	usr.client.prefs.chat_toggles ^= CHAT_AOOC
-	usr.client.prefs.save_preferences()
-	to_chat(usr, "You will [(usr.client.prefs.chat_toggles & CHAT_AOOC) ? "now" : "no longer"] see messages on the AnonOOC channel.")
-	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Seeing AnonOOC", "[usr.client.prefs.chat_toggles & CHAT_AOOC ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-/datum/verbs/menu/Settings/listen_aooc/Get_checked(client/C)
-	return C.prefs.chat_toggles & CHAT_AOOC
+// TOGGLE_CHECKBOX(/datum/verbs/menu/Settings, listen_anonooc)()
+// 	set name = "Show/Hide AnonOOC"
+// 	set category = "Preferences"
+// 	set desc = "Toggles seeing Anonymous Out Of Character chat"
+// 	usr.client.prefs.chat_toggles ^= CHAT_AOOC
+// 	usr.client.prefs.save_preferences()
+// 	to_chat(usr, "You will [(usr.client.prefs.chat_toggles & CHAT_AOOC) ? "now" : "no longer"] see messages on the AnonOOC channel.")
+// 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Seeing AnonOOC", "[usr.client.prefs.chat_toggles & CHAT_AOOC ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+// /datum/verbs/menu/Settings/listen_aooc/Get_checked(client/C)
+// 	return C.prefs.chat_toggles & CHAT_AOOC
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings, listen_bank_card)()
 	set name = "Show/Hide Income Updates"

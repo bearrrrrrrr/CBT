@@ -85,8 +85,8 @@
 				source.visible_message(span_warning("[source] drops into a combative stance!"), self_message)
 		else
 			to_chat(source, self_message)
-		if(playsound)
-			source.playsound_local(source, 'sound/misc/ui_toggle_vats.ogg', 50, FALSE, pressure_affected = FALSE) //Sound from interbay!
+		//if(playsound)
+			//source.playsound_local(source, 'sound/misc/ui_toggle_vats.ogg', 50, FALSE, pressure_affected = FALSE) //Sound from interbay!
 	RegisterSignal(source, COMSIG_MOB_CLIENT_MOUSEMOVE,PROC_REF(onMouseMove))
 	RegisterSignal(source, COMSIG_MOVABLE_MOVED,PROC_REF(on_move))
 	if(hud_icon)
@@ -108,14 +108,8 @@
 	mode_flags &= ~COMBAT_MODE_ACTIVE
 	mode_flags |= COMBAT_MODE_INACTIVE
 	SEND_SIGNAL(source, COMSIG_LIVING_COMBAT_DISABLED, forced)
-	if(!silent)
-		var/self_message = forced? span_warning("Your muscles are forcibly relaxed!") : span_warning("You relax your stance.")
-		if(visible)
-			source.visible_message(span_warning("[source] relaxes [source.p_their()] stance."), self_message)
-		else
-			to_chat(source, self_message)
-		if(playsound)
-			source.playsound_local(source, 'sound/misc/ui_toggleoff.ogg', 50, FALSE, pressure_affected = FALSE) //Slightly modified version of the toggleon sound!
+		//if(playsound)
+			//source.playsound_local(source, 'sound/misc/ui_toggleoff.ogg', 50, FALSE, pressure_affected = FALSE) //Slightly modified version of the toggleon sound!
 	UnregisterSignal(source, list(COMSIG_MOB_CLIENT_MOUSEMOVE, COMSIG_MOVABLE_MOVED))
 	if(hud_icon)
 		hud_icon.combat_on = FALSE
@@ -181,7 +175,7 @@
 /// The screen button.
 /atom/movable/screen/combattoggle
 	name = "toggle combat mode"
-	icon = 'modular_citadel/icons/ui/screen_midnight.dmi'
+	icon = 'modular_citadel/icons/ui/mouse-look.dmi'
 	icon_state = "combat_off"
 	var/mutable_appearance/flashy
 	var/combat_on = FALSE ///Wheter combat mode is enabled or not, so we don't have to store a reference.
@@ -207,8 +201,8 @@
 	if(!(user?.client))
 		return
 
-	if(combat_on)
-		if(!flashy)
-			flashy = mutable_appearance('icons/mob/screen_gen.dmi', "togglefull_flash")
-		flashy.color = user.client.prefs.hud_toggle_color
-		. += flashy //TODO - beg lummox jr for the ability to force mutable appearances or images to be created rendering from their first frame of animation rather than being based entirely around the client's frame count
+	// if(combat_on)
+	// 	if(!flashy)
+	// 		flashy = mutable_appearance('icons/mob/screen_gen.dmi', "togglefull_flash")
+	// 	flashy.color = user.client.prefs.hud_toggle_color
+	// 	. += flashy //TODO - beg lummox jr for the ability to force mutable appearances or images to be created rendering from their first frame of animation rather than being based entirely around the client's frame count

@@ -511,7 +511,7 @@ GLOBAL_LIST_EMPTY(bounties_list)
 /datum/bounty_quota
 	/// The name of this quota
 	var/name
-	/// Optional flavor text that goes with the expected items
+	/// Optional examine text that goes with the expected items
 	var/flavor
 	/// auto-generated (or not) info as to what this thing wants
 	var/info

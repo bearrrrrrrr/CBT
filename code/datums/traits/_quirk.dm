@@ -5,7 +5,7 @@
 	var/key
 	/// The name of the quirk, shown in the quirk list
 	var/name = "Test Quirk"
-	/// The description of the quirk, mostly flavor text
+	/// The description of the quirk, mostly examine text
 	var/desc = "This is a test quirk."
 	/// The actual specific(ish) mechanics of the quirk, shown in the quirk list
 	/// This is parsed by the game, so you can use $BAD, $NUT, $GOOD, and $MISC to color text

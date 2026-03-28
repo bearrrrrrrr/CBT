@@ -9,7 +9,7 @@
 /datum/tattoo
 	/// Name of the tat
 	var/name
-	/// Description of the tat, flavor text, etc. Make it start lowercased!
+	/// Description of the tat, examine text, etc. Make it start lowercased!
 	var/desc
 	/// Optional, access related to the tat
 	var/list/tat_access = list()

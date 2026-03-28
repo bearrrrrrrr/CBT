@@ -2673,17 +2673,54 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("allow_digestion_sounds")
 					TOGGLE_VAR(allow_digestion_sounds)
 				if("flavor_text")
-					var/msg = stripped_multiline_input(usr, "Set the flavor text in your 'examine' verb. This can also be used for OOC notes and preferences!", "Flavor Text", html_decode(features["flavor_text"]), MAX_FLAVOR_LEN, TRUE)
+					var/msg = stripped_multiline_input_or_reflect(
+						usr, 
+						"Set [real_name]'s description! Must be between [MIN_FLAVOR_LEN] and [MAX_FLAVOR_LEN] characters long!", 
+						"Flavor Text",
+						html_decode(features["flavor_text"]), 
+						MAX_MESSAGE_LEN, 
+						TRUE)
 					if(!isnull(msg))
+						if(LAZYLEN(msg) < 100)
+							to_chat(usr, span_alert("[real_name]'s description is less than [MIN_FLAVOR_LEN] characters! It needs to be longer (but not longer than [MAX_FLAVOR_LEN] characters!)"))
+							to_chat(usr, span_notice("Here's what you wrote:"))
+							to_chat(usr, "[msg]")
+							return
+						if(LAZYLEN(msg) > MAX_FLAVOR_LEN)
+							to_chat(usr, span_alert("[real_name]'s description is more than [MAX_FLAVOR_LEN] characters! It needs to be shorter (but not shorter than [MIN_FLAVOR_LEN] characters!)"))
+							to_chat(usr, span_notice("Here's what you wrote:"))
+							to_chat(usr, "[msg]")
+							msg = copytext(msg, 1, (MAX_FLAVOR_LEN - 1))
+							to_chat(usr, span_notice("And this is what will be kept:"))
+							to_chat(usr, "[msg]")
 						features["flavor_text"] = msg
 
 				if("silicon_flavor_text")
-					var/msg = stripped_multiline_input(usr, "Set the silicon flavor text in your 'examine' verb. This can also be used for OOC notes and preferences!", "Silicon Flavor Text", html_decode(features["silicon_flavor_text"]), MAX_FLAVOR_LEN, TRUE)
+					var/msg = stripped_multiline_input(usr, "Set the silicon examine text in your 'examine' verb. This can also be used for OOC notes and preferences!", "Silicon Flavor Text", html_decode(features["silicon_flavor_text"]), MAX_FLAVOR_LEN, TRUE)
 					if(!isnull(msg))
 						features["silicon_flavor_text"] = msg
 
 				if("ooc_notes")
-					var/msg = stripped_multiline_input(usr, "Set always-visible OOC notes related to content preferences. THIS IS NOT FOR CHARACTER DESCRIPTIONS!", "OOC notes", html_decode(features["ooc_notes"]), MAX_FLAVOR_LEN, TRUE)
+					var/msg = stripped_multiline_input_or_reflect(
+						usr, 
+						"Set your always-visible OOC notes related to content preferences. THIS IS NOT FOR CHARACTER DESCRIPTIONS! Must be between [MIN_FLAVOR_LEN] and [MAX_FLAVOR_LEN] characters long!", 
+						"OOC notes", 
+						html_decode(features["ooc_notes"]), 
+						MAX_MESSAGE_LEN, 
+						TRUE)
+					if(!isnull(msg))
+						if(LAZYLEN(msg) < 100)
+							to_chat(usr, span_alert("Your OOC Notes are less than [MIN_FLAVOR_LEN] characters! It needs to be longer (but not longer than [MAX_FLAVOR_LEN] characters!)"))
+							to_chat(usr, span_notice("Here's what you wrote:"))
+							to_chat(usr, "[msg]")
+							return
+						if(LAZYLEN(msg) > MAX_FLAVOR_LEN)
+							to_chat(usr, span_alert("Your OOC Notes are more than [MAX_FLAVOR_LEN] characters! It needs to be shorter (but not shorter than [MIN_FLAVOR_LEN] characters!)"))
+							to_chat(usr, span_notice("Here's what you wrote:"))
+							to_chat(usr, "[msg]")
+							msg = copytext(msg, 1, (MAX_FLAVOR_LEN - 1))
+							to_chat(usr, span_notice("And this is what will be kept:"))
+							to_chat(usr, "[msg]")
 					if(!isnull(msg))
 						features["ooc_notes"] = msg
 				
@@ -4667,16 +4704,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// with no chance of retrieval
 	var/stage1text = "You have clicked the button that will delete [real_name]. If you go through with this, [real_name] will \
 		be deleted, forever. There are no backups available, and no way to retrieve [real_name] once deleted. All of your \
-		flavor texts, quirks, and preferences associated with [real_name] will be lost, permanently and forever. The only things that will \
+		examine texts, quirks, and preferences associated with [real_name] will be lost, permanently and forever. The only things that will \
 		remain of [real_name] are things you have written down or screenshotted. Are you sure you want to delete [real_name]?"
 	var/choose = alert(usr, stage1text, "Character Deletion", "Yes, Delete This Character Forever", "NO WAIT I CHANGED MY MIND")
 	if(choose != "Yes, Delete This Character Forever")
 		lockdown = FALSE
 		to_chat(usr, span_green("Your character remains safe and sound."))
 		return
-	/// stage two, ask if they are really sure, and ask if they'd like to go back and save their flavor text or keep a screenshot of their prefs
+	/// stage two, ask if they are really sure, and ask if they'd like to go back and save their examine text or keep a screenshot of their prefs
 	/// a chance to back out, but also a chance to save some stuff
-	var/stage2text = "Are you absolutely sure you want to delete [real_name]? Have you saved their flavor text, OOC notes, or any other \
+	var/stage2text = "Are you absolutely sure you want to delete [real_name]? Have you saved their examine text, OOC notes, or any other \
 		information you want to keep? You might also want to take a screenshot of [real_name]'s preferences, just in case you want to \
 		recreate them later. Again, there are no backups of [real_name] stored on the server or anywhere else, and there is no possible way \
 		to undo this or retrieve any data relating to [real_name]. Once deleted, [real_name] is *gone* for *good*. \

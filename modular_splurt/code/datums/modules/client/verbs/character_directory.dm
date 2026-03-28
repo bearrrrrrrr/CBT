@@ -8,7 +8,7 @@ GLOBAL_LIST_INIT(char_directory_erptags, list("Top", "Bottom", "Switch", "No ERP
 /client/proc/show_character_directory()
 	set name = "Character Directory"
 	set category = "Admin.Game"
-	set desc = "Shows a listing of all active characters, along with their associated OOC notes, flavor text, and more."
+	set desc = "Shows a listing of all active characters, along with their associated OOC notes, examine text, and more."
 
 	// This is primarily to stop malicious users from trying to lag the server by spamming this verb
 	if(!COOLDOWN_FINISHED(src, char_directory_cooldown))
@@ -105,7 +105,7 @@ GLOBAL_LIST_INIT(char_directory_erptags, list("Top", "Bottom", "Switch", "No ERP
 				name = C.prefs.my_shark
 			else
 				name = testname
-		// It's okay if we fail to find OOC notes and flavor text
+		// It's okay if we fail to find OOC notes and examine text
 		// But if we can't find the name, they must be using a non-compatible mob type currently.
 		if(!name)
 			continue

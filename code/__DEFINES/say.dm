@@ -42,7 +42,7 @@
 
 //Don't set this very much higher then 1024 unless you like inviting people in to dos your server with message spam
 #define MAX_MESSAGE_LEN			4096		//Citadel edit: What's the WORST that could happen?
-#define MAX_FLAVOR_LEN			4096
+#define MAX_FLAVOR_LEN			300
 #define MIN_FLAVOR_LEN			100
 #define MIN_OOC_LEN				20 // Will not allow just smileys to be on OOC notes.
 #define MAX_TASTE_LEN			40
@@ -51,47 +51,7 @@
 #define MAX_CHARTER_LEN			80
 
 // Template for OOC notes.
-#define OOC_NOTE_TEMPLATE "Non-ERP Notes\n\
-	This exist for things like how to approach this character for IC things such as how to ask for going on adventurers!\n\
-	But this person hasn't changed the info yet!\n\
-	\n\
-	Icebreaker!\n\
-	This exists for this person to have set a quick way for you to break the IC with their character in a way that may lead to ERP, but this person hasn't changed this text to set one!\n\
-	\n\
-	Slavery: Ask\n\
-	Non-Con: Ask\n\
-	Vore: Ask\n\
-	\n\
-	\n\
-	ERP Notes\n\
-	...............Erotic Roleplay: Ask\n\
-	...............Non-Con Roleplay: Ask\n\
-	...............Partner Prefs: Ask\n\
-	.............- Slavery: Ask\n\
-	.............- Non-Con: Ask\n\
-	.............- Vore: Ask\n\
-	\n\
-	Big Yes's\n\
-	.............- This area\n\
-	.............- exists to\n\
-	.............- List out\n\
-	.............- things you\n\
-	.............- like.\n\
-	\n\
-	Hard No\n\
-	.............- This area exists\n\
-	.............- For you to list things\n\
-	.............- You very specifically\n\
-	.............- Do not like.\n\
-	\n\
-	\n\
-	\n\
-	***Roleplay Prefs***\n\
-	Character Orientation: Ask\n\
-	...Desired Post length: Ask\n\
-	\n\
-	...Desired RP System: Ask, this is for subtle, subtler, or emote.  Or, when its added, a mechanical erotic roleplay system!  Or some mix inbetween, but this person hasn't changed the text so ASK!\n\
-	.My Post Perspective: Ask!"
+#define OOC_NOTE_TEMPLATE ""
 
 #define BACKGROUND_INFO_NOTE_TEMPLATE "Background Info Template\n\
 	Keep in mind that you do not need to have answers for all of these questions from the word go, but having answers for some of them should greatly improve your playing experience due to it solidifying your character more robustly in a very fluid world.\n\

@@ -740,7 +740,7 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 	// . += "[print_special()]"//This already includes breaks and newlines, don't add any more
 
 
-	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .) //This also handles flavor texts now
+	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .) //This also handles examine texts now
 
 	if(HAS_TRAIT(src, TRAIT_PVEFOC))
 		. += span_boldwarning("[t_He] [t_has] <u>opted out</u> of PVP combat! Please respect their wishes and do not engage in PVP with them. If they are trying to PVP with you, please let the staff know!")

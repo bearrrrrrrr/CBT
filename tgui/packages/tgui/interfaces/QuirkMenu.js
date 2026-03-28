@@ -471,7 +471,7 @@ const QuirkJizz = (props, context) => {
 // / One of the buttons in the quirk list. Its a button! Its full of text!
 // / Click it, and it'll tell BYOND to give the player that quirk.
 // / It contains: the name of the quirk, the point value of the quirk,
-// / a flavor text description of the quirk, a mechanics description of the
+// / a examine text description of the quirk, a mechanics description of the
 // / quirk, and a list of quirks that conflict with this one.
 // / AllQuirks format:
 // /  [

@@ -32,7 +32,7 @@
 	WRITE_FILE(S["feature_xeno_tail"], features["xenotail"])
 	WRITE_FILE(S["feature_xeno_dors"], features["xenodorsal"])
 	WRITE_FILE(S["feature_xeno_head"], features["xenohead"])
-	//flavor text
+	//examine text
 	WRITE_FILE(S["feature_flavor_text"], features["flavor_text"])
 	WRITE_FILE(S["silicon_feature_flavor_text"], features["silicon_flavor_text"])
 

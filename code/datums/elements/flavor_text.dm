@@ -66,7 +66,7 @@ GLOBAL_LIST_EMPTY(mobs_with_editable_flavor_text) //et tu, hacky code
 			var/mob/living/carbon/C = L
 			unknown = !HAS_TRAIT(C, TRAIT_NOHIDEFACE) && ((C.wear_mask && (C.wear_mask.flags_inv & HIDEFACE)) || (C.head && (C.head.flags_inv & HIDEFACE)))
 		if(unknown)
-			if(!("...?" in examine_list)) //can't think of anything better in case of multiple flavor texts.
+			if(!("...?" in examine_list)) //can't think of anything better in case of multiple examine texts.
 				examine_list += "...?"
 			return
 	var/text = texts_by_atom[target]
@@ -134,7 +134,7 @@ GLOBAL_LIST_EMPTY(mobs_with_editable_flavor_text) //et tu, hacky code
 
 /mob/proc/manage_flavor_tests()
 	set name = "Manage Flavor Texts"
-	set desc = "Used to manage your various flavor texts."
+	set desc = "Used to manage your various examine texts."
 	set category = "IC"
 
 	var/list/L = GLOB.mobs_with_editable_flavor_text[src]
@@ -150,7 +150,7 @@ GLOBAL_LIST_EMPTY(mobs_with_editable_flavor_text) //et tu, hacky code
 		var/datum/element/flavor_text/F = i
 		choices[F.flavor_name] = F
 
-	var/chosen = input(src, "Which flavor text would you like to modify?") as null|anything in choices
+	var/chosen = input(src, "Which examine text would you like to modify?") as null|anything in choices
 	if(!chosen)
 		return
 	var/datum/element/flavor_text/F = choices[chosen]

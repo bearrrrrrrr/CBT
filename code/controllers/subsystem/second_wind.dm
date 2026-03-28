@@ -1251,7 +1251,7 @@ SUBSYSTEM_DEF(secondwind)
 		return
 	var/which = alert(
 		user,
-		"You can change the flavor text of this device! Do you want to change the name (which will be seen by ghosts and help them know where this thing supposedly is), or the flavor text (which will also be seen by ghosts and put a tiny thrill in their gray little lives)?",
+		"You can change the examine text of this device! Do you want to change the name (which will be seen by ghosts and help them know where this thing supposedly is), or the examine text (which will also be seen by ghosts and put a tiny thrill in their gray little lives)?",
 		"Reflavorize",
 		"Change Name",
 		"Change Flavor",
@@ -1275,7 +1275,7 @@ SUBSYSTEM_DEF(secondwind)
 	else if(which == "Change Flavor")
 		var/new_flavor = input(
 			user,
-			"What do you want the flavor text of this thing to be?",
+			"What do you want the examine text of this thing to be?",
 			"Reflavorize",
 			flavor,
 		) as message|null
@@ -1283,7 +1283,7 @@ SUBSYSTEM_DEF(secondwind)
 			to_chat(user, span_alert("Never mind!!"))
 			return
 		flavor = new_flavor
-		to_chat(user, span_notice("You've changed the flavor text of this thing to: [flavor]!"))
+		to_chat(user, span_notice("You've changed the examine text of this thing to: [flavor]!"))
 
 /obj/second_wind_movable_home_point/proc/Activate()
 	icon_state = "Shield_Gen +a"

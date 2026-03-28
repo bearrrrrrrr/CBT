@@ -49,7 +49,8 @@
 		/obj/item/storage/wallet/stash/low
 	)
 	stuff_we_all_get = list(
-		/obj/item/card/id/selfassign
+		/obj/item/card/id/selfassign,
+		/obj/item/kit_spawner/waster,
 		)
 
 /datum/outfit/job/cb/pre_equip(mob/living/carbon/human/H)

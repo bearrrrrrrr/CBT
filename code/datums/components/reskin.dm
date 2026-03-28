@@ -1060,123 +1060,145 @@ GLOBAL_LIST_EMPTY(reskin_list)
 	mutantrace_variation = null
 
 GLOBAL_LIST_INIT(pda_skins, list(
-	"Random!",
-	"DataPal",
-	"Medical PDA",
-	"Virology PDA",
-	"Engineering PDA",
-	"Security PDA",
-	"Detective PDA",
-	"Warden PDA",
-	"Janitor PDA",
-	"Scientist PDA",
-	"Head of Personnel PDA",
-	"Head of Security PDA",
-	"Chief Engineer PDA",
-	"Chief Medical Officer PDA",
-	"Research Director PDA",
-	"Captain PDA",
-	"Lieutenant PDA",
-	"Atmospheric Technician PDA",
-	"Chemist PDA",
-	"Geneticist PDA",
-	"Teachboy PDA",
-	"Curator PDA",
-	"Neko PDA",
-	"Handy Orange PDA",
-	"Handy PDA",
-	"Handy Medical PDA",
-	"Handy Virologist PDA",
-	"Handy Engineer PDA",
-	"Handy Security PDA",
-	"Handy Detective PDA",
-	"Handy Warden PDA",
-	"Handy Janitor PDA",
-	"Handy Scientist PDA",
-	"Handy HoP PDA",
-	"Handy HoS PDA",
-	"Handy CE PDA",
-	"Handy CMO PDA",
-	"Handy RD PDA",
-	"Handy Captain PDA",
-	"Handy Lieutenant PDA",
-	"Handy Cargo PDA",
-	"Handy QM PDA",
-	"Handy Miner PDA",
-	"Handy Chaplain PDA",
-	"Handy Cook PDA",
-	"Handy Garden PDA",
-	"Handy Syndicate PDA",
-	"Handy Lawyer PDA",
-	"Handy Roboticist PDA",
-	"Handy Bartender PDA",
-	"Handy Atmos PDA",
-	"Handy Chemist PDA",
-	"Handy Geneticist PDA",
-	"Handy Clear PDA",
-	"Handy Librarian PDA",
-	"Handy Neko PDA",
-	))
+		"GekkerTec Vixen 7 PRO",
+		"Vintage Black & Gold PDA",
+		"Vintage Yellow PDA",
+		"Vintage Orange PDA",
+		"Vintage Red PDA",
+		"Vintage Black PDA",
+		"Vintage Pink PDA",
+		"Vintage White PDA",
+		"Vintage Transparent PDA",
+		"Vintage Purple PDA",
+))
+	// "Random!",
+	// "DataPal",
+	// "Medical PDA",
+	// "Virology PDA",
+	// "Engineering PDA",
+	// "Security PDA",
+	// "Detective PDA",
+	// "Warden PDA",
+	// "Janitor PDA",
+	// "Scientist PDA",
+	// "Head of Personnel PDA",
+	// "Head of Security PDA",
+	// "Chief Engineer PDA",
+	// "Chief Medical Officer PDA",
+	// "Research Director PDA",
+	// "Captain PDA",
+	// "Lieutenant PDA",
+	// "Atmospheric Technician PDA",
+	// "Chemist PDA",
+	// "Geneticist PDA",
+	// "Teachboy PDA",
+	// "Curator PDA",
+	// "Neko PDA",
+	// "Handy Orange PDA",
+	// "Handy PDA",
+	// "Handy Medical PDA",
+	// "Handy Virologist PDA",
+	// "Handy Engineer PDA",
+	// "Handy Security PDA",
+	// "Handy Detective PDA",
+	// "Handy Warden PDA",
+	// "Handy Janitor PDA",
+	// "Handy Scientist PDA",
+	// "Handy HoP PDA",
+	// "Handy HoS PDA",
+	// "Handy CE PDA",
+	// "Handy CMO PDA",
+	// "Handy RD PDA",
+	// "Handy Captain PDA",
+	// "Handy Lieutenant PDA",
+	// "Handy Cargo PDA",
+	// "Handy QM PDA",
+	// "Handy Miner PDA",
+	// "Handy Chaplain PDA",
+	// "Handy Cook PDA",
+	// "Handy Garden PDA",
+	// "Handy Syndicate PDA",
+	// "Handy Lawyer PDA",
+	// "Handy Roboticist PDA",
+	// "Handy Bartender PDA",
+	// "Handy Atmos PDA",
+	// "Handy Chemist PDA",
+	// "Handy Geneticist PDA",
+	// "Handy Clear PDA",
+	// "Handy Librarian PDA",
+	// "Handy Neko PDA",
+
 
 /// PDA SKINS ///
 /datum/component/reskinnable/pda
 	skins = list(
-		"DataPal",
-		"Medical PDA",
-		"Virology PDA",
-		"Engineering PDA",
-		"Security PDA",
-		"Detective PDA",
-		"Warden PDA",
-		"Janitor PDA",
-		"Scientist PDA",
-		"Head of Personnel PDA",
-		"Head of Security PDA",
-		"Chief Engineer PDA",
-		"Chief Medical Officer PDA",
-		"Research Director PDA",
-		"Captain PDA",
-		"Lieutenant PDA",
-		"Atmospheric Technician PDA",
-		"Chemist PDA",
-		"Geneticist PDA",
-		"Teachboy PDA",
-		"Curator PDA",
-		"Neko PDA",
-		"Handy Orange PDA",
-		"Handy PDA",
-		"Handy Medical PDA",
-		"Handy Virologist PDA",
-		"Handy Engineer PDA",
-		"Handy Security PDA",
-		"Handy Detective PDA",
-		"Handy Warden PDA",
-		"Handy Janitor PDA",
-		"Handy Scientist PDA",
-		"Handy HoP PDA",
-		"Handy HoS PDA",
-		"Handy CE PDA",
-		"Handy CMO PDA",
-		"Handy RD PDA",
-		"Handy Captain PDA",
-		"Handy Lieutenant PDA",
-		"Handy Cargo PDA",
-		"Handy QM PDA",
-		"Handy Miner PDA",
-		"Handy Chaplain PDA",
-		"Handy Cook PDA",
-		"Handy Garden PDA",
-		"Handy Syndicate PDA",
-		"Handy Lawyer PDA",
-		"Handy Roboticist PDA",
-		"Handy Bartender PDA",
-		"Handy Atmos PDA",
-		"Handy Chemist PDA",
-		"Handy Geneticist PDA",
-		"Handy Clear PDA",
-		"Handy Librarian PDA",
-		"Handy Neko PDA",
+		"GekkerTec Vixen 7 PRO",
+		"Vintage Black & Gold PDA",
+		"Vintage Yellow PDA",
+		"Vintage Orange PDA",
+		"Vintage Red PDA",
+		"Vintage Black PDA",
+		"Vintage Pink PDA",
+		"Vintage White PDA",
+		"Vintage Transparent PDA",
+		"Vintage Purple PDA",
 	)
+		// "DataPal",
+		// "Medical PDA",
+		// "Virology PDA",
+		// "Engineering PDA",
+		// "Security PDA",
+		// "Detective PDA",
+		// "Warden PDA",
+		// "Janitor PDA",
+		// "Scientist PDA",
+		// "Head of Personnel PDA",
+		// "Head of Security PDA",
+		// "Chief Engineer PDA",
+		// "Chief Medical Officer PDA",
+		// "Research Director PDA",
+		// "Captain PDA",
+		// "Lieutenant PDA",
+		// "Atmospheric Technician PDA",
+		// "Chemist PDA",
+		// "Geneticist PDA",
+		// "Teachboy PDA",
+		// "Curator PDA",
+		// "Neko PDA",
+		// "Handy Orange PDA",
+		// "Handy PDA",
+		// "Handy Medical PDA",
+		// "Handy Virologist PDA",
+		// "Handy Engineer PDA",
+		// "Handy Security PDA",
+		// "Handy Detective PDA",
+		// "Handy Warden PDA",
+		// "Handy Janitor PDA",
+		// "Handy Scientist PDA",
+		// "Handy HoP PDA",
+		// "Handy HoS PDA",
+		// "Handy CE PDA",
+		// "Handy CMO PDA",
+		// "Handy RD PDA",
+		// "Handy Captain PDA",
+		// "Handy Lieutenant PDA",
+		// "Handy Cargo PDA",
+		// "Handy QM PDA",
+		// "Handy Miner PDA",
+		// "Handy Chaplain PDA",
+		// "Handy Cook PDA",
+		// "Handy Garden PDA",
+		// "Handy Syndicate PDA",
+		// "Handy Lawyer PDA",
+		// "Handy Roboticist PDA",
+		// "Handy Bartender PDA",
+		// "Handy Atmos PDA",
+		// "Handy Chemist PDA",
+		// "Handy Geneticist PDA",
+		// "Handy Clear PDA",
+		// "Handy Librarian PDA",
+		// "Handy Neko PDA",
+	// )
 
 /datum/reskin/pda
 	skin = "Datapal 3000"
@@ -1508,6 +1530,71 @@ GLOBAL_LIST_INIT(pda_skins, list(
 /datum/reskin/pda/alt/neko
 	skin = "Handy Neko PDA"
 	icon_state = "pda-neko"
+
+/datum/reskin/pda/vintage
+	skin = "GekkerTec Vixen 7 PRO"
+	name = "Cellphone"
+	desc = "That's a GekkerTec Vixen 7 PRO - built robust, built to last, battery life somewhere in the dozens of weeks - this thing is for PROFESSIONALS!"
+	icon = 'icons/obj/pda_vintage.dmi'
+	icon_state = "pda"
+	inhand_icon_state = "Pip-boy"
+	mob_overlay_icon = null
+	mutantrace_variation = null
+	expected_type = /obj/item/pda
+	disable_overlays = FALSE
+	overlay_offset_x = 0
+	overlay_offset_y = 0
+	alert_icon = 'icons/obj/pda_vintage.dmi'
+	alert_icon_state = "pda-r"
+	screen_icon = 'icons/obj/pda_vintage.dmi'
+	screen_icon_state = "pda-r"
+	id_card_icon = 'icons/obj/pda_vintage.dmi'
+	id_card_icon_state = "pad-id"
+	insert_icon = 'icons/obj/pda_vintage.dmi'
+	insert_icon_state = "pda-pen"
+	flashlight_icon = 'icons/obj/pda_vintage.dmi'
+	flashlight_icon_state = "light-o"
+	pai_icon = 'icons/obj/pda_vintage.dmi'
+	pai_icon_state = "pda-r"
+	pai_on_icon = 'icons/obj/pda_vintage.dmi'
+	pai_on_icon_state = "pda-r"
+
+/datum/reskin/pda/vintage/holy
+	skin = "Vintage Black & Gold PDA"
+	icon_state = "pda-holy"
+
+/datum/reskin/pda/vintage/e
+	skin = "Vintage Yellow PDA"
+	icon_state = "pda-e"
+
+/datum/reskin/pda/vintage/orange
+	skin = "Vintage Orange PDA"
+	icon_state = "pda-cargo"
+
+/datum/reskin/pda/vintage/red
+	skin = "Vintage Red PDA"
+	icon_state = "pda-s"
+
+/datum/reskin/pda/vintage/black
+	skin = "Vintage Black PDA"
+	icon_state = "pda-lawyer"
+
+/datum/reskin/pda/vintage/pink
+	skin = "Vintage Pink PDA"
+	icon_state = "pda-clown"
+
+/datum/reskin/pda/vintage/white
+	skin = "Vintage White PDA"
+	icon_state = "pda-mime"
+
+/datum/reskin/pda/vintage/transparent
+	skin = "Vintage Transparent PDA"
+	icon_state = "pda-transp"
+
+/datum/reskin/pda/vintage/purple
+	skin = "Vintage Purple PDA"
+	icon_state = "pda-explore"
+
 
 
 /// GUN ///

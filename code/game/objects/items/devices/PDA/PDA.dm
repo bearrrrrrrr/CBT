@@ -20,8 +20,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 /obj/item/pda
 	name = "\improper DataPal"
-	desc = "The Coyote-Co DataPal is an electronic device. Functionality is determined by a preprogrammed ROM cartridge."
-	icon = 'icons/obj/pda.dmi'
+	desc = "The GekkerTec DataPal is an electronic device. Functionality is determined by a preprogrammed ROM cartridge."
+	icon = 'icons/obj/pda_vintage.dmi'
 	icon_state = "pda"
 	inhand_icon_state = "Pip-boy"
 	item_flags = NOBLUDGEON
@@ -93,7 +93,11 @@ GLOBAL_LIST_EMPTY(PDAs)
 	var/emped = FALSE
 	var/equipped = FALSE  //used here to determine if this is the first time its been picked up
 	var/allow_emojis = TRUE //if the pda can send emojis and actually have them parsed as such
-	var/list/pipsounds = list("modular_coyote/sound/pipsounds/pip1.ogg", "modular_coyote/sound/pipsounds/pip2.ogg", "modular_coyote/sound/pipsounds/pip3.ogg")
+	var/list/pipsounds = list(
+		"modular_coyote/sound/pipsounds/pip1.ogg",
+		"modular_coyote/sound/pipsounds/pip2.ogg",
+		"modular_coyote/sound/pipsounds/pip3.ogg"
+		)
 	// var/disableoverlays = FALSE //disables overlay for odd-shaped, shittier pipboy sprites
 
 	var/obj/item/card/id/id = null //Making it possible to slot an ID card into the PDA so it can function as both.
@@ -153,7 +157,6 @@ GLOBAL_LIST_EMPTY(PDAs)
 	else
 		inserted_item =	new /obj/item/pen(src)
 	radio = new /obj/item/radio(src)
-	geiger = new /obj/item/geiger_counter(src)
 	extinguisher = new /obj/item/extinguisher/waster(src)
 	new_overlays = TRUE
 	personalize()
@@ -199,6 +202,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 	var/ringertone = P.pda_ringmessage
 	if(LAZYLEN(ringertone))
 		ttone = ringertone
+	// geiger = new /obj/item/geiger_counter(src)
+	// toggle_geiger(someone)
 
 /obj/item/pda/proc/update_style(client/C)
 	background_color = C.prefs.pda_color
@@ -345,10 +350,10 @@ GLOBAL_LIST_EMPTY(PDAs)
 	else
 		switch (mode)
 			if (0)
-				dat += "<h2><center>=======GEKKERTEC DATAPAL v2.2=======</center></h2>"
+				dat += "<h2><center>=======GekkerTec Vixen 7 PRO=======</center></h2>"
 				dat += "Owner: [owner], [ownjob]<br>"
 				dat += "ID: <a href='?src=[REF(src)];choice=Authenticate'>[id ? "[id.registered_name], [id.assignment]" : "----------"]</a><br>"
-				dat += "<a href='?src=[REF(src)];choice=UpdateInfo'>[id ? "Update DataPal Info" : ""]</a><br><br>"
+				dat += "<a href='?src=[REF(src)];choice=UpdateInfo'>[id ? "Update Phone Info" : ""]</a><br><br>"
 
 				dat += "[STATION_TIME_TIMESTAMP("hh:mm:ss", world.time)]<br>" //:[world.time / 100 % 6][world.time / 100 % 10]"
 				dat += "[time2text(world.realtime, "MMM DD")] [GLOB.year_integer]"
@@ -363,15 +368,13 @@ GLOBAL_LIST_EMPTY(PDAs)
 				dat += "<li><a href='byond://?src=[REF(src)];choice=2'>[PDAIMG(mail)]Messenger</a></li>"
 				dat += "<li><a href='byond://?src=[REF(src)];choice=99'>[PDAIMG(signaler)]Radio</a></li>"
 				if(istype(geiger))
-
-					if(istype(geiger))
-						var/extra = ""
-						if(g_on)
-							extra += " | AMBIENT: [geiger?.current_tick_amount ? round(geiger?.current_tick_amount, 0.1) : 0]"
-							if(isliving(loc))
-								var/mob/living/L = user
-								extra += " | USER: [L.radiation ? round(L.radiation, 0.1) : 0]"
-						dat += "<li><a href='byond://?src=[REF(src)];choice=Geiger'>[PDAIMG(scanner)][g_on ? "Disable" : "Enable"] Geiger Counter[extra]</a></li>"
+					var/extra = ""
+					if(g_on)
+						extra += " | AMBIENT: [geiger?.current_tick_amount ? round(geiger?.current_tick_amount, 0.1) : 0]"
+						if(isliving(loc))
+							var/mob/living/L = user
+							extra += " | USER: [L.radiation ? round(L.radiation, 0.1) : 0]"
+					dat += "<li><a href='byond://?src=[REF(src)];choice=Geiger'>[PDAIMG(scanner)][g_on ? "Disable" : "Enable"] Geiger Counter[extra]</a></li>"
 				if (cartridge)
 					if (cartridge.access & CART_MANIFEST)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=41'>[PDAIMG(notes)]View Crew Manifest</a></li>"
@@ -418,13 +421,13 @@ GLOBAL_LIST_EMPTY(PDAs)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=Reagent Scan'>[PDAIMG(reagent)][scanmode == 3 ? "Disable" : "Enable"] Reagent Scanner</a></li>"
 					if (cartridge.access & CART_ENGINE)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=Halogen Counter'>[PDAIMG(reagent)][scanmode == 4 ? "Disable" : "Enable"] Halogen Counter</a></li>"
-					if (cartridge.access & CART_ATMOS)
-						dat += "<li><a href='byond://?src=[REF(src)];choice=Gas Scan'>[PDAIMG(reagent)][scanmode == 5 ? "Disable" : "Enable"] Gas Scanner</a></li>"
+					// if (cartridge.access & CART_ATMOS)
+					// 	dat += "<li><a href='byond://?src=[REF(src)];choice=Gas Scan'>[PDAIMG(reagent)][scanmode == 5 ? "Disable" : "Enable"] Gas Scanner</a></li>"
 					if (cartridge.access & CART_REMOTE_DOOR)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=Toggle Door'>[PDAIMG(rdoor)]Toggle Remote Door</a></li>"
 					if (cartridge.access & CART_DRONEPHONE)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=Drone Phone'>[PDAIMG(dronephone)]Drone Phone</a></li>"
-				dat += "<li><a href='byond://?src=[REF(src)];choice=3'>[PDAIMG(atmos)]Atmospheric Scan</a></li>"
+				// dat += "<li><a href='byond://?src=[REF(src)];choice=3'>[PDAIMG(atmos)]Atmospheric Scan</a></li>"
 				dat += "<li><a href='byond://?src=[REF(src)];choice=Light'>[PDAIMG(flashlight)][fon ? "Disable" : "Enable"] Flashlight</a></li>"
 				if (pai)
 					if(pai.loc != src)
@@ -491,12 +494,12 @@ GLOBAL_LIST_EMPTY(PDAs)
 				dat += tnote
 				dat += "<br>"
 
-			if (3)
-				dat += "<h4>[PDAIMG(atmos)] Atmospheric Readings</h4>"
+			// if (3)
+			// 	dat += "<h4>[PDAIMG(atmos)] Atmospheric Readings</h4>"
 
 				// var/turf/T = user.loc
 				// if (isnull(T))
-				dat += "Unable to obtain a reading.<br>"
+				// dat += "Unable to obtain a reading.<br>"
 				// else
 				// 	var/datum/gas_mixture/environment = T.return_air()
 
@@ -655,10 +658,10 @@ GLOBAL_LIST_EMPTY(PDAs)
 					mode = 21
 					if (!silent)
 						Boop()
-				if("3")//Atmos scan
-					mode = 3
-					if (!silent)
-						Boop()
+				// if("3")//Atmos scan
+				// 	mode = 3
+				// 	if (!silent)
+				// 		Boop()
 				if("4")//Redirects to hub
 					mode = 0
 					if (!silent)
@@ -716,13 +719,13 @@ GLOBAL_LIST_EMPTY(PDAs)
 						playsound(src, 'sound/misc/sadtrombone.ogg', 50, 1)
 						last_noise = world.time
 
-				if("Gas Scan")
-					if(scanmode == PDA_SCANNER_GAS)
-						scanmode = PDA_SCANNER_NONE
-					else if((!isnull(cartridge)) && (cartridge.access & CART_ATMOS))
-						scanmode = PDA_SCANNER_GAS
-					if (!silent)
-						Boop()
+				// if("Gas Scan")
+				// 	if(scanmode == PDA_SCANNER_GAS)
+				// 		scanmode = PDA_SCANNER_NONE
+				// 	else if((!isnull(cartridge)) && (cartridge.access & CART_ATMOS))
+				// 		scanmode = PDA_SCANNER_GAS
+				// 	if (!silent)
+				// 		Boop()
 
 				if("Drone Phone")
 					var/alert_s = input(U,"Alert severity level","Ping Drones",null) as null|anything in list("Low","Medium","High","Critical")
@@ -1117,7 +1120,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 		return
 	geiger?.attack_self(user)
 	g_on = geiger?.scanning
-	playsound(src, "sound/f13items/flashlight_off.ogg", 25, FALSE, -5)
+	// playsound(src, "sound/f13items/flashlight_off.ogg", 25, FALSE, -5)
 	update_icon()
 	geiger?.listeningTo = user
 

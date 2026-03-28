@@ -325,7 +325,7 @@
 						qdel(M)
 
 				if("creature_flavor_text")
-					var/msg = stripped_multiline_input(usr, "Set the flavor text in your 'examine' verb.", "Flavor Text", html_decode(creature_flavor_text), MAX_FLAVOR_LEN, TRUE)
+					var/msg = stripped_multiline_input(usr, "Set the examine text in your 'examine' verb.", "Flavor Text", html_decode(creature_flavor_text), MAX_FLAVOR_LEN, TRUE)
 					if(!isnull(msg))
 						creature_flavor_text = msg
 				if("creature_ooc")

@@ -32,7 +32,7 @@
 
 	if(temp)
 		left_part = temp
-	else if(stat == DEAD)						// Show some flavor text if the pAI is dead
+	else if(stat == DEAD)						// Show some examine text if the pAI is dead
 		left_part = "<b><font color=red>�Rr�R �a�� ��Rr����o�</font></b>"
 		right_part = "<pre>Program index hash not found</pre>"
 

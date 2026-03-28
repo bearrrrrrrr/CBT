@@ -1,5 +1,5 @@
 /*
-basically Baystation's character flavor text edited to work with /tg/ code.
+basically Baystation's character examine text edited to work with /tg/ code.
 
 flavor_text is loaded and saved for player savegames as part of DNA, in
 	code\modules\client\preferences.dm

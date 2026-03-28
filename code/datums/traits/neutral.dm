@@ -1041,7 +1041,7 @@
 	desc = "Whether you've got horns, wings, a big ass tail, or maybe just your general vibe, something about you cannot be concealed"
 	value = 0
 	category = QUIRK_CATEGORY_LIFEPATH_QUIRKS
-	mechanics = "Face coverings will not hide your identity from others, including flavor text and species"
+	mechanics = "Face coverings will not hide your identity from others, including examine text and species"
 	conflicts = list()
 	mob_trait = TRAIT_NOHIDEFACE
 	gain_text = span_notice("You feel seen!")

@@ -52,7 +52,7 @@ random_features(intendedspecies, intended_gender)
 
 
 randomize_human(mob/living/carbon/human/H)
-//	H.dna.features["flavor_text"] = "" // I'm so tempted to put lorem ipsum in the flavor text so freaking badly please someone hold me back god.
+//	H.dna.features["flavor_text"] = "" // I'm so tempted to put lorem ipsum in the examine text so freaking badly please someone hold me back god.
 	H.dna.features["grad_color"] = random_color()
 	H.dna.features["grad_style"] = pick(GLOB.hair_gradients)
 	..(H)

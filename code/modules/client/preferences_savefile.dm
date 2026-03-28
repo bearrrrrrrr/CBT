@@ -891,7 +891,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//taste
 	S["feature_taste"]					>> features["taste"]
 
-	//flavor text
+	//examine text
 	//Let's make our players NOT cry desperately as we wipe their savefiles of their special snowflake texts:
 	if((S["flavor_text"] != "") && (S["flavor_text"] != null) && S["flavor_text"]) //If old text isn't null and isn't "" but still exists.
 		S["flavor_text"]				>> features["flavor_text"] //Load old flavortext as current dna-based flavortext

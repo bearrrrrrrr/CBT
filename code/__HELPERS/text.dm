@@ -294,6 +294,13 @@
 		. = t[1]
 		return uppertext(.) + copytext(t, 1 + length(.))
 
+//Returns a string with the first element of the string decapitalized.
+/proc/decapitalize(t as text)
+	. = t
+	if(t)
+		. = t[1]
+		return lowertext(.) + copytext(t, 1 + length(.))
+
 /proc/stringmerge(text,compare,replace = "*")
 //This proc fills in all spaces with the "replace" var (* by default) with whatever
 //is in the other string at the same spot (assuming it is not a replace char).

@@ -572,14 +572,13 @@
 	loot = list(/obj/effect/gibspawner/larva)
 	loot_drop_amount = 1
 	loot_amount_random = TRUE
-	speed = 1
-	maxHealth = 20
-	health = 20
+	speed = 2
+	maxHealth = 35
+	health = 35
 	harm_intent_damage = 8
 	obj_damage = 20
-	melee_damage_lower = 4
-	melee_damage_upper = 6
-
+	melee_damage_lower = 10
+	melee_damage_upper = 20
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
 	turns_per_move = 5
@@ -597,6 +596,15 @@
 	density = FALSE
 	gold_core_spawnable = HOSTILE_SPAWN
 	randpixel = 12
+	aggro_vision_range = 3 
+	//tiles within they start attacking, doesn't count the mobs tile
+	/mob/living/simple_animal/hostile/pillbug/Initialize()
+	.=..()
+	resize = 0.75
+	update_transform()
+
+	vision_range = 3
+	//tiles within they start making noise, does count the mobs tile
 	variation_list = list(
 		MOB_COLOR_VARIATION(50, 50, 50, 255, 255, 255),
 		MOB_SPEED_LIST(3.8, 3.9, 4),
@@ -631,8 +639,8 @@
 	name = "Micro Pillbug"
 	maxHealth = 20
 	health = 20
-	melee_damage_lower = 2
-	melee_damage_upper = 6
+	melee_damage_lower = 5
+	melee_damage_upper = 15
 	variation_list = list(
 		MOB_COLOR_VARIATION(200, 200, 200, 250, 250, 250), //Rmin, Gmin, Bmin, Rmax, Gmax, Bmax
 		MOB_SPEED_LIST(3.8, 3.9, 4),
@@ -646,7 +654,7 @@
 
 /mob/living/simple_animal/hostile/pillbug/micro/Initialize()
 	.=..()
-	resize = 0.75
+	resize = 0.40
 	update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/micro/become_the_mob(mob/user)
@@ -656,13 +664,11 @@
 
 /mob/living/simple_animal/hostile/pillbug/strongradroach
 	bounty = 15
-	maxHealth = 140
-	health = 140
 	name = "Macro Pillbug"
 	maxHealth = 40
 	health = 40
-	melee_damage_lower = 10
-	melee_damage_upper = 20
+	melee_damage_lower = 15
+	melee_damage_upper = 25
 	variation_list = list(
 		MOB_COLOR_VARIATION(80, 80, 80, 125, 125, 125), //Rmin, Gmin, Bmin, Rmax, Gmax, Bmax
 		MOB_SPEED_LIST(3.8, 3.9, 4),
@@ -673,6 +679,11 @@
 		MOB_MINIMUM_DISTANCE_LIST(1, 2),
 		MOB_MINIMUM_DISTANCE_CHANGE_PER_TURN_CHANCE(50),
 	) //same as a newt for how they attack
+
+/mob/living/simple_animal/hostile/pillbug/strongradroach/Initialize()
+	.=..()
+	resize = 0.8
+	update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/strongradroach/become_the_mob(mob/user)
 	call_backup = /obj/effect/proc_holder/mob_common/summon_backup/small_critter
@@ -686,11 +697,9 @@
 	health = 40
 	melee_damage_lower = 20
 	melee_damage_upper = 30
-	retreat_distance = 9
-	minimum_distance = 7
-	aggro_vision_range = 7
-	vision_range = 9
-	ranged = TRUE
+	aggro_vision_range = 4
+	vision_range = 4
+	ranged = FALSE
 	can_glow_revive = FALSE
 	variation_list = list(
 		MOB_COLOR_VARIATION(245, 215, 0, 255, 220, 5), //Rmin, Gmin, Bmin, Rmax, Gmax, Bmax
@@ -705,7 +714,7 @@
 
 /mob/living/simple_animal/hostile/pillbug/leader/Initialize()
 	.=..()
-	resize = 2.0
+	resize = 1.2
 	update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/leader/become_the_mob(mob/user)

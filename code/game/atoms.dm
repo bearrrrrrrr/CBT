@@ -121,6 +121,7 @@
 	var/list/quest_tag
 	/// Override the deletion of this atom for quests
 	var/important
+	var/uid
 
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
@@ -1394,3 +1395,23 @@
 
 /atom/proc/wingetproc(id, params)
 	return winget(src, id, params)
+
+/atom/proc/get_uid()
+	if(uid)
+		return uid
+	generate_uid()
+	return get_uid()
+
+/atom/proc/generate_uid()
+	var/nuid = "[type]-[name]-"
+	nuid += ckey(safepick(GLOB.ing_verbs) || "cranberry")
+	nuid += "-"
+	nuid += ckey(safepick(GLOB.adverbs) || "cranberry")
+	nuid += "-"
+	nuid += ckey("[rand(1000,9999)]")
+	nuid += "-"
+	nuid += ckey("[rand(1000,9999)]")
+	uid = nuid
+	return uid
+
+

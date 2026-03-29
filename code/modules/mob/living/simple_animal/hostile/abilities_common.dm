@@ -1,7 +1,7 @@
 #define RTS_GHOUL_ALLOWED list(\
 		/mob/living/simple_animal/hostile/ghoul,\
-		/mob/living/simple_animal/hostile/ghoul/reaver,\
-		/mob/living/simple_animal/hostile/ghoul/zombie/glowing)
+		/mob/living/simple_animal/hostile/ghoul/reaver)
+		// /mob/living/simple_animal/hostile/ghoul/zombie/glowing)
 #define RTS_SMALLCRITTER_ALLOWED list(\
 		/mob/living/simple_animal/hostile/gecko,\
 		/mob/living/simple_animal/hostile/gecko/legacy,\

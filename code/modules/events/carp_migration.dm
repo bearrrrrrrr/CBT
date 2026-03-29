@@ -250,7 +250,7 @@ GLOBAL_LIST_INIT(totally_not_carp, list(
 	/obj/structure/nest/supermutant/ranged = 3,
 	/obj/structure/nest/supermutant/nightkin = 1,
 	/obj/structure/nest/nightstalker = 3,
-	/obj/structure/nest/zombieghoul = 3,
+	// /obj/structure/nest/zombieghoul = 3,
 	/obj/structure/nest/tunneler = 2,
 ))
 

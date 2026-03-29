@@ -29,7 +29,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggro_vision_range = 8
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1

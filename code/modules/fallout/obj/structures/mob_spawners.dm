@@ -550,12 +550,13 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 	return
 
 //Event Nests
-/obj/structure/nest/zombieghoul
-	name = "ravenous ghoul nest"
-	max_mobs = 5
-	mob_types = list(/mob/living/simple_animal/hostile/ghoul/zombie = 5,
-					/mob/living/simple_animal/hostile/ghoul/zombie/reaver = 3,
-					/mob/living/simple_animal/hostile/ghoul/zombie/glowing = 1)
+// /obj/structure/nest/zombieghoul
+// 	name = "ravenous ghoul nest"
+// 	max_mobs = 5
+// 	mob_types = list(
+// 					 /mob/living/simple_animal/hostile/ghoul/zombie = 5,
+// 					/mob/living/simple_animal/hostile/ghoul/zombie/reaver = 3,
+// 					/mob/living/simple_animal/hostile/ghoul/zombie/glowing = 1)
 
 /obj/structure/nest/tunneler
 	name = "tunneler tunnel"

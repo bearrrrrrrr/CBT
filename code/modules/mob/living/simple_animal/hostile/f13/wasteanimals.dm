@@ -25,8 +25,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 60
+	health = 60
 	low_health_threshold = 0.5
 	harm_intent_damage = 8
 	obj_damage = 20
@@ -188,8 +188,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 55
+	health = 55
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 4
@@ -294,8 +294,6 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 4
@@ -444,8 +442,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 40
+	health = 40
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 7
@@ -533,8 +531,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 45
+	health = 45
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 7
@@ -597,8 +595,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 120
+	health = 120
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 12

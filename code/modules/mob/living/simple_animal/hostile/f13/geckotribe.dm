@@ -20,8 +20,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 70
+	health = 70
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 4
@@ -129,8 +129,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 15
-	health = 15
+	maxHealth = 20
+	health = 20
 	harm_intent_damage = 2
 	obj_damage = 5
 	melee_damage_lower = 1
@@ -201,8 +201,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 80
+	health = 80
 	harm_intent_damage = 20
 	obj_damage = 20
 	melee_damage_lower = 16
@@ -312,8 +312,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 70
+	health = 70
 	harm_intent_damage = 20
 	obj_damage = 20
 	melee_damage_lower = 16
@@ -445,8 +445,8 @@
 	peaceful = TRUE
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 90
+	health = 90
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 4
@@ -571,8 +571,8 @@
 	peaceful = TRUE
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 200
-	health = 200
+	maxHealth = 150
+	health = 150
 	mob_armor = ARMOR_VALUE_DEATHCLAW_COMMON
 	harm_intent_damage = 8
 	obj_damage = 20

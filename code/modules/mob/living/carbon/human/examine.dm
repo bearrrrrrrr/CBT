@@ -95,13 +95,14 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 			obscure_name = TRUE
 
 	var/datum/preferences/P = extract_prefs(src)
-	. = list("<span class='info'>*---------*\n")
+	. = list("<span class='info'>*---------*")
+	. += span_info("<font size=2>This is <EM>[!obscure_name ? name : "Unknown"]</EM>! [t_He] [t_is] a [dna.custom_species ? dna.custom_species : dna.species.name]!</font>")
 	if(P)
 		var/followers_clinic_full_of_big_strong_gay_dogs_in_it = SSchat.GetPicForMode(src, MODE_PROFILE_PIC)
 		var/pfp = followers_clinic_full_of_big_strong_gay_dogs_in_it
 		if(pfp != "https://files.catbox.moe/jgxtpe.png" && pfp != "https://files.catbox.moe/1i1zom.png")
 			. += "<img src='[followers_clinic_full_of_big_strong_gay_dogs_in_it]' height='300px' width='auto' max-width='[P.see_pfp_max_widht]px' max-height='[P.see_pfp_max_hight]px'>"
-	. += span_info("<font size=2>This is <EM>[!obscure_name ? name : "Unknown"]</EM>! [t_He] [t_is] a [dna.custom_species ? dna.custom_species : dna.species.name]!</font>")
+
 
 	var/vampDesc = ReturnVampExamine(user) // Vamps recognize the names of other vamps.
 	var/vassDesc = ReturnVassalExamine(user) // Vassals recognize each other's marks.
@@ -742,14 +743,14 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .) //This also handles examine texts now
 
-	if(HAS_TRAIT(src, TRAIT_PVEFOC))
-		. += span_boldwarning("[t_He] [t_has] <u>opted out</u> of PVP combat! Please respect their wishes and do not engage in PVP with them. If they are trying to PVP with you, please let the staff know!")
-	else if(!HAS_TRAIT(user, TRAIT_PVEFOC) && HAS_TRAIT(src, TRAIT_PVPFOC))
-		. += span_alert("[t_He] [t_has] is looking for PVP encounters! If you're looking for a fight, they're the one to go to!")
+	// if(HAS_TRAIT(src, TRAIT_PVEFOC))
+	// 	. += span_boldwarning("[t_He] [t_has] <u>opted out</u> of PVP combat! Please respect their wishes and do not engage in PVP with them. If they are trying to PVP with you, please let the staff know!")
+	// else if(!HAS_TRAIT(user, TRAIT_PVEFOC) && HAS_TRAIT(src, TRAIT_PVPFOC))
+	// 	. += span_alert("[t_He] [t_has] is looking for PVP encounters! If you're looking for a fight, they're the one to go to!")
 
-	. += span_green("Right click and select flirt with me to [span_love("maybe get my attention!~")]")
+	// . += span_green("Right click and select flirt with me to [span_love("maybe get my attention!~")]")
 	
-	. += span_green("Ctrl-Shift click me for [span_love("special interactions!~")]")
+	// . += span_green("Ctrl-Shift click me for [span_love("special interactions!~")]")
 
 	if(has_status_effect(STATUS_EFFECT_ADMINSLEEP))
 		. += span_danger("<B>This player has been slept by staff.</B>\n")

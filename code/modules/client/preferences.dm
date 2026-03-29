@@ -631,7 +631,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			else
 				dat += "[TextPreview(features["ooc_notes"])]...<br>"
 			dat += "<br>"
-			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Configure VisualChat / Profile Pictures!</a><BR>"
+			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Setup VisualChat</a><BR>"
 			dat += "</td>"
 
 			/// Right column
@@ -2714,11 +2714,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							to_chat(usr, span_notice("Here's what you wrote:"))
 							to_chat(usr, "[msg]")
 							return
-						if(LAZYLEN(msg) > MAX_FLAVOR_LEN)
-							to_chat(usr, span_alert("Your OOC Notes are more than [MAX_FLAVOR_LEN] characters! It needs to be shorter (but not shorter than [MIN_FLAVOR_LEN] characters!)"))
+						if(LAZYLEN(msg) > MAX_OOC_LEN)
+							to_chat(usr, span_alert("Your OOC Notes are more than [MAX_OOC_LEN] characters! It needs to be shorter (but not shorter than [MIN_FLAVOR_LEN] characters!)"))
 							to_chat(usr, span_notice("Here's what you wrote:"))
 							to_chat(usr, "[msg]")
-							msg = copytext(msg, 1, (MAX_FLAVOR_LEN - 1))
+							msg = copytext(msg, 1, (MAX_OOC_LEN - 1))
 							to_chat(usr, span_notice("And this is what will be kept:"))
 							to_chat(usr, "[msg]")
 					if(!isnull(msg))

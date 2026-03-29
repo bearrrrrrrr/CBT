@@ -1237,7 +1237,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["taste"]				= copytext(features["taste"], 1, MAX_TASTE_LEN)
 	features["flavor_text"]			= copytext(features["flavor_text"], 1, MAX_FLAVOR_LEN)
 	features["silicon_flavor_text"]	= copytext(features["silicon_flavor_text"], 1, MAX_FLAVOR_LEN)
-	features["ooc_notes"]			= copytext(features["ooc_notes"], 1, MAX_FLAVOR_LEN)
+	features["ooc_notes"]			= copytext(features["ooc_notes"], 1, MAX_OOC_LEN)
 	if(features["ooc_notes"] == "")
 		features["ooc_notes"] = OOC_NOTE_TEMPLATE
 		WRITE_FILE(S["feature_ooc_notes"], features["ooc_notes"])

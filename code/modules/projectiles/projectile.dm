@@ -382,7 +382,7 @@
 	var/status = 0  //basically if the number increases it means that the projectile for some reason has to miss
 
 	status += check_pacifism_lesser(src, firer, target)
-	status += check_hitormiss_gun(target)
+	status += check_hitormiss_by_archetype(target)
 	status += multichance_projectile_hit_behaviour(src, firer, target, status)
 
 	if(!status)
@@ -390,7 +390,29 @@
 	else
 		return FALSE
 
-/obj/item/projectile/proc/check_hitormiss_gun(atom/target)
+/obj/item/projectile/proc/check_hitormiss_by_archetype(atom/target)
+	if(!istype(fired_from, /obj/item/gun))
+		return FALSE
+
+	var/obj/item/gun/firing_gun = fired_from
+	switch(firing_gun.gun_archetype)
+		if("precise")
+			return check_hitormiss_precise(target)
+		if("heavy")
+			return check_hitormiss_heavy(target)
+		else
+			return check_hitormiss_swift(target)
+
+/obj/item/projectile/proc/check_hitormiss_swift(atom/target)
+	return check_hitormiss_gun_archetype(target)
+
+/obj/item/projectile/proc/check_hitormiss_precise(atom/target)
+	return check_hitormiss_gun_archetype(target)
+
+/obj/item/projectile/proc/check_hitormiss_heavy(atom/target)
+	return check_hitormiss_gun_archetype(target)
+
+/obj/item/projectile/proc/check_hitormiss_gun_archetype(atom/target)
 	if(!isliving(target))
 		return FALSE
 	if(!istype(fired_from, /obj/item/gun))

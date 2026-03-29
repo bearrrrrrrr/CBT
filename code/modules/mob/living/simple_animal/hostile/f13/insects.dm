@@ -599,9 +599,9 @@
 	aggro_vision_range = 3 
 	//tiles within they start attacking, doesn't count the mobs tile
 	/mob/living/simple_animal/hostile/pillbug/Initialize()
-	.=..()
-	resize = 0.75
-	update_transform()
+		.=..()
+		resize = 0.75
+		update_transform()
 
 	vision_range = 3
 	//tiles within they start making noise, does count the mobs tile

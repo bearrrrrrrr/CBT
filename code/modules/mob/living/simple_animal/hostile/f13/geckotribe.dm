@@ -893,8 +893,8 @@
 	peaceful = FALSE
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 75
-	health = 75
+	maxHealth = 100
+	health = 100
 	mob_armor = ARMOR_VALUE_LIGHT
 	harm_intent_damage = 8
 	obj_damage = 20

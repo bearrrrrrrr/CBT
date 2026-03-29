@@ -58,7 +58,7 @@
 	// 	"goes full tilt"
 	// 	)
 	a_intent = INTENT_HARM
-	speed = 1
+	speed = 3
 	harm_intent_damage = 25
 	melee_damage_lower = 10
 	melee_damage_upper = 25

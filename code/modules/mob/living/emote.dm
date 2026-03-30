@@ -1185,25 +1185,25 @@
 			pick(playsound(C, 'sound/f13effects/sunsetsounds/wah1.ogg', 33, 1),playsound(C, 'sound/f13effects/sunsetsounds/wah2.ogg', 33, 1),playsound(C, 'sound/f13effects/sunsetsounds/wah3.ogg', 34, 1),)
 
 
-/datum/emote/living/boowomp
-	key = "boowomp"
-	key_third_person = "frowns heavily."
-	message = "frowns heavily."
-	sound = 'sound/effects/boowomp.ogg'
+// /datum/emote/living/boowomp
+// 	key = "boowomp"
+// 	key_third_person = "frowns heavily."
+// 	message = "frowns heavily."
+// 	sound = 'sound/effects/boowomp.ogg'
 
 /datum/emote/living/scrungy
 	key = "scrungy"
-	key_third_person = "opens their mouth slightly and makes a very pained noise as they take a deep breath through their nose."
-	message = "opens their mouth slightly and makes a very pained noise as they take a deep breath through their nose."
+	key_third_person = "makes a pained sound."
+	message = "makes a pained sound."
 	emote_type = EMOTE_AUDIBLE
 	sound = 'sound/effects/scrungy.ogg'
 
-/datum/emote/living/grungle
-	key = "grungle"
-	key_third_person = "sounds like a dog gargling soda water just as its about to have a laugh."
-	message = "sounds like a dog gargling soda water just as its about to have a laugh."
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/effects/gurgle.ogg'
+// /datum/emote/living/grungle
+// 	key = "grungle"
+// 	key_third_person = "sounds like a dog gargling soda water just as its about to have a laugh."
+// 	message = "sounds like a dog gargling soda water just as its about to have a laugh."
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/effects/gurgle.ogg'
 
 /datum/emote/living/augh
 	key = "augh"

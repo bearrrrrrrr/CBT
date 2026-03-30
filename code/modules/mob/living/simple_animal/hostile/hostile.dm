@@ -283,17 +283,23 @@
 	if(my_target)
 		InterruptAttractionMovement()
 
-/mob/living/simple_animal/hostile/AutomateAttraction()
-	if(!..())
-		return
-	vision_range = initial(vision_range) * 2
-	aggroed_vision_range = initial(aggroed_vision_range) * 4
+// /mob/living/simple_animal/hostile/AutomateAttraction()
+// 	if(!..())
+// 		return
+// 	vision_range = initial(vision_range) * 2
+// 	aggroed_vision_range = initial(aggroed_vision_range) * 4
 
-/mob/living/simple_animal/hostile/InterruptAttractionMovement()
-	if(!..())
-		return
-	vision_range = initial(vision_range)
-	aggroed_vision_range = initial(aggroed_vision_range)
+// /mob/living/simple_animal/hostile/InterruptAttractionMovement()
+// 	if(!..())
+		// return
+	// vision_range = initial(vision_range)
+	// aggroed_vision_range = initial(aggroed_vision_range)
+
+/mob/living/simple_animal/hostile/AttractionAct(atom/target_origin, intensity, max_range, duration)
+	if(get_target())
+		InterruptAttractionMovement()
+		return FALSE
+	return ..()
 
 /mob/living/simple_animal/hostile/toggle_ai(togglestatus)
 	. = ..()
@@ -434,9 +440,8 @@
 		var/Target = PickTarget(., priority_targets)
 		GiveTarget(Target)
 		COOLDOWN_START(src, sight_shoot_delay, sight_shoot_delay_time)
+		InterruptAttractionMovement()
 		return Target //We now have a targettte
-
-
 
 /mob/living/simple_animal/hostile/proc/PossibleThreats()
 	. = list()

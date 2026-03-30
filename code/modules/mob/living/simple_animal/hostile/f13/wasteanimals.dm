@@ -35,7 +35,7 @@
 	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -197,7 +197,7 @@
 	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -301,7 +301,7 @@
 	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -451,7 +451,7 @@
 	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 7
 	waddle_amount = 5
 	waddle_up_time = 1
@@ -540,7 +540,7 @@
 	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 9
 
 	faction = list("gecko")
@@ -604,7 +604,7 @@
 	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 4
+	aggroed_vision_range = 4
 	vision_range = 4
 
 
@@ -721,7 +721,7 @@
 	minimum_distance = 0
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 8
@@ -1034,7 +1034,7 @@
 	melee_damage_upper = 30
 	retreat_distance = 9
 	minimum_distance = 7
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 9
 	ranged = TRUE
 	can_glow_revive = FALSE
@@ -1192,7 +1192,7 @@
 	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 9
+	aggroed_vision_range = 9
 	vision_range = 8
 	waddle_amount = 5
 	waddle_up_time = 1

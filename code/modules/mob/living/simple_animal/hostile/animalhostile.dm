@@ -75,7 +75,7 @@ to produce smoke or slow down victims? Stuff like that added to a couple would b
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/animalhide/wolf = 1, /obj/item/reagent_containers/food/snacks/meat/slab/wolf = 1,/obj/item/stack/sheet/bone = 1)
 	melee_damage_lower = 20
 	melee_damage_upper = 25
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	attack_verb_simple = "bites"
 	attack_sound = 'sound/weapons/bite.ogg'
 	move_to_delay = 2

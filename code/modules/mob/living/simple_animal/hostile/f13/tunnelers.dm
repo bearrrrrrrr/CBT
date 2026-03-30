@@ -132,7 +132,7 @@
 		)
 	taunt_chance = 30
 	vision_range = 9
-	aggro_vision_range = 18
+	aggroed_vision_range = 18
 	retreat_distance = 6
 	seconds_per_wander = 5
 	speak_emote = list("mumbles incoherently")

@@ -44,7 +44,7 @@
 	minimum_distance = 5
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 8
@@ -226,7 +226,7 @@
 	retreat_distance = 0
 	environment_smash = ENVIRONMENT_SMASH_RWALLS //wall-obliterator. perish.
 	color = "#75FFE2"
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1 //cannot self-harm with it's explosion spam
 	loot = list(/obj/effect/gibspawner/ipc/bodypartless)
 	loot_drop_amount = 10

@@ -26,7 +26,7 @@
 	minimum_distance = 0
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 4 //due to ants poor eyesight
+	aggroed_vision_range = 4 //due to ants poor eyesight
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 5
@@ -241,7 +241,7 @@
 	minimum_distance = 0
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 4 //due to scorpions poor eyesight
+	aggroed_vision_range = 4 //due to scorpions poor eyesight
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 5
@@ -351,7 +351,7 @@
 	minimum_distance = 1
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 7 //due to scorpions poor eyesight
+	aggroed_vision_range = 7 //due to scorpions poor eyesight
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 8
@@ -596,7 +596,7 @@
 	density = FALSE
 	gold_core_spawnable = HOSTILE_SPAWN
 	randpixel = 12
-	aggro_vision_range = 3 
+	aggroed_vision_range = 3 
 	vision_range = 3
 	//tiles within they start making noise, does count the mobs tile
 	variation_list = list(
@@ -652,7 +652,7 @@
 
 /mob/living/simple_animal/hostile/pillbug/micro/Initialize()
 	.=..()
-	resize = 0.40
+	resize = 0.65
 	update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/micro/become_the_mob(mob/user)
@@ -695,7 +695,7 @@
 	health = 40
 	melee_damage_lower = 20
 	melee_damage_upper = 30
-	aggro_vision_range = 4
+	aggroed_vision_range = 4
 	vision_range = 4
 	ranged = FALSE
 	can_glow_revive = FALSE

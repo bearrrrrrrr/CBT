@@ -45,7 +45,7 @@
 		)
 	melee_damage_lower = 20
 	melee_damage_upper = 35
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	//tiles within they start attacking, doesn't count the mobs tile
 	vision_range = 8
 	//tiles within they start making noise, does count the mobs tile

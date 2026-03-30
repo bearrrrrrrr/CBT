@@ -105,8 +105,9 @@
 	var/robust_searching = 1 //By default, mobs have a simple searching method, set this to 1 for the more scrutinous searching (stat_attack, stat_exclusive, etc), should be disabled on most mobs
 	var/robuster_searching = FALSE //Makes mobs see through walls if theyve seen you before
 	var/vision_range = 9 //How big of an area to search for targets in, a vision of 9 attempts to find targets as soon as they walk into screen view
-	var/aggro_vision_range = 9 //If a mob is aggro, we search in this radius. Defaults to 9 to keep in line with original simple mob aggro radius
+	var/aggroed_vision_range = 9 //If a mob is aggro, we search in this radius. Defaults to 9 to keep in line with original simple mob aggro radius
 	var/max_tracking_range = 14 //If a mob is aggro, we search in this radius. Defaults to 9 to keep in line with original simple mob aggro radius
+
 	var/search_objects = 0 //If we want to consider objects when searching around, set this to 1. If you want to search for objects while also ignoring mobs until hurt, set it to 2. To completely ignore mobs, even when attacked, set it to 3
 	var/search_objects_timer_id //Timer for regaining our old search_objects value after being attacked
 	var/search_objects_regain_time = 30 //the delay between being attacked and gaining our old search_objects value back
@@ -282,6 +283,18 @@
 	if(my_target)
 		InterruptAttractionMovement()
 
+/mob/living/simple_animal/hostile/AutomateAttraction()
+	if(!..())
+		return
+	vision_range = initial(vision_range) * 2
+	aggroed_vision_range = initial(aggroed_vision_range) * 4
+
+/mob/living/simple_animal/hostile/InterruptAttractionMovement()
+	if(!..())
+		return
+	vision_range = initial(vision_range)
+	aggroed_vision_range = initial(aggroed_vision_range)
+
 /mob/living/simple_animal/hostile/toggle_ai(togglestatus)
 	. = ..()
 	queue_naptime()
@@ -358,7 +371,7 @@
 	if (peaceful == TRUE)
 		peaceful = FALSE
 	if(stat == CONSCIOUS && !get_target() && AIStatus != AI_OFF && !client)
-		if(P.firer && get_dist(src, P.firer) <= aggro_vision_range)
+		if(P.firer)
 			FindTarget(list(P.firer), 1)
 		Goto(P.starting, move_to_delay, 3)
 	//return ..()
@@ -735,7 +748,7 @@
 /mob/living/simple_animal/hostile/proc/Aggro()
 	if(ckey)
 		return TRUE
-	vision_range = aggro_vision_range
+	vision_range = aggroed_vision_range
 	var/atom/my_target = get_target()
 	if(my_target && LAZYLEN(emote_taunt) && prob(taunt_chance))
 		INVOKE_ASYNC(src,PROC_REF(emote), "me", EMOTE_VISIBLE, "[pick(emote_taunt)] at [my_target].")
@@ -1128,7 +1141,7 @@
 	if(LAZYLEN(variation_list[MOB_VARIED_VIEW_RANGE]))
 		vision_range = vary_from_list(variation_list[MOB_VARIED_VIEW_RANGE])
 	if(LAZYLEN(variation_list[MOB_VARIED_AGGRO_RANGE]))
-		aggro_vision_range = vary_from_list(variation_list[MOB_VARIED_AGGRO_RANGE])
+		aggroed_vision_range = vary_from_list(variation_list[MOB_VARIED_AGGRO_RANGE])
 	if(LAZYLEN(variation_list[MOB_VARIED_SPEED]))
 		move_to_delay = vary_from_list(variation_list[MOB_VARIED_SPEED])
 	if(LAZYLEN(variation_list[MOB_RETREAT_DISTANCE]))

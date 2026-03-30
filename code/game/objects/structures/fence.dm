@@ -23,7 +23,7 @@
 	var/hole_size= NO_HOLE
 	var/invulnerable = FALSE
 	var/hole_visuals = TRUE //Whether the fence piece has visuals for being cut. Used in update_cut_status()
-	max_integrity = 300 // juuuust about lower health than a door is.
+	max_integrity = 75 // juuuust about lower health than a door is.
 
 
 /obj/structure/fence/Initialize()

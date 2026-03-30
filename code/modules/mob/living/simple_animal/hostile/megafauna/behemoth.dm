@@ -13,7 +13,7 @@
 	melee_damage_lower = 50
 	melee_damage_upper = 70
 	vision_range = 9
-	aggro_vision_range = 18
+	aggroed_vision_range = 18
 	speed = 8
 	move_to_delay = 8
 	melee_queue_distance = 20 // as far as possible really, need this because of charging

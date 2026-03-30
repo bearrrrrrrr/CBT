@@ -26,7 +26,7 @@
 	minimum_distance = 0
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 8

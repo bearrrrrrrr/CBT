@@ -181,7 +181,7 @@
 	health = 15
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -231,7 +231,7 @@
 	health = 5
 	retreat_distance = 7
 	minimum_distance = 7
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 10
 	is_smol = TRUE
 
@@ -279,7 +279,7 @@
 	health = 50
 	retreat_distance = 7
 	minimum_distance = 7
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 10
 	faction = list("neutral")
 	is_smol = TRUE

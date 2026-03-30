@@ -1,5 +1,5 @@
 GLOBAL_LIST_EMPTY(playmob_cooldowns)
-GLOBAL_VAR_INIT(attraction_cooldown, 0.5 SECONDS)
+GLOBAL_VAR_INIT(attraction_cooldown, 0.1 SECONDS)
 GLOBAL_VAR_INIT(last_attraction_time, 0)
 
 /mob/living/simple_animal
@@ -673,7 +673,7 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 	if(!CanWander(TRUE))
 		return MOVELOOP_KILL_PATH_AND_GIVE_UP
 	var/turf/dest = current_attraction.GetTarget()
-	if(get_dist(get_turf(src), dest) <= wander_attractor_arrival_distance)
+	if(get_dist(get_turf(src), dest) <= wander_attractor_arrival_distance && prob(25))
 		return MOVELOOP_KILL_PATH_AND_GIVE_UP
 	return NONE
 
@@ -692,7 +692,7 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 	if(!dest)
 		InterruptAttractionMovement()
 		return FALSE
-	return SSmove_manager.jps_move(
+	. = SSmove_manager.jps_move(
 		src,
 		dest,
 		attracted_move_to_delay,
@@ -709,6 +709,8 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 		NONE,
 		null
 	)
+	if(.)
+		last_wander_time = 0
 
 /mob/living/simple_animal/proc/IsAttractionMoving()
 	if(!istype(current_attraction))
@@ -722,10 +724,9 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 /mob/living/simple_animal/proc/InterruptAttractionMovement()
 	if(!istype(current_attraction))
 		return
+	. = TRUE
+	qdel(move_packet)
 	QDEL_NULL(current_attraction)
-	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmovement)
-	if(MP)
-		qdel(MP)
 
 /mob/living/simple_animal/proc/AttractionAct(atom/target_origin, intensity, max_range, duration)
 	if(!attractable)
@@ -740,6 +741,7 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 		QDEL_NULL(att)
 		return
 	current_attraction = att
+	return TRUE
 
 /mob/living/simple_animal/proc/CheckAttractorMoved()
 	if(!istype(current_attraction))

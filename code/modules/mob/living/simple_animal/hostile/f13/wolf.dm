@@ -21,7 +21,7 @@
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/animalhide/wolf = 1, /obj/item/reagent_containers/food/snacks/meat/slab/wolf = 1,/obj/item/stack/sheet/bone = 1)
 	melee_damage_lower = 8
 	melee_damage_upper = 16
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	waddle_amount = 2
 	waddle_up_time = 0 //Dogs can't look up ~TK
 	waddle_side_time = 1

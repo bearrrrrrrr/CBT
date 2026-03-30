@@ -25,11 +25,11 @@
 	waddle_side_time = 1
 	randpixel = 12
 	density = FALSE
-	aggro_vision_range = 3 
-	//tiles within they start attacking, doesn't count the mobs tile
+	aggroed_vision_range = 15 
+
 
 	vision_range = 3
-	//tiles within they start making noise, does count the mobs tile
+	
 	speak_emote = list(
 		"growls",
 		"murrs",
@@ -434,7 +434,7 @@
 // 	faction = list("scorched", "hostile")
 // 	death_sound = null
 // 	melee_damage_upper = 20
-// 	aggro_vision_range = 10
+// 	aggroed_vision_range = 10
 // 	attack_verb_simple = "punches"
 // 	attack_sound = "punch"
 // 	footstep_type = FOOTSTEP_MOB_BAREFOOT
@@ -472,7 +472,7 @@
 // 	faction = list("scorched", "hostile")
 // 	melee_damage_lower = 15
 // 	melee_damage_upper = 20
-// 	aggro_vision_range = 10
+// 	aggroed_vision_range = 10
 // 	attack_verb_simple = "shoots"
 // 	attack_sound = "punch"
 // 	footstep_type = FOOTSTEP_MOB_BAREFOOT

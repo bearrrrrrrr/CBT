@@ -38,7 +38,7 @@
 	pass_flags = LETPASSTHROW
 	robust_searching = TRUE
 	death_sound = 'sound/machines/machinery_break_1.ogg'
-	aggro_vision_range = 8 //A little more aggressive once in combat to balance out their really low HP
+	aggroed_vision_range = 8 //A little more aggressive once in combat to balance out their really low HP
 	decompose = FALSE
 	blood_volume = 0
 	despawns_when_lonely = FALSE

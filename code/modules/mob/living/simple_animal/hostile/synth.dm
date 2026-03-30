@@ -33,7 +33,7 @@
 	unsuitable_atmos_damage = 15
 	status_flags = CANPUSH
 	vision_range = 12
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 
 	ranged = 1
 	projectiletype = /obj/item/projectile/beam

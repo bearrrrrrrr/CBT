@@ -28,7 +28,7 @@
 	attack_sound = 'sound/weapons/punch1.ogg'
 	throw_message = "does nothing to the rocky hide of the"
 	vision_range = 4
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	move_force = MOVE_FORCE_VERY_STRONG
 	move_resist = MOVE_FORCE_VERY_STRONG
 	pull_force = MOVE_FORCE_VERY_STRONG
@@ -79,7 +79,7 @@
 	. = ..()
 
 /mob/living/simple_animal/hostile/asteroid/goliath/Aggro()
-	vision_range = aggro_vision_range
+	vision_range = aggroed_vision_range
 	handle_preattack()
 	if(icon_state != icon_aggro)
 		icon_state = icon_aggro

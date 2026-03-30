@@ -19002,7 +19002,7 @@
 "iMx" = (
 /obj/effect/decal/cleanable/dirt,
 /mob/living/simple_animal/hostile/handy/assaultron{
-	aggro_vision_range = 30;
+	aggroed_vision_range = 30;
 	desc = "A prototype assaultron with (visibly) upgraded leg motors and hydraulics. It's painted in Enclave markings.";
 	dir = 4;
 	health = 1500;

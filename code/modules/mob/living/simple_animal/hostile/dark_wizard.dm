@@ -21,7 +21,7 @@
 	a_intent = INTENT_HARM
 	speak_emote = list("chants")
 	attack_sound = 'sound/weapons/bladeslice.ogg'
-	aggro_vision_range = 9
+	aggroed_vision_range = 9
 	seconds_per_wander = 5
 	gold_core_spawnable = HOSTILE_SPAWN
 	faction = list(ROLE_WIZARD)

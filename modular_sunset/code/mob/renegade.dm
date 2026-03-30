@@ -12,7 +12,7 @@
 	icon_living = "renegade_prospect"
 	icon_dead = "renegade_prospect-dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	mob_armor = ARMOR_VALUE_RENEGADE_COMBAT_ARMOR
 	maxHealth = 100
 	health = 100

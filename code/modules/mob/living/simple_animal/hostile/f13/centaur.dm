@@ -43,7 +43,7 @@
 
 	vision_range = 7 //will start attacking within player sight, but like aggro gives wiggle room.  So they just don't see players outside of 7 tiles and start screeching.
 	//tiles within they start making noise
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speak_emote = list("growls")
 	//emote_see = list("screeches", "screams", "howls", "bellows", "flails", "fidgets", "festers")
 	a_intent = INTENT_HARM

@@ -164,6 +164,9 @@
 	/// Makes it so the mob tally doesnt count this thing as being deleted when its just sleeping
 	var/went_to_sleep = FALSE
 
+	var/time_between_move_randomization = 3 SECONDS
+	var/last_move_randomization = 0
+
 	speed = 3//The default hostile mob speed. If you ever speed the mob ss again please raise this to compensate.
 
 /mob/living/simple_animal/hostile/Initialize(mapload, nest_spawned)
@@ -233,6 +236,16 @@
 /mob/living/simple_animal/hostile/handle_automated_action()
 	if(AIStatus == AI_OFF)
 		return 0
+	
+	if(time_between_move_randomization && LAZYLEN(variation_list[MOB_VARIED_SPEED]) && variation_list[MOB_VARIED_SPEED_CHANCE] > 0)
+		if(last_move_randomization + time_between_move_randomization >= world.time)
+			last_move_randomization = world.time + time_between_move_randomization
+			if(prob(variation_list[MOB_VARIED_SPEED_CHANCE]))
+				var/randy = vary_from_list(variation_list[MOB_VARIED_SPEED])
+				move_to_delay = vary_from_list(variation_list[MOB_VARIED_SPEED])
+				set_glide_size(move_to_delay)
+	//else
+	// danbuttfat = TRUE
 
 	var/list/possible_targets = ListTargets() //we look around for potential targets and make it a list for later use.
 	if(!get_target())
@@ -267,6 +280,8 @@
 				addtimer(cb, (i - 1)*sidestep_delay)
 		else //Otherwise randomize it to make the players guessing.
 			addtimer(cb,rand(1,SSnpcpool.wait))
+	if(my_target)
+		InterruptAttractionMovement()
 
 /mob/living/simple_animal/hostile/toggle_ai(togglestatus)
 	. = ..()
@@ -658,8 +673,6 @@
 	if(variation_list[MOB_VARIED_SPEED_CHANCE] && LAZYLEN(variation_list[MOB_VARIED_SPEED]))
 		if(prob(variation_list[MOB_VARIED_SPEED_CHANCE]))
 			move_to_delay = vary_from_list(variation_list[MOB_VARIED_SPEED])
-		if(prob(variation_list[MOB_VARIED_SPEED_CHANCE]))
-			set_varspeed(pick(variation_list[MOB_VARIED_SPEED]))
 
 
 /mob/living/simple_animal/hostile/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
@@ -1089,6 +1102,7 @@
 	if(!new_target)
 		return
 	target = WEAKREF(new_target)
+	InterruptAttractionMovement()
 	RegisterSignal(target, COMSIG_PARENT_QDELETING,PROC_REF(handle_target_del), TRUE)
 
 /mob/living/simple_animal/hostile/proc/queue_unbirth()

@@ -9,7 +9,7 @@
 	emote_hear = list("hisses.")
 	emote_see = list("runs in a circle.", "shakes.")
 	speak_chance = 1
-	turns_per_move = 3
+	seconds_per_wander = 3
 	blood_volume = 250
 	see_in_dark = 5
 	maxHealth = 15

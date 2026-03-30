@@ -27,7 +27,7 @@
 	speak_emote = list("chitters")
 	emote_hear = list("chitters")
 	speak_chance = 5
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/spider = 2, /obj/item/reagent_containers/food/snacks/spiderleg = 8)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
@@ -116,7 +116,7 @@
 	health = 450
 	vision_range = 9
 	move_to_delay = 4
-	turns_per_move = 7
+	seconds_per_wander = 7
 	poison_per_bite = 7
 	melee_damage_lower = 30 //might need tweaking, should be fine for now.
 	melee_damage_upper = 60
@@ -132,7 +132,7 @@
 	maxHealth = 750
 	health = 750
 	move_to_delay = 5
-	turns_per_move = 2
+	seconds_per_wander = 2
 	poison_per_bite = 15
 	melee_damage_lower = 50
 	melee_damage_upper = 80
@@ -148,7 +148,7 @@
 	maxHealth = 550
 	health = 550
 	move_to_delay = 4.5
-	turns_per_move = 7
+	seconds_per_wander = 7
 	poison_per_bite = 7
 	melee_damage_lower = 40 //meant to be slightly stronger than emperor due to the beefier size.
 	melee_damage_upper = 70

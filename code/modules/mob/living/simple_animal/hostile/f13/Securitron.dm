@@ -23,7 +23,7 @@
 		MOB_EMP_SCRAMBLE
 		)
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	environment_smash = 0
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"

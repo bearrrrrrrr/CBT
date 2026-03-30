@@ -7,7 +7,7 @@
 	icon_dead = "synthmk1_d"
 	icon_gib = "synthmk1_d"
 	speak_chance = 0
-	turns_per_move = 7
+	seconds_per_wander = 7
 	environment_smash = 0
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"

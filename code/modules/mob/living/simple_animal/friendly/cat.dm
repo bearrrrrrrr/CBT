@@ -13,7 +13,7 @@
 	emote_see = list("shakes its head.", "shivers.")
 	rotate_on_lying = 0
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	ventcrawler = VENTCRAWLER_ALWAYS
 	pass_flags = PASSTABLE

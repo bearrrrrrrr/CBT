@@ -10,7 +10,7 @@
 	icon_dead = "dog_feral_dead"
 	icon_gib = "gib"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
-	turns_per_move = 1
+	seconds_per_wander = 1
 	response_help_simple = "pets"
 	response_disarm_simple = "pushes aside"
 	response_harm_simple = "kicks"

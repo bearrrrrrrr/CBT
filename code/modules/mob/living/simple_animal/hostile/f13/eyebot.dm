@@ -11,7 +11,7 @@
 	icon_dead = "eyebot_d"
 	can_ghost_into = TRUE
 	speak_chance = 0
-	turns_per_move = 6
+	seconds_per_wander = 6
 	environment_smash = 0
 	response_help_simple = "touches"
 	response_disarm_simple = "shoves"

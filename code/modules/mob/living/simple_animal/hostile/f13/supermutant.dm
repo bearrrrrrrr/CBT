@@ -35,7 +35,7 @@
 		)
 	emote_taunt = list("yells")
 	taunt_chance = 30
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_simple = "touches"
 	response_disarm_simple = "pushes"
 	response_harm_simple = "hits"

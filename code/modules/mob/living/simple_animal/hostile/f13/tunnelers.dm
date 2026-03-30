@@ -19,7 +19,7 @@
 	waddle_side_time = 1
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	robust_searching = TRUE
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speak_emote = list("growls")
 	// emote_see = list("screeches")
 	a_intent = INTENT_HARM
@@ -134,7 +134,7 @@
 	vision_range = 9
 	aggro_vision_range = 18
 	retreat_distance = 6
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speak_emote = list("mumbles incoherently")
 	emote_see = list("screeches")
 	a_intent = INTENT_HARM

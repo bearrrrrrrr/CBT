@@ -10,7 +10,7 @@
 	emote_hear = list("squeaks.")
 	emote_see = list("runs in a circle.", "shakes.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	blood_volume = 250
 	see_in_dark = 6
 	maxHealth = 5

@@ -19,7 +19,7 @@
 	health = 100
 	robust_searching = 0
 	move_to_delay = 12
-	turns_per_move = 5
+	seconds_per_wander = 5
 	waddle_amount = 2
 	waddle_up_time = 1
 	waddle_side_time = 1
@@ -128,7 +128,8 @@
 	
 	variation_list = list(
 		MOB_COLOR_VARIATION(150, 150, 150, 255, 255, 255),
-		MOB_HEALTH_LIST(30, 35, 40, 40, 40, 40, 41),
+		MOB_SPEED_LIST(14, 13, 12, 11, 10),
+		MOB_SPEED_CHANGE_PER_TURN_CHANCE(30),
 		MOB_RETREAT_DISTANCE_LIST(0, 0, 1),
 		MOB_RETREAT_DISTANCE_CHANGE_PER_TURN_CHANCE(5),
 		MOB_MINIMUM_DISTANCE_LIST(0, 1),
@@ -458,7 +459,7 @@
 // 	icon_gib = "syndicate_gib"
 // 	mob_armor = ARMOR_VALUE_GHOUL_COMBAT
 // 	speak_chance = 1
-// 	turns_per_move = 5
+// 	seconds_per_wander = 5
 // 	environment_smash = 0
 // 	response_help_simple = "hugs"
 // 	response_disarm_simple = "pushes aside"
@@ -496,7 +497,7 @@
 // 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 // 	mob_armor = ARMOR_VALUE_GHOUL_PA
 // 	robust_searching = 1
-// 	turns_per_move = 5
+// 	seconds_per_wander = 5
 // 	speak_emote = list("wheezes")
 // 	// emote_see = list("stares")
 // 	a_intent = INTENT_HARM

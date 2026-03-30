@@ -15,7 +15,7 @@
 	//minbodytemp = 0
 	see_in_dark = 5
 	speak_chance = 1
-	turns_per_move = 10
+	seconds_per_wander = 10
 	icon = 'icons/mob/penguins.dmi'
 
 	footstep_type = FOOTSTEP_MOB_BAREFOOT

@@ -36,8 +36,8 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 
 	var/bombs_can_gib_me = TRUE
 
-	var/turns_per_move = 1
-	var/turns_since_move = 0
+	var/seconds_per_wander = 1
+	var/last_wander_time = 0
 	///Use this to temporarely stop random movement or to if you write special movement code for animals.
 	var/stop_automated_movement = 0
 	///Does the mob wander around when idle?
@@ -238,11 +238,13 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 
 	var/quit_stealing_my_bike = FALSE
 
-
 	var/bounty = 10
 	var/kill_credit
 
-
+	var/wander_attractor_ID
+	var/attracted_move_to_delay
+	var/wander_attractor_arrival_distance = 3
+	var/attractable = FALSE
 
 /mob/living/simple_animal/Initialize()
 	. = ..()
@@ -251,6 +253,8 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 		gender = pick(MALE,FEMALE)
 	if(!real_name)
 		real_name = name
+	if(attractable && !attracted_move_to_delay)
+		attracted_move_to_delay = move_to_delay
 	if(!loc)
 		stack_trace("Simple animal being instantiated in nullspace")
 	update_simplemob_varspeed()
@@ -388,6 +392,7 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	RegisterSignal(src, COMSIG_MOB_IS_IMPORTANT,PROC_REF(am_i_important))
 	RegisterSignal(src, COMSIG_ATOM_QUEST_SCANNED,PROC_REF(i_got_scanned))
 	RegisterSignal(src, COMSIG_RTS_SELECTED,PROC_REF(i_got_selected))
+	RegisterSignal(src, COMSIG_MOVELOOP_PREPROCESS_CHECK,PROC_REF(CanAttractionMove))
 
 /mob/living/simple_animal/proc/i_got_scanned(datum/source, mob/scanner)
 	if(!nest_coords)
@@ -574,29 +579,23 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 
 /mob/living/simple_animal/proc/handle_automated_movement()
 	set waitfor = FALSE
-	if(stop_automated_movement || !wander)
-		return
-	if(!isturf(loc) && !allow_movement_on_non_turfs)
-		return
-	if(!CHECK_MOBILITY(src, MOBILITY_MOVE)) // !(mobility_flags & MOBILITY_MOVE)
+	if(seconds_per_wander == -1) //stops wandering entirely
+		return FALSE
+	if(IsAttractionMoving())
+		return FALSE
+	if(!CanWander())
 		walk(src, 0) //stop mid walk
 		return FALSE
-	if(has_buckled_mobs()) //If someones on a mount then it won't wander about with them
+	if(world.time < last_wander_time + seconds_per_wander)
 		return FALSE
-	if(turns_per_move == -1) //stops wandering entirely
+	last_wander_time++
+	var/turf/attraction = SSnpcpool.get_current_attraction(src)
+	if(attraction && AutomateAttraction(attraction))
 		return FALSE
-	if(RTS_move_ordered())
-		// am_within_range_of_target_coords()
-		return FALSE
-	turns_since_move++
-	if(turns_since_move < turns_per_move)
-		return TRUE
-	if(stop_automated_movement_when_pulled && pulledby) //Some animals don't move when pulled
-		return TRUE
 	var/anydir = pick(GLOB.cardinals)
 	if(Process_Spacemove(anydir))
 		Move(get_step(src, anydir), anydir)
-		turns_since_move = 0
+		last_wander_time = 0
 	return TRUE
 
 /mob/living/simple_animal/proc/handle_automated_speech(override)
@@ -635,6 +634,88 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 				emote("me", EMOTE_VISIBLE, pick(emote_see))
 			else
 				emote("me", EMOTE_AUDIBLE, pick(emote_hear))
+
+/mob/living/simple_animal/proc/CanWander(ignore_stopped_automated_movement)
+	if(stat == DEAD || stat == UNCONSCIOUS)
+		return FALSE
+	if(!ignore_stopped_automated_movement)
+		if(stop_automated_movement || !wander)
+			return FALSE
+	if(!isturf(loc) && !allow_movement_on_non_turfs)
+		return FALSE
+	if(!CHECK_MOBILITY(src, MOBILITY_MOVE))
+		return FALSE
+	if(has_buckled_mobs()) //If someones on a mount then it won't wander about with them
+		return FALSE
+	if(RTS_move_ordered())
+		// am_within_range_of_target_coords()
+		return FALSE
+	if(stop_automated_movement_when_pulled && pulledby) //Some animals don't move when pulled
+		return FALSE
+	return TRUE
+
+/mob/living/simple_animal/proc/CanAttractionMove()
+	if(!wander_attractor_ID)
+		return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
+	if(!att)
+		return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	if(!CanWander(TRUE))
+		return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	var/turf/dest = att.get_origin()
+	if(get_dist(get_turf(src), dest) <= wander_attractor_arrival_distance)
+			return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	return TRUE
+
+/mob/living/simple_animal/proc/AutomateAttraction(datum/wander_attractor/att)
+	if(!att)
+		return FALSE
+	if(IsAttractionMoving())
+		return TRUE
+	var/turf/dest = att.get_origin()
+	if(!dest)
+		InterruptAttractionMovement()
+		return FALSE
+	return SSmove_manager.jps_move(
+		src,
+		dest,
+		attracted_move_to_delay,
+		null,
+		3 SECONDS,
+		300,
+		2,
+		get_idcard(TRUE),
+		FALSE,
+		null,
+		null,
+		SSmovement,
+		1,
+		NONE,
+		null
+	)
+
+/mob/living/simple_animal/proc/IsAttractionMoving()
+	if(!wander_attractor_ID)
+		return FALSE
+	var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
+	if(!att)
+		return FALSE
+	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmovement)
+	return istype(MP)
+
+/mob/living/simple_animal/proc/InterruptAttractionMovement()
+	if(!wander_attractor_ID)
+		return
+	var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
+	if(att)
+		SSnpcpool.unsubscribe_to_attractor(src, wander_attractor_ID)
+	wander_attractor_ID = null
+	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmovement)
+	if(MP)
+		qdel(MP)
+
+
+
 
 /*
 /mob/living/simple_animal/proc/environment_is_safe(datum/gas_mixture/environment, check_temp = FALSE)
@@ -872,6 +953,18 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	if(head && !skip_worn)
 		dropItemToGround(head)
 	. = ..()
+
+/mob/living/simple_animal/update_overlays()
+	. = ..()
+	if(SSnpcpool.debug_attraction)
+		if(IsAttractionMoving())
+			var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
+			if(att)
+				maptext = "Attracted to [att.my_x], [att.my_y], [att.my_z]"
+			else
+				maptext = null
+		else
+			maptext = null
 
 /mob/living/simple_animal/proc/CanAttack(atom/the_target)
 	if(see_invisible < the_target.invisibility)

@@ -35,7 +35,7 @@
 	speak_emote = list("clacks", "chitters", "snips", "snaps")
 	// emote_see = list("waggles its antenna", "clicks its mandibles", "picks up your scent", "goes on the hunt")
 	attack_verb_simple = list ("rips", "tears", "stings")
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 1, /obj/item/reagent_containers/food/snacks/meat/slab/ant_meat = 2, /obj/effect/spawner/lootdrop/f13/deadantloot = 1)
 	butcher_difficulty = 1.5
 	response_help_simple = "pets"
@@ -86,7 +86,7 @@
 	icon_gib = "FireAnt_gib"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	waddle_amount = 2
 	waddle_up_time = 1
 	waddle_side_time = 1
@@ -148,7 +148,7 @@
 	icon_gib = "GiantAnt_gib"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 3, /obj/item/reagent_containers/food/snacks/meat/slab/ant_meat = 6, /obj/item/stack/sheet/animalhide/chitin = 6, /obj/item/reagent_containers/food/snacks/rawantbrain = 1, /obj/effect/spawner/lootdrop/f13/deadantloot = 5)
 	butcher_difficulty = 1.5
 	loot = list(/obj/item/reagent_containers/food/snacks/f13/giantantegg = 10, /obj/effect/gibspawner/larva)
@@ -249,7 +249,7 @@
 
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/radscorpion_meat = 2)
 	response_help_simple = "pets"
 	response_disarm_simple = "gently pushes aside"
@@ -340,7 +340,7 @@
 	icon_dead = "cazador_dead1"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 
 	move_to_delay = 3
 	// m2d 3 = standard, less is fast, more is slower.
@@ -494,7 +494,7 @@
 
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 				/obj/item/reagent_containers/food/snacks/meat/slab/bloatfly_meat = 2,
 				/obj/item/stack/sheet/sinew = 1)
@@ -581,7 +581,7 @@
 	melee_damage_upper = 20
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/radroach_meat = 2, /obj/item/stack/sheet/sinew = 1)
 	butcher_difficulty = 1.5
 	response_help_simple = "pets"
@@ -597,12 +597,6 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	randpixel = 12
 	aggro_vision_range = 3 
-	//tiles within they start attacking, doesn't count the mobs tile
-	/mob/living/simple_animal/hostile/pillbug/Initialize()
-		.=..()
-		resize = 0.75
-		update_transform()
-
 	vision_range = 3
 	//tiles within they start making noise, does count the mobs tile
 	variation_list = list(
@@ -633,6 +627,10 @@
 	send_mobs = /obj/effect/proc_holder/mob_common/direct_mobs/small_critter
 	. = ..()
 //Variants for Radroachers
+/mob/living/simple_animal/hostile/pillbug/Initialize()
+		.=..()
+		resize = 0.75
+		update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/micro
 	bounty = 1

@@ -8,7 +8,7 @@
 	mob_biotypes = MOB_HUMANOID
 	gender = MALE
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speed = 0
 	blood_volume = 0
 	robust_searching = TRUE //This is also required for the paper robe rallying to work.

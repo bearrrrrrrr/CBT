@@ -14,7 +14,7 @@
 	icon_living = "raider_melee"
 	icon_dead = "raider_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	mob_armor = ARMOR_VALUE_RAIDER_LEATHER_JACKET
 	maxHealth = 80
 	health = 80
@@ -666,7 +666,7 @@
 	icon_living = "cult_axeghoul"
 	icon_dead = "cult_axeghoul_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	mob_armor = ARMOR_VALUE_RAIDER_LEATHER_JACKET
 	maxHealth = 80
 	health = 80

@@ -9,7 +9,7 @@
 	rotate_on_lying = TRUE
 	mob_armor = ARMOR_VALUE_SKELETON
 	mob_biotypes = MOB_UNDEAD|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speak_emote = list("rattles")
 	emote_see = list("rattles")
 	a_intent = INTENT_HARM

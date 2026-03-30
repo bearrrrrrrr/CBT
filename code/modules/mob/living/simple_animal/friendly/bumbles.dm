@@ -4,7 +4,7 @@
 	icon_state = "bumbles"
 	icon_living = "bumbles"
 	icon_dead = "bumbles_dead"
-	turns_per_move = 1
+	seconds_per_wander = 1
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
 	response_disarm_continuous = "brushes aside"

@@ -10,7 +10,7 @@
 	icon_gib = "carp_gib"
 	environment_smash = 0
 	speak_chance = 0
-	turns_per_move = 3
+	seconds_per_wander = 3
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/fishmeat/carp = 3)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
@@ -76,7 +76,7 @@
 	//speak = list("Oh Senpai","Notice me senpai!","Oh my...","Kawaii~")
 	speak_emote = list("lovingly says","says")
 	speak_chance = 2
-	turns_per_move = 3
+	seconds_per_wander = 3
 	guaranteed_butcher_results = list(/mob/living/simple_animal/butterfly = 3)
 	maxHealth = 50
 	health = 50

@@ -6,7 +6,7 @@
 	icon_dead = "regalrat_dead"
 	gender = NEUTER
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	maxHealth = 70
 	health = 70
 	see_in_dark = 5
@@ -175,7 +175,7 @@
 	melee_damage_upper = 5
 	obj_damage = -10
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	maxHealth = 15
 	health = 15
@@ -225,7 +225,7 @@
 	melee_damage_upper = 3
 	obj_damage = -10
 	speak_chance = 30
-	turns_per_move = 0
+	seconds_per_wander = 0
 	see_in_dark = 10
 	maxHealth = 5
 	health = 5
@@ -273,7 +273,7 @@
 	melee_damage_upper = 20
 	obj_damage = 30
 	speak_chance = 30
-	turns_per_move = 0
+	seconds_per_wander = 0
 	see_in_dark = 10
 	maxHealth = 50
 	health = 50

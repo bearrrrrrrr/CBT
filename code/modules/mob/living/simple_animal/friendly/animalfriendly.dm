@@ -29,7 +29,7 @@ Snek for Enclave East*/
 	faction = list("dog", "neutral")
 	see_in_dark = 5
 	speak_chance = 1
-	turns_per_move = 10
+	seconds_per_wander = 10
 	footstep_type = FOOTSTEP_MOB_CLAW
 
 /mob/living/simple_animal/pet/dog/ComponentInitialize()
@@ -54,7 +54,7 @@ Snek for Enclave East*/
 	faction = list("dog", "neutral")
 	see_in_dark = 5
 	speak_chance = 1
-	turns_per_move = 10
+	seconds_per_wander = 10
 	var/held_icon = "corgi"
 
 	footstep_type = FOOTSTEP_MOB_CLAW
@@ -85,7 +85,7 @@ Snek for Enclave East*/
 	faction = list("dog", "neutral")
 	see_in_dark = 5
 	speak_chance = 1
-	turns_per_move = 10
+	seconds_per_wander = 10
 	footstep_type = FOOTSTEP_MOB_CLAW
 
 /mob/living/simple_animal/pet/dog/ComponentInitialize()
@@ -114,7 +114,7 @@ Snek for Enclave East*/
 	faction = list("dog", "neutral")
 	see_in_dark = 5
 	speak_chance = 1
-	turns_per_move = 10
+	seconds_per_wander = 10
 	footstep_type = FOOTSTEP_MOB_CLAW
 	var/held_icon = "corgi"
 

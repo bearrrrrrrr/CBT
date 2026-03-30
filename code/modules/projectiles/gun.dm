@@ -202,6 +202,9 @@ ATTACHMENTS
 	maptext_x = 4
 	maptext_y = 2
 
+	var/loudness = 100
+	var/loud_range = 15
+
 /obj/item/gun/Initialize()
 	recoil_tag = SSrecoil.give_recoil_tag(init_recoil)
 	if(!recoil_tag)
@@ -703,6 +706,7 @@ ATTACHMENTS
 			thing_in_chamber.BB,
 			casing_sound)
 		SSrecoil.kickback(user, src, recoil_tag, recoil)
+		make_noise(user)
 		if(!my_mode || my_mode.ignore_hammer || my_mode.ejector_behavior == GEJECTOR_AFTER_FIRING)
 			process_chamber(user)
 			chamber_round(user)
@@ -720,6 +724,13 @@ ATTACHMENTS
 
 /obj/item/gun/proc/get_chambered()
 	return chambered
+
+/obj/item/gun/proc/make_noise(mob/living/user)
+	if(loudness <= 0)
+		return
+	if(loud_range <= 0)
+		return
+	SSnpcpool.make_attraction(get_turf(src), loudness, loud_range)
 
 /obj/item/gun/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)

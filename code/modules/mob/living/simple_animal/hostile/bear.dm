@@ -14,7 +14,7 @@
 	emote_taunt = list("stares ferociously", "stomps")
 	speak_chance = 1
 	taunt_chance = 25
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/bear = 5, /obj/item/clothing/head/bearpelt = 1)
 	response_help_continuous = "pets"

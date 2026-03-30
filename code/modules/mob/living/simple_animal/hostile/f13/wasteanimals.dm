@@ -12,7 +12,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 2,
 		/obj/item/stack/sheet/animalhide/gecko = 1,
@@ -181,7 +181,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	butcher_difficulty = 1
 	response_help_simple = "pets"
 	response_disarm_simple = "gently pushes aside"
@@ -287,7 +287,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	butcher_difficulty = 1
 	response_help_simple = "pets"
 	response_disarm_simple = "gently pushes aside"
@@ -432,7 +432,7 @@
 	icon_dead = "legacy_gecko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	randpixel = 8
 	density = FALSE
 	sidestep_per_cycle = 2
@@ -524,7 +524,7 @@
 	icon_dead = "legacy_gecko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	butcher_difficulty = 1
 	response_help_simple = "pets"
 	response_disarm_simple = "gently pushes aside"
@@ -588,7 +588,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	butcher_difficulty = 1
 	response_help_simple = "pets"
 	response_disarm_simple = "gently pushes aside"
@@ -711,7 +711,7 @@
 	icon_gib = null
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	move_to_delay = 3
 	// m2d 3 = standard, less is fast, more is slower.
 
@@ -798,7 +798,7 @@
 	icon_dead = "hellhound_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	retreat_distance = 8
 	minimum_distance = 6
 	guaranteed_butcher_results = list(
@@ -939,7 +939,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	can_ghost_into = TRUE
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 						/obj/item/reagent_containers/food/snacks/meat/slab/molerat = 2,
 						/obj/item/stack/sheet/sinew = 1,
@@ -1113,7 +1113,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	can_ghost_into = TRUE
 	speak_chance = 0
-	turns_per_move = 10
+	seconds_per_wander = 10
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/soup/amanitajelly = 3)
 	butcher_difficulty = 1.5
 	loot = list()
@@ -1172,7 +1172,7 @@
 	icon_dead = "bloodbird_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/chicken = 4,
 		/obj/item/feather = 3,

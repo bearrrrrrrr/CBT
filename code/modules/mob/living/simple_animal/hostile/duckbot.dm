@@ -45,7 +45,7 @@
 	robuster_searching = TRUE
 	retreat_distance = 0
 	minimum_distance = 0
-	turns_per_move = 1
+	seconds_per_wander = 1
 	mob_biotypes = MOB_ROBOTIC|MOB_INORGANIC
 	faction = list("duck")
 	/// may not quack until this time

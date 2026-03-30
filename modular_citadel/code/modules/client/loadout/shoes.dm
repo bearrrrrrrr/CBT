@@ -76,6 +76,10 @@
 	name = "tough feet"
 	path = /obj/item/clothing/shoes/f13/rag/pawb
 
+/datum/gear/shoes/footcloths/pawb/soft
+	name = "resilient beans"
+	path = /obj/item/clothing/shoes/f13/rag/pawb
+
 /datum/gear/shoes/raidertreads
 	name = "raider treads"
 	path = /obj/item/clothing/shoes/f13/raidertreads
@@ -207,41 +211,41 @@
 	name = "Ranger Cowboy Boots"
 	path = /obj/item/clothing/shoes/cowboy/ranger
 
-/datum/gear/shoes/unmcboots
-	name = "UNMC Standard boots"
-	path = /obj/item/clothing/shoes/unmcb
-	cost = 0
-	subcategory = LOADOUT_SUBCATEGORY_SHOES_BOOTS
+// /datum/gear/shoes/unmcboots
+// 	name = "UNMC Standard boots"
+// 	path = /obj/item/clothing/shoes/unmcb
+// 	cost = 0
+// 	subcategory = LOADOUT_SUBCATEGORY_SHOES_BOOTS
 
-/datum/gear/shoes/unmcbootswinter
-	name = "Winterized UNMC Standard boots"
-	path= /obj/item/clothing/shoes/unmcb/winter
-	cost = 0
-	subcategory = LOADOUT_SUBCATEGORY_SHOES_BOOTS
+// /datum/gear/shoes/unmcbootswinter
+// 	name = "Winterized UNMC Standard boots"
+// 	path= /obj/item/clothing/shoes/unmcb/winter
+// 	cost = 0
+// 	subcategory = LOADOUT_SUBCATEGORY_SHOES_BOOTS
 
-/datum/gear/shoes/ducky
-	name = "rubber ducky shoes"
-	path = /obj/item/clothing/shoes/ducky
+// /datum/gear/shoes/ducky
+// 	name = "rubber ducky shoes"
+// 	path = /obj/item/clothing/shoes/ducky
 
-/datum/gear/shoes/slippers
-	name = "bunny slippers"
-	path = /obj/item/clothing/shoes/slippers
+// /datum/gear/shoes/slippers
+// 	name = "bunny slippers"
+// 	path = /obj/item/clothing/shoes/slippers
 
-/datum/gear/shoes/meownshoes
-	name = "meown shoes"
-	path = /obj/item/clothing/shoes/meown_shoes
+// /datum/gear/shoes/meownshoes
+// 	name = "meown shoes"
+// 	path = /obj/item/clothing/shoes/meown_shoes
 
-/datum/gear/shoes/moffers
-	name = "moffer shoes"
-	path = /obj/item/clothing/shoes/moffers
+// /datum/gear/shoes/moffers
+// 	name = "moffer shoes"
+// 	path = /obj/item/clothing/shoes/moffers
 
-/datum/gear/shoes/jackbros
-	name = "jack frost shoes"
-	path = /obj/item/clothing/shoes/jackbros
+// /datum/gear/shoes/jackbros
+// 	name = "jack frost shoes"
+// 	path = /obj/item/clothing/shoes/jackbros
 
-/datum/gear/shoes/saints
-	name = "saints shoes"
-	path = /obj/item/clothing/shoes/saints
+// /datum/gear/shoes/saints
+// 	name = "saints shoes"
+// 	path = /obj/item/clothing/shoes/saints
 
 
 /// Factions Shoes or well NCR boots.

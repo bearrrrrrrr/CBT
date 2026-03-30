@@ -286,91 +286,91 @@
 	path = /obj/item/clothing/accessory/brownskirt
 	cost = 0
 
-/datum/gear/backpack/reddishskirt
-	name = "Reddish Skirt w/ Belt"
-	path = /obj/item/clothing/accessory/priestess
-	cost = 0
-/datum/gear/backpack/greenandpurpleskirt
-	name = "Green and Purple Skirt"
-	path = /obj/item/clothing/accessory/greenfrillyskirt
-	cost = 0
-/datum/gear/backpack/blackandwhiteskirt
-	name = "Black and White Checker Skirt"
-	path = /obj/item/clothing/accessory/checkerskirt
-	cost = 0
-/datum/gear/backpack/maidskirt
-	name = "Maid Skirt"
-	path = /obj/item/clothing/accessory/maidskirt
-	cost = 0
-/datum/gear/backpack/plaidredlongskirt
-	name = "Plaid Skirt - Red, Long"
-	path = /obj/item/clothing/accessory/plaidredlongskirt
-	cost = 0
+// /datum/gear/backpack/reddishskirt
+// 	name = "Reddish Skirt w/ Belt"
+// 	path = /obj/item/clothing/accessory/priestess
+// 	cost = 0
+// /datum/gear/backpack/greenandpurpleskirt
+// 	name = "Green and Purple Skirt"
+// 	path = /obj/item/clothing/accessory/greenfrillyskirt
+// 	cost = 0
+// /datum/gear/backpack/blackandwhiteskirt
+// 	name = "Black and White Checker Skirt"
+// 	path = /obj/item/clothing/accessory/checkerskirt
+// 	cost = 0
+// /datum/gear/backpack/maidskirt
+// 	name = "Maid Skirt"
+// 	path = /obj/item/clothing/accessory/maidskirt
+// 	cost = 0
+// /datum/gear/backpack/plaidredlongskirt
+// 	name = "Plaid Skirt - Red, Long"
+// 	path = /obj/item/clothing/accessory/plaidredlongskirt
+// 	cost = 0
 
-/datum/gear/backpack/plaidredshortskirt
-	name = "Plaid Skirt - Red, Short"
-	path = /obj/item/clothing/accessory/plaidredshortskirt
-	cost = 0
+// /datum/gear/backpack/plaidredshortskirt
+// 	name = "Plaid Skirt - Red, Short"
+// 	path = /obj/item/clothing/accessory/plaidredshortskirt
+// 	cost = 0
 
-/datum/gear/backpack/plaidbluelongskirt
-	name = "Plaid Skirt - Blue, Long"
-	path = /obj/item/clothing/accessory/plaidbluelongskirt
-	cost = 0
+// /datum/gear/backpack/plaidbluelongskirt
+// 	name = "Plaid Skirt - Blue, Long"
+// 	path = /obj/item/clothing/accessory/plaidbluelongskirt
+// 	cost = 0
 
-/datum/gear/backpack/plaidblueshortskirt
-	name = "Plaid Skirt - Blue, Short"
-	path = /obj/item/clothing/accessory/plaidblueshortskirt
-	cost = 0
+// /datum/gear/backpack/plaidblueshortskirt
+// 	name = "Plaid Skirt - Blue, Short"
+// 	path = /obj/item/clothing/accessory/plaidblueshortskirt
+// 	cost = 0
 
-/datum/gear/backpack/plaidpurplelongskirt
-	name = "Plaid Skirt - Purple, Long"
-	path = /obj/item/clothing/accessory/plaidpurplelongskirt
-	cost = 0
+// /datum/gear/backpack/plaidpurplelongskirt
+// 	name = "Plaid Skirt - Purple, Long"
+// 	path = /obj/item/clothing/accessory/plaidpurplelongskirt
+// 	cost = 0
 
-/datum/gear/backpack/plaidpurpleshortskirt
-	name = "Plaid Skirt - Purple, Short"
-	path = /obj/item/clothing/accessory/plaidpurpleshortskirt
-	cost = 0
+// /datum/gear/backpack/plaidpurpleshortskirt
+// 	name = "Plaid Skirt - Purple, Short"
+// 	path = /obj/item/clothing/accessory/plaidpurpleshortskirt
+// 	cost = 0
 
-/datum/gear/backpack/plaidgreenlongskirt
-	name = "Plaid Skirt - Green, Long"
-	path = /obj/item/clothing/accessory/plaidgreenlongskirt
-	cost = 0
+// /datum/gear/backpack/plaidgreenlongskirt
+// 	name = "Plaid Skirt - Green, Long"
+// 	path = /obj/item/clothing/accessory/plaidgreenlongskirt
+// 	cost = 0
 
-/datum/gear/backpack/plaidgreenshortskirt
-	name = "Plaid Skirt - Green, Short"
-	path = /obj/item/clothing/accessory/plaidgreenshortskirt
-	cost = 0
+// /datum/gear/backpack/plaidgreenshortskirt
+// 	name = "Plaid Skirt - Green, Short"
+// 	path = /obj/item/clothing/accessory/plaidgreenshortskirt
+// 	cost = 0
 
-/datum/gear/backpack/engineskirt
-	name = "Orange and Yellow Skirt"
-	path = /obj/item/clothing/accessory/engineskirt
-	cost = 0
+// /datum/gear/backpack/engineskirt
+// 	name = "Orange and Yellow Skirt"
+// 	path = /obj/item/clothing/accessory/engineskirt
+// 	cost = 0
 
-/datum/gear/backpack/cmoskirt
-	name = "Soft Blue and White Skirt"
-	path = /obj/item/clothing/accessory/cmoskirt
-	cost = 0
+// /datum/gear/backpack/cmoskirt
+// 	name = "Soft Blue and White Skirt"
+// 	path = /obj/item/clothing/accessory/cmoskirt
+// 	cost = 0
 
-/datum/gear/backpack/hopskirt
-	name = "Navy Blue Skirt"
-	path = /obj/item/clothing/accessory/hopskirt
-	cost = 0
+// /datum/gear/backpack/hopskirt
+// 	name = "Navy Blue Skirt"
+// 	path = /obj/item/clothing/accessory/hopskirt
+// 	cost = 0
 
-/datum/gear/backpack/draculass
-	name = "Goth Skirt w/ Stockings"
-	path = /obj/item/clothing/accessory/draculass
-	cost = 0
+// /datum/gear/backpack/draculass
+// 	name = "Goth Skirt w/ Stockings"
+// 	path = /obj/item/clothing/accessory/draculass
+// 	cost = 0
 
-/datum/gear/backpack/prisonerskirt
-	name = "Orange Skirt w/ Belt"
-	path = /obj/item/clothing/accessory/prisonerskirt
-	cost = 0
+// /datum/gear/backpack/prisonerskirt
+// 	name = "Orange Skirt w/ Belt"
+// 	path = /obj/item/clothing/accessory/prisonerskirt
+// 	cost = 0
 
-/datum/gear/backpack/ncrcfjacket
-	name = "Cropped Denim Jacket - Accessory"
-	path = /obj/item/clothing/accessory/ncrfjacketcrop
-	cost = 0
+// /datum/gear/backpack/ncrcfjacket
+// 	name = "Cropped Denim Jacket - Accessory"
+// 	path = /obj/item/clothing/accessory/ncrfjacketcrop
+// 	cost = 0
 
 /datum/gear/backpack/chestpatch
 	name = "generic patch (chest)"

@@ -168,6 +168,8 @@
 	var/time_between_move_randomization = 3 SECONDS
 	var/last_move_randomization = 0
 
+	var/vision_mult_active_until = 0 //if vision_mult_active_until is greater than world.time, we use the multiplied vision range, for things like attraction that temporarily boost vision
+
 	speed = 3//The default hostile mob speed. If you ever speed the mob ss again please raise this to compensate.
 
 /mob/living/simple_animal/hostile/Initialize(mapload, nest_spawned)
@@ -283,22 +285,16 @@
 	if(my_target)
 		InterruptAttractionMovement()
 
-// /mob/living/simple_animal/hostile/AutomateAttraction()
-// 	if(!..())
-// 		return
-// 	vision_range = initial(vision_range) * 2
-// 	aggroed_vision_range = initial(aggroed_vision_range) * 4
-
-// /mob/living/simple_animal/hostile/InterruptAttractionMovement()
-// 	if(!..())
-		// return
-	// vision_range = initial(vision_range)
-	// aggroed_vision_range = initial(aggroed_vision_range)
+/mob/living/simple_animal/hostile/AutomateAttraction()
+	if(!..())
+		return
+	vision_mult_active_until = world.time + (2 MINUTES)
 
 /mob/living/simple_animal/hostile/AttractionAct(atom/target_origin, intensity, max_range, duration)
 	if(get_target())
 		InterruptAttractionMovement()
 		return FALSE
+	do_alert_animation(src)
 	return ..()
 
 /mob/living/simple_animal/hostile/toggle_ai(togglestatus)
@@ -395,25 +391,32 @@
 		alpha = 90
 	return ..()
 
+/mob/living/simple_animal/hostile/proc/get_vision_range()
+	var/vrange = vision_range
+	if(vision_mult_active_until > world.time)
+		return vrange * 3
+	return vrange
+
 //////////////HOSTILE MOB TARGETTING AND AGGRESSION////////////
 
 /mob/living/simple_animal/hostile/proc/ListTargets()//Step 1, find out what we can see
 	var/atom/origin = get_origin()
+	var/v_range = get_vision_range()
 	if(!search_objects)
-		. = hearers(vision_range, origin) - src //Remove self
+		. = hearers(v_range, origin) - src //Remove self
 
 		var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/mecha, /obj/item/electronic_assembly))
 
-		for(var/HM in typecache_filter_list(range(vision_range, origin), hostile_machines))
+		for(var/HM in typecache_filter_list(range(v_range, origin), hostile_machines))
 			CHECK_TICK
-			if(can_see(origin, HM, vision_range))
+			if(can_see(origin, HM, v_range))
 				. += HM
 	else
-		. = list() // The following code is only very slightly slower than just returning oview(vision_range, origin), but it saves us much more work down the line, particularly when bees are involved
-		for (var/obj/A in oview(vision_range, origin))
+		. = list() // The following code is only very slightly slower than just returning oview(v_range, origin), but it saves us much more work down the line, particularly when bees are involved
+		for (var/obj/A in oview(v_range, origin))
 			CHECK_TICK
 			. += A
-		for (var/mob/living/A in oview(vision_range, origin)) //mob/dead/observers arent possible targets
+		for (var/mob/living/A in oview(v_range, origin)) //mob/dead/observers arent possible targets
 			CHECK_TICK
 			. += A
 
@@ -440,7 +443,6 @@
 		var/Target = PickTarget(., priority_targets)
 		GiveTarget(Target)
 		COOLDOWN_START(src, sight_shoot_delay, sight_shoot_delay_time)
-		InterruptAttractionMovement()
 		return Target //We now have a targettte
 
 /mob/living/simple_animal/hostile/proc/PossibleThreats()
@@ -651,7 +653,7 @@
 		. = 0
 	if((environment_smash & ENVIRONMENT_SMASH_WALLS) || (environment_smash & ENVIRONMENT_SMASH_RWALLS) || robuster_searching || SSmobs.debug_everyone_has_robuster_searching) //If we're capable of smashing through walls, forget about vision completely after finding our targette
 		Goto(my_target,move_to_delay,minimum_distance)
-		if(my_target.loc != null && get_dist(origin, my_target.loc) <= vision_range) //We can't see our targette, but he's in our vision range still
+		if(my_target.loc != null && get_dist(origin, my_target.loc) <= get_vision_range()) //We can't see our targette, but he's in our vision range still
 			if(ranged_ignores_vision && ranged_cooldown <= world.time) //we can't see our targette... but we can fire at them!
 				OpenFire(my_target)
 		else
@@ -1092,9 +1094,10 @@
 /mob/living/simple_animal/hostile/proc/ListTargetsLazy(_Z)//Step 1, find out what we can see
 	var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/mecha))
 	. = list()
+	var/v_range = get_vision_range()
 	for (var/I in SSmobs.clients_by_zlevel[_Z])
 		var/mob/M = I
-		if (get_dist(M, src) < vision_range)
+		if (get_dist(M, src) < v_range)
 			if (isturf(M.loc))
 				. += M
 			else if (M.loc.type in hostile_machines)

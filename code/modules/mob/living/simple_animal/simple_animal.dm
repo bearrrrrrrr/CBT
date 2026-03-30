@@ -600,9 +600,9 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 	if(!CanWander())
 		walk(src, 0) //stop mid walk
 		return FALSE
-	if(world.time < last_wander_time + (seconds_per_wander SECONDS))
-		return FALSE
 	if(AutomateAttraction())
+		return FALSE
+	if(world.time < last_wander_time + (seconds_per_wander SECONDS))
 		return FALSE
 	last_wander_time = world.time
 	spawn(rand(1, 30))
@@ -684,7 +684,7 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 	if(!istype(current_attraction))
 		return FALSE
 	if(IsAttractionMoving())
-		if(GetAttractionMovementFlags() == MOVELOOP_KILL_PATH_AND_GIVE_UP)
+		if(ShouldStopAttractionMovement())
 			InterruptAttractionMovement()
 		else
 			return TRUE
@@ -741,6 +741,8 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 		QDEL_NULL(att)
 		return
 	current_attraction = att
+	last_wander_time = 0
+	handle_automated_movement()
 	return TRUE
 
 /mob/living/simple_animal/proc/CheckAttractorMoved()
@@ -750,12 +752,14 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 		last_attraction_check_coords = atom2coords(src)
 		last_attraction_check_time = world.time
 		return TRUE
-	if(get_dist(last_attraction_check_coords, atom2coords(src)) >= attraction_stuck_check_distance)
-		last_attraction_check_coords = atom2coords(src)
-		last_attraction_check_time = world.time
+	if(world.time < last_attraction_check_time + (attraction_cooldown))
 		return TRUE
-	else if(world.time > last_attraction_check_time + (attraction_stuck_check_time SECONDS))
+	var/turf/here = get_turf(src)
+	var/turf/last_here = coords2turf(last_attraction_check_coords)
+	if(get_dist(here, last_here) < attraction_stuck_check_distance)
 		return FALSE
+	last_attraction_check_coords = atom2coords(src)
+	last_attraction_check_time = world.time
 	return TRUE
 
 /*

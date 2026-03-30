@@ -241,7 +241,6 @@
 		if(last_move_randomization + time_between_move_randomization >= world.time)
 			last_move_randomization = world.time + time_between_move_randomization
 			if(prob(variation_list[MOB_VARIED_SPEED_CHANCE]))
-				var/randy = vary_from_list(variation_list[MOB_VARIED_SPEED])
 				move_to_delay = vary_from_list(variation_list[MOB_VARIED_SPEED])
 				set_glide_size(move_to_delay)
 	//else

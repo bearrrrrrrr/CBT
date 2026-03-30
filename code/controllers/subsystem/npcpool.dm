@@ -15,10 +15,6 @@ SUBSYSTEM_DEF(npcpool)
 
 	var/list/currentrun = list()
 
-	/// List of attractors that cause mobs to wander towards them
-	/// See more in /datum/wander_attractor
-	/// format: list("some_kind_of_ID" = initted/datum/wander_attractor)
-	var/list/wander_attractors = list()
 	var/debug_attraction = TRUE
 
 /datum/controller/subsystem/npcpool/stat_entry(msg)
@@ -53,9 +49,11 @@ SUBSYSTEM_DEF(npcpool)
 				SA.handle_automated_speech()
 		if (MC_TICK_CHECK)
 			return
-
-
-
+	// for(var/ID in wander_attractors)
+	// 	var/datum/wander_attractor/att = wander_attractors[ID]
+	// 	if(att.IsExpired())
+	// 		wander_attractors.Remove(ID)
+	// 		free_ids |= ID
 
 /* WANDER ATTRACTOR!! */
 /* 
@@ -76,81 +74,55 @@ SUBSYSTEM_DEF(npcpool)
 	for(var/mob/living/simple_animal/M in GLOB.simple_animals[AI_ON])
 		if(!M.attractable)
 			continue
-		if(GET_DIST_EUCLIDEAN(M, doer)) > max_range
+		if(GET_DIST_EUCLIDEAN(M, doer) > max_range)
 			continue
-		var/datum/wander_attractor/attractor = SSmobs.wander_attractors[M.wander_attractor_ID]
-		if(!istype(attractor, /datum/wander_attractor))
-			give_attractor(M, intensity, max_range, duration)
-		else if(attractor.IsThatMoreIntense(doer, intensity))
-			give_attractor(M, intensity, max_range, duration)
-
-/datum/controller/subsystem/npcpool/proc/give_attractor(mob/living/simple_animal/M, intensity, max_range)
-	//first, modulate the intensity by distance, so that the farther away you are, the less effective the attractor is!
-	intensity = modulate_intensity_by_distance(M, intensity, max_range)
-	var/datum/wander_attractor/attractor = new (intensity, max_range, duration) // 30 seconds duration for now, maybe make this variable later?
-	M.wander_attractor_ID = attractor.ID
-	attractor.Subscribe()
-	return attractor
-
-/datum/controller/subsystem/npcpool/proc/modulate_intensity_by_distance(mob/living/simple_animal/M, intensity, max_range)
-	var/distance = GET_DIST_EUCLIDEAN(M, doer)
-	if(distance > max_range)
-		return 0
-	if(area_of_effect == 0) // avoid divide by zero
-		return intensity
-	var/modulated_intensity = intensity * (1 - (distance / max_range))
-	return modulated_intensity
+		M.AttractionAct(doer, intensity, max_range, duration)
 
 /datum/wander_attractor
-	var/ID
+	var/datum/weakref/owner
 	var/die_time
 	var/intensity
-	var/area_of_effect
-	var/my_x = 0
-	var/my_y = 0
-	var/my_z = 0
-	var/subs = 0
+	var/target_x = 0
+	var/target_y = 0
+	var/target_z = 0
 
-/datum/wander_attractor/New(intensity, area_of_effect, duration = (30 SECONDS))
-	var/attractor = new()
-	attractor.intensity = intensity
-	attractor.area_of_effect = area_of_effect
-	attractor.die_time = world.time + duration
-	ID = generate_random_id()
+/datum/wander_attractor/New()
 	. = ..()
-	SSmobs.wander_attractors[ID] = attractor
 
 /datum/wander_attractor/Destroy()
-	SSmobs.wander_attractors.Remove(ID)
+	var/mob/living/simple_animal/SA = GET_WEAKREF(owner)
+	if(SA)
+		SA.InterruptAttractionMovement()
+		SA.current_attraction = null
+	owner = null
 	. = ..()
 
-/datum/wander_attractor/proc/Subscribe()
-	subs++
+/datum/wander_attractor/proc/SetTarget(atom/orig)
+	var/turf/T = get_turf(orig)
+	if(T)
+		target_x = T.x
+		target_y = T.y
+		target_z = T.z
 
-/datum/wander_attractor/proc/Unsubscribe()
-	subs--
-	if(subs <= 0)
-		SSmobs.wander_attractors.Remove(ID)
+/datum/wander_attractor/proc/SetOwner(mob/living/simple_animal/SA)
+	owner = GET_WEAKREF(SA)
 
-/datum/wander_attractor/proc/IsExpired()
-	return world.time > die_time
+/datum/wander_attractor/proc/SetupIntensity(atom/listener, intensity, max_distance)
+	intensity = ModulateIntensityByDistance(listener, intensity, max_distance)
 
-/datum/wander_attractor/proc/IsThatMoreIntense(atom/doer, intensity)
-	var/turf/me = get_origin()
-	if(!T)
-		SSmobs.wander_attractors.Remove(ID)
-		return FALSE
-	var/turf/them = get_turf(doer)
-	if(!them)
-		return FALSE
-	var/distance = GET_DIST_EUCLIDEAN(them, me)
-	if(distance > area_of_effect)
-		return FALSE
-	var/modulated_intensity = SSmobs.modulate_intensity_by_distance(distance, intensity, area_of_effect)
-	return modulated_intensity > intensity
+/datum/wander_attractor/proc/ModulateIntensityByDistance(atom/listener, intensity, max_distance)
+	var/turf/mymob = get_turf(listener)
+	if(!mymob)
+		return 0
+	var/atom/target = locate(target_x, target_y, target_z)
+	if(!target)
+		return 0
+	var/distance = GET_DIST_EUCLIDEAN(mymob, target)
+	var/modulated_intensity = intensity * (1 - (distance / max_distance))
+	return modulated_intensity
 
-/datum/wander_attractor/proc/get_origin()
-	var/turf/T = locate(my_x, my_y, my_z)
-	return T
 
+/datum/wander_attractor/proc/GetTarget()
+	var/atom/target = locate(target_x, target_y, target_z)
+	return target
 

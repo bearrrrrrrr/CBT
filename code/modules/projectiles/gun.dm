@@ -709,7 +709,7 @@ ATTACHMENTS
 		make_noise(user)
 		if(!my_mode || my_mode.ignore_hammer || my_mode.ejector_behavior == GEJECTOR_AFTER_FIRING)
 			process_chamber(user)
-			chamber_round(user)
+			chamber_round()
 		user?.in_crit_HP_penalty = 25
 		if(i < burst_size)
 			sleep(burst_shot_delay)

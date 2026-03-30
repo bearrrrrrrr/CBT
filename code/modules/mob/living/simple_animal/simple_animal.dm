@@ -1,4 +1,6 @@
 GLOBAL_LIST_EMPTY(playmob_cooldowns)
+GLOBAL_VAR_INIT(attraction_cooldown, 0.5 SECONDS)
+GLOBAL_VAR_INIT(last_attraction_time, 0)
 
 /mob/living/simple_animal
 	name = "animal"
@@ -241,10 +243,18 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	var/bounty = 10
 	var/kill_credit
 
-	var/wander_attractor_ID
+	var/datum/wander_attractor/current_attraction
 	var/attracted_move_to_delay
 	var/wander_attractor_arrival_distance = 3
-	var/attractable = FALSE
+	var/attractable = TRUE
+	// so this checks if the mob has moved more than 2 tiles in the past 5 seconds, and if it hasnt, kills the attraction movement
+	var/attraction_stuck_check_time = 5 SECONDS
+	var/attraction_stuck_check_distance = 2
+	var/last_attraction_check_coords
+	var/last_attraction_check_time
+	// a cooldown on being attracted, cus spamming pathfinding is kinda bad
+	var/attraction_cooldown = 10 SECONDS
+	var/last_attraction_time
 
 /mob/living/simple_animal/Initialize()
 	. = ..()
@@ -392,7 +402,7 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	RegisterSignal(src, COMSIG_MOB_IS_IMPORTANT,PROC_REF(am_i_important))
 	RegisterSignal(src, COMSIG_ATOM_QUEST_SCANNED,PROC_REF(i_got_scanned))
 	RegisterSignal(src, COMSIG_RTS_SELECTED,PROC_REF(i_got_selected))
-	RegisterSignal(src, COMSIG_MOVELOOP_PREPROCESS_CHECK,PROC_REF(CanAttractionMove))
+	RegisterSignal(src, COMSIG_MOVELOOP_PREPROCESS_CHECK,PROC_REF(GetAttractionMovementFlags))
 
 /mob/living/simple_animal/proc/i_got_scanned(datum/source, mob/scanner)
 	if(!nest_coords)
@@ -431,6 +441,7 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 /mob/living/simple_animal/Destroy()
 	GLOB.simple_animals[AIStatus] -= src
 	SSnpcpool.currentrun -= src
+	QDEL_NULL(current_attraction)
 	sever_link_to_nest()
 	if(make_a_nest)
 		QDEL_NULL(make_a_nest)
@@ -582,20 +593,22 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	if(seconds_per_wander == -1) //stops wandering entirely
 		return FALSE
 	if(IsAttractionMoving())
-		return FALSE
+		if(ShouldStopAttractionMovement())
+			InterruptAttractionMovement()
+		else
+			return FALSE
 	if(!CanWander())
 		walk(src, 0) //stop mid walk
 		return FALSE
-	if(world.time < last_wander_time + seconds_per_wander)
+	if(world.time < last_wander_time + (seconds_per_wander SECONDS))
 		return FALSE
-	last_wander_time++
-	var/turf/attraction = SSnpcpool.get_current_attraction(src)
-	if(attraction && AutomateAttraction(attraction))
+	if(AutomateAttraction())
 		return FALSE
-	var/anydir = pick(GLOB.cardinals)
-	if(Process_Spacemove(anydir))
-		Move(get_step(src, anydir), anydir)
-		last_wander_time = 0
+	last_wander_time = world.time
+	spawn(rand(1, 30))
+		var/anydir = pick(GLOB.cardinals)
+		if(Process_Spacemove(anydir))
+			Move(get_step(src, anydir), anydir)
 	return TRUE
 
 /mob/living/simple_animal/proc/handle_automated_speech(override)
@@ -654,25 +667,28 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 		return FALSE
 	return TRUE
 
-/mob/living/simple_animal/proc/CanAttractionMove()
-	if(!wander_attractor_ID)
-		return MOVELOOP_KILL_PATH_AND_GIVE_UP
-	var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
-	if(!att)
+/mob/living/simple_animal/proc/GetAttractionMovementFlags()
+	if(!istype(current_attraction))
 		return MOVELOOP_KILL_PATH_AND_GIVE_UP
 	if(!CanWander(TRUE))
 		return MOVELOOP_KILL_PATH_AND_GIVE_UP
-	var/turf/dest = att.get_origin()
+	var/turf/dest = current_attraction.GetTarget()
 	if(get_dist(get_turf(src), dest) <= wander_attractor_arrival_distance)
-			return MOVELOOP_KILL_PATH_AND_GIVE_UP
-	return TRUE
+		return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	return NONE
 
-/mob/living/simple_animal/proc/AutomateAttraction(datum/wander_attractor/att)
-	if(!att)
+/mob/living/simple_animal/proc/ShouldStopAttractionMovement()
+	return GetAttractionMovementFlags() == MOVELOOP_KILL_PATH_AND_GIVE_UP
+
+/mob/living/simple_animal/proc/AutomateAttraction()
+	if(!istype(current_attraction))
 		return FALSE
 	if(IsAttractionMoving())
-		return TRUE
-	var/turf/dest = att.get_origin()
+		if(GetAttractionMovementFlags() == MOVELOOP_KILL_PATH_AND_GIVE_UP)
+			InterruptAttractionMovement()
+		else
+			return TRUE
+	var/turf/dest = current_attraction.GetTarget()
 	if(!dest)
 		InterruptAttractionMovement()
 		return FALSE
@@ -681,8 +697,8 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 		dest,
 		attracted_move_to_delay,
 		null,
-		3 SECONDS,
-		300,
+		null,
+		30,
 		2,
 		get_idcard(TRUE),
 		FALSE,
@@ -695,27 +711,50 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	)
 
 /mob/living/simple_animal/proc/IsAttractionMoving()
-	if(!wander_attractor_ID)
+	if(!istype(current_attraction))
 		return FALSE
-	var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
-	if(!att)
+	if(!CheckAttractorMoved())
+		InterruptAttractionMovement()
 		return FALSE
 	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmovement)
 	return istype(MP)
 
 /mob/living/simple_animal/proc/InterruptAttractionMovement()
-	if(!wander_attractor_ID)
+	if(!istype(current_attraction))
 		return
-	var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
-	if(att)
-		SSnpcpool.unsubscribe_to_attractor(src, wander_attractor_ID)
-	wander_attractor_ID = null
+	QDEL_NULL(current_attraction)
 	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmovement)
 	if(MP)
 		qdel(MP)
 
+/mob/living/simple_animal/proc/AttractionAct(atom/target_origin, intensity, max_range, duration)
+	if(!attractable)
+		return
+	if(get_dist(src, target_origin) <= wander_attractor_arrival_distance)
+		return
+	var/datum/wander_attractor/att = new /datum/wander_attractor()
+	att.SetOwner(src)
+	att.SetTarget(target_origin)
+	att.SetupIntensity(intensity, max_range)
+	if(current_attraction && current_attraction.intensity > att.intensity)
+		QDEL_NULL(att)
+		return
+	current_attraction = att
 
-
+/mob/living/simple_animal/proc/CheckAttractorMoved()
+	if(!istype(current_attraction))
+		return FALSE
+	if(!last_attraction_check_coords || !last_attraction_check_time)
+		last_attraction_check_coords = atom2coords(src)
+		last_attraction_check_time = world.time
+		return TRUE
+	if(get_dist(last_attraction_check_coords, atom2coords(src)) >= attraction_stuck_check_distance)
+		last_attraction_check_coords = atom2coords(src)
+		last_attraction_check_time = world.time
+		return TRUE
+	else if(world.time > last_attraction_check_time + (attraction_stuck_check_time SECONDS))
+		return FALSE
+	return TRUE
 
 /*
 /mob/living/simple_animal/proc/environment_is_safe(datum/gas_mixture/environment, check_temp = FALSE)
@@ -958,9 +997,8 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	. = ..()
 	if(SSnpcpool.debug_attraction)
 		if(IsAttractionMoving())
-			var/datum/wander_attractor/att = SSnpcpool.wander_attractors[wander_attractor_ID]
-			if(att)
-				maptext = "Attracted to [att.my_x], [att.my_y], [att.my_z]"
+			if(current_attraction)
+				maptext = "Attracted to [current_attraction.target_x], [current_attraction.target_y], [current_attraction.target_z]"
 			else
 				maptext = null
 		else

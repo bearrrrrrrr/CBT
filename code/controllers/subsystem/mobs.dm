@@ -18,7 +18,7 @@ SUBSYSTEM_DEF(mobs)
 
 	var/distance_where_a_player_needs_to_be_in_for_npcs_to_fight_other_npcs = 12
 
-	var/debug_disable_mob_ceasefire = TRUE // this feature sucks
+	var/debug_disable_mob_ceasefire = FALSE // this feature sucks
 
 /datum/controller/subsystem/mobs/stat_entry(msg)
 	msg = "P:[length(GLOB.mob_living_list)]"

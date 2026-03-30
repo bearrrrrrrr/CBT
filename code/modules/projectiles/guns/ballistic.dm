@@ -130,9 +130,10 @@ GLOBAL_LIST_EMPTY(gun_accepted_casings)
 		return
 	if (load_this)
 		chambered = load_this
-	else if(magazine && magazine.fixed_mag)
+	else if(magazine)
 		chambered = magazine.get_round()
-	chambered.forceMove(src)
+	if(chambered)
+		chambered.forceMove(src)
 	update_icon()
 
 /obj/item/gun/ballistic/can_shoot()

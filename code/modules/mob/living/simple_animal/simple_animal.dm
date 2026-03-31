@@ -704,7 +704,7 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 		FALSE,
 		null,
 		null,
-		SSmovement,
+		SSmobattraction,
 		1,
 		NONE,
 		null
@@ -718,14 +718,16 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 	if(!CheckAttractorMoved())
 		InterruptAttractionMovement()
 		return FALSE
-	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmovement)
+	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmobattraction)
 	return istype(MP)
 
 /mob/living/simple_animal/proc/InterruptAttractionMovement()
 	if(!istype(current_attraction))
 		return
 	. = TRUE
-	qdel(move_packet)
+	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmobattraction)
+	if(MP)
+		qdel(MP)
 	QDEL_NULL(current_attraction)
 
 /mob/living/simple_animal/proc/AttractionAct(atom/target_origin, intensity, max_range, duration)

@@ -256,7 +256,7 @@
 		return
 	if(LAZYLEN(magazine.stored_ammo) < 2) // just one shoot hole, cant exactly change what you shoot
 		return
-	if(doing_something_with_guns(doer))
+	if(doing_something(doer))
 		to_chat(doer, span_warning("You're already doing something!"))
 		return
 	if(manually && how_rotatable == REV_BOTH_HALFCOCK_ONLY && !loader_exposed)
@@ -325,7 +325,7 @@
 /// happens when you do something to automatically trigger the gun to open or close
 // such as using an ammo on it, without opening it manually
 /obj/item/gun/ballistic/revolver/proc/cause_delay(mob/doer, delay = (0.5 SECONDS))
-	if(doing_something_with_guns(doer))
+	if(doing_something(doer))
 		to_chat(doer, span_warning("You're already doing something!"))
 		return
 	var/datum/weakref/loader = WEAKREF(doer)
@@ -725,7 +725,7 @@
 		if(do_words)
 			inform_user(user, REV_ALERT_NEED_LOADER_EXPOSED_TO_ROTATE)
 		return FALSE
-	if(doing_something_with_guns(user))
+	if(doing_something(user))
 		if(do_words)
 			to_chat(user, span_warning("You're already doing something!"))
 		return FALSE

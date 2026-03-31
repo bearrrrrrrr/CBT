@@ -188,8 +188,8 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 
 /obj/structure/nest/ghoul
 	name = "ghoul nest"
-	max_mobs = 4
-	swarm_size = 3
+	max_mobs = 3
+	swarm_size = 2
 	mob_types = list(/mob/living/simple_animal/hostile/ghoul = 5,
 					/mob/living/simple_animal/hostile/ghoul/reaver = 2,
 					/mob/living/simple_animal/hostile/ghoul/glowing = 1)

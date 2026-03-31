@@ -1092,11 +1092,11 @@
 	emote_type = EMOTE_AUDIBLE
 	sound = 'sound/f13effects/sunsetsounds/whistle-overhere.ogg'
 
-/datum/emote/squee
-	key = "squee"
-	key_third_person = "smiles like a dork."
-	message = "smiles like a dork."
-	sound = 'sound/f13effects/sunsetsounds/squee.ogg'
+// /datum/emote/squee
+// 	key = "squee"
+// 	key_third_person = "smiles like a dork."
+// 	message = "smiles like a dork."
+// 	sound = 'sound/f13effects/sunsetsounds/squee.ogg'
 
 /datum/emote/waa
 	key = "waa"

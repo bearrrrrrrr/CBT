@@ -246,7 +246,7 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 	var/datum/wander_attractor/current_attraction
 	var/attracted_move_to_delay
 	var/wander_attractor_arrival_distance = 3
-	var/attractable = TRUE
+	var/attractable = FALSE
 	// so this checks if the mob has moved more than 2 tiles in the past 5 seconds, and if it hasnt, kills the attraction movement
 	var/attraction_stuck_check_time = 5 SECONDS
 	var/attraction_stuck_check_distance = 2
@@ -649,7 +649,7 @@ GLOBAL_VAR_INIT(last_attraction_time, 0)
 				emote("me", EMOTE_AUDIBLE, pick(emote_hear))
 
 /mob/living/simple_animal/proc/CanWander(ignore_stopped_automated_movement)
-	if(stat == DEAD || stat == UNCONSCIOUS)
+	if(stat == DEAD || stat == UNCONSCIOUS || health <= 0)
 		return FALSE
 	if(!ignore_stopped_automated_movement)
 		if(stop_automated_movement || !wander)

@@ -26,6 +26,7 @@
 	randpixel = 12
 	density = FALSE
 	aggroed_vision_range = 15 
+	attractable = TRUE
 
 
 	vision_range = 3
@@ -317,10 +318,10 @@
 	speed = 2
 	retreat_distance = 4
 	minimum_distance = 4
-	ranged_message = "emits radiation"
-	ranged = TRUE
-	projectiletype = /obj/item/projectile/radiation_thing
-	projectilesound = 'sound/weapons/etherealhit.ogg'
+	// ranged_message = "emits radiation"
+	// ranged = TRUE
+	// projectiletype = /obj/item/projectile/radiation_thing
+	// projectilesound = 'sound/weapons/etherealhit.ogg'
 	harm_intent_damage = 8
 	melee_damage_lower = 10
 	melee_damage_upper = 22

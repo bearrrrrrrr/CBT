@@ -269,19 +269,19 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 
 /obj/structure/nest/radroach
 	name = "mutant pillbug nest"
-	max_mobs = 2
-	swarm_size = 2
+	max_mobs = 3
+	swarm_size = 3
 	mob_types = list(/mob/living/simple_animal/hostile/pillbug = 10,
 					/mob/living/simple_animal/hostile/pillbug/micro = 15,
 					/mob/living/simple_animal/hostile/pillbug/leader = 5,
 					/mob/living/simple_animal/hostile/pillbug/strongradroach = 10,
-					/mob/living/simple_animal/hostile/bloatfly = 20
+					/mob/living/simple_animal/hostile/bloatfly = 2
 					)
 
 /obj/structure/nest/bloatfly
 	name = "bloatfly nest"
 	max_mobs = 10
-	swarm_size = 3
+	swarm_size = 2
 	mob_types = list(
 					/mob/living/simple_animal/hostile/bloatfly = 20
 					)
@@ -411,11 +411,10 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 	max_mobs = 2
 	spawnsound = 'sound/misc/crack.ogg'
 	mob_types = list(
-		/mob/living/simple_animal/hostile/gecko              = 4,
-		/mob/living/simple_animal/hostile/gecko/fire         = 1,
-		/mob/living/simple_animal/hostile/gecko/legacy       = 3,
-		/mob/living/simple_animal/hostile/gecko/legacy/alpha = 3,
-		/mob/living/simple_animal/hostile/gecko/big          = 2,
+		/mob/living/simple_animal/hostile/gecko/big          	= 2,
+		/mob/living/simple_animal/hostile/gecko/tribal          = 3,
+		/mob/living/simple_animal/hostile/gecko/tribal/warrior  = 3,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter   = 3,
 		)
 	
 

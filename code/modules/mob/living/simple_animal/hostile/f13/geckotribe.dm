@@ -26,7 +26,7 @@
 	obj_damage = 20
 	melee_damage_lower = 4
 	melee_damage_upper = 12
-	move_to_delay = 1.5
+	move_to_delay = 3
 	retreat_distance = 0
 	minimum_distance = 0
 	aggroed_vision_range = 8

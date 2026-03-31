@@ -587,7 +587,7 @@ Difficulty: Very Hard
 	icon_state = "lightgeist"
 	icon_living = "lightgeist"
 	icon_dead = "butterfly_dead"
-	turns_per_move = 1
+	seconds_per_wander = 1
 	response_help_continuous = "waves away"
 	response_help_simple = "wave away"
 	response_disarm_continuous = "brushes aside"

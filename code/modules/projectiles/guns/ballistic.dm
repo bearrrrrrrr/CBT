@@ -130,9 +130,10 @@ GLOBAL_LIST_EMPTY(gun_accepted_casings)
 		return
 	if (load_this)
 		chambered = load_this
-	else if(magazine && magazine.fixed_mag)
+	else if(magazine)
 		chambered = magazine.get_round()
-	chambered.forceMove(src)
+	if(chambered)
+		chambered.forceMove(src)
 	update_icon()
 
 /obj/item/gun/ballistic/can_shoot()
@@ -213,19 +214,27 @@ GLOBAL_LIST_EMPTY(gun_accepted_casings)
 	update_icon()
 	return TRUE
 
-/proc/doing_something_with_guns(mob/user)
-	var/datum/weakref/loader = WEAKREF(user)
-	if(GLOB.currently_loading_something[loader] > world.time)
+/proc/doing_something(mob/user)
+	var/datum/weakref/do_somethinger = WEAKREF(user)
+	if(GLOB.currently_loading_something[do_somethinger] > world.time)
 		return TRUE
-	if(GLOB.currently_loading_something[loader] < world.time)
-		GLOB.currently_loading_something -= loader
+	if(GLOB.currently_loading_something[do_somethinger] < world.time)
+		GLOB.currently_loading_something -= do_somethinger
 	return FALSE
+
+/proc/start_doing_something(mob/user, delay)
+	var/datum/weakref/do_somethinger = WEAKREF(user)
+	GLOB.currently_loading_something[do_somethinger] = world.time + delay
+
+/proc/stop_doing_something(mob/user)
+	var/datum/weakref/do_somethinger = WEAKREF(user)
+	GLOB.currently_loading_something -= do_somethinger
 
 // gets the delay for you stuffing that ammobox into this gun
 /obj/item/gun/ballistic/proc/load_into_gun_delay(mob/user, obj/item/ammo_box/A)
 	if(insert_magazine_delay <= 0)
 		return TRUE
-	if(doing_something_with_guns(user))
+	if(doing_something(user))
 		to_chat(user, span_warning("You're already doing something!"))
 		return FALSE
 	var/datum/weakref/loader = WEAKREF(user)
@@ -251,7 +260,7 @@ GLOBAL_LIST_EMPTY(gun_accepted_casings)
 		return FALSE
 	if(remove_magazine_delay <= 0)
 		return TRUE
-	if(doing_something_with_guns(user))
+	if(doing_something(user))
 		to_chat(user, span_warning("You're already doing something!"))
 		return FALSE
 	var/datum/weakref/loader = WEAKREF(user)

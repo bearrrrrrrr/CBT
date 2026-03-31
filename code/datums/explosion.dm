@@ -283,6 +283,7 @@ GLOBAL_LIST_EMPTY(explosions)
 		var/turf/UnexplodeT = Unexplode
 		UnexplodeT.explosion_level = 0
 	exploded_this_tick.Cut()
+	SSnpcpool.make_attraction(epicenter, 3000, 30, 2 MINUTES)
 
 	var/took = (REALTIMEOFDAY - started_at) / 10
 

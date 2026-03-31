@@ -8,7 +8,7 @@
 	icon_dead = "goose_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 2)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
@@ -47,7 +47,7 @@
 	icon_dead = "goose_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 2)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"

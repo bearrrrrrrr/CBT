@@ -56,7 +56,7 @@ Difficulty: Normal
 	move_to_delay = 11
 	ranged = 1
 	ranged_cooldown_time = 40
-	aggro_vision_range = 21 //so it can see to one side of the arena to the other
+	aggroed_vision_range = 21 //so it can see to one side of the arena to the other
 	loot = list(/obj/item/hierophant_club)
 	crusher_loot = list(/obj/item/hierophant_club)
 	wander = FALSE
@@ -662,7 +662,7 @@ Difficulty: Normal
 			var/mob/living/simple_animal/hostile/H = L //mobs find and damage you...
 			if(H.stat == CONSCIOUS && !H.target && H.AIStatus != AI_OFF && !H.client)
 				if(!QDELETED(caster))
-					if(get_dist(H, caster) <= H.aggro_vision_range)
+					if(get_dist(H, caster) <= H.aggroed_vision_range)
 						H.FindTarget(list(caster), 1)
 					else
 						H.Goto(get_turf(caster), H.move_to_delay, 3)

@@ -134,10 +134,10 @@
 		else
 			return !density
 
-/obj/structure/grille/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/obj/structure/grille/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/the_one_who_called)
 	. = !density
-	if(istype(caller))
-		. = . || (caller.pass_flags & PASSGRILLE)
+	if(istype(the_one_who_called))
+		. = . || (the_one_who_called.pass_flags & PASSGRILLE)
 
 /obj/structure/grille/attackby(obj/item/W, mob/user, params)
 	user.DelayNextAction(CLICK_CD_MELEE)

@@ -326,6 +326,9 @@
 	return message
 
 /mob/living/send_speech(datum/rental_mommy/chat/momchat)
+	if(client && prob(80))
+		if(momchat.message_mode in list(MODE_SAY, MODE_SING, MODE_YELL, MODE_EXCLAIM, MODE_ASK))
+			SSnpcpool.make_attraction(src, 20, 7, 10 SECONDS)
 	var/datum/chatchud/CC = null
 	if(!momchat.direct_to_mob)
 		CC = get_listening(momchat)

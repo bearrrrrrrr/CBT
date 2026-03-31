@@ -12,7 +12,7 @@
 	icon_living = "renegade_prospect"
 	icon_dead = "renegade_prospect-dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	mob_armor = ARMOR_VALUE_RENEGADE_COMBAT_ARMOR
 	maxHealth = 100
 	health = 100
@@ -269,7 +269,7 @@
 	healable = 1
 	speed = 1.3
 	vision_range = 12
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	check_friendly_fire = 1
 	retreat_distance = 10
 	minimum_distance = 6
@@ -361,7 +361,7 @@
 	icon_dead = "renegade_meister-dead"
 	mob_armor = ARMOR_VALUE_RENEGADE_POWER_ARMOR
 	vision_range = 12
-	aggro_vision_range = 12
+	aggroed_vision_range = 12
 	maxHealth = 150
 	health = 150
 	bossmob = TRUE

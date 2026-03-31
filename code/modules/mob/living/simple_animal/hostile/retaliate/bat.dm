@@ -5,7 +5,7 @@
 	icon_living = "bat"
 	icon_dead = "bat_dead"
 	icon_gib = "bat_dead"
-	turns_per_move = 1
+	seconds_per_wander = 1
 	blood_volume = 250
 	response_help_continuous = "brushes aside"
 	response_help_simple = "brush aside"

@@ -7,7 +7,7 @@
 	icon_dead = "wizard_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	speak_chance = 0
-	turns_per_move = 3
+	seconds_per_wander = 3
 	speed = 0
 	maxHealth = 100
 	health = 100

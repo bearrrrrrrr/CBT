@@ -6,7 +6,7 @@
 	icon_dead = "tomato_dead"
 	gender = NEUTER
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	maxHealth = 60
 	health = 60
 	see_in_dark = 3

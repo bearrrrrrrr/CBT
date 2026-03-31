@@ -9248,7 +9248,7 @@
 /area/f13/wasteland)
 "gxA" = (
 /mob/living/simple_animal/hostile/renegade/meister{
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	},
 /obj/item/card/highbounty,
 /turf/open/indestructible/ground/outside/roof,

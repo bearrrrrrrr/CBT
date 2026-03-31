@@ -99,7 +99,12 @@
 /datum/move_loop/process()
 	var/old_delay = delay //The signal can sometimes change delay
 
-	if(SEND_SIGNAL(src, COMSIG_MOVELOOP_PREPROCESS_CHECK) & MOVELOOP_SKIP_STEP) //Chance for the object to react
+	var/move_preprocess_flags = SEND_SIGNAL(src, COMSIG_MOVELOOP_PREPROCESS_CHECK)
+	var/mover_preprocess_flags = SEND_SIGNAL(moving, COMSIG_MOVELOOP_PREPROCESS_CHECK)
+	if(move_preprocess_flags & MOVELOOP_SKIP_STEP || mover_preprocess_flags & MOVELOOP_SKIP_STEP) //Chance for the object to react
+		return
+	if(move_preprocess_flags & MOVELOOP_KILL_PATH_AND_GIVE_UP || mover_preprocess_flags & MOVELOOP_KILL_PATH_AND_GIVE_UP) // KPAGU'S BACK@!
+		qdel(src)
 		return
 
 	lifetime -= old_delay //This needs to be based on work over time, not just time passed

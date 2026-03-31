@@ -28,7 +28,7 @@
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	melee_damage_lower = 5
 	melee_damage_upper = 15
-	turns_per_move = 5
+	seconds_per_wander = 5
 	var/is_blacklisted = FALSE // THis variable lets you stop mobs from being joinable roundstart
 	pass_flags = PASSTABLE //Impossible to climb tables so just pass over them for now
 	possible_a_intents = list(INTENT_HELP, INTENT_DISARM, INTENT_GRAB, INTENT_HARM)

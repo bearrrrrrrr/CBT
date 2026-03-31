@@ -22,7 +22,7 @@
 	minimum_distance = 3
 	move_to_delay = 20
 	vision_range = 9
-	aggro_vision_range = 9
+	aggroed_vision_range = 9
 	ranged = TRUE
 	ranged_cooldown_time = 10
 	projectiletype = /obj/item/projectile/seedling

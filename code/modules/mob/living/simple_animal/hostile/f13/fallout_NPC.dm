@@ -9,7 +9,7 @@
 	icon_state = "vault_dweller"
 	icon_living = "vault_dweller"
 	icon_dead = "vault_dweller_dead"
-	turns_per_move = 5
+	seconds_per_wander = 5
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"
@@ -139,7 +139,7 @@
 	icon_dead = "enclave_specialist_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"
 	response_harm_simple = "hits"
@@ -301,7 +301,7 @@
 	icon_dead = "bs_knight_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	faction = list("BOS", "wastebots")
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"
 	response_harm_simple = "hits"
@@ -419,7 +419,7 @@
 	icon_dead = "ncr_trooper_dead"
 	faction = list("NCR")
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"
 	response_harm_simple = "hits"
@@ -527,7 +527,7 @@
 	icon_dead = "legion_prime_dead"
 	faction = list("Legion")
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"
 	response_harm_simple = "hits"
@@ -637,7 +637,7 @@
 	icon_dead = "tribal_raider_dead"
 	faction = list("Tribe")
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"
 	response_harm_simple = "hits"

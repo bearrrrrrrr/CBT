@@ -5,7 +5,7 @@
 	icon_dead = "bananaspider_peel"
 	health = 1
 	maxHealth = 1
-	turns_per_move = 5			//this isn't player speed =|
+	seconds_per_wander = 5			//this isn't player speed =|
 	speed = 2				//this is player speed
 	loot = list(/obj/item/reagent_containers/food/snacks/deadbanana_spider)
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)

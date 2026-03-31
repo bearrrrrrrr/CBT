@@ -355,7 +355,7 @@
 	emote_hear = list ("chitters", "purr")
 	emote_see = list("rubs it's hands togther.", "twitches it's nose.", "flicks it's ears.")
 	idlesound = list('modular_coyote/sound/typing/arfs1sounds/raccoon1.ogg',)
-	turns_per_move = 3
+	seconds_per_wander = 3
 	maxHealth = 100
 	health = 100
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 1)
@@ -437,7 +437,7 @@
 	speak_emote = list("chitters")
 	emote_hear = list ("chitters", "screams")
 	emote_see = list("rolls around.", "twitches it's nose.", "flicks it's ears.")
-	turns_per_move = 3
+	seconds_per_wander = 3
 	maxHealth = 100
 	health = 100
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 1)
@@ -455,7 +455,7 @@
 	icon_dead = "uffalo_dead"
 	icon_living = "uffalo"
 	icon_state = "uffalo"
-	turns_per_move = 3
+	seconds_per_wander = 3
 	maxHealth = 100
 	health = 100
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 6)
@@ -1393,7 +1393,7 @@
 	emote_hear = list("chitters.", "squeaks")
 	emote_see = list("tilts its head", "flutters its wings" , "does a little dance")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	response_help_continuous = "pets"
 	response_help_simple = "pet"

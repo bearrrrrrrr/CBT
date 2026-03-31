@@ -20,7 +20,7 @@
 	var/list/possible_forms = list(\
 		/mob/living/simple_animal/hostile/centaur/strong = 4,
 		/mob/living/simple_animal/hostile/abomination/weak = 3,
-		/mob/living/simple_animal/hostile/ghoul/glowing/strong = 2,
+		// /mob/living/simple_animal/hostile/ghoul/glowing/strong = 2,
 		)
 
 /datum/disease/transformation/mutant/do_disease_transformation(mob/living/affected_mob)

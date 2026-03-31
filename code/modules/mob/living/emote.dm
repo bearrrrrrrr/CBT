@@ -1092,11 +1092,11 @@
 	emote_type = EMOTE_AUDIBLE
 	sound = 'sound/f13effects/sunsetsounds/whistle-overhere.ogg'
 
-/datum/emote/squee
-	key = "squee"
-	key_third_person = "smiles like a dork."
-	message = "smiles like a dork."
-	sound = 'sound/f13effects/sunsetsounds/squee.ogg'
+// /datum/emote/squee
+// 	key = "squee"
+// 	key_third_person = "smiles like a dork."
+// 	message = "smiles like a dork."
+// 	sound = 'sound/f13effects/sunsetsounds/squee.ogg'
 
 /datum/emote/waa
 	key = "waa"
@@ -1205,33 +1205,33 @@
 // 	emote_type = EMOTE_AUDIBLE
 // 	sound = 'sound/effects/gurgle.ogg'
 
-/datum/emote/living/augh
-	key = "augh"
-	key_third_person = "looks mildly inconvenienced."
-	message = "looks mildly inconvenienced."
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/f13effects/sunsetsounds/augh.ogg'
+// /datum/emote/living/augh
+// 	key = "augh"
+// 	key_third_person = "looks mildly inconvenienced."
+// 	message = "looks mildly inconvenienced."
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/f13effects/sunsetsounds/augh.ogg'
 
-/datum/emote/living/ree
-	key = "ree"
-	key_third_person = "reeeeeees."
-	message = "reeeeeees."
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/f13effects/sunsetsounds/frogree.ogg'
+// /datum/emote/living/ree
+// 	key = "ree"
+// 	key_third_person = "reeeeeees."
+// 	message = "reeeeeees."
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/f13effects/sunsetsounds/frogree.ogg'
 
-/datum/emote/living/eyebrowmenace
-	key = "eyebrowboom"
-	key_third_person = "raises an eyebrow menacingly!"
-	message = "raises an eyebrow menacingly!"
-	sound = 'sound/f13effects/sunsetsounds/vineboom.ogg'
+// /datum/emote/living/eyebrowmenace
+// 	key = "eyebrowboom"
+// 	key_third_person = "raises an eyebrow menacingly!"
+// 	message = "raises an eyebrow menacingly!"
+// 	sound = 'sound/f13effects/sunsetsounds/vineboom.ogg'
 
 
-/datum/emote/living/frogcry
-	key = "frogcry"
-	key_third_person = "does an amphibian warcry!"
-	message = "does an amphibian warcry!"
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/f13effects/sunsetsounds/frogwarcry.ogg'
+// /datum/emote/living/frogcry
+// 	key = "frogcry"
+// 	key_third_person = "does an amphibian warcry!"
+// 	message = "does an amphibian warcry!"
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/f13effects/sunsetsounds/frogwarcry.ogg'
 
 /datum/emote/living/bwoing
 	key = "bwoing"

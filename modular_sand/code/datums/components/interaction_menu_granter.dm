@@ -570,7 +570,9 @@
 				cached_interactions += list(nukeclownpubes)
 		return TRUE
 	var/is_just_me = target == self
-	var/am_consent = SSinteractions.check_consent_chain(self, target)
+	var/am_consent = SSinteractions.check_consent_chain(self, target) || is_just_me
+	if(target && target.merp_testing_funclaw)
+		am_consent = TRUE // testing bypass, dont worry about it
 	var/list/output_interactions = SSinteractions.interactions_tgui.Copy()
 	for(var/list/i_obj in output_interactions)
 		if(!islist(i_obj))

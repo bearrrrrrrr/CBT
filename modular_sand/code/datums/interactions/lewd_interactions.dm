@@ -566,6 +566,9 @@
 			// if(is_self_action)
 			// 	return TRUE
 			var/list/ppl = SSinteractions.get_consent_chain(mouns) // send message to EVERYONE in the group!!!
+			if(target && target.merp_testing_funclaw)
+				ppl |= target
+				ppl |= user
 			for(var/mob/squish in ppl - mouns)
 				if(!squish.client)
 					continue

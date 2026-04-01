@@ -40,7 +40,7 @@
 	var/sexual_potency = 15
 	var/lust_tolerance = 100
 	var/lust_decay_last = 0
-	var/lust_decay_per_second = 0.5
+	var/lust_decay_per_second = 0.001
 	var/lust = 0
 	var/multiorgasms = 1
 	/// if set, the next sex-type action will make u cum
@@ -511,7 +511,6 @@
 	var/t_His = partner?.p_their()
 	var/cumin = FALSE
 	var/partner_carbon_check = FALSE
-	var/obj/item/organ/genital/target_gen = null
 	var/mob/living/carbon/c_partner
 
 	// Do not display to those people as well
@@ -543,8 +542,6 @@
 								message = "cums on \the <b>[partner]</b>'s face."
 						if(CUM_TARGET_VAGINA)
 							if(partner.has_vagina(REQUIRE_EXPOSED))
-								if(partner_carbon_check)
-									target_gen = c_partner.getorganslot(ORGAN_SLOT_VAGINA)
 								message = "cums in \the <b>[partner]</b>'s pussy."
 								cumin = TRUE
 							else
@@ -707,8 +704,6 @@
 									message = "cums on \the <b>[partner]</b>'s face."
 							if(CUM_TARGET_VAGINA)
 								if(partner.has_vagina(REQUIRE_EXPOSED))
-									if(partner_carbon_check)
-										target_gen = c_partner.getorganslot(ORGAN_SLOT_VAGINA)
 									message = "cums in \the <b>[partner]</b>'s pussy."
 									cumin = TRUE
 								else
@@ -881,6 +876,8 @@
 			)
 	var/list/cumhearers = SSinteractions.get_consent_chain(src) // fun fact, every time I used this proc, I forgot what it did. I wrote this proc! =3
 	cumhearers |= src
+	if(partner && partner.merp_testing_funclaw)
+		cumhearers |= partner
 	for(var/mob/living/u_cum_2 in cumhearers)
 		if(CHECK_PREFS(u_cum_2, NOTMERP_LEWD_SOUNDS) || u_cum_2 == src)
 			u_cum_2.playsound_local(get_turf(src), cumnoise, 70, 1, 0)

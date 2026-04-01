@@ -15,8 +15,8 @@ SUBSYSTEM_DEF(interactions)
 	var/max_autoplap_interval = 45 SECONDS
 	var/debug_store_plapper_weakref = FALSE
 	var/interactions_per_page = 10
-	var/lust_gain_multipler = 0.5
-	var/lust_drain_multipler = 1
+	var/lust_gain_multipler = 0.01
+	var/lust_drain_multipler = 0.01
 
 	VAR_PROTECTED/list/blacklisted_mobs = list(
 		/mob/dead,
@@ -361,7 +361,7 @@ GLOBAL_LIST_INIT(lewd_prefs_choices, list(
 #undef ASKER_ASKED
 #undef ASKED_ASKER
 
-/mob/living/carbon/human/species/mammal/funclaw
+/mob/living/carbon/human/species/braixen/funclaw
 	name = "funclaw"
 	desc = "A massive, reptilian creature with powerful muscles, razor-sharp claws, and an okayness for ERP. They'll consent to whatever you want!"
 	merp_testing_funclaw = TRUE
@@ -370,7 +370,7 @@ GLOBAL_LIST_INIT(lewd_prefs_choices, list(
 		MERPNEED_TESTICLES,
 	)
 
-/mob/living/carbon/human/species/mammal/funclaw/male
+/mob/living/carbon/human/species/braixen/funclaw/male
 	name = "funclaw"
 	desc = "A massive, reptilian creature with powerful muscles, razor-sharp claws, and an okayness for ERP. They'll consent to whatever you want!"
 	bits = list(
@@ -378,7 +378,7 @@ GLOBAL_LIST_INIT(lewd_prefs_choices, list(
 		MERPNEED_TESTICLES,
 	)
 
-/mob/living/carbon/human/species/mammal/funclaw/female
+/mob/living/carbon/human/species/braixen/funclaw/female
 	name = "funclawette"
 	desc = "A massive, reptilian creature with powerful muscles, razor-sharp claws, and an okayness for ERP. They'll consent to whatever you want!"
 	bits = list(
@@ -387,7 +387,7 @@ GLOBAL_LIST_INIT(lewd_prefs_choices, list(
 		MERPNEED_BREASTS,
 	)
 
-/mob/living/carbon/human/species/mammal/funclaw/Initialize()
+/mob/living/carbon/human/species/braixen/funclaw/Initialize()
 	. = ..()
 	for(var/thing in bits)
 		var/obj/item/organ/O

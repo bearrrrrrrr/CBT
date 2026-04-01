@@ -887,7 +887,7 @@
 				'modular_sand/sound/interactions/final_f3.ogg',
 			)
 	var/list/cumhearers = SSinteractions.get_consent_chain(src) // fun fact, every time I used this proc, I forgot what it did. I wrote this proc! =3
-	if(partner.merp_testing_funclaw)
+	if(partner?.merp_testing_funclaw)
 		cumhearers += partner
 		cumhearers += src
 	for(var/mob/living/u_cum_2 in cumhearers)

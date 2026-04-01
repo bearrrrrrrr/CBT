@@ -164,7 +164,7 @@
 	.["SeeLewd"] = SeeLewd || FALSE
 	.["SeeExtreme"] = SeeExtreme || FALSE
 	.["ItsJustMe"] = target == self
-	.["WeConsent"] = SSinteractions.check_consent(self, target) || FALSE
+	.["WeConsent"] = SSinteractions.check_consent(self, target) || target.merp_testing_funclaw || FALSE
 	.["MyName"] = self.name || "Nobody"
 	.["TheirName"] = target.name || "Nobody"
 	var/list/faves = self.client?.prefs.faved_interactions || list()
@@ -586,7 +586,7 @@
 			output_interactions -= list(i_obj)
 			continue
 		var/datum/interaction/I = SSinteractions.interactions[i_obj["InteractionKey"]]
-		if(!I.evaluate_user(self) || !I.evaluate_target(target))
+		if(!I.evaluate_user(self, TRUE) || !I.evaluate_target(self, target, TRUE))
 			output_interactions -= list(i_obj)
 			continue
 		if(current_category != MERP_CAT_ALL && !(current_category in i_obj["InteractionCategories"]))

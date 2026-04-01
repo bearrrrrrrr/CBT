@@ -304,15 +304,6 @@
 	// 				if(!silent)
 	// 					to_chat(user, span_warning("Your earsockets need to be unexposed."))
 	// 				return FALSE
-
-	if(extreme)
-		var/client/cli = user.client
-		if(cli)
-			if(cli.prefs.extremepref == "No")
-				if(!silent)
-					to_chat(user, span_warning("That's way too much for you."))
-				return FALSE
-
 	return TRUE // you consent to yourself
 
 /datum/interaction/lewd/evaluate_target(mob/living/user, mob/living/target, silent = TRUE)
@@ -321,14 +312,6 @@
 		return FALSE
 	if(target.merp_testing_funclaw)
 		return TRUE
-
-	if(extreme)
-		var/client/cli = target.client
-		if(cli)
-			if(target.client.prefs.extremepref == "No")
-				if(!silent)
-					to_chat(user, span_warning("For some reason, you don't want to do this to [target]."))
-				return FALSE
 
 	if(!SSinteractions.check_consent(user, target))
 		if(!silent)

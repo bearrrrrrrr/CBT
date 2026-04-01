@@ -211,28 +211,28 @@
 				if(H.get_num_legs() > 0)
 					continue
 			if(MERPNEED_TAIL)
-				if(!H.has_tail())
+				if(H.has_tail())
 					continue
 			if(MERPNEED_PENIS)
-				if(!H.has_penis())
+				if(H.has_penis())
 					continue
 			if(MERPNEED_VAGINA)
-				if(!H.has_vagina())
+				if(H.has_vagina())
 					continue
 			if(MERPNEED_TESTICLES)
-				if(!H.has_balls())
+				if(H.has_balls())
 					continue
 			if(MERPNEED_UTERUS)
-				if(!H.has_womb())
+				if(H.has_womb())
 					continue
 			if(MERPNEED_BREASTS)
-				if(!H.has_breasts())
+				if(H.has_breasts())
 					continue
 			if(MERPNEED_BELLY)
-				if(!H.has_belly())
+				if(H.has_belly())
 					continue
 			if(MERPNEED_BUTT)
-				if(!H.has_butt())
+				if(H.has_butt())
 					continue
 		missing |= part
 	return missing

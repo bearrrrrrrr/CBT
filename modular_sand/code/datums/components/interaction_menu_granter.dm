@@ -397,6 +397,8 @@
 	if(!I.can_autoplap)
 		to_chat(parent, span_alert("That one really shouldnt be automated!"))
 		return
+	if(I.is_self_action)
+		partner = parent
 	if(!I.can_do_interaction(parent, partner))
 		return
 	var/mob/living/me = parent
@@ -583,12 +585,24 @@
 		if(needconsent && !am_consent)
 			output_interactions -= list(i_obj)
 			continue
+		var/datum/interaction/I = SSinteractions.interactions[i_obj["InteractionKey"]]
+		if(i_obj["InteractionSelf"])
+			if(!I.evaluate_target(self, self, TRUE))
+				output_interactions -= list(i_obj)
+				continue
+		else
+			if(!I.evaluate_user(self, TRUE) || !I.evaluate_target(self, target, TRUE))
+				output_interactions -= list(i_obj)
+				continue
 		if(current_category != MERP_CAT_ALL && !(current_category in i_obj["InteractionCategories"]))
 			output_interactions -= list(i_obj)
 			continue
-		if(is_just_me && !i_obj["InteractionSelf"])
-			output_interactions -= list(i_obj)
-			continue
+		// if(is_just_me && !i_obj["InteractionSelf"])
+		// 	output_interactions -= list(i_obj)
+		// 	continue
+		// if(!is_just_me && i_obj["InteractionSelf"])
+		// 	output_interactions -= list(i_obj)
+		// 	continue
 		if(search_term)
 			if(findtext(lowertext(i_obj["InteractionName"]), lowertext(search_term)))
 				continue

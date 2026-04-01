@@ -60,7 +60,12 @@
 		'sound/weapons/thudswoosh.ogg'
 	) // frumf, frumf
 	user_lust_mult = 0
-
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 /////////////////////
 // Finger Play 4A2//
@@ -101,7 +106,12 @@
 	) // frumf, frumf
 	user_lust_mult = 0.8
 	target_lust_mult = 1.2
-
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 ////////////////////
 //Wrist Grab 4A3//
@@ -142,7 +152,12 @@
 		'sound/weapons/thudswoosh.ogg'
 	) // frumf, frumf
 	user_lust_mult = 0
-
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 
 
@@ -195,6 +210,9 @@
 	) // frumf, frumf
 	user_lust_mult = 0.3
 	lust_go_to = LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 ////////////////////
 //Finger Lick 4A5//
@@ -236,3 +254,6 @@
 	) // frumf, frumf
 	user_lust_mult = 0.3
 	lust_go_to = LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_ARM,
+	)

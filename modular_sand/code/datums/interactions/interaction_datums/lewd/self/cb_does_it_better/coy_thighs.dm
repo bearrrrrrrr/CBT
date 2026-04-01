@@ -32,6 +32,10 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
+
 ///////FUCK THIGH END/////////
 
 ////////////////////
@@ -59,6 +63,10 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
+
 ///////LICK THIGH END/////////
 
 ////////////////////
@@ -86,6 +94,13 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
+
 ///////GRAB THIGH END/////////
 
 /////////////////////////
@@ -114,6 +129,9 @@
 	target_lust_mult = 0.5
 	user_lust_mult = 0.5
 	lust_go_to = LUST_TARGET | LUST_USER
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
 ///////BITE THIGH END/////////
 
 /////////////////////////
@@ -141,6 +159,9 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
 ///////BITE THIGH END/////////
 
 /////////////////////////
@@ -169,3 +190,7 @@
 	target_lust_mult = 0.5
 	user_lust_mult = 0.7
 	lust_go_to = LUST_TARGET | LUST_USER
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
+

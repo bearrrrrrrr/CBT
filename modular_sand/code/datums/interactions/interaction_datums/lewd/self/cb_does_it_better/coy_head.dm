@@ -149,6 +149,9 @@
 	) // frumf, frumf
 	user_lust_mult = 1.1
 	target_lust_mult = 0.2
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////////////////////
 //Facefuck them (pussy) 1A6///
@@ -180,6 +183,10 @@
 	) // frumf, frumf
 	user_lust_mult = 1.1
 	target_lust_mult = 0.2
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
+
 
 ////////////////////////
 //Throatfuck them 1A7///
@@ -212,6 +219,10 @@
 	) // frumf, frumf
 	user_lust_mult = 1.1
 	target_lust_mult = 0.3
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+
 
 ////////////////////////
 //Ass to face 1A8///
@@ -298,6 +309,10 @@
 	) // frumf, frumf
 	user_lust_mult = 0.1
 	target_lust_mult = 0.1
+	user_required_parts = list(
+		MERPNEED_TESTICLES,
+	)
+
 
 ////////////////////
 //Good Boy 1A10//
@@ -403,6 +418,11 @@
 	simple_sounds = list(
 		'sound/f13effects/sunsetsounds/blush.ogg',
 	)
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+
+
 ////////////////////
 //Beg to be bred, FE 1A14//
 ////////////////////

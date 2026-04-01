@@ -30,6 +30,13 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_TAIL,
+	)
+
 ///////BRUSH TAIL END/////////
 
 ////////////////////
@@ -57,6 +64,12 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_TAIL,
+	)
 ///////PULL TAIL END/////////
 
 ////////////////////
@@ -84,5 +97,9 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+
+	target_required_parts = list(
+		MERPNEED_TAIL,
+	)
 ///////BITE TAIL END/////////
 

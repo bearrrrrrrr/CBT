@@ -87,6 +87,13 @@
 	max_distance = 0 //The max distance you can use this verb on others, starts on the tiles AROUND the player, so thusly it includes the players own tile.
 	write_log_user = "rubbed their crotch" //The log for the interactiont to show admins if, for some insane reason, they need to look up what you have done to yourself/others. Probably not needed with OUR community, but I can see the logic behind wanting it. 
 	write_log_target = null //There's no target in this case, because the user is the target. If there was you'd write it out the same as write_log_user, like 'was fingered by someone' or something similar.
+	user_required_parts = list(
+		
+	)
+	target_required_parts = list(
+		
+	)
+
 
 
 
@@ -113,6 +120,7 @@
 
 	simple_sounds = list('sound/weapons/thudswoosh.ogg') // frumf, frumf
 	user_lust_mult = 0.4
+	
 
 
 /////////////////
@@ -138,6 +146,7 @@
 		'sound/effects/rustle5.ogg',
 	) // frumf, frumf
 	user_lust_mult = 0.4
+	
 
 ////////////////////
 //Dirty Talk - Soft//
@@ -219,7 +228,12 @@
 	)
 	simple_sounds = list('sound/weapons/thudswoosh.ogg') // yes it the use bag sound, eat me
 	user_lust_mult = 0.6
-
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 /////////////////
 //Jerk Hard/////
@@ -261,6 +275,12 @@
 		'sound/effects/rustle5.ogg',
 	) // frumf, frumf
 	user_lust_mult = 1.2
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////////////////
 //Play with own nips/////
@@ -327,3 +347,6 @@
 		"XU_NAME gags themselves as XU_THEIR deepthroats XU_THEIR own cock",
 	)
 	user_lust_mult = 0.8
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)

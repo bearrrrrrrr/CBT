@@ -502,18 +502,6 @@
 // this proc sucks
 /mob/living/proc/moan()
 	return TRUE // handled by the interactions
-	// if(!(prob(get_lust() / get_lust_max() * 10)))
-	// 	return
-	// if(COOLDOWN_FINISHED(src, interaction_moan_cooldown))
-	// 	COOLDOWN_START(src, interaction_moan_cooldown, LEWD_VERB_MOAN_COOLDOWN)
-	// 	var/moan = rand(1, 7)
-	// 	if(moan == lastmoan)
-	// 		moan--
-	// 	if(!is_muzzled())
-	// 		visible_message(message = span_love("<B>\The [src]</B> [pick("moans", "moans in pleasure")]."), ignored_mobs = get_unconsenting())
-	// 	else
-	// 		audible_message(span_love("<B>[src]</B> [pick("mimes a pleasured moan","moans in silence")]."), ignored_mobs = get_unconsenting())
-	// 	lastmoan = moan
 
 /mob/living/proc/cum(mob/living/partner, target_orifice)
 	// ready_to_cum = FALSE // round 2, fight!
@@ -899,6 +887,9 @@
 				'modular_sand/sound/interactions/final_f3.ogg',
 			)
 	var/list/cumhearers = SSinteractions.get_consent_chain(src) // fun fact, every time I used this proc, I forgot what it did. I wrote this proc! =3
+	if(partner.merp_testing_funclaw)
+		cumhearers += partner
+		cumhearers += src
 	for(var/mob/living/u_cum_2 in cumhearers)
 		if(CHECK_PREFS(u_cum_2, NOTMERP_LEWD_SOUNDS))
 			u_cum_2.playsound_local(get_turf(src), cumnoise, 70, 1, 0)

@@ -60,6 +60,10 @@ Happy MERPING!  ~TK<3
 	simple_sounds = list('sound/effects/lick.ogg') // frumf, frumf
 	user_lust_mult = 1
 	lust_go_to = LUST_USER | LUST_TARGET
+	
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ///////LICK THE TIP END/////////
 
@@ -92,6 +96,10 @@ Happy MERPING!  ~TK<3
 	simple_sounds = list('sound/effects/lick.ogg') // frumf, frumf
 	user_lust_mult = 1
 	lust_go_to = LUST_USER | LUST_TARGET
+	
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////////////
 //Eager Reciever 0A3//

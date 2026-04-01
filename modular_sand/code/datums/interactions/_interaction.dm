@@ -11,6 +11,7 @@
 - ripped out all the shitcode and made it good - Superlagg
 **/
 
+/mob/living/var/merp_testing_funclaw = FALSE
 
 /mob/proc/list_interaction_attributes()
 	return list()
@@ -68,7 +69,7 @@
 	 * So, fun fact, init vars dont support variables! And for good reason, they're init vars!
 	 * But that means we cant, say, inject the player's name in there. Not directly, at least.
 	 * But with the power of string operations, we can do the next best thing! Postprocessing!
-	 * So, the way it works is, you set the message to something like "XU_X thrusts his XOBJECT1X into XTARGETX's XOBJECT2X."
+	 * So, the way it works is, you set the message to something like "XU_X thrusts XU_THEIR XOBJECT1X into XTARGETX's XOBJECT2X."
 	 * Then, when the interaction is run, it'll replace XU_X with the user's name, 
 	 * XOBJECT1X with the name of the object (or just text) in extra["object1"], etc
 	 * All with no loss of performance! (citation needed)
@@ -78,7 +79,7 @@
 	 * One tiiiiiiny little huge downside though, we still cant use DEFINEs in init vars, so we have to use the actual text
 	 * Which means you'll have to be extra sure you spell everything right, and capitalize everything right, and all that
 	 * It wont tell you if you misspell something, it'll just spit out the message with the malformed token innit
-	 * So be careful! See line 387ish for the tokens you can use
+	 * So be careful! See line 503ish for the tokens you can use
 	 */
 	var/list/splorch_cd = 7 SECONDS // the 7 is for good luck
 	var/list/squorch_cooldowns = list()
@@ -88,15 +89,6 @@
 
 	var/write_log_user
 	var/write_log_target
-
-	/// Bitfield for which genitals are required, if we're filtering that
-	var/user_required_genitals = NONE // to be actually used later =3
-	/// Bitfield for which genitals are required, if we're filtering that
-	var/target_required_genitals = NONE // to be actually used later =3
-	/// Bitfield for which bodyparts are required, if we're filtering that
-	var/user_required_parts = NONE // to be actually used later =3
-	/// Bitfield for which bodyparts are required, if we're filtering that
-	var/target_required_parts = NONE // to be actually used later =3
 
 	var/int_sound_vol = 35 // volume of the sound, 0-100
 
@@ -121,6 +113,10 @@
 	var/list/cache_stuff = list()
 	/// associated cache of messages that have already been formatted
 	var/list/formatted_cache = list()
+
+	/// binguses required to launch this command at someone
+	var/list/user_required_parts = list()
+	var/list/target_required_parts = list()
 
 /datum/interaction/New()
 	. = ..()
@@ -173,21 +169,11 @@
 	if(SSinteractions.is_blacklisted(user))
 		return FALSE
 
-	// if(require_user_mouth)
-	// 	if(!user.has_mouth() && !issilicon(user)) //Again, silicons do not have the required parts normally.
-	// 		if(!silent)
-	// 			to_chat(user, span_warning("You don't have a mouth."))
-	// 		return FALSE
-
-	// 	if(!user.mouth_is_free() && !issilicon(user)) //Borgs cannot wear mouthgear, bypassing the check.
-	// 		if(!silent)
-	// 			to_chat(user, span_warning("Your mouth is covered."))
-	// 		return FALSE
-
-	// if(require_user_hands && !user.has_hands() && !issilicon(user)) //Edited to allow silicons to interact.
-	// 	if(!silent)
-	// 		to_chat(user, span_warning("You don't have hands."))
-	// 	return FALSE
+	var/list/missing = get_missing_parts(user, user_required_parts)
+	if(LAZYLEN(missing))
+		if(!silent)
+			inform_user_of_missing_parts(user, missing)
+		return FALSE
 
 	if(action_check)
 		return TRUE
@@ -197,30 +183,71 @@
 /datum/interaction/proc/evaluate_target(mob/living/user, mob/living/target, silent = TRUE)
 	if(SSinteractions.is_blacklisted(target))
 		return FALSE
+	if(!LAZYLEN(target_required_parts))
+		return TRUE // if there are no required parts, then we dont need to check for them, now do we?
 
-	// if(!is_self_action)
-	// 	if(user == target)
-	// 		if(!silent)
-	// 			to_chat(user, "<span class = 'warning'>You can't do that to yourself.</span>")
-	// 		return FALSE
-
-	// if(require_target_mouth)
-	// 	if(!target.has_mouth())
-	// 		if(!silent)
-	// 			to_chat(user, "<span class = 'warning'>They don't have a mouth.</span>")
-	// 		return FALSE
-
-	// 	if(!target.mouth_is_free() && !issilicon(target))
-	// 		if(!silent)
-	// 			to_chat(user, "<span class = 'warning'>Their mouth is covered.</span>")
-	// 		return FALSE
-
-	// if(require_target_hands && !target.has_hands() && !issilicon(target))
-	// 	if(!silent)
-	// 		to_chat(user, "<span class = 'warning'>They don't have hands.</span>")
-	// 	return FALSE
-
+	var/list/missing = get_missing_parts(target, target_required_parts)
+	if(LAZYLEN(missing))
+		if(!silent)
+			var/its_me = target == user
+			inform_user_of_missing_parts(user, missing, !its_me)
+		return FALSE
 	return TRUE
+
+/datum/interaction/proc/get_missing_parts(mob/living/thing, list/required_parts)
+	// first the easy ones
+	if(!LAZYLEN(required_parts))
+		return list() // if there are no required parts, then there are no missing parts, now do we?
+	if(!ishuman(thing))
+		return list() // only hummens have parts (doesnt optimize scrotie dog sex though, sorry)
+	var/mob/living/carbon/human/H = thing
+	var/list/missing = list()
+	for(var/part in required_parts)
+		switch(part)
+			if(MERPNEED_ARM)
+				if(H.get_num_arms() > 0)
+					continue
+			if(MERPNEED_LEG)
+				if(H.get_num_legs() > 0)
+					continue
+			if(MERPNEED_TAIL)
+				if(!H.has_tail())
+					continue
+			if(MERPNEED_PENIS)
+				if(!H.has_penis())
+					continue
+			if(MERPNEED_VAGINA)
+				if(!H.has_vagina())
+					continue
+			if(MERPNEED_TESTICLES)
+				if(!H.has_balls())
+					continue
+			if(MERPNEED_UTERUS)
+				if(!H.has_womb())
+					continue
+			if(MERPNEED_BREASTS)
+				if(!H.has_breasts())
+					continue
+			if(MERPNEED_BELLY)
+				if(!H.has_belly())
+					continue
+			if(MERPNEED_BUTT)
+				if(!H.has_butt())
+					continue
+		missing |= part
+	return missing
+
+/datum/interaction/proc/inform_user_of_missing_parts(mob/living/who, list/what = list(), is_target)
+	if(!LAZYLEN(what))
+		return
+	var/missig = english_list(what)
+	var/msg = ""
+	if(is_target)
+		msg = "You can't do that to [who]! [who.p_they(TRUE)] are missing [missig]!"
+	else
+		msg = "You can't do that! You are missing [missig]!"
+	msg = span_danger(msg)
+	return msg
 
 /// Actually doing the action, has a few checks to see if it's valid, usually overwritten to be make things actually happen and what-not
 /datum/interaction/proc/run_action(mob/living/user, mob/living/target, discrete = FALSE, list/extra = list())
@@ -282,6 +309,8 @@
 
 /// Checks if the user and target consent to the interaction
 /datum/interaction/proc/consented(mob/living/user, mob/living/target, showmessage)
+	if(target.merp_testing_funclaw)
+		return TRUE
 	if(!require_ooc_consent)
 		return TRUE
 	if(!is_lewd)
@@ -300,6 +329,8 @@
 		return TRUE
 	/// now to broadcast to everyone in your private little circle
 	var/list/ppl = SSinteractions.get_consent_chain(user) // send message to EVERYONE in the group!!!
+	if(target.merp_testing_funclaw)
+		ppl = list(user, target)
 	for(var/mob/squish in ppl | user)
 		if(!squish.client)
 			continue
@@ -355,6 +386,8 @@
 		playsound(user, sound2play, int_sound_vol, 1)
 		return TRUE
 	var/list/ppl = SSinteractions.get_consent_chain(user) // send message to EVERYONE in the group!!!
+	if(target.merp_testing_funclaw)
+		ppl = list(user, target)
 	for(var/mob/squish in ppl)
 		if(!squish.client)
 			continue

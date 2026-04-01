@@ -31,6 +31,10 @@
 	target_lust_mult = 0.5
 	user_lust_mult = 0.5
 	lust_go_to = LUST_TARGET | LUST_USER
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+
 ///////TOUCH BELLY END/////////
 
 
@@ -59,6 +63,9 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET 
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 ///////RUB BELLY END/////////
 
 ////////////////////
@@ -86,6 +93,9 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET 
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 ///////CARESS BELLY END/////////
 
 ////////////////////////

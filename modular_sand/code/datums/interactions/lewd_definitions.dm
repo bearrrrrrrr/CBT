@@ -39,7 +39,8 @@
 	var/lastmoan
 	var/sexual_potency = 15
 	var/lust_tolerance = 100
-	var/lastlusttime = 0
+	var/lust_decay_last = 0
+	var/lust_decay_per_second = 0.001
 	var/lust = 0
 	var/multiorgasms = 1
 	/// if set, the next sex-type action will make u cum
@@ -61,11 +62,6 @@
 	last_orifice = null
 	last_genital = null
 	last_lewd_datum = null
-
-// /mob/living/Initialize(mapload)
-// 	. = ..()
-// 	sexual_potency = 15
-// 	lust_tolerance = 200
 
 /// Turns our groinuses into a list of groinuses for TGUI
 /mob/living/proc/format_genitals_for_tgui()
@@ -108,7 +104,7 @@
 		boob["BitColor"] = "#[LAZYACCESS(features, "breasts_color")]"
 		boob["BitAroused"] = FALSE
 		boob["BitExtra"] = "Operating at %[100 * LAZYACCESS(features, "balls_efficiency")] capacity."
-		boob["BitEmoji"] = "🐄"
+		boob["BitEmoji"] = "🍈"
 		out += list(boob)
 	if(LAZYACCESS(features, "has_butt")) // bawk bawk
 		var/list/butt = list()
@@ -142,7 +138,7 @@
 		vadge["BitColor"] = "#[LAZYACCESS(features, "vag_color")]"
 		vadge["BitAroused"] = FALSE
 		vadge["BitExtra"] = "Operating at %[100 * LAZYACCESS(features, "balls_efficiency")] capacity."
-		vadge["BitEmoji"] = "🥡"
+		vadge["BitEmoji"] = "🧰"
 		out += list(vadge)
 	if(LAZYACCESS(features, "has_womb")) // bawk bawk
 		var/list/womb = list()
@@ -180,27 +176,24 @@
 	// 		. = user.dna.features["sexual_potency"]
 
 /mob/living/proc/add_lust(add)
-	var/cur = get_lust() //GetLust handles per-time lust loss
-	if((cur + add) < 0) //in case we retract lust
-		lust = 0
-	else
-		lust = cur + add
+	lust = clamp(lust + add, 0, get_lust_max())
 
+/mob/living/proc/decay_lust()
+	if(lust <= 0)
+		return
+	if(lust_decay_per_second <= 0)
+		return
+	if(lust_decay_last == 0)
+		lust_decay_last = world.time
+	var/dt = world.time - lust_decay_last
+	var/decay = dt * lust_decay_per_second * SSinteractions.lust_drain_multipler
+	add_lust(-decay)
 
 /mob/living/proc/get_lust()
-	var/curtime = world.time
-	var/dif = (curtime - lastlusttime) / 10 //how much lust would we lose over time
-	if((lust - dif) < 0)
-		lust = 0
-	else
-		lust = lust - dif
-
-	lastlusttime = world.time
 	return lust
 
 /mob/living/proc/set_lust(num)
 	lust = num
-	lastlusttime = world.time
 
 /mob/living/proc/toggle_anus_always_accessible(accessibility)
 	anus_always_accessible = isnull(accessibility) ? !anus_always_accessible : accessibility
@@ -502,18 +495,6 @@
 // this proc sucks
 /mob/living/proc/moan()
 	return TRUE // handled by the interactions
-	// if(!(prob(get_lust() / get_lust_max() * 10)))
-	// 	return
-	// if(COOLDOWN_FINISHED(src, interaction_moan_cooldown))
-	// 	COOLDOWN_START(src, interaction_moan_cooldown, LEWD_VERB_MOAN_COOLDOWN)
-	// 	var/moan = rand(1, 7)
-	// 	if(moan == lastmoan)
-	// 		moan--
-	// 	if(!is_muzzled())
-	// 		visible_message(message = span_love("<B>\The [src]</B> [pick("moans", "moans in pleasure")]."), ignored_mobs = get_unconsenting())
-	// 	else
-	// 		audible_message(span_love("<B>[src]</B> [pick("mimes a pleasured moan","moans in silence")]."), ignored_mobs = get_unconsenting())
-	// 	lastmoan = moan
 
 /mob/living/proc/cum(mob/living/partner, target_orifice)
 	// ready_to_cum = FALSE // round 2, fight!
@@ -529,17 +510,9 @@
 	var/u_S = p_s()
 	var/t_His = partner?.p_their()
 	var/cumin = FALSE
-	var/partner_carbon_check = FALSE
-	var/obj/item/organ/genital/target_gen = null
-	var/mob/living/carbon/c_partner = null
 
 	// Do not display to those people as well
 	var/list/mob/obscure_to
-
-	//Carbon checks
-	if(iscarbon(partner))
-		c_partner = partner
-		partner_carbon_check = TRUE
 
 	if(src != partner)
 		if(ismob(partner))
@@ -562,8 +535,6 @@
 								message = "cums on \the <b>[partner]</b>'s face."
 						if(CUM_TARGET_VAGINA)
 							if(partner.has_vagina(REQUIRE_EXPOSED))
-								if(partner_carbon_check)
-									target_gen = c_partner.getorganslot(ORGAN_SLOT_VAGINA)
 								message = "cums in \the <b>[partner]</b>'s pussy."
 								cumin = TRUE
 							else
@@ -726,8 +697,6 @@
 									message = "cums on \the <b>[partner]</b>'s face."
 							if(CUM_TARGET_VAGINA)
 								if(partner.has_vagina(REQUIRE_EXPOSED))
-									if(partner_carbon_check)
-										target_gen = c_partner.getorganslot(ORGAN_SLOT_VAGINA)
 									message = "cums in \the <b>[partner]</b>'s pussy."
 									cumin = TRUE
 								else
@@ -899,27 +868,17 @@
 				'modular_sand/sound/interactions/final_f3.ogg',
 			)
 	var/list/cumhearers = SSinteractions.get_consent_chain(src) // fun fact, every time I used this proc, I forgot what it did. I wrote this proc! =3
+	cumhearers |= src
+	if(partner && partner.merp_testing_funclaw)
+		cumhearers |= partner
 	for(var/mob/living/u_cum_2 in cumhearers)
-		if(CHECK_PREFS(u_cum_2, NOTMERP_LEWD_SOUNDS))
+		if(CHECK_PREFS(u_cum_2, NOTMERP_LEWD_SOUNDS) || u_cum_2 == src)
 			u_cum_2.playsound_local(get_turf(src), cumnoise, 70, 1, 0)
-		if(CHECK_PREFS(u_cum_2, NOTMERP_LEWD_WORDS))
+		if(CHECK_PREFS(u_cum_2, NOTMERP_LEWD_WORDS) || u_cum_2 == src)
 			to_chat(u_cum_2, span_love("<b>[src]</b> [message]"))
 		SEND_SIGNAL(u_cum_2, COMSIG_SPLURT_SOMEONE_CUMMED, target_orifice, partner, cumin, last_genital)
 	SEND_SIGNAL(src, COMSIG_SPLURT_I_CAME)
 	multiorgasms += 1
-
-	COOLDOWN_START(src, refractory_period, (rand(300, 900) - get_sexual_potency()))//sex cooldown
-	if(multiorgasms < get_sexual_potency())
-		if(ishuman(src))
-			var/mob/living/carbon/human/H = src
-			if(!partner)
-				H.mob_climax(TRUE, "masturbation", "none")
-			else if(istype(partner, /obj/item/reagent_containers))
-				H.mob_fill_container(last_genital, partner, 0)
-			else
-				H.mob_climax(TRUE, "sex", partner, !cumin, target_gen)
-	// set_lust(0)
-
 	SEND_SIGNAL(src, COMSIG_MOB_POST_CAME, target_orifice, partner, cumin, last_genital)
 
 	return TRUE
@@ -970,16 +929,6 @@
 	if(amount)
 		add_lust(amount)
 	return try2cum(partner, orifice)
-	// if(ready_to_cum && cum())
-	// 	return TRUE
-	// // var/lust = get_lust()
-	// // var/lust_tolerance = get_lust_max()
-	// // if(lust >= lust_tolerance)
-	// // 	if(prob(10))
-	// // 		// to_chat(src, "<b>You struggle to not orgasm!</b>")
-	// // 		return FALSE
-	// // 	if(lust >= (lust_tolerance * 3) && CHECK_PREFS(src, NOTMERP_AUTOCLIMAX))
-	// return FALSE
 
 /mob/living/proc/try2cum(mob/living/partner, oriface, force_it)
 	if(force_it)

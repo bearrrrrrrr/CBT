@@ -343,5 +343,14 @@ GLOBAL_LIST_INIT(prey_release_sounds, list(
 #define QUIRK_CATEGORY_TECH_QUIRKS             "Tech Quirks"
 #define QUIRK_CATEGORY_VISION_QUIRKS           "Vision Quirks"
 
-
+#define MERPNEED_PENIS      "a penis" //neednis
+#define MERPNEED_VAGINA     "a vagina"
+#define MERPNEED_TESTICLES  "one or more testicles"
+#define MERPNEED_UTERUS     "a uterus"
+#define MERPNEED_BREASTS    "one or more breasts"
+#define MERPNEED_BELLY      "a belly"
+#define MERPNEED_BUTT       "a butt"
+#define MERPNEED_ARM        "one or more arms"
+#define MERPNEED_LEG        "one or more legs"
+#define MERPNEED_TAIL       "some kind of tail"
 

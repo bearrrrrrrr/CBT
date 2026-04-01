@@ -569,7 +569,7 @@
 		return TRUE
 	var/is_just_me = target == self
 	var/am_consent = is_just_me || SSinteractions.check_consent_chain(self, target)
-	if(target.merp_testing_funclaw)
+	if(target?.merp_testing_funclaw)
 		am_consent = TRUE
 	var/list/output_interactions = SSinteractions.interactions_tgui.Copy()
 	for(var/list/i_obj in output_interactions)
@@ -593,6 +593,9 @@
 			output_interactions -= list(i_obj)
 			continue
 		if(is_just_me && !i_obj["InteractionSelf"])
+			output_interactions -= list(i_obj)
+			continue
+		if(!is_just_me && i_obj["InteractionSelf"])
 			output_interactions -= list(i_obj)
 			continue
 		if(search_term)

@@ -510,16 +510,9 @@
 	var/u_S = p_s()
 	var/t_His = partner?.p_their()
 	var/cumin = FALSE
-	var/partner_carbon_check = FALSE
-	var/mob/living/carbon/c_partner
 
 	// Do not display to those people as well
 	var/list/mob/obscure_to
-
-	//Carbon checks
-	if(iscarbon(partner))
-		c_partner = partner
-		partner_carbon_check = TRUE
 
 	if(src != partner)
 		if(ismob(partner))

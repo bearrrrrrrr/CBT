@@ -16,7 +16,7 @@ SUBSYSTEM_DEF(interactions)
 	var/debug_store_plapper_weakref = FALSE
 	var/interactions_per_page = 10
 	var/lust_gain_multipler = 0.01
-	var/lust_drain_multipler = 0.01
+	var/lust_drain_multipler = 0.2
 
 	VAR_PROTECTED/list/blacklisted_mobs = list(
 		/mob/dead,

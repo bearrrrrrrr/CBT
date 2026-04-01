@@ -164,7 +164,7 @@
 	.["SeeLewd"] = SeeLewd || FALSE
 	.["SeeExtreme"] = SeeExtreme || FALSE
 	.["ItsJustMe"] = target == self
-	.["WeConsent"] = SSinteractions.check_consent(self, target) || FALSE
+	.["WeConsent"] = SSinteractions.check_consent(self, target) || target?.merp_testing_funclaw || FALSE
 	.["MyName"] = self.name || "Nobody"
 	.["TheirName"] = target.name || "Nobody"
 	var/list/faves = self.client?.prefs.faved_interactions || list()
@@ -583,7 +583,7 @@
 		if(!SeeLewd && i_obj["InteractionLewd"])
 			output_interactions -= list(i_obj)
 			continue
-		var/needconsent = !is_just_me && i_obj["InteractionLewd"] || i_obj["InteractionExtreme"] || FALSE
+		var/needconsent = !is_just_me && (i_obj["InteractionLewd"] || i_obj["InteractionExtreme"]) || FALSE
 		if(needconsent && !am_consent)
 			output_interactions -= list(i_obj)
 			continue

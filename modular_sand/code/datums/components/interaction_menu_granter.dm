@@ -164,7 +164,7 @@
 	.["SeeLewd"] = SeeLewd || FALSE
 	.["SeeExtreme"] = SeeExtreme || FALSE
 	.["ItsJustMe"] = target == self
-	.["WeConsent"] = SSinteractions.check_consent(self, target) || target.merp_testing_funclaw || FALSE
+	.["WeConsent"] = SSinteractions.check_consent(self, target) || FALSE
 	.["MyName"] = self.name || "Nobody"
 	.["TheirName"] = target.name || "Nobody"
 	var/list/faves = self.client?.prefs.faved_interactions || list()
@@ -173,7 +173,7 @@
 	.["Recording"] = get_recording_autoplappers() || list()
 	.["AutoPlapAutoStart"] = autoplapper_autostart || FALSE
 	// .["selfAttributes"] = self.list_interaction_attributes(self) || list()
-	.["CanCum"] = TRUE // I AM NOT READY!!!!!!!!!!!!!
+	.["WillAutoCum"] = self.ready_to_cum // I AM NOT READY!!!!!!!!!!!!!
 	.["MTTC"] = mean_time_to_cum || 2 MINUTES // I will last 2 minutes, no more, no lest
 	.["MyLust"] = self.get_lust() || 0
 	.["MyMaxLust"] = self.get_lust_max() || 0
@@ -260,7 +260,7 @@
 		// 	return TRUE
 		if("Cum")
 			SPLURT_ANTISPAM
-			parent_mob.cum()
+			parent_mob.cum(GET_WEAKREF(weaktarget))
 			interface_sound(3)
 
 		if("ToggleAutoCum")
@@ -568,9 +568,7 @@
 				cached_interactions += list(nukeclownpubes)
 		return TRUE
 	var/is_just_me = target == self
-	var/am_consent = is_just_me || SSinteractions.check_consent_chain(self, target)
-	if(target?.merp_testing_funclaw)
-		am_consent = TRUE
+	var/am_consent = SSinteractions.check_consent_chain(self, target)
 	var/list/output_interactions = SSinteractions.interactions_tgui.Copy()
 	for(var/list/i_obj in output_interactions)
 		if(!islist(i_obj))
@@ -585,17 +583,10 @@
 		if(needconsent && !am_consent)
 			output_interactions -= list(i_obj)
 			continue
-		var/datum/interaction/I = SSinteractions.interactions[i_obj["InteractionKey"]]
-		if(!I.evaluate_user(self, TRUE) || !I.evaluate_target(self, target, TRUE))
-			output_interactions -= list(i_obj)
-			continue
 		if(current_category != MERP_CAT_ALL && !(current_category in i_obj["InteractionCategories"]))
 			output_interactions -= list(i_obj)
 			continue
 		if(is_just_me && !i_obj["InteractionSelf"])
-			output_interactions -= list(i_obj)
-			continue
-		if(!is_just_me && i_obj["InteractionSelf"])
 			output_interactions -= list(i_obj)
 			continue
 		if(search_term)

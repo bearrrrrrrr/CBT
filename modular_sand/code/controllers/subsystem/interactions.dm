@@ -15,6 +15,8 @@ SUBSYSTEM_DEF(interactions)
 	var/max_autoplap_interval = 45 SECONDS
 	var/debug_store_plapper_weakref = FALSE
 	var/interactions_per_page = 10
+	var/lust_gain_multipler = 0.5
+	var/lust_drain_multipler = 1
 
 	VAR_PROTECTED/list/blacklisted_mobs = list(
 		/mob/dead,
@@ -253,8 +255,7 @@ SUBSYSTEM_DEF(interactions)
 	if(!yeekey)
 		return FALSE
 	var/list/keys_to_check = list(yeekey) // TG CANT TELL ME NOT TO DO THIS :D
-	if(!LAZYLEN(keys_to_check))
-		return FALSE // EVEN THOUGH THEYRE RIGHT ITS FUKCING STUPID AND I HATE IT
+	if(!LAZYLEN(keys_to_check)) return FALSE // EVEN THOUGH THEYRE RIGHT ITS FUKCING STUPID AND I HATE IT
 	var/list/consent_chain = list() // also is the keys we checked, so we dont check em again
 	/// runs through the the master consent list
 	var/tries_left = 100 // juuuuuust in case
@@ -359,54 +360,3 @@ GLOBAL_LIST_INIT(lewd_prefs_choices, list(
 */
 #undef ASKER_ASKED
 #undef ASKED_ASKER
-
-/mob/living/carbon/human/species/mammal/funclaw
-	name = "funclaw"
-	desc = "A massive, reptilian creature with powerful muscles, razor-sharp claws, and an okayness for ERP. They'll consent to whatever you want!"
-	merp_testing_funclaw = TRUE
-	var/list/bits = list(
-		MERPNEED_PENIS,
-		MERPNEED_TESTICLES,
-	)
-
-/mob/living/carbon/human/species/mammal/funclaw/male
-	name = "funclaw"
-	desc = "A massive, reptilian creature with powerful muscles, razor-sharp claws, and an okayness for ERP. They'll consent to whatever you want!"
-	bits = list(
-		MERPNEED_PENIS,
-		MERPNEED_TESTICLES,
-	)
-
-/mob/living/carbon/human/species/mammal/funclaw/female
-	name = "funclawette"
-	desc = "A massive, reptilian creature with powerful muscles, razor-sharp claws, and an okayness for ERP. They'll consent to whatever you want!"
-	bits = list(
-		MERPNEED_VAGINA,
-		MERPNEED_UTERUS,
-		MERPNEED_BREASTS,
-	)
-
-/mob/living/carbon/human/species/mammal/funclaw/Initialize()
-	. = ..()
-	for(var/thing in bits)
-		var/obj/item/organ/O
-		switch(thing)
-			if(MERPNEED_PENIS)
-				O = new /obj/item/organ/genital/penis(src)
-			if(MERPNEED_TESTICLES)
-				O = new /obj/item/organ/genital/testicles(src)
-			if(MERPNEED_BELLY)
-				O = new /obj/item/organ/genital/belly(src)
-			if(MERPNEED_BREASTS)
-				O = new /obj/item/organ/genital/breasts(src)
-			if(MERPNEED_TAIL)
-				O = new /obj/item/organ/tail(src)
-			if(MERPNEED_UTERUS)
-				O = new /obj/item/organ/genital/womb(src)
-			if(MERPNEED_BUTT)
-				O = new /obj/item/organ/genital/butt(src)
-			if(MERPNEED_VAGINA)
-				O = new /obj/item/organ/genital/vagina(src)
-		if(istype(O))
-			O.Insert(src)
-

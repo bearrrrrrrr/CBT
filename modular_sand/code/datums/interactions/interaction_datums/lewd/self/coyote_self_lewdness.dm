@@ -2,9 +2,6 @@
 //COYOTE SELF VERBS   //
 ///////////////////////
 
-/datum/interaction/lewd/self // hi
-	is_self_action = TRUE // is self action
-
 //So, you want to make a new ERP emote, in this case, to use on yourself?  Well aren't you in luck. The Rub Crotch emote directly below here is designed to make that process AS EASY AS POSSIBLE.
 //You CAN do this.  If you could download the code, and get github desktop running then this is FULLY within YOUR ability.  Just READ the comments.  Take your time, and know that we love you, and want to see your verb pr as soon as possible!
 
@@ -28,7 +25,7 @@
 //////////////
 //Crotch rub will be our prototype emote, I will comment the shit out of it to make things make the most sense to a newbie.
 //Remember to change this VVVV
-/datum/interaction/lewd/self/rub_crotch //lewd makes it pink, the name is just what the code calls it. Step 2 on this line.  Step 3 is just below it.
+/datum/interaction/lewd/self //lewd makes it pink, the name is just what the code calls it. Step 2 on this line.  Step 3 is just below it.
 	description = "Self/Crotch - Rub Crotch." //This naming convention is to help players who want to filter functions. In this case its Self, as in, yourSELF, and a function of the 'area' crotch.  Then it describes what you're doing to the area.
 	/// Step 1.5: Add in the categories its supposed to be in! you can find these in [code\__DEFINES\voreconstants.dm] (srsly)
 	/// Include ICAT_LEWD if it is lewd
@@ -87,12 +84,7 @@
 	max_distance = 0 //The max distance you can use this verb on others, starts on the tiles AROUND the player, so thusly it includes the players own tile.
 	write_log_user = "rubbed their crotch" //The log for the interactiont to show admins if, for some insane reason, they need to look up what you have done to yourself/others. Probably not needed with OUR community, but I can see the logic behind wanting it. 
 	write_log_target = null //There's no target in this case, because the user is the target. If there was you'd write it out the same as write_log_user, like 'was fingered by someone' or something similar.
-	user_required_parts = list(
-		
-	)
-	target_required_parts = list(
-		
-	)
+	is_self_action = TRUE // is self action
 
 
 

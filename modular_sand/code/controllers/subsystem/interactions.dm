@@ -15,7 +15,7 @@ SUBSYSTEM_DEF(interactions)
 	var/max_autoplap_interval = 45 SECONDS
 	var/debug_store_plapper_weakref = FALSE
 	var/interactions_per_page = 10
-	var/lust_gain_multipler = 0.01
+	var/lust_gain_multipler = 0.1
 	var/lust_drain_multipler = 0.2
 
 	VAR_PROTECTED/list/blacklisted_mobs = list(
@@ -74,9 +74,11 @@ SUBSYSTEM_DEF(interactions)
 	return "[LAZYACCESS(keys, 1)]![LAZYACCESS(keys, 2)]"
 
 /// consenting! check if consenting
-/datum/controller/subsystem/interactions/proc/check_consent(mob/player1, mob/player2)
-	if(!player1 || !player2)
+/datum/controller/subsystem/interactions/proc/check_consent(mob/living/player1, mob/living/player2)
+	if(!isliving(player1) || !isliving(player2))
 		return FALSE
+	if(player1.merp_testing_funclaw || player2.merp_testing_funclaw)
+		return TRUE // testing bypass, dont worry about it
 	if(is_same_person(player1, player2))
 		return TRUE // you consent to yourself~
 	var/keyname = keyify(player1, player2)
@@ -86,9 +88,11 @@ SUBSYSTEM_DEF(interactions)
 		return TRUE
 	return !!LAZYLEN(check_consent_chain(player1, player2))
 
-/datum/controller/subsystem/interactions/proc/is_same_person(player1, player2)
-	if(!player1 || !player2)
+/datum/controller/subsystem/interactions/proc/is_same_person(mob/living/player1, mob/living/player2)
+	if(!isliving(player1) || !isliving(player2))
 		return TRUE // only one person? or none? sure, same person
+	if(player1 == player2)
+		return TRUE
 	var/key1 = extract_ckey(player1)
 	var/key2 = extract_ckey(player2)
 	if(key1 == key2)

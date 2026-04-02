@@ -51,6 +51,9 @@
 #define MAX_BROADCAST_LEN		512
 #define MAX_CHARTER_LEN			80
 
+#define MAX_TEMPERAMENTS 2
+#define MAX_BUILDS 2
+
 // Template for OOC notes.
 #define OOC_NOTE_TEMPLATE ""
 

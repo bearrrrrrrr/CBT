@@ -121,7 +121,7 @@
 	var/list/quest_tag
 	/// Override the deletion of this atom for quests
 	var/important
-	var/uid
+	var/atom_uid
 
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
@@ -1397,8 +1397,8 @@
 	return winget(src, id, params)
 
 /atom/proc/get_uid()
-	if(uid)
-		return uid
+	if(atom_uid)
+		return atom_uid
 	generate_uid()
 	return get_uid()
 
@@ -1411,7 +1411,7 @@
 	nuid += ckey("[rand(1000,9999)]")
 	nuid += "-"
 	nuid += ckey("[rand(1000,9999)]")
-	uid = nuid
-	return uid
+	atom_uid = nuid
+	return atom_uid
 
 

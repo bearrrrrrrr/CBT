@@ -475,6 +475,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// lets the user see runechat that's hidden behind a wall
 	var/see_hidden_runechat = TRUE
 
+	var/list/temperaments_and_builds = list() // list of paths
+	var/temperaments_and_builds_needs_update = FALSE
+
 /datum/preferences/New(client/C)
 	parent = C
 
@@ -632,6 +635,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "[TextPreview(features["ooc_notes"])]...<br>"
 			dat += "<br>"
 			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Setup VisualChat</a><BR>"
+			dat += display_temperaments_and_builds_preferences() // this is a proc that returns a string of html, so we can keep the code neater
 			dat += "</td>"
 
 			/// Right column
@@ -2542,6 +2546,60 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("show_health_smilies")
 					TOGGLE_VAR(show_health_smilies)
 					return 1
+				if("pick_temperament")
+					var/list/temperaments = SStemperament.get_temperaments_for_prefs(src)
+					var/new_temperament = input(
+						user, 
+						"Choose the general 'air' about your character. Fenny, add the description for this thing here.",
+						"Temperament") as null|anything in temperaments
+					if(isnull(new_temperament))
+						to_chat(user, "Never mind!")
+						return
+					var/temp_path = temperaments[new_temperament]
+					if(!ispath(temp_path))
+						to_chat(user, "Hmm, looks like that temperament isn't actually a thing. Try again later!")
+						return
+					temperaments_and_builds |= temp_path
+					if(isliving(parent.mob))
+						SStemperament.update_temps(parent.mob)
+						temperaments_and_builds_needs_update = FALSE
+					else
+						temperaments_and_builds_needs_update = TRUE
+				if("pick_build")
+					var/list/builds = SStemperament.get_builds_for_prefs(src)
+					var/new_build = input(
+						user, 
+						"Choose the general 'build' about your character. Fenny, add the description for this thing here.",
+						"Build") as null|anything in builds
+					if(isnull(new_build))
+						to_chat(user, "Never mind!")
+						return
+					var/temp_path = builds[new_build]
+					if(!ispath(temp_path))
+						to_chat(user, "Hmm, looks like that build isn't actually a thing. Try again later!")
+						return
+					temperaments_and_builds |= temp_path
+					if(isliving(parent.mob))
+						SStemperament.update_temps(parent.mob)
+						temperaments_and_builds_needs_update = FALSE
+					else
+						temperaments_and_builds_needs_update = TRUE
+				if("remove_temperament_or_build")
+					var/whichtext = href_list["which"]
+					var/whichpath = text2path(whichtext)
+					if(!ispath(whichpath))
+						to_chat(user, "Hmm, looks like that temperament/build isn't actually a thing. Try again later!")
+						return
+					if(whichpath in temperaments_and_builds)
+						temperaments_and_builds -= whichpath
+					else
+						to_chat(user, "Hmm, looks like you don't actually have that temperament/build. Try again later!")
+						return
+					if(isliving(parent.mob))
+						SStemperament.update_temps(parent.mob)
+						temperaments_and_builds_needs_update = FALSE
+					else
+						temperaments_and_builds_needs_update = TRUE
 				if("stat_strength")
 					var/new_point = input(user, "Choose Amount(1-9)", "Strength") as num|null
 					if(new_point)
@@ -4805,6 +4863,40 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	to_chat(parent, "Exported preview icons.")
 
 	SSdummy.return_dummy(mannequin)
+
+/datum/preferences/proc/display_temperaments_and_builds_preferences()
+	var/list/dat = list()
+	var/list/temps = SStemperament.get_temperaments(src)
+	var/list/builds = SStemperament.get_builds(src)
+	var/canaddnew_temp = LAZYLEN(temps) < MAX_TEMPERAMENTS
+	var/canaddnew_build = LAZYLEN(builds) < MAX_BUILDS
+	dat += "<h3>Temperaments & Builds</h3>"
+	dat += "<b><u>Temperaments</u></b><br>"
+	if(LAZYLEN(temps))
+		for(var/datum/temperament/T in temps)
+			dat += "<a href='?_src_=prefs;preference=remove_temperament_or_build;task=input;which=[T.type]'>[T.name]</a><br>"
+	else
+		dat += "Nothing yet!!<br>"
+	if(canaddnew_temp)
+		dat += "<a href='?_src_=prefs;preference=pick_temperament;task=input'>Add New Temperament</a><br>"
+	dat += "<br><b><u>Builds</u></b><br>"
+	if(LAZYLEN(builds))
+		for(var/datum/temperament/B in builds)
+			dat += "<a href='?_src_=prefs;preference=remove_temperament_or_build;task=input;which=[B.type]'>[B.name]</a><br>"
+	else
+		dat += "Nothing yet!!<br>"
+	if(canaddnew_build)
+		dat += "<a href='?_src_=prefs;preference=pick_build;task=input'>Add New Build</a><br>"
+	var/example = SStemperament.get_textblock_for(src)
+	dat += "<br><b>Example:</b><br>"
+	dat += "[example]<br>"
+	return dat.Join()
+
+
+
+
+
+
 
 #undef MAX_FREE_PER_CAT
 #undef HANDS_SLOT_AMT

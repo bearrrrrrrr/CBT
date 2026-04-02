@@ -16,6 +16,10 @@
 		. += "[t_He] [t_is] wearing [wear_mask.get_examine_string(user)] on [t_his] face."
 	if (wear_neck)
 		. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] around [t_his] neck.\n"
+	
+	var/tnb = SStemperament.get_textblock_for(src)
+	if(tnb)
+		. += "[tnb]\n"
 
 	for(var/obj/item/I in held_items)
 		if(!(I.item_flags & ABSTRACT))

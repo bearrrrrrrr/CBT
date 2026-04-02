@@ -1333,6 +1333,17 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		if(job_preferences["[j]"] != JP_LOW && job_preferences["[j]"] != JP_MEDIUM && job_preferences["[j]"] != JP_HIGH)
 			job_preferences -= j
 
+	var/list/tnb_strings = safe_json_decode(S["temperaments_and_builds"])
+	if(islist(tnb_strings) && LAZYLEN(tnb_strings))
+		temperaments_and_builds.Cut()
+		for(var/str in tnb_strings)
+			if(!istext(str))
+				continue
+			var/pth = text2path(str)
+			if(!ispath(pth, /datum/temperament))
+				continue
+			temperaments_and_builds |= pth
+
 	char_quirks = SANITIZE_LIST(char_quirks)
 	if(SSquirks.debug_migration)
 		current_version -= PMC_QUIRK_OVERHAUL_2K23
@@ -1358,6 +1369,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		WRITE_FILE(S["all_quirks"], debug_oldies)
 	
 	WRITE_FILE(S["feature_fuzzy"], fuzzy)
+
+	// temperaments and builds!
 
 	matchmaking_prefs = sanitize_matchmaking_prefs(matchmaking_prefs)
 
@@ -1690,6 +1703,14 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["pda_ringmessage"], pda_ringmessage)
 
 	WRITE_FILE(S["last_quest_login"], last_quest_login)
+
+	var/list/tnb_save = list()
+	for(var/tnb_path in temperaments_and_builds)
+		if(!ispath(tnb_path))
+			log_game("Failed to save temperament/build [tnb_path] to savefile, issue: not a path")
+			continue
+		tnb_save |= "[tnb_path]"
+	WRITE_FILE(S["temperaments_and_builds"], safe_json_encode(modified_limbs))
 
 	return 1
 

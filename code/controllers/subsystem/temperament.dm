@@ -1,6 +1,7 @@
 SUBSYSTEM_DEF(temperament)
 	name = "Temperament"
 	flags = SS_NO_FIRE
+	init_order = INIT_ORDER_QUIRKS // cus its quirky
 
 	// format: /datum/temperament = initted/datum/temperament
 	var/list/temperaments = list()
@@ -8,16 +9,24 @@ SUBSYSTEM_DEF(temperament)
 	var/list/who_got_what = list()
 
 /datum/controller/subsystem/temperament/Initialize(timeofday)
-	..()
-	for(var/d in typesof(/datum/temperament))
-		var/datum/temperament/T = new(d)
+	for(var/d in subtypesof(/datum/temperament) - /datum/temperament/build)
+		var/datum/temperament/T = d
+		if(initial(T.dont_use))
+			continue
+		T = new()
 		temperaments[d] = T
+	..()
+	to_chat(world, span_greenannounce("Initialized [LAZYLEN(temperaments)] temperaments and/or builds! =3"))
 
 /datum/controller/subsystem/temperament/proc/assign_temperament(mob/M, datum/temperament/T)
+	if(!initialized)
+		return FALSE
 	var/muid = M.get_uid()
 	if(!who_got_what[muid])
 		who_got_what[muid] = list()
 	var/save
+	if(istext(T))
+		T = text2path(T)
 	if(istype(T))
 		save = T.type
 	else if(ispath(T))
@@ -28,10 +37,14 @@ SUBSYSTEM_DEF(temperament)
 	return TRUE
 
 /datum/controller/subsystem/temperament/proc/remove_temperament(mob/M, datum/temperament/T)
+	if(!initialized)
+		return FALSE
 	var/muid = M.get_uid()
 	if(!who_got_what[muid])
 		return FALSE
 	var/save
+	if(istext(T))
+		T = text2path(T)
 	if(istype(T))
 		save = T.type
 	else if(ispath(T))
@@ -41,39 +54,104 @@ SUBSYSTEM_DEF(temperament)
 	who_got_what[muid] -= save
 	return TRUE
 
-/datum/controller/subsystem/temperament/proc/get_textblock_for(mob/M)
+/datum/controller/subsystem/temperament/proc/update_temps(mob/M)
+	if(!initialized)
+		return FALSE
 	var/muid = M.get_uid()
-	var/list/temps = who_got_what[muid]
-	if(!temps)
-		return null
-	// grab a temperament, so we can use its pronounification
-	var/datum/temperament/T
-	for(var/t in temps)
-		T = temperaments[t]
-		if(T.temp_or_build == "temperament")
-			break
+	if(!extract_client(M))
+		return // only initialize for mobs with clients, no need to waste resources on npcs
+	if(istype(M, /mob/dead))
+		return // no need to update for dead people!
+	var/datum/preferences/P = extract_prefs(M)
+	if(islist(who_got_what[muid]))
+		if(!P.temperaments_and_builds_needs_update)
+			return // already initialized
+	who_got_what[muid] = list()
+	for(var/tnb_path in P.temperaments_and_builds)
+		who_got_what[muid] |= tnb_path
+	P.temperaments_and_builds_needs_update = FALSE
+
+/datum/controller/subsystem/temperament/proc/get_temperaments(Z, builds_instead = FALSE)
 	var/list/temps = list()
-	var/list/builds = list()
+	if(istype(Z, /datum/preferences))
+		var/datum/preferences/P = Z
+		temps = P.temperaments_and_builds
+	else if(istype(Z, /mob))
+		var/mob/M = Z
+		var/muid = M.get_uid()
+		temps = who_got_what[muid]
+	else
+		CRASH("Tried to get temperaments for something that wasn't a mob or preferences! it was actually a [Z]")
 	for(var/t in temps)
 		var/datum/temperament/T = temperaments[t]
-		if(T.temp_or_build == "temperament")
-			temps |= T
-		else if(T.temp_or_build == "build")
-			builds |= T
-	var/temperament_text = ""
-	var/build_text = ""
-	if(LAZYLEN(builds))
-		var/prefix = "%THEY %IS"
-		var/list/texts = list()
-		for(var/datum/temperament/build/B in builds)
-			texts += B.generate_text_for(M, LAZYLEN(temperament_text))
-		build_text = prefix + english_list(texts)
-	if(LAZYLEN(temps))
-		// prefix is handled by temperament
-		var/list/texts = list()
-		for(var/datum/temperament/T in temps)
-			texts += T.generate_text_for(M, LAZYLEN(build_text))
-		temperament_text = texts.Join("\n")
+		if(builds_instead)
+			if(T.temp_or_build == "build")
+				temps += temperaments[t]
+		else
+			if(T.temp_or_build == "temperament")
+				temps += temperaments[t]
+	return temps
+
+/datum/controller/subsystem/temperament/proc/get_builds(Z)
+	return get_temperaments(Z, TRUE) // hehehe
+
+/datum/controller/subsystem/temperament/proc/get_temperaments_for_prefs(Z, builds_instead = FALSE)
+	var/list/temps = builds_instead ? get_builds(Z) : get_temperaments(Z)
+	if(!LAZYLEN(temps))
+		return list()
+	// format: list("cool guy" = /datum/temperament/reallychillguy, "buxom and soft" = /datum/temperament/build/debug_2, etc)
+	var/list/ret = list()
+	for(var/datum/temperament/T in temps)
+		ret[T.name] = T
+	return ret
+
+/datum/controller/subsystem/temperament/proc/get_builds_for_prefs(Z)
+	return get_temperaments_for_prefs(Z, TRUE) // hehe again
+
+/datum/controller/subsystem/temperament/proc/get_temperament_textblock(Z)
+	var/list/temps = get_temperaments(Z)
+	if(!LAZYLEN(temps))
+		return ""
+	// prefix is handled by temperament
+	var/list/texts = list()
+	for(var/datum/temperament/T in temps)
+		texts += T.generate_text_for(Z, LAZYLEN(temps))
+	var/temperament_text = texts.Join("\n")
+	return temperament_text
+
+/datum/controller/subsystem/temperament/proc/get_build_textblock(Z)
+	var/list/builds = get_builds(Z)
+	if(!LAZYLEN(builds))
+		return ""
+	// formatted:
+	// He is incredibly buttsome, and also is soft and squishy
+	var/prefix = pronounify(Z, "%THEY %IS")
+	var/list/texts = list()
+	for(var/i in 1 to LAZYLEN(builds))
+		var/datum/temperament/build/B = builds[i]
+		texts += B.generate_text_for(Z, i != 1)
+	var/build_text = "[prefix] [english_list(texts)]"
+	return build_text
+
+/datum/controller/subsystem/temperament/proc/get_textblock_for(Z)
+	if(!initialized)
+		return
+	if(istype(Z, /mob))
+		update_temps(Z)
+
+	var/temperament_text = get_temperament_textblock(Z)
+	var/build_text = get_build_textblock(Z)
+	var/has_builds = LAZYLEN(build_text)
+	var/has_temps = LAZYLEN(temperament_text)
+	if(!has_builds && !has_temps)
+		return ""
+	var/msg = ""
+	if(has_builds)
+		msg += build_text
+	if(has_builds && has_temps)
+		msg += "\n"
+	if(has_temps)
+		msg += temperament_text
 	return build_text + "\n" + temperament_text
 
 /* 
@@ -88,17 +166,108 @@ SUBSYSTEM_DEF(temperament)
  * %ARE     - is/is/are
  * %HAS     - has/has/have
  * %DUDER   - guy/gal/duder
+ * %HAVE    - has/has/have
+ * %APPEARS - appears/appears/appear
+ * %CARRY   - carries/carries/carry
+ * %LOOKS   - looks/looks/look
+ * %KNOWS   - knows/knows/know
  * 
  * Tense is assumed to be something like "They seem like they're a really chill guy who low key dgaf"
  */
+// replaces the tokens with the right pronouns for the mob
+/datum/controller/subsystem/temperament/proc/pronounify(Z, textin)
+	if(!textin)
+		return "hey this didnt have a textin for some reason oops"
+	var/gendy = extract_gender(Z)
+	var/species = get_species_name(Z)
+	var/maybename = get_mob_name(Z)
+	// STRING OPERATIONS YAY
+	switch(gendy)
+		if(MALE)
+			textin = replacetext(textin, "%THEYRE",   "he's")
+			textin = replacetext(textin, "%THEIR",    "his")
+			textin = replacetext(textin, "%THEY",     "he")
+			textin = replacetext(textin, "%SEEMS",    "seems")
+			textin = replacetext(textin, "%ARE",      "is")
+			textin = replacetext(textin, "%DUDER",    "guy")
+			textin = replacetext(textin, "%NAME",     maybename)
+			textin = replacetext(textin, "%SPECIES",  species)
+			textin = replacetext(textin, "%GENDER",   "male")
+			textin = replacetext(textin, "%HAVE",     "has")
+			textin = replacetext(textin, "%APPEARS",  "appears")
+			textin = replacetext(textin, "%CARRY",    "carries")
+			textin = replacetext(textin, "%LOOKS",    "looks")
+			textin = replacetext(textin, "%KNOWS",    "knows")
+		if(FEMALE)
+			textin = replacetext(textin, "%THEYRE",   "she's")
+			textin = replacetext(textin, "%THEIR",    "her")
+			textin = replacetext(textin, "%THEY",     "she")
+			textin = replacetext(textin, "%SEEMS",    "seems")
+			textin = replacetext(textin, "%ARE",      "is")
+			textin = replacetext(textin, "%DUDER",    "gal")
+			textin = replacetext(textin, "%NAME",     maybename)
+			textin = replacetext(textin, "%SPECIES",  species)
+			textin = replacetext(textin, "%GENDER",   "female")
+			textin = replacetext(textin, "%HAVE",     "has")
+			textin = replacetext(textin, "%APPEARS",  "appears")
+			textin = replacetext(textin, "%CARRY",    "carries")
+			textin = replacetext(textin, "%LOOKS",    "looks")
+			textin = replacetext(textin, "%KNOWS",    "knows")
+		else
+			textin = replacetext(textin, "%THEYRE",   "they're")
+			textin = replacetext(textin, "%THEIR",    "their")
+			textin = replacetext(textin, "%THEY",     "they")
+			textin = replacetext(textin, "%SEEMS",    "seem")
+			textin = replacetext(textin, "%ARE",      "are")
+			textin = replacetext(textin, "%DUDER",    "duder")
+			textin = replacetext(textin, "%NAME",     maybename)
+			textin = replacetext(textin, "%SPECIES",  species)
+			textin = replacetext(textin, "%GENDER",   "[gendy]")
+			textin = replacetext(textin, "%HAVE",     "have")
+			textin = replacetext(textin, "%APPEARS",  "appear")
+			textin = replacetext(textin, "%CARRY",    "carry")
+			textin = replacetext(textin, "%LOOKS",    "look")
+			textin = replacetext(textin, "%KNOWS",    "know")
+	return textin
+
+/datum/controller/subsystem/temperament/proc/get_species_name(Z)
+	var/datum/preferences/P = extract_prefs(Z)
+	if(P?.custom_species)
+		return P.custom_species
+	var/datum/species/maybespecies = P.pref_species
+	if(maybespecies)
+		return maybespecies.name
+	return "bingus fish" //the proverbial 'bish'
+
+/datum/controller/subsystem/temperament/proc/get_mob_name(Z)
+	if(istype(Z, /mob))
+		var/mob/M = Z
+		return M.name
+	else if(istype(Z, /datum/preferences))
+		var/datum/preferences/P = Z
+		return P.real_name
+	else
+		return "Someone"
+
+// ouch!
+/proc/extract_gender(Z)
+	if(istype(Z, /mob))
+		var/mob/M = Z
+		return M.gender
+	if(istype(Z, /datum/preferences))
+		var/datum/preferences/P = Z
+		return P.gender
+	return NEUTER
+
 // the key is the stringified path to the temperament, the value is the temperament itself
 /datum/temperament
 	var/name = "Really Chill Guy"
 	var/prefix = "%THEY seem to be" // only for temperaments, not builds
-	var/examinetext = "like %THEIR whole deal is %THEYRE a very chill %DUDER who low key dgaf"
+	var/examine_text = "like %THEIR whole deal is %THEYRE a very chill %DUDER who low key dgaf"
 	// background color for the temperment, when user is using light mode (usually something dark)
 	var/spanuse = "notice"
 	var/temp_or_build = "temperament"
+	var/dont_use = FALSE
 
 /datum/temperament/build
 	temp_or_build = "build"
@@ -106,82 +275,53 @@ SUBSYSTEM_DEF(temperament)
 // temperaments get assembled into a line that looks kinda like
 // "He/She/They seem(s) like they're a really chill guy who low key dgaf"
 // "He/She/They also seem(s) like they're a really chill guy who low key dgaf"
-/datum/temperament/proc/generate_text_for(mob/M, also)
+/datum/temperament/proc/generate_text_for(Z, also)
 	var/text = ""
-	var/pre_text = pronounify(M, prefix)
-	var/ex_text = pronounify(M, examintext)
+	var/pre_text = SStemperament.pronounify(Z, prefix)
+	var/ex_text = SStemperament.pronounify(Z, examine_text)
 	if(also)
 		decapitalize(ex_text)
 		text += "Also, "
-	colorize(M, ex_text)
-	return text + ex_text
+	colorize(ex_text)
+	return "[pre_text] [text][ex_text]"
 
 // builds are made to be inline with each other, just output a lowercased
-/datum/temperament/build/generate_text_for(mob/M, also)
-	var/ex_text = pronounify(M, examintext)
+/datum/temperament/build/generate_text_for(Z, also)
+	var/ex_text = SStemperament.pronounify(Z, examine_text)
 	decapitalize(ex_text)
-	colorize(M, ex_text)
-	return ex_text
+	colorize(ex_text)
+	return "[ex_text]"
 
-// replaces the tokens with the right pronouns for the mob
-/datum/temperament/proc/pronounify(mob/M, textin)
-	// STRING OPERATIONS YAY
-	switch(M.gender)
-		if(MALE)
-			textin = replacetext(examintext, "%THEYRE",   "he's")
-			textin = replacetext(examintext, "%THEIR",    "his")
-			textin = replacetext(examintext, "%THEY",     "he")
-			textin = replacetext(examintext, "%SEEMS",    "seems")
-			textin = replacetext(examintext, "%ARE",      "is")
-			textin = replacetext(examintext, "%DUDER",    "guy")
-			textin = replacetext(examintext, "%NAME",     getname(M))
-			textin = replacetext(examintext, "%SPECIES",  getspecies(M))
-			textin = replacetext(examintext, "%GENDER",   "male")
-		if(FEMALE)
-			textin = replacetext(examintext, "%THEYRE",   "she's")
-			textin = replacetext(examintext, "%THEIR",    "her")
-			textin = replacetext(examintext, "%THEY",     "she")
-			textin = replacetext(examintext, "%SEEMS",    "seems")
-			textin = replacetext(examintext, "%ARE",      "is")
-			textin = replacetext(examintext, "%DUDER",    "gal")
-			textin = replacetext(examintext, "%NAME",     getname(M))
-			textin = replacetext(examintext, "%SPECIES",  getspecies(M))
-			textin = replacetext(examintext, "%GENDER",   "female")
-		else
-			textin = replacetext(examintext, "%THEYRE",   "they're")
-			textin = replacetext(examintext, "%THEIR",    "their")
-			textin = replacetext(examintext, "%THEY",     "they")
-			textin = replacetext(examintext, "%SEEMS",    "seem")
-			textin = replacetext(examintext, "%ARE",      "are")
-			textin = replacetext(examintext, "%DUDER",    "duder")
-			textin = replacetext(examintext, "%NAME",     getname(M))
-			textin = replacetext(examintext, "%SPECIES",  getspecies(M))
-			textin = replacetext(examintext, "%GENDER",   "[M.gender]")
-	return textin
-
-/datum/temperament/proc/getname(mob/M)
-	if(M.name)
-		return M.name
-	else
-		return "Someone"
-
-/datum/temperament/proc/getspecies(mob/M)
-	var/datum/preferences/P = extract_prefs(M)
-	if(P?.custom_species)
-		return P.custom_species
-	var/datum/species/S = get_species(M)
-	if(S)
-		return S.name
-	return "bingus fish"
-
-/datum/temperament/proc/colorize(mob/M, textin)
+/datum/temperament/proc/colorize(textin)
 	return "<span class=\"[spanuse]\">[textin]</span>"
 
 
+/datum/temperament/debug_1
+	name = "Really Chill Guy"
+	prefix = "%THEY seem to be"
+	examine_text = "like %THEIR whole deal is %THEYRE a very chill %DUDER who low key dgaf"
+	spanuse = "love"
+	temp_or_build = "temperament"
 
+/datum/temperament/debug_2
+	name = "Awesome cool bruddie"
+	prefix = "%THEY are a trotal"
+	examine_text = "like %THEYRE %THEIR %THEY %SEEMS %ARE %DUDER %NAME %SPECIES %GENDER and a really wanky cool"
+	spanuse = "clown"
+	temp_or_build = "temperament"
 
+/datum/temperament/build
+	temp_or_build = "build"
 
+/datum/temperament/build/debug_1
+	name = "Super buttsome individual"
+	examine_text = "one HUGE awesome thing about %THEM is that %THEYRE super buttsome and everyone loves %THEM for that buttsome energy"
+	spanuse = "love"
+	temp_or_build = "temperament"
 
-
-
+/datum/temperament/build/debug_2
+	name = "buxom and soft"
+	examine_text = "WOW they got them serious %THEYRE %THEIR %THEY %SEEMS %ARE %DUDER %NAME %SPECIES %GENDER badoneroonies"
+	spanuse = "clown"
+	temp_or_build = "temperament"
 

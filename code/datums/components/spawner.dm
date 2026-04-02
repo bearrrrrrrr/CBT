@@ -800,8 +800,8 @@
 			potentials |= typesof(/mob/living/simple_animal/hostile/ghoul)
 			if(prob(80))
 				potentials -= typesof(/mob/living/simple_animal/hostile/ghoul/legendary)
-			if(prob(95))
-				potentials -= typesof(/mob/living/simple_animal/hostile/ghoul/wyomingghost)
+			// if(prob(95))
+			// 	potentials -= typesof(/mob/living/simple_animal/hostile/ghoul/wyomingghost)
 		/// the bugs are back in town
 		else if(ispath(mobpath, /mob/living/simple_animal/hostile/giantant)\
 			|| ispath(mobpath, /mob/living/simple_animal/hostile/pillbug)\
@@ -869,7 +869,7 @@
 						potentials -= typesof(/mob/living/simple_animal/hostile/renegade/syndicate/mecha_pilot)
 			potentials -= mobpath
 			potentials -= typesof(/mob/living/simple_animal/hostile/ghoul/legendary)
-			potentials -= typesof(/mob/living/simple_animal/hostile/ghoul/wyomingghost)
+			// potentials -= typesof(/mob/living/simple_animal/hostile/ghoul/wyomingghost)
 			potentials -= typesof(/mob/living/simple_animal/hostile/raider/ranged/boss)
 		/// the rest of the animals
 		else if(ispath(mobpath, /mob/living/simple_animal/hostile/gecko)\

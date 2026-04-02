@@ -41,21 +41,10 @@
 	user_lust_mult = 1
 	lust_go_to = LUST_USER | LUST_TARGET
 
-	additional_details = list(
-		list(
-			"info" = "You can fill a container if you hold it in your hand or pull it",
-			"icon" = "flask",
-			"color" = "transparent"
-			)
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS,
 	)
 
-// /datum/interaction/lewd/jack/interaction_message(mob/living/user, mob/living/target, show_message)
-// 	var/obj/item/reagent_containers/liquid_container
-
-// 	var/obj/item/cached_item = user.get_active_held_item()
-// 	if(istype(cached_item, /obj/item/reagent_containers))
-// 		liquid_container = cached_item
-// 	else
-// 		cached_item = user.pulling
-// 		if(istype(cached_item, /obj/item/reagent_containers))
-// 			liquid_container = cached_item

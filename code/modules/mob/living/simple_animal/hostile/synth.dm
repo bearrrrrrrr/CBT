@@ -7,7 +7,7 @@
 	icon_dead = "synthmk1_d"
 	icon_gib = "synthmk1_d"
 	speak_chance = 0
-	turns_per_move = 7
+	seconds_per_wander = 7
 	environment_smash = 0
 	response_help_simple = "pokes"
 	response_disarm_simple = "shoves"
@@ -33,7 +33,7 @@
 	unsuitable_atmos_damage = 15
 	status_flags = CANPUSH
 	vision_range = 12
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 
 	ranged = 1
 	projectiletype = /obj/item/projectile/beam

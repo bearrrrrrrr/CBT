@@ -1817,8 +1817,8 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 				if(HAS_TRAIT(user, TRAIT_KI_VAMPIRE) && !HAS_TRAIT(target, TRAIT_NOBREATH) && (punchedbrute < 100)) //If we're a ki vampire we also sap them of lifeforce, but only if they're not too beat up. Also living organics only.
 					user.adjustBruteLoss(-5)
 					user.adjustFireLoss(-5)
-					user.adjustStaminaLoss(-20)
-					target.adjustBruteLoss(20)
+					user.adjustStaminaLoss(-5)
+					target.adjustBruteLoss(10)
 
 		else if(!(target.mobility_flags & MOBILITY_STAND))
 			target.forcesay(GLOB.hit_appends)

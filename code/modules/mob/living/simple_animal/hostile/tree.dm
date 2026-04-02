@@ -8,7 +8,7 @@
 	icon_gib = "pine_1"
 	gender = NEUTER
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_continuous = "brushes"
 	response_help_simple = "brush"
 	response_disarm_continuous = "pushes"

@@ -63,9 +63,18 @@
 	) // frumf, frumf
 	user_lust_mult = 0.5 // set this to how much lust should be given
 	lust_go_to = LUST_USER // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_TESTICLES,
+	)
+
+
 	// ...to here, this will be where to paste in the interaction stuff // and, that's it // all of it
 	// oh, uh, problem, we copied the grab text t the sniff interaction, lemme fix that // there we go //yeah, its very easy, but
 	/// it needs some clever find-replacing yeah! // yup
+	
 ///////BALL GRAB END/////////
 
 //////////////////// // yeah
@@ -102,6 +111,12 @@
 	) // frumf, frumf
 	user_lust_mult = 0.5 // set this to how much lust should be given
 	lust_go_to = LUST_USER // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 ///////SHAKE PUSSY END/////////
 
 /////////////////////////
@@ -139,6 +154,12 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 1.2
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 ///////COCKTEASE PUSSY END/////////
 
 /////////////////////////
@@ -176,6 +197,12 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 1.2
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 ///////PUSSYTEASE COCK END/////////
 
 
@@ -216,6 +243,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 ///////SPANK ASS END/////////
 
 ////////////////////
@@ -253,7 +283,12 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ////////////////////
 //	Finger pussy 6A8///
@@ -290,7 +325,12 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 
 ////////////////////
@@ -328,7 +368,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 ////////////////////
 //	Frotting 6A10///
@@ -365,7 +407,12 @@
 	user_lust_mult = 0.6 // set this to how much lust should be given
 	target_lust_mult = 0.6
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////////////////
 //	Fuck them (D2P) 6A11///
@@ -406,7 +453,12 @@
 	user_lust_mult = 1.0 // set this to how much lust should be given
 	target_lust_mult = 1.0
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 //////////////////////////
 //	Fuck them (P2D) 6A12///
 //////////////////////////
@@ -447,6 +499,12 @@
 	user_lust_mult = 1.0 // set this to how much lust should be given
 	target_lust_mult = 1.0
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////////////////
 //	Fuck them (P2B) 6A13///
@@ -487,6 +545,9 @@
 	user_lust_mult = 1.0 // set this to how much lust should be given
 	target_lust_mult = 1.0
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////////////////
 //	Fuck them (B2D) 6A14///
@@ -526,6 +587,9 @@
 	user_lust_mult = 1.0 // set this to how much lust should be given
 	target_lust_mult = 1.0
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 /////////////////////////
 //Tittyfuck them  6A15///
@@ -565,7 +629,12 @@
 	) // frumf, frumf
 	user_lust_mult = 0.8
 	target_lust_mult = 0.4
-
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_BREASTS,
+	)
 
 /////////////////////////
 //Get Tittyfucked 6A16///
@@ -606,6 +675,12 @@
 	) // frumf, frumf
 	user_lust_mult = 0.4
 	target_lust_mult = 0.8
+	user_required_parts = list(
+		MERPNEED_BREASTS,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////////////
 //Give handjob 6A17///
@@ -642,6 +717,13 @@
 	) // frumf, frumf
 	user_lust_mult = 0.2
 	target_lust_mult = 0.8
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
+
 
 //////////////////////
 //Give knotjob 6A17///
@@ -678,6 +760,12 @@
 	) // frumf, frumf
 	user_lust_mult = 0.2
 	target_lust_mult = 0.8
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_PENIS
+	)
 
 //////////////////////
 //Lick Booty 6A18///
@@ -748,6 +836,9 @@
 	) // frumf, frumf
 	user_lust_mult = 1.1
 	target_lust_mult = 1.1
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ///////////////////
 //knot them 6A19///
@@ -784,6 +875,9 @@
 	) // frumf, frumf
 	user_lust_mult = 1.1
 	target_lust_mult = 1.1
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ////////////////////////////
 //force their knot in 6A19///
@@ -820,6 +914,9 @@
 	) // frumf, frumf
 	user_lust_mult = 1.1
 	target_lust_mult = 1.1
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ///////////////////////
 //	Lick pussy 6A20////
@@ -854,6 +951,9 @@
 	user_lust_mult = 0.2 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ///////////////////////
 //	Lick clit 6A21///
@@ -888,6 +988,9 @@
 	user_lust_mult = 0.2 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ///////////////////////
 //	Suck cock 6A22///
@@ -922,7 +1025,9 @@
 	user_lust_mult = 0.2 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ///////////////////////
 //	Deepthroat 6A23///
@@ -957,7 +1062,9 @@
 	user_lust_mult = 0.2 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ///////////////////////
 //	Squeeze Pussy 6A24///
@@ -989,7 +1096,9 @@
 	user_lust_mult = 1.2 // set this to how much lust should be given
 	target_lust_mult = 1.2
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ///////////////////////
 //	Cookie Capture 6A25///
@@ -1021,6 +1130,9 @@
 	user_lust_mult = 1.2 // set this to how much lust should be given
 	target_lust_mult = 1.2
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ///////////////////////
 //	Ride Cock 6A23///
@@ -1055,6 +1167,9 @@
 	user_lust_mult = 0.8 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ////////////////////
 //Spank Ass 6A24///
@@ -1093,6 +1208,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 ///////////////////////
 //	Spread own legs 6A26///
@@ -1119,7 +1237,10 @@
 	) // frumf, frumf
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.4
-	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	lust_go_to = LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
 
 ////////////////////
 //Sheath lick///
@@ -1156,6 +1277,10 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_PENIS,
+		MERPNEED_TESTICLES,
+	)
 
 ////////////////////
 //Sheath suck///
@@ -1192,6 +1317,10 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_PENIS,
+		MERPNEED_TESTICLES,
+	)
 
 ////////////////////
 //Sheath urge///
@@ -1228,6 +1357,10 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_PENIS,
+		MERPNEED_TESTICLES,
+	)
 
 ////////////////////
 //Sniff balls///
@@ -1264,6 +1397,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_TESTICLES,
+	)
 
 ////////////////////
 //Lick balls///
@@ -1299,6 +1435,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_TESTICLES,
+	)
 
 ////////////////////
 //Suck balls///
@@ -1335,6 +1474,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_TESTICLES,
+	)
 
 ////////////////////
 //Cookie lick///
@@ -1371,6 +1513,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ////////////////////
 //Cookie suck///
@@ -1407,6 +1552,9 @@
 	user_lust_mult = 0.4 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ///////////////////////
 //	Cervix Mush///
@@ -1441,6 +1589,12 @@
 	user_lust_mult = 1.2 // set this to how much lust should be given
 	target_lust_mult = 1.2
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_UTERUS,
+	)
 
 ///////////////////////
 //	Cervix penetration///
@@ -1472,6 +1626,12 @@
 	user_lust_mult = 1.2 // set this to how much lust should be given
 	target_lust_mult = 1.2
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_UTERUS,
+	)
 
 ///////////////////////
 //	Lick Shaft///
@@ -1506,4 +1666,6 @@
 	user_lust_mult = 0.2 // set this to how much lust should be given
 	target_lust_mult = 0.8
 	lust_go_to = LUST_USER | LUST_TARGET // and who should get the lust, its a bitfield! for both, it'd be LUST_USER | LUST_TARGET
-
+	target_required_parts = list(
+		MERPNEED_PENIS,
+	)

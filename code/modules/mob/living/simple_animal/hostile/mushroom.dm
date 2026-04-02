@@ -5,7 +5,7 @@
 	icon_living = "mushroom_color"
 	icon_dead = "mushroom_dead"
 	speak_chance = 0
-	turns_per_move = 1
+	seconds_per_wander = 1
 	maxHealth = 10
 	health = 10
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/hugemushroomslice = 1)

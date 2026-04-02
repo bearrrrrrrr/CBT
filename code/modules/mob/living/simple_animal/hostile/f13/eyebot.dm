@@ -11,7 +11,7 @@
 	icon_dead = "eyebot_d"
 	can_ghost_into = TRUE
 	speak_chance = 0
-	turns_per_move = 6
+	seconds_per_wander = 6
 	environment_smash = 0
 	response_help_simple = "touches"
 	response_disarm_simple = "shoves"
@@ -53,7 +53,7 @@
 	status_flags = CANPUSH
 	tastes = list("metal" = 1, "glass" = 1)
 	vision_range = 7 //reduced from 13 to 7 because who needs that kind of shit in their life
-	aggro_vision_range = 7 //as above
+	aggroed_vision_range = 7 //as above
 	ranged = 1
 	projectiletype = /obj/item/projectile/beam/laser/pistol/wastebot
 	projectilesound = 'sound/weapons/resonator_fire.ogg'

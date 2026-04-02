@@ -45,7 +45,7 @@
 	action.button_icon_state = "[base_icon_state][active]"
 	action.UpdateButtonIcon()
 
-/obj/effect/proc_holder/spell/aimed/InterceptClickOn(mob/living/caller, params, atom/target)
+/obj/effect/proc_holder/spell/aimed/InterceptClickOn(mob/living/the_one_who_called, params, atom/target)
 	if(..())
 		return FALSE
 	var/ran_out = (current_amount <= 0)

@@ -1,7 +1,7 @@
 #define RTS_GHOUL_ALLOWED list(\
 		/mob/living/simple_animal/hostile/ghoul,\
-		/mob/living/simple_animal/hostile/ghoul/reaver,\
-		/mob/living/simple_animal/hostile/ghoul/zombie/glowing)
+		/mob/living/simple_animal/hostile/ghoul/reaver)
+		// /mob/living/simple_animal/hostile/ghoul/zombie/glowing)
 #define RTS_SMALLCRITTER_ALLOWED list(\
 		/mob/living/simple_animal/hostile/gecko,\
 		/mob/living/simple_animal/hostile/gecko/legacy,\
@@ -242,7 +242,7 @@
 		add_ranged_ability(user, message, TRUE)
 		return 1
 
-/obj/effect/proc_holder/mob_common/direct_mobs/InterceptClickOn(mob/living/caller, params, atom/target)
+/obj/effect/proc_holder/mob_common/direct_mobs/InterceptClickOn(mob/living/the_one_who_called, params, atom/target)
 	if(..())
 		return
 	if(ranged_ability_user.incapacitated())

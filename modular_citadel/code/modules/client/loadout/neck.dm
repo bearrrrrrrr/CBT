@@ -70,11 +70,11 @@
 	name = "stethoscope"
 	path = /obj/item/clothing/neck/stethoscope
 
-/datum/gear/neck/chameleon
-	name = "chameleon neckpiece"
-	subcategory = LOADOUT_SUBCATEGORY_NECK_GENERAL
-	path = /obj/item/clothing/neck/cloak/chameleon
-	cost = 0
+// /datum/gear/neck/chameleon
+// 	name = "chameleon neckpiece"
+// 	subcategory = LOADOUT_SUBCATEGORY_NECK_GENERAL
+// 	path = /obj/item/clothing/neck/cloak/chameleon
+// 	cost = 0
 
 /datum/gear/neck/blacktie
 	name = "black tie"
@@ -226,370 +226,370 @@
 	path = /obj/item/storage/belt/sabre/knife
 	cost = 0
 
-/datum/gear/neck/allseer
-	name = "Allseer Cape"
-	path = /obj/item/clothing/neck/tie/gob/allseer
-	cost = 0
+// /datum/gear/neck/allseer
+// 	name = "Allseer Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/allseer
+// 	cost = 0
 
-/datum/gear/neck/astral
-	name = "Astral Cape"
-	path = /obj/item/clothing/neck/tie/gob/astral
-	cost = 0
+// /datum/gear/neck/astral
+// 	name = "Astral Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/astral
+// 	cost = 0
 
-/datum/gear/neck/black
-	name = "Black Cape"
-	path = /obj/item/clothing/neck/tie/gob/black
-	cost = 0
+// /datum/gear/neck/black
+// 	name = "Black Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/black
+// 	cost = 0
 
-/datum/gear/neck/black_shoulder
-	name = "Black Shoulder Cape"
-	path = /obj/item/clothing/neck/tie/gob/black_shoulder
-	cost = 0
+// /datum/gear/neck/black_shoulder
+// 	name = "Black Shoulder Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/black_shoulder
+// 	cost = 0
 
-/datum/gear/neck/bluewolves
-	name = "Blue Wolves Cape"
-	path = /obj/item/clothing/neck/tie/gob/bluewolves
-	cost = 0
+// /datum/gear/neck/bluewolves
+// 	name = "Blue Wolves Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/bluewolves
+// 	cost = 0
 
-/datum/gear/neck/redstar
-	name = "Red Star Cape"
-	path = /obj/item/clothing/neck/tie/gob/redstar
-	cost = 0
+// /datum/gear/neck/redstar
+// 	name = "Red Star Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/redstar
+// 	cost = 0
 
-/datum/gear/neck/grey
-	name = "Grey Cape"
-	path = /obj/item/clothing/neck/tie/gob/grey
-	cost = 0
+// /datum/gear/neck/grey
+// 	name = "Grey Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/grey
+// 	cost = 0
 
-/datum/gear/neck/aegis
-	name = "Aegis Cape"
-	path = /obj/item/clothing/neck/tie/gob/aegis
-	cost = 0
+// /datum/gear/neck/aegis
+// 	name = "Aegis Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/aegis
+// 	cost = 0
 
-/datum/gear/neck/darkpurple
-	name = "Dark Purple Cape"
-	path = /obj/item/clothing/neck/tie/gob/darkpurple
-	cost = 0
+// /datum/gear/neck/darkpurple
+// 	name = "Dark Purple Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/darkpurple
+// 	cost = 0
 
-/datum/gear/neck/blue
-	name = "Blue Cape"
-	path = /obj/item/clothing/neck/tie/gob/blue
-	cost = 0
+// /datum/gear/neck/blue
+// 	name = "Blue Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/blue
+// 	cost = 0
 
-/datum/gear/neck/green
-	name = "Green Cape"
-	path = /obj/item/clothing/neck/tie/gob/green
-	cost = 0
+// /datum/gear/neck/green
+// 	name = "Green Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/green
+// 	cost = 0
 
-/datum/gear/neck/purple
-	name = "Purple Cape"
-	path = /obj/item/clothing/neck/tie/gob/purple
-	cost = 0
+// /datum/gear/neck/purple
+// 	name = "Purple Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/purple
+// 	cost = 0
 
-/datum/gear/neck/red
-	name = "Red Cape"
-	path = /obj/item/clothing/neck/tie/gob/red
-	cost = 0
+// /datum/gear/neck/red
+// 	name = "Red Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/red
+// 	cost = 0
 
-/datum/gear/neck/whiteblue
-	name = "White Blue Cape"
-	path = /obj/item/clothing/neck/tie/gob/whiteblue
-	cost = 0
+// /datum/gear/neck/whiteblue
+// 	name = "White Blue Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/whiteblue
+// 	cost = 0
 
-/datum/gear/neck/white
-	name = "White Cape"
-	path = /obj/item/clothing/neck/tie/gob/white
-	cost = 0
+// /datum/gear/neck/white
+// 	name = "White Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/white
+// 	cost = 0
 
-/datum/gear/neck/azure_dawn
-	name = "Azure Dawn Cape"
-	path = /obj/item/clothing/neck/tie/gob/azure_dawn
-	cost = 0
+// /datum/gear/neck/azure_dawn
+// 	name = "Azure Dawn Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/azure_dawn
+// 	cost = 0
 
-/datum/gear/neck/delta
-	name = "Delta Cape"
-	path = /obj/item/clothing/neck/tie/gob/delta
-	cost = 0
+// /datum/gear/neck/delta
+// 	name = "Delta Cape"
+// 	path = /obj/item/clothing/neck/tie/gob/delta
+// 	cost = 0
 
-/datum/gear/neck/black_fur
-	name = "black fur lined cape"
-	path = /obj/item/clothing/neck/tie/gob/black_fur
-	cost = 0
+// /datum/gear/neck/black_fur
+// 	name = "black fur lined cape"
+// 	path = /obj/item/clothing/neck/tie/gob/black_fur
+// 	cost = 0
 
-/datum/gear/neck/gold_lions
-	name = "gold lion cape"
-	path = /obj/item/clothing/neck/tie/gob/gold_lions
-	cost = 0
+// /datum/gear/neck/gold_lions
+// 	name = "gold lion cape"
+// 	path = /obj/item/clothing/neck/tie/gob/gold_lions
+// 	cost = 0
 
-/datum/gear/neck/heart
-	name = "heart cape"
-	path = /obj/item/clothing/neck/tie/gob/heart
-	cost = 0
+// /datum/gear/neck/heart
+// 	name = "heart cape"
+// 	path = /obj/item/clothing/neck/tie/gob/heart
+// 	cost = 0
 
-/datum/gear/neck/silk
-	name = "silk cape"
-	path = /obj/item/clothing/neck/tie/gob/silk
-	cost = 0
+// /datum/gear/neck/silk
+// 	name = "silk cape"
+// 	path = /obj/item/clothing/neck/tie/gob/silk
+// 	cost = 0
 
-/datum/gear/neck/silver_snake
-	name = "silver snake cape"
-	path = /obj/item/clothing/neck/tie/gob/silver_snake
-	cost = 0
+// /datum/gear/neck/silver_snake
+// 	name = "silver snake cape"
+// 	path = /obj/item/clothing/neck/tie/gob/silver_snake
+// 	cost = 0
 
-/datum/gear/neck/white_fur
-	name = "white furred cape"
-	path = /obj/item/clothing/neck/tie/gob/white_fur
-	cost = 0
+// /datum/gear/neck/white_fur
+// 	name = "white furred cape"
+// 	path = /obj/item/clothing/neck/tie/gob/white_fur
+// 	cost = 0
 
-/datum/gear/neck/inf_cloak
-	name = "black cape with red"
-	path = /obj/item/clothing/neck/tie/inf_cloak
-	cost = 0
+// /datum/gear/neck/inf_cloak
+// 	name = "black cape with red"
+// 	path = /obj/item/clothing/neck/tie/inf_cloak
+// 	cost = 0
 
-/datum/gear/neck/carrotcloak
-	name = "carrot cloak"
-	path = /obj/item/clothing/neck/tie/carrotcloak
-	cost = 0
+// /datum/gear/neck/carrotcloak
+// 	name = "carrot cloak"
+// 	path = /obj/item/clothing/neck/tie/carrotcloak
+// 	cost = 0
 
-/datum/gear/neck/festive
-	name = "festive cloak"
-	path = /obj/item/clothing/neck/tie/festive
-	cost = 0
+// /datum/gear/neck/festive
+// 	name = "festive cloak"
+// 	path = /obj/item/clothing/neck/tie/festive
+// 	cost = 0
 
-/datum/gear/neck/green_cloak
-	name = "green and white cloak"
-	path = /obj/item/clothing/neck/tie/green_cloak
-	cost = 0
+// /datum/gear/neck/green_cloak
+// 	name = "green and white cloak"
+// 	path = /obj/item/clothing/neck/tie/green_cloak
+// 	cost = 0
 
-/datum/gear/neck/wintergreencloak
-	name = "winter green cloak"
-	path = /obj/item/clothing/neck/tie/wintergreencloak
-	cost = 0
+// /datum/gear/neck/wintergreencloak
+// 	name = "winter green cloak"
+// 	path = /obj/item/clothing/neck/tie/wintergreencloak
+// 	cost = 0
 
-/datum/gear/neck/flagcape
-	name = "american flag cape"
-	path = /obj/item/clothing/neck/tie/flagcape
-	cost = 0
+// /datum/gear/neck/flagcape
+// 	name = "american flag cape"
+// 	path = /obj/item/clothing/neck/tie/flagcape
+// 	cost = 0
 
-/datum/gear/neck/fzuliecloak
-	name = "zulie cloak"
-	path = /obj/item/clothing/neck/tie/zuliecloak
-	cost = 0
+// /datum/gear/neck/fzuliecloak
+// 	name = "zulie cloak"
+// 	path = /obj/item/clothing/neck/tie/zuliecloak
+// 	cost = 0
 
-/datum/gear/neck/vampire
-	name = "Vampire Cloak"
-	path = /obj/item/clothing/neck/tie/vampire
-	cost = 0
+// /datum/gear/neck/vampire
+// 	name = "Vampire Cloak"
+// 	path = /obj/item/clothing/neck/tie/vampire
+// 	cost = 0
 
-/datum/gear/neck/witchcapep
-	name = "Purple Witch Cape"
-	path = /obj/item/clothing/neck/tie/witchcapep
-	cost = 0
+// /datum/gear/neck/witchcapep
+// 	name = "Purple Witch Cape"
+// 	path = /obj/item/clothing/neck/tie/witchcapep
+// 	cost = 0
 
-/datum/gear/neck/witchcapem
-	name = "Mint Witch Cape"
-	path = /obj/item/clothing/neck/tie/witchcapem
-	cost = 0
+// /datum/gear/neck/witchcapem
+// 	name = "Mint Witch Cape"
+// 	path = /obj/item/clothing/neck/tie/witchcapem
+// 	cost = 0
 
-/datum/gear/neck/assunzionerobe
-	name = "Assunzione Robe"
-	path = /obj/item/clothing/neck/tie/aurora/assunzione_robe
-	cost = 0
+// /datum/gear/neck/assunzionerobe
+// 	name = "Assunzione Robe"
+// 	path = /obj/item/clothing/neck/tie/aurora/assunzione_robe
+// 	cost = 0
 
-/datum/gear/neck/assunzionerobevine
-	name = "Assunzione Robe, accented"
-	path = /obj/item/clothing/neck/tie/aurora/assunzione_robe_vine
-	cost = 0
+// /datum/gear/neck/assunzionerobevine
+// 	name = "Assunzione Robe, accented"
+// 	path = /obj/item/clothing/neck/tie/aurora/assunzione_robe_vine
+// 	cost = 0
 
-/datum/gear/neck/assunzionerobegold
-	name = "Assunzione Robe, gold"
-	path = /obj/item/clothing/neck/tie/aurora/assunzione_robe_gold
-	cost = 0
+// /datum/gear/neck/assunzionerobegold
+// 	name = "Assunzione Robe, gold"
+// 	path = /obj/item/clothing/neck/tie/aurora/assunzione_robe_gold
+// 	cost = 0
 
-/datum/gear/neck/dominian_cape
-	name = "Dominian Cape"
-	path = /obj/item/clothing/neck/tie/aurora/dominian_cape
-	cost = 0
+// /datum/gear/neck/dominian_cape
+// 	name = "Dominian Cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/dominian_cape
+// 	cost = 0
 
-/datum/gear/neck/dominian_capew
-	name = "Dominian Cape, white"
-	path = /obj/item/clothing/neck/tie/aurora/dominian_capewhite
-	cost = 0
+// /datum/gear/neck/dominian_capew
+// 	name = "Dominian Cape, white"
+// 	path = /obj/item/clothing/neck/tie/aurora/dominian_capewhite
+// 	cost = 0
 
-/datum/gear/neck/strelitz_cape
-	name = "Strelitz Cape"
-	path = /obj/item/clothing/neck/tie/aurora/strelitz_cape
-	cost = 0
+// /datum/gear/neck/strelitz_cape
+// 	name = "Strelitz Cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/strelitz_cape
+// 	cost = 0
 
-/datum/gear/neck/strelitz_capew
-	name = "Strelitz Cape white"
-	path = /obj/item/clothing/neck/tie/aurora/strelitz_capew
-	cost = 0
+// /datum/gear/neck/strelitz_capew
+// 	name = "Strelitz Cape white"
+// 	path = /obj/item/clothing/neck/tie/aurora/strelitz_capew
+// 	cost = 0
 
-/datum/gear/neck/volvaleed_cape
-	name = "Volvalaad Cape"
-	path = /obj/item/clothing/neck/tie/aurora/volvalaad_cape
-	cost = 0
+// /datum/gear/neck/volvaleed_cape
+// 	name = "Volvalaad Cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/volvalaad_cape
+// 	cost = 0
 
-/datum/gear/neck/volvaleed_capew
-	name = "Volvalaad Cape white"
-	path = /obj/item/clothing/neck/tie/aurora/volvalaad_capew
-	cost = 0
+// /datum/gear/neck/volvaleed_capew
+// 	name = "Volvalaad Cape white"
+// 	path = /obj/item/clothing/neck/tie/aurora/volvalaad_capew
+// 	cost = 0
 
-/datum/gear/neck/kazhkz_cape
-	name = "Kazhkz Cape"
-	path = /obj/item/clothing/neck/tie/aurora/kazhkz_cape
-	cost = 0
+// /datum/gear/neck/kazhkz_cape
+// 	name = "Kazhkz Cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/kazhkz_cape
+// 	cost = 0
 
-/datum/gear/neck/kazhkz_capew
-	name = "Kazhkz Cape white"
-	path = /obj/item/clothing/neck/tie/aurora/kazhkz_capew
-	cost = 0
+// /datum/gear/neck/kazhkz_capew
+// 	name = "Kazhkz Cape white"
+// 	path = /obj/item/clothing/neck/tie/aurora/kazhkz_capew
+// 	cost = 0
 
-/datum/gear/neck/caladius_cape
-	name = "Caladius Cape"
-	path = /obj/item/clothing/neck/tie/aurora/caladius_cape
-	cost = 0
+// /datum/gear/neck/caladius_cape
+// 	name = "Caladius Cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/caladius_cape
+// 	cost = 0
 
-/datum/gear/neck/caladius_capew
-	name = "Caladius Cape white"
-	path = /obj/item/clothing/neck/tie/aurora/caladius_capew
-	cost = 0
+// /datum/gear/neck/caladius_capew
+// 	name = "Caladius Cape white"
+// 	path = /obj/item/clothing/neck/tie/aurora/caladius_capew
+// 	cost = 0
 
-/datum/gear/neck/zhao_cape
-	name = "Zhao Cape"
-	path = /obj/item/clothing/neck/tie/aurora/zhao_cape
-	cost = 0
+// /datum/gear/neck/zhao_cape
+// 	name = "Zhao Cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/zhao_cape
+// 	cost = 0
 
-/datum/gear/neck/zhao_capew
-	name = "Zhao Cape white"
-	path = /obj/item/clothing/neck/tie/aurora/zhao_capew
-	cost = 0
+// /datum/gear/neck/zhao_capew
+// 	name = "Zhao Cape white"
+// 	path = /obj/item/clothing/neck/tie/aurora/zhao_capew
+// 	cost = 0
 
 /datum/gear/neck/armsman_mantle
 	name = "armsman Mantle"
 	path = /obj/item/clothing/neck/tie/aurora/armsman_mantle
 	cost = 0
 
-/datum/gear/neck/domcape
-	name = "Dominia Cape"
-	path = /obj/item/clothing/neck/tie/aurora/dominia_cape_consular
-	cost = 0
+// /datum/gear/neck/domcape
+// 	name = "Dominia Cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/dominia_cape_consular
+// 	cost = 0
 
-/datum/gear/neck/polcape
-	name = "Polish Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories
-	cost = 0
+// /datum/gear/neck/polcape
+// 	name = "Polish Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories
+// 	cost = 0
 
-/datum/gear/neck/icelandcape
-	name = "Icelandic Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no2
-	cost = 0
+// /datum/gear/neck/icelandcape
+// 	name = "Icelandic Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no2
+// 	cost = 0
 
-/datum/gear/neck/finlandcape
-	name = "Finnish Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no3
-	cost = 0
+// /datum/gear/neck/finlandcape
+// 	name = "Finnish Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no3
+// 	cost = 0
 
-/datum/gear/neck/norwaycape
-	name = "Norwegian Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no4
-	cost = 0
+// /datum/gear/neck/norwaycape
+// 	name = "Norwegian Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no4
+// 	cost = 0
 
-/datum/gear/neck/natogermanycape
-	name = "West German Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no5
-	cost = 0
+// /datum/gear/neck/natogermanycape
+// 	name = "West German Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no5
+// 	cost = 0
 
-/datum/gear/neck/frcape
-	name = "French Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no6
-	cost = 0
+// /datum/gear/neck/frcape
+// 	name = "French Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no6
+// 	cost = 0
 
-/datum/gear/neck/denmcape
-	name = "Danish Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no7
-	cost = 0
+// /datum/gear/neck/denmcape
+// 	name = "Danish Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no7
+// 	cost = 0
 
-/datum/gear/neck/swedcape
-	name = "Swedish Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no8
-	cost = 0
+// /datum/gear/neck/swedcape
+// 	name = "Swedish Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no8
+// 	cost = 0
 
-/datum/gear/neck/tsarcape
-	name = "Tsar Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no9
-	cost = 0
+// /datum/gear/neck/tsarcape
+// 	name = "Tsar Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no9
+// 	cost = 0
 
-/datum/gear/neck/irecape
-	name = "Irish Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no10
-	cost = 0
+// /datum/gear/neck/irecape
+// 	name = "Irish Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no10
+// 	cost = 0
 
-/datum/gear/neck/brazcape
-	name = "Brazilian Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no11
-	cost = 0
+// /datum/gear/neck/brazcape
+// 	name = "Brazilian Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no11
+// 	cost = 0
 
-/datum/gear/neck/cancape
-	name = "Canadian Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no12
-	cost = 0
+// /datum/gear/neck/cancape
+// 	name = "Canadian Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no12
+// 	cost = 0
 
-/datum/gear/neck/ukcape
-	name = "British Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no13
-	cost = 0
+// /datum/gear/neck/ukcape
+// 	name = "British Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no13
+// 	cost = 0
 
-/datum/gear/neck/auscape
-	name = "Australian Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no14
-	cost = 0
+// /datum/gear/neck/auscape
+// 	name = "Australian Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no14
+// 	cost = 0
 
-/datum/gear/neck/nzeacape
-	name = "New Zealand Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no15
-	cost = 0
+// /datum/gear/neck/nzeacape
+// 	name = "New Zealand Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no15
+// 	cost = 0
 
-/datum/gear/neck/italiancape
-	name = "Italian Cape"
-	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no16
-	cost = 0
+// /datum/gear/neck/italiancape
+// 	name = "Italian Cape"
+// 	path = /obj/item/clothing/neck/tie/flagcapesaccessories/no16
+// 	cost = 0
 
-/datum/gear/neck/thundercape
-	name = "Thunderous Cape"
-	path = /obj/item/clothing/neck/tie/warriorcataccessories
-	cost = 0
+// /datum/gear/neck/thundercape
+// 	name = "Thunderous Cape"
+// 	path = /obj/item/clothing/neck/tie/warriorcataccessories
+// 	cost = 0
 
-/datum/gear/neck/rivercape
-	name = "Rivulet Cape"
-	path = /obj/item/clothing/neck/tie/warriorcataccessories/rivers
-	cost = 0
+// /datum/gear/neck/rivercape
+// 	name = "Rivulet Cape"
+// 	path = /obj/item/clothing/neck/tie/warriorcataccessories/rivers
+// 	cost = 0
 
-/datum/gear/neck/windcape
-	name = "Windy Cape"
-	path = /obj/item/clothing/neck/tie/warriorcataccessories/winds
-	cost = 0
+// /datum/gear/neck/windcape
+// 	name = "Windy Cape"
+// 	path = /obj/item/clothing/neck/tie/warriorcataccessories/winds
+// 	cost = 0
 
-/datum/gear/neck/shadowcape
-	name = "Shadowed Cape"
-	path = /obj/item/clothing/neck/tie/warriorcataccessories/shadows
-	cost = 0
+// /datum/gear/neck/shadowcape
+// 	name = "Shadowed Cape"
+// 	path = /obj/item/clothing/neck/tie/warriorcataccessories/shadows
+// 	cost = 0
 
-/datum/gear/neck/domcapefull
-	name = "Dominia Cape, full"
-	path = /obj/item/clothing/neck/tie/aurora/dominian_doublecape
-	cost = 0
+// /datum/gear/neck/domcapefull
+// 	name = "Dominia Cape, full"
+// 	path = /obj/item/clothing/neck/tie/aurora/dominian_doublecape
+// 	cost = 0
 
-/datum/gear/neck/domcapehalf
-	name = "Dominia Cape, half"
-	path = /obj/item/clothing/neck/tie/aurora/dominian_cape_red
-	cost = 0
+// /datum/gear/neck/domcapehalf
+// 	name = "Dominia Cape, half"
+// 	path = /obj/item/clothing/neck/tie/aurora/dominian_cape_red
+// 	cost = 0
 
-/datum/gear/neck/ozhuacape
-	name = "Ozhua cape"
-	path = /obj/item/clothing/neck/tie/aurora/ozuhacape
-	cost = 0
+// /datum/gear/neck/ozhuacape
+// 	name = "Ozhua cape"
+// 	path = /obj/item/clothing/neck/tie/aurora/ozuhacape
+// 	cost = 0
 
 //Collars
 

@@ -7,7 +7,7 @@
 	icon_gib = "clown_gib"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	gender = MALE
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_continuous = "pokes"
 	response_help_simple = "poke"
 	response_disarm_continuous = "gently pushes aside"
@@ -38,7 +38,7 @@
 	icon_living = "nanotrasen"
 	icon_dead = null
 	icon_gib = "syndicate_gib"
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_continuous = "pokes"
 	response_help_simple = "poke"
 	response_disarm_continuous = "shoves"

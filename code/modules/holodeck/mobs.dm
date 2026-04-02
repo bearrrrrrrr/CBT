@@ -13,7 +13,7 @@
 	emote_hear = list("chimpers.")
 	emote_see = list("scratches.", "looks around.")
 	speak_chance = 1
-	turns_per_move = 2
+	seconds_per_wander = 2
 	guaranteed_butcher_results = list()
 	response_help_continuous = "pets"
 	response_help_simple = "pet"

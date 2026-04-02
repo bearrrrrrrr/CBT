@@ -38,14 +38,14 @@
 	pass_flags = LETPASSTHROW
 	robust_searching = TRUE
 	death_sound = 'sound/machines/machinery_break_1.ogg'
-	aggro_vision_range = 8 //A little more aggressive once in combat to balance out their really low HP
+	aggroed_vision_range = 8 //A little more aggressive once in combat to balance out their really low HP
 	decompose = FALSE
 	blood_volume = 0
 	despawns_when_lonely = FALSE
 	robuster_searching = TRUE
 	retreat_distance = 0
 	minimum_distance = 0
-	turns_per_move = 1
+	seconds_per_wander = 1
 	mob_biotypes = MOB_ROBOTIC|MOB_INORGANIC
 	faction = list("duck")
 	/// may not quack until this time

@@ -20,7 +20,7 @@ Difficulty: Extremely Hard
 	speak_emote = list("roars")
 	melee_damage_lower = 10
 	melee_damage_upper = 10
-	aggro_vision_range = 18 // large vision range so combat doesn't abruptly end when someone runs a bit away
+	aggroed_vision_range = 18 // large vision range so combat doesn't abruptly end when someone runs a bit away
 	rapid_melee = 4
 	speed = 20
 	move_to_delay = 20

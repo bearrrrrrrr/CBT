@@ -324,7 +324,7 @@ const Lust = (props, context) => {
   const TheirMaxLust = data.TheirMaxLust || 100;
   const ItsJustMe = data.ItsJustMe || false;
   const MTTC = data.MTTC; // Mean Time To Cum
-  const CanCum = data.CanCum || false;
+  const WillAutoCum = data.WillAutoCum || false;
   const MyName = data.MyName || "You";
   const TheirName = data.TheirName || "Them";
 
@@ -334,7 +334,7 @@ const Lust = (props, context) => {
   const LustFGColor = "pink";
 
   const CumButtonText = "!! C U M !!";
-  const AutocumText = CanCum ? "Autocum: ON" : "Autocum: OFF";
+  const AutocumText = WillAutoCum ? "Autocum: ON" : "Autocum: OFF";
   // let AutocumArray = [];
   // /// run through the bitfields in AutocumFlags and assemble the appropriate text
   // if(AutocumFlags) {
@@ -364,7 +364,7 @@ const Lust = (props, context) => {
   //   AutocumText += "you feel like it!";
   // }
 
-  const AutocumColor = CanCum ? "green" : "default";
+  const AutocumColor = WillAutoCum ? "green" : "default";
 
   const CelWidth = ItsJustMe ? "100%" : "50%";
 
@@ -418,10 +418,10 @@ const Lust = (props, context) => {
               <Button
                 fluid
                 mb={0.3}
-                disabled={!CanCum}
+                disabled={false}
                 color="pink"
                 content={CumButtonText}
-                bold={CanCum}
+                bold
                 onClick={() => act('Cum')} />
             </Flex.Item>
             <Flex.Item>
@@ -430,7 +430,7 @@ const Lust = (props, context) => {
                 mb={0.3}
                 color={AutocumColor}
                 content={AutocumText}
-                bold={CanCum}
+                bold={WillAutoCum}
                 onClick={() => act('ToggleAutoCum')} />
             </Flex.Item>
           </Flex>

@@ -141,13 +141,13 @@
 			force_modifier = (-force * 0.2) // You do 80% damage because you're in critical condition
 		else
 			if(HAS_TRAIT(user, TRAIT_BIG_LEAGUES))
-				force_modifier += 25
+				force_modifier += 15
 			if(HAS_TRAIT(user, TRAIT_LITTLE_LEAGUES))
-				force_modifier += 18
+				force_modifier += 10
 			if(HAS_TRAIT(user, TRAIT_GENTLE))
-				force_modifier += -18
+				force_modifier += -10
 			if(HAS_TRAIT(user, TRAIT_WIMPY))
-				force_modifier += -25
+				force_modifier += -15
 			if(HAS_TRAIT(user, TRAIT_BUFFOUT_BUFF))
 				force_modifier += 50
 			if(HAS_TRAIT(user, TRAIT_FEV))

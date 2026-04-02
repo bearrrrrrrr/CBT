@@ -149,6 +149,9 @@ GLOBAL_VAR_INIT(miscreants_allowed, FALSE)
 			return FALSE
 	return TRUE
 
+/mob/living/proc/has_tail()
+	return getorganslot(ORGAN_SLOT_TAIL)
+
 ////////////////////////
 //DANGER | DEBUG PROCS//
 ////////////////////////

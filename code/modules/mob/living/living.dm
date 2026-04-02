@@ -80,15 +80,15 @@
 	return ..()
 
 /mob/living/proc/ZImpactDamage(turf/T, levels)
-	if(levels <= 2 && HAS_TRAIT(src, TRAIT_FREERUNNING)) //levels is incremented prior to damage proc and is always >= 2
-		visible_message(span_danger("[src] slams into [T], rolling as they land and keeping their pace!"),
-						span_userdanger("You slam into [T], rolling and keeping your momentum!"))
+	if(levels <= 2 || HAS_TRAIT(src, TRAIT_FREERUNNING)) //levels is incremented prior to damage proc and is always >= 2
+		visible_message(span_danger("[src] falls down onto [T], rolling as they land and keeping their pace!"),
+						span_userdanger("You falls down onto [T], rolling and keeping your momentum!"))
 		adjustBruteLoss(5)
 	else
-		visible_message(span_danger("[src] crashes into [T] with a sickening noise!"),
-						span_userdanger("You crash into [T] with a sickening noise!"))
+		visible_message(span_danger("[src] falls onto [T] painfully!"),
+						span_userdanger("You fall onto [T] painfully!"))
 		adjustBruteLoss((levels * 5) ** 1.5)
-		DefaultCombatKnockdown(levels * 50)
+		DefaultCombatKnockdown(1)
 
 /mob/living/proc/OpenCraftingMenu()
 	return

@@ -26,16 +26,16 @@
 	//	src.health += (src.stat_endurance*3)//SPECIAL Integration
 	//	update_special_speed((5-src.stat_agility)/20)//SPECIAL Integration
 	//	SPECIAL_SET = TRUE
-	if(hax())
-		stat_strength = 1
-		stat_perception = 1
-		stat_endurance = 1
-		stat_charisma = 1
-		stat_intelligence = 1
-		stat_agility = 1
-		stat_luck = 1
-		gib()
-		return
+	// if(hax()) // break in case of people abusing stat bugs
+	// 	stat_strength = 1
+	// 	stat_perception = 1
+	// 	stat_endurance = 1
+	// 	stat_charisma = 1
+	// 	stat_intelligence = 1
+	// 	stat_agility = 1
+	// 	stat_luck = 1
+	// 	gib()
+	// 	return
 	
 	//SHOULD_NOT_SLEEP(TRUE)
 	if(mob_transforming)
@@ -84,7 +84,10 @@
 
 	// Everything after this shouldn't process while dead (as of the time of writing)
 	if(stat == DEAD)
+		lust = 0
 		return FALSE
+	
+	decay_lust()
 
 	//Tongue wetness code or something
 	handle_healreservoir()

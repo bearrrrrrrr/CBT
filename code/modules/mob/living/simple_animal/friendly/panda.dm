@@ -10,7 +10,7 @@
 	emote_hear = list("squeak-chrips.", "huff-squacks.")
 	emote_see = list("shakes its head.", "rolls about.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 3)
 	response_help_continuous = "pets"

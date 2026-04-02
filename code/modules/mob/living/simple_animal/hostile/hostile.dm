@@ -105,8 +105,9 @@
 	var/robust_searching = 1 //By default, mobs have a simple searching method, set this to 1 for the more scrutinous searching (stat_attack, stat_exclusive, etc), should be disabled on most mobs
 	var/robuster_searching = FALSE //Makes mobs see through walls if theyve seen you before
 	var/vision_range = 9 //How big of an area to search for targets in, a vision of 9 attempts to find targets as soon as they walk into screen view
-	var/aggro_vision_range = 9 //If a mob is aggro, we search in this radius. Defaults to 9 to keep in line with original simple mob aggro radius
+	var/aggroed_vision_range = 9 //If a mob is aggro, we search in this radius. Defaults to 9 to keep in line with original simple mob aggro radius
 	var/max_tracking_range = 14 //If a mob is aggro, we search in this radius. Defaults to 9 to keep in line with original simple mob aggro radius
+
 	var/search_objects = 0 //If we want to consider objects when searching around, set this to 1. If you want to search for objects while also ignoring mobs until hurt, set it to 2. To completely ignore mobs, even when attacked, set it to 3
 	var/search_objects_timer_id //Timer for regaining our old search_objects value after being attacked
 	var/search_objects_regain_time = 30 //the delay between being attacked and gaining our old search_objects value back
@@ -163,6 +164,12 @@
 
 	/// Makes it so the mob tally doesnt count this thing as being deleted when its just sleeping
 	var/went_to_sleep = FALSE
+
+	var/time_between_move_randomization = 3 SECONDS
+	var/last_move_randomization = 0
+
+	var/vision_mult_duration = (15 SECONDS)
+	var/vision_mult_active_until = 0 //if vision_mult_active_until is greater than world.time, we use the multiplied vision range, for things like attraction that temporarily boost vision
 
 	speed = 3//The default hostile mob speed. If you ever speed the mob ss again please raise this to compensate.
 
@@ -233,6 +240,15 @@
 /mob/living/simple_animal/hostile/handle_automated_action()
 	if(AIStatus == AI_OFF)
 		return 0
+	
+	if(time_between_move_randomization && LAZYLEN(variation_list[MOB_VARIED_SPEED]) && variation_list[MOB_VARIED_SPEED_CHANCE] > 0)
+		if(last_move_randomization + time_between_move_randomization >= world.time)
+			last_move_randomization = world.time + time_between_move_randomization
+			if(prob(variation_list[MOB_VARIED_SPEED_CHANCE]))
+				move_to_delay = vary_from_list(variation_list[MOB_VARIED_SPEED])
+				set_glide_size(move_to_delay)
+	//else
+	// danbuttfat = TRUE
 
 	var/list/possible_targets = ListTargets() //we look around for potential targets and make it a list for later use.
 	if(!get_target())
@@ -267,6 +283,22 @@
 				addtimer(cb, (i - 1)*sidestep_delay)
 		else //Otherwise randomize it to make the players guessing.
 			addtimer(cb,rand(1,SSnpcpool.wait))
+	if(my_target)
+		InterruptAttractionMovement()
+
+/mob/living/simple_animal/hostile/AutomateAttraction()
+	if(!..())
+		return
+	vision_mult_active_until = world.time + vision_mult_duration
+
+/mob/living/simple_animal/hostile/AttractionAct(atom/target_origin, intensity, max_range, duration)
+	if(health <= 0)
+		return
+	if(get_target())
+		InterruptAttractionMovement()
+		return FALSE
+	do_alert_animation(src)
+	return ..()
 
 /mob/living/simple_animal/hostile/toggle_ai(togglestatus)
 	. = ..()
@@ -344,7 +376,7 @@
 	if (peaceful == TRUE)
 		peaceful = FALSE
 	if(stat == CONSCIOUS && !get_target() && AIStatus != AI_OFF && !client)
-		if(P.firer && get_dist(src, P.firer) <= aggro_vision_range)
+		if(P.firer)
 			FindTarget(list(P.firer), 1)
 		Goto(P.starting, move_to_delay, 3)
 	//return ..()
@@ -362,25 +394,32 @@
 		alpha = 90
 	return ..()
 
+/mob/living/simple_animal/hostile/proc/get_vision_range()
+	var/vrange = vision_range
+	if(vision_mult_active_until > world.time)
+		return vrange * 3
+	return vrange
+
 //////////////HOSTILE MOB TARGETTING AND AGGRESSION////////////
 
 /mob/living/simple_animal/hostile/proc/ListTargets()//Step 1, find out what we can see
 	var/atom/origin = get_origin()
+	var/v_range = get_vision_range()
 	if(!search_objects)
-		. = hearers(vision_range, origin) - src //Remove self
+		. = hearers(v_range, origin) - src //Remove self
 
 		var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/mecha, /obj/item/electronic_assembly))
 
-		for(var/HM in typecache_filter_list(range(vision_range, origin), hostile_machines))
+		for(var/HM in typecache_filter_list(range(v_range, origin), hostile_machines))
 			CHECK_TICK
-			if(can_see(origin, HM, vision_range))
+			if(can_see(origin, HM, v_range))
 				. += HM
 	else
-		. = list() // The following code is only very slightly slower than just returning oview(vision_range, origin), but it saves us much more work down the line, particularly when bees are involved
-		for (var/obj/A in oview(vision_range, origin))
+		. = list() // The following code is only very slightly slower than just returning oview(v_range, origin), but it saves us much more work down the line, particularly when bees are involved
+		for (var/obj/A in oview(v_range, origin))
 			CHECK_TICK
 			. += A
-		for (var/mob/living/A in oview(vision_range, origin)) //mob/dead/observers arent possible targets
+		for (var/mob/living/A in oview(v_range, origin)) //mob/dead/observers arent possible targets
 			CHECK_TICK
 			. += A
 
@@ -408,8 +447,6 @@
 		GiveTarget(Target)
 		COOLDOWN_START(src, sight_shoot_delay, sight_shoot_delay_time)
 		return Target //We now have a targettte
-
-
 
 /mob/living/simple_animal/hostile/proc/PossibleThreats()
 	. = list()
@@ -619,7 +656,7 @@
 		. = 0
 	if((environment_smash & ENVIRONMENT_SMASH_WALLS) || (environment_smash & ENVIRONMENT_SMASH_RWALLS) || robuster_searching || SSmobs.debug_everyone_has_robuster_searching) //If we're capable of smashing through walls, forget about vision completely after finding our targette
 		Goto(my_target,move_to_delay,minimum_distance)
-		if(my_target.loc != null && get_dist(origin, my_target.loc) <= vision_range) //We can't see our targette, but he's in our vision range still
+		if(my_target.loc != null && get_dist(origin, my_target.loc) <= get_vision_range()) //We can't see our targette, but he's in our vision range still
 			if(ranged_ignores_vision && ranged_cooldown <= world.time) //we can't see our targette... but we can fire at them!
 				OpenFire(my_target)
 		else
@@ -658,8 +695,6 @@
 	if(variation_list[MOB_VARIED_SPEED_CHANCE] && LAZYLEN(variation_list[MOB_VARIED_SPEED]))
 		if(prob(variation_list[MOB_VARIED_SPEED_CHANCE]))
 			move_to_delay = vary_from_list(variation_list[MOB_VARIED_SPEED])
-		if(prob(variation_list[MOB_VARIED_SPEED_CHANCE]))
-			set_varspeed(pick(variation_list[MOB_VARIED_SPEED]))
 
 
 /mob/living/simple_animal/hostile/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
@@ -723,7 +758,7 @@
 /mob/living/simple_animal/hostile/proc/Aggro()
 	if(ckey)
 		return TRUE
-	vision_range = aggro_vision_range
+	vision_range = aggroed_vision_range
 	var/atom/my_target = get_target()
 	if(my_target && LAZYLEN(emote_taunt) && prob(taunt_chance))
 		INVOKE_ASYNC(src,PROC_REF(emote), "me", EMOTE_VISIBLE, "[pick(emote_taunt)] at [my_target].")
@@ -1062,9 +1097,10 @@
 /mob/living/simple_animal/hostile/proc/ListTargetsLazy(_Z)//Step 1, find out what we can see
 	var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/mecha))
 	. = list()
+	var/v_range = get_vision_range()
 	for (var/I in SSmobs.clients_by_zlevel[_Z])
 		var/mob/M = I
-		if (get_dist(M, src) < vision_range)
+		if (get_dist(M, src) < v_range)
 			if (isturf(M.loc))
 				. += M
 			else if (M.loc.type in hostile_machines)
@@ -1089,6 +1125,7 @@
 	if(!new_target)
 		return
 	target = WEAKREF(new_target)
+	InterruptAttractionMovement()
 	RegisterSignal(target, COMSIG_PARENT_QDELETING,PROC_REF(handle_target_del), TRUE)
 
 /mob/living/simple_animal/hostile/proc/queue_unbirth()
@@ -1115,7 +1152,7 @@
 	if(LAZYLEN(variation_list[MOB_VARIED_VIEW_RANGE]))
 		vision_range = vary_from_list(variation_list[MOB_VARIED_VIEW_RANGE])
 	if(LAZYLEN(variation_list[MOB_VARIED_AGGRO_RANGE]))
-		aggro_vision_range = vary_from_list(variation_list[MOB_VARIED_AGGRO_RANGE])
+		aggroed_vision_range = vary_from_list(variation_list[MOB_VARIED_AGGRO_RANGE])
 	if(LAZYLEN(variation_list[MOB_VARIED_SPEED]))
 		move_to_delay = vary_from_list(variation_list[MOB_VARIED_SPEED])
 	if(LAZYLEN(variation_list[MOB_RETREAT_DISTANCE]))

@@ -10,7 +10,7 @@
 	emote_see = list("clacks.")
 	blood_volume = 350
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/rawcrab = 4)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
@@ -31,14 +31,6 @@
 	if(!(. = ..()))
 		return
 	//CRAB movement
-	if(!ckey && !stat)
-		if(isturf(loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
-			turns_since_move++
-			if(turns_since_move >= turns_per_move)
-				var/east_vs_west = pick(4,8)
-				if(Process_Spacemove(east_vs_west))
-					Move(get_step(src,east_vs_west), east_vs_west)
-					turns_since_move = 0
 	regenerate_icons()
 
 //COFFEE! SQUEEEEEEEEE!

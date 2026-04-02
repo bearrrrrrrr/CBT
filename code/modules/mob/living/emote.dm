@@ -1092,11 +1092,11 @@
 	emote_type = EMOTE_AUDIBLE
 	sound = 'sound/f13effects/sunsetsounds/whistle-overhere.ogg'
 
-/datum/emote/squee
-	key = "squee"
-	key_third_person = "smiles like a dork."
-	message = "smiles like a dork."
-	sound = 'sound/f13effects/sunsetsounds/squee.ogg'
+// /datum/emote/squee
+// 	key = "squee"
+// 	key_third_person = "smiles like a dork."
+// 	message = "smiles like a dork."
+// 	sound = 'sound/f13effects/sunsetsounds/squee.ogg'
 
 /datum/emote/waa
 	key = "waa"
@@ -1185,53 +1185,53 @@
 			pick(playsound(C, 'sound/f13effects/sunsetsounds/wah1.ogg', 33, 1),playsound(C, 'sound/f13effects/sunsetsounds/wah2.ogg', 33, 1),playsound(C, 'sound/f13effects/sunsetsounds/wah3.ogg', 34, 1),)
 
 
-/datum/emote/living/boowomp
-	key = "boowomp"
-	key_third_person = "frowns heavily."
-	message = "frowns heavily."
-	sound = 'sound/effects/boowomp.ogg'
+// /datum/emote/living/boowomp
+// 	key = "boowomp"
+// 	key_third_person = "frowns heavily."
+// 	message = "frowns heavily."
+// 	sound = 'sound/effects/boowomp.ogg'
 
 /datum/emote/living/scrungy
 	key = "scrungy"
-	key_third_person = "opens their mouth slightly and makes a very pained noise as they take a deep breath through their nose."
-	message = "opens their mouth slightly and makes a very pained noise as they take a deep breath through their nose."
+	key_third_person = "makes a pained sound."
+	message = "makes a pained sound."
 	emote_type = EMOTE_AUDIBLE
 	sound = 'sound/effects/scrungy.ogg'
 
-/datum/emote/living/grungle
-	key = "grungle"
-	key_third_person = "sounds like a dog gargling soda water just as its about to have a laugh."
-	message = "sounds like a dog gargling soda water just as its about to have a laugh."
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/effects/gurgle.ogg'
+// /datum/emote/living/grungle
+// 	key = "grungle"
+// 	key_third_person = "sounds like a dog gargling soda water just as its about to have a laugh."
+// 	message = "sounds like a dog gargling soda water just as its about to have a laugh."
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/effects/gurgle.ogg'
 
-/datum/emote/living/augh
-	key = "augh"
-	key_third_person = "looks mildly inconvenienced."
-	message = "looks mildly inconvenienced."
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/f13effects/sunsetsounds/augh.ogg'
+// /datum/emote/living/augh
+// 	key = "augh"
+// 	key_third_person = "looks mildly inconvenienced."
+// 	message = "looks mildly inconvenienced."
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/f13effects/sunsetsounds/augh.ogg'
 
-/datum/emote/living/ree
-	key = "ree"
-	key_third_person = "reeeeeees."
-	message = "reeeeeees."
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/f13effects/sunsetsounds/frogree.ogg'
+// /datum/emote/living/ree
+// 	key = "ree"
+// 	key_third_person = "reeeeeees."
+// 	message = "reeeeeees."
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/f13effects/sunsetsounds/frogree.ogg'
 
-/datum/emote/living/eyebrowmenace
-	key = "eyebrowboom"
-	key_third_person = "raises an eyebrow menacingly!"
-	message = "raises an eyebrow menacingly!"
-	sound = 'sound/f13effects/sunsetsounds/vineboom.ogg'
+// /datum/emote/living/eyebrowmenace
+// 	key = "eyebrowboom"
+// 	key_third_person = "raises an eyebrow menacingly!"
+// 	message = "raises an eyebrow menacingly!"
+// 	sound = 'sound/f13effects/sunsetsounds/vineboom.ogg'
 
 
-/datum/emote/living/frogcry
-	key = "frogcry"
-	key_third_person = "does an amphibian warcry!"
-	message = "does an amphibian warcry!"
-	emote_type = EMOTE_AUDIBLE
-	sound = 'sound/f13effects/sunsetsounds/frogwarcry.ogg'
+// /datum/emote/living/frogcry
+// 	key = "frogcry"
+// 	key_third_person = "does an amphibian warcry!"
+// 	message = "does an amphibian warcry!"
+// 	emote_type = EMOTE_AUDIBLE
+// 	sound = 'sound/f13effects/sunsetsounds/frogwarcry.ogg'
 
 /datum/emote/living/bwoing
 	key = "bwoing"
@@ -1522,33 +1522,33 @@
 	message_param = "tilts their head at %t."
 
 
-/datum/emote/living/rizz
-	key = "rizz"
-	key_third_person = "rizzler"
-	message = "<span class='hypnophrase'>radiates powerful rizz</span>"
-	message_param = "<span class='hypnophrase'>%t</span>" //Funny color text
-	sound = "modular_splurt/sound/voice/rizz.ogg"
+// /datum/emote/living/rizz
+// 	key = "rizz"
+// 	key_third_person = "rizzler"
+// 	message = "<span class='hypnophrase'>radiates powerful rizz</span>"
+// 	message_param = "<span class='hypnophrase'>%t</span>" //Funny color text
+// 	sound = "modular_splurt/sound/voice/rizz.ogg"
 
-/datum/emote/living/threaten
-	key = "threaten"
-	key_third_person = "threaten"
-	message = "<span class='velvet'>radiates a menacing aura.</span>"
-	message_param = "<span class='velvet'>%t</span>" //Funny red text
-	sound = "modular_splurt/sound/voice/waterphone.ogg"
+// /datum/emote/living/threaten
+// 	key = "threaten"
+// 	key_third_person = "threaten"
+// 	message = "<span class='velvet'>radiates a menacing aura.</span>"
+// 	message_param = "<span class='velvet'>%t</span>" //Funny red text
+// 	sound = "modular_splurt/sound/voice/waterphone.ogg"
 
-/datum/emote/living/accusation
-	key = "accuse"
-	key_third_person = "accusation"
-	message = "says, <span class='blockytext'>O B J E C T I O N !!</span>"
-	message_param = "<span class='blockytext'>%t</span>" //Funny block text
-	sound = "modular_splurt/sound/voice/deathglare.ogg"
+// /datum/emote/living/accusation
+// 	key = "accuse"
+// 	key_third_person = "accusation"
+// 	message = "says, <span class='blockytext'>O B J E C T I O N !!</span>"
+// 	message_param = "<span class='blockytext'>%t</span>" //Funny block text
+// 	sound = "modular_splurt/sound/voice/deathglare.ogg"
 
-/datum/emote/living/urgent
-	key = "urgent"
-	key_third_person = "urgency"
-	message = "<span class='urgent'>draws attention to themselves!</span>"
-	message_param = "<span class='urgent'>%t</span>" //Funny block text
-	sound = "modular_splurt/sound/voice/alienbeeper.ogg"
+// /datum/emote/living/urgent
+// 	key = "urgent"
+// 	key_third_person = "urgency"
+// 	message = "<span class='urgent'>draws attention to themselves!</span>"
+// 	message_param = "<span class='urgent'>%t</span>" //Funny block text
+// 	sound = "modular_splurt/sound/voice/alienbeeper.ogg"
 
 
 //Slime start

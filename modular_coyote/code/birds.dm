@@ -7,7 +7,7 @@
 	icon_state = "gull"
 	icon_living = "gull"
 	icon_dead = "gull-dead"
-	turns_per_move = 1
+	seconds_per_wander = 1
 	response_help_continuous = "shoos"
 	response_help_simple = "shoo"
 	response_disarm_continuous = "brushes aside"

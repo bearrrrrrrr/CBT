@@ -46,10 +46,10 @@ The hooks you're calling should return nonzero values on success.
 		if(!hook_path)
 			CRASH("hook_vore: Invalid hook '/hook/[hook]' called.")
 
-		var/caller = new hook_path
+		var/the_one_who_called = new hook_path
 		var/status = 1
 		for(var/P in typesof("[hook_path]/proc"))
-			if(!call(caller, P)(arglist(args)))
+			if(!call(the_one_who_called, P)(arglist(args)))
 				stack_trace("hook_vore: Hook '[P]' failed or runtimed.")
 				status = 0
 

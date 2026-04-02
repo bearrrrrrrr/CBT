@@ -103,6 +103,9 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 		if(pfp != "https://files.catbox.moe/jgxtpe.png" && pfp != "https://files.catbox.moe/1i1zom.png")
 			. += "<img src='[followers_clinic_full_of_big_strong_gay_dogs_in_it]' height='300px' width='auto' max-width='[P.see_pfp_max_widht]px' max-height='[P.see_pfp_max_hight]px'>"
 
+	var/tnb = SStemperament.get_textblock_for(src)
+	if(tnb)
+		. += "[tnb]\n"
 
 	var/vampDesc = ReturnVampExamine(user) // Vamps recognize the names of other vamps.
 	var/vassDesc = ReturnVassalExamine(user) // Vassals recognize each other's marks.

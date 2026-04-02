@@ -7,9 +7,9 @@
  * %NAME    - the mob's name
  * %SPECIES - the mob's species
  * %GENDER  - the mob's gender
- * %SEEMS   - seems/seems/seem
+ * %SEEM   - seems/seems/seem
  * %ARE     - is/is/are
- * %HAS     - has/has/have
+ * %HAVE     - has/has/have
  * %DUDER   - guy/gal/duder
  * 
  * Tense is assumed to be something like "They seem like they're a really chill guy who low key dgaf"
@@ -254,17 +254,17 @@
 
 /datum/temperament/build/androgynous
 	name = "Androgynous"
-	examine_text = "%THEY %SEEMS rather androgynous"
+	examine_text = "%THEY %SEEM rather androgynous"
 	spanuse = "love"
 
 /datum/temperament/build/masculinepresenting
 	name = "Masculine Presenting"
-	examine_text = "%THEY %SEEMS to be rather masculine-presenting"
+	examine_text = "%THEY %SEEM to be rather masculine-presenting"
 	spanuse = "love"
 
 /datum/temperament/build/femininepresenting
 	name = "Feminine Presenting"
-	examine_text = "%THEY %SEEMS to be rather feminine-presenting"
+	examine_text = "%THEY %SEEM to be rather feminine-presenting"
 	spanuse = "love"
 
 /datum/temperament/build/fluffy

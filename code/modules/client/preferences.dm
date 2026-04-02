@@ -4874,7 +4874,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		dat += "<a href='?_src_=prefs;preference=pick_build;task=input'>Add New Build</a><br>"
 	var/example = SStemperament.get_textblock_for(src)
 	dat += "<br><b>Example:</b><br>"
-	dat += "[example]<br>"
+	dat += "[replacetext(example, "\n", "<br>")]<br>"
 	return dat.Join()
 
 

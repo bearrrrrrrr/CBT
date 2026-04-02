@@ -1832,6 +1832,8 @@
 #include "code\modules\asset_cache\paper.dm"
 #include "code\modules\asset_cache\transports\asset_transport.dm"
 #include "code\modules\asset_cache\transports\webroot_transport.dm"
+#include "code\modules\assorted_datums\builds.dm"
+#include "code\modules\assorted_datums\temperaments.dm"
 #include "code\modules\atmospherics\multiz.dm"
 #include "code\modules\atmospherics\auxgm\breathing_classes.dm"
 #include "code\modules\atmospherics\auxgm\gas_types.dm"

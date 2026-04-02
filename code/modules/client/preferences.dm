@@ -2560,11 +2560,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						to_chat(user, "Hmm, looks like that temperament isn't actually a thing. Try again later!")
 						return
 					temperaments_and_builds |= tem.type
-					if(isliving(parent.mob))
-						SStemperament.update_temps(parent.mob)
-						temperaments_and_builds_needs_update = FALSE
-					else
-						temperaments_and_builds_needs_update = TRUE
 				if("pick_build")
 					var/list/builds = SStemperament.get_builds_for_prefs()
 					var/new_build = input(
@@ -2579,11 +2574,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						to_chat(user, "Hmm, looks like that build isn't actually a thing. Try again later!")
 						return
 					temperaments_and_builds |= B.type
-					if(isliving(parent.mob))
-						SStemperament.update_temps(parent.mob)
-						temperaments_and_builds_needs_update = FALSE
-					else
-						temperaments_and_builds_needs_update = TRUE
 				if("remove_temperament_or_build")
 					var/whichtext = href_list["which"]
 					var/whichpath = text2path(whichtext)
@@ -2595,11 +2585,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					else
 						to_chat(user, "Hmm, looks like you don't actually have that temperament/build. Try again later!")
 						return
-					if(isliving(parent.mob))
-						SStemperament.update_temps(parent.mob)
-						temperaments_and_builds_needs_update = FALSE
-					else
-						temperaments_and_builds_needs_update = TRUE
 				if("stat_strength")
 					var/new_point = input(user, "Choose Amount(1-9)", "Strength") as num|null
 					if(new_point)

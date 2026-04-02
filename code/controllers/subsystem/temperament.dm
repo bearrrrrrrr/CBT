@@ -1,6 +1,7 @@
 SUBSYSTEM_DEF(temperament)
 	name = "Temperament"
-	flags = SS_NO_FIRE
+	flags = SS_BACKGROUND
+	wait = 30 SECONDS
 	init_order = INIT_ORDER_QUIRKS // cus its quirky
 
 	// format: /datum/temperament = initted/datum/temperament
@@ -18,71 +19,43 @@ SUBSYSTEM_DEF(temperament)
 	..()
 	to_chat(world, span_greenannounce("Initialized [LAZYLEN(temperaments)] temperaments and/or builds! =3"))
 
-/datum/controller/subsystem/temperament/proc/assign_temperament(mob/M, datum/temperament/T)
-	if(!initialized)
-		return FALSE
-	var/muid = M.get_uid()
-	if(!who_got_what[muid])
-		who_got_what[muid] = list()
-	var/save
-	if(istext(T))
-		T = text2path(T)
-	if(istype(T))
-		save = T.type
-	else if(ispath(T))
-		save = T
-	else
-		CRASH("Tried to assign a temperament that wasn't a type or path!")
-	who_got_what[muid] |= save
-	return TRUE
+/datum/controller/subsystem/temperament/fire(resumed)
+	for(var/cli_key in GLOB.directory)
+		var/client/C = GLOB.directory[cli_key]
+		if(C && isliving(C.mob))
+			update_tnb(C.mob)
 
-/datum/controller/subsystem/temperament/proc/remove_temperament(mob/M, datum/temperament/T)
+/datum/controller/subsystem/temperament/proc/update_tnb(mob/M)
 	if(!initialized)
 		return FALSE
-	var/muid = M.get_uid()
-	if(!who_got_what[muid])
-		return FALSE
-	var/save
-	if(istext(T))
-		T = text2path(T)
-	if(istype(T))
-		save = T.type
-	else if(ispath(T))
-		save = T
-	else
-		CRASH("Tried to remove a temperament that wasn't a type or path!")
-	who_got_what[muid] -= save
-	return TRUE
-
-/datum/controller/subsystem/temperament/proc/update_temps(mob/M)
-	if(!initialized)
-		return FALSE
-	var/muid = M.get_uid()
+	if(!istype(M, /mob/living))
+		return // no need to update for dead people!
 	if(!extract_client(M))
 		return // only initialize for mobs with clients, no need to waste resources on npcs
-	if(istype(M, /mob/dead))
-		return // no need to update for dead people!
+	var/muid = M.get_uid()
 	var/datum/preferences/P = extract_prefs(M)
-	if(islist(who_got_what[muid]))
-		if(!P.temperaments_and_builds_needs_update)
-			return // already initialized
 	who_got_what[muid] = list()
 	for(var/tnb_path in P.temperaments_and_builds)
 		who_got_what[muid] |= tnb_path
-	P.temperaments_and_builds_needs_update = FALSE
+
+// tries to get the Most Truthfulness temperaments and builds for the player
+// first tries to pull it from preferences, then if it fails, gets it from the
+// mob's uid, but only if they're a living
+// otherwise returns an empty list
+/datum/controller/subsystem/temperament/proc/get_tnb_holder(Z)
+	var/datum/preferences/P = extract_prefs(Z)
+	if(P)
+		return P.temperaments_and_builds
+	else if(isliving(Z))
+		var/mob/living/L = Z
+		update_tnb(L)
+		return who_got_what[L.get_uid()]
+	return list()
 
 /datum/controller/subsystem/temperament/proc/get_temperaments(Z, builds_instead = FALSE)
 	var/list/temps = list()
-	if(istype(Z, /datum/preferences))
-		var/datum/preferences/P = Z
-		temps = P.temperaments_and_builds
-	else if(istype(Z, /mob))
-		var/mob/M = Z
-		var/muid = M.get_uid()
-		temps = who_got_what[muid]
-	else
-		CRASH("Tried to get temperaments for something that wasn't a mob or preferences! it was actually a [Z]")
-	for(var/t in temps)
+	var/list/temp_holder = get_tnb_holder(Z)
+	for(var/t in temp_holder)
 		var/datum/temperament/T = temperaments[t]
 		if(builds_instead)
 			if(T.temp_or_build == "build")
@@ -126,7 +99,7 @@ SUBSYSTEM_DEF(temperament)
 		return ""
 	// formatted:
 	// He is incredibly buttsome, and also is soft and squishy
-	var/prefix = pronounify(Z, "%THEY %IS")
+	var/prefix = pronounify(Z, "%THEY %ARE")
 	var/list/texts = list()
 	for(var/i in 1 to LAZYLEN(builds))
 		var/datum/temperament/build/B = builds[i]
@@ -137,9 +110,6 @@ SUBSYSTEM_DEF(temperament)
 /datum/controller/subsystem/temperament/proc/get_textblock_for(Z)
 	if(!initialized)
 		return
-	if(istype(Z, /mob))
-		update_temps(Z)
-
 	var/temperament_text = get_temperament_textblock(Z)
 	var/build_text = get_build_textblock(Z)
 	var/has_builds = LAZYLEN(build_text)

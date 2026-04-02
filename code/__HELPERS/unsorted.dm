@@ -1786,9 +1786,6 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 			return // probably disconnected
 		return mobby.client.prefs
 	if(istext(something))
-		if(!(something in GLOB.directory))
-			return
-			// CRASH("extract_prefs() was given a ckey that wasn't in the directory. This is a bug, please report it.")
 		var/client/clont = LAZYACCESS(GLOB.directory, something)
 		if(!clont)
 			return // probably... disconnected? v0v

@@ -8,7 +8,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	mob_armor = ARMOR_VALUE_RAIDER_COMBAT_ARMOR_BOSS
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	response_help_continuous = "pushes"
 	response_help_simple = "push"
 	speed = 0

@@ -1595,13 +1595,14 @@ GLOBAL_LIST_INIT(security_expert, list(
 	medical_record_text = "Patient is apparently very good at gripping things."
 	locked =  FALSE
 	human_only = FALSE
+	disabled = TRUE
 
 /datum/quirk/mastermartialartist
 	name = "Master Martial Artist"
 	desc = "You occasionally hit so hard that they don't even seem like themselves anymore!"
 	value = 32
 	category = QUIRK_CATEGORY_HAND_TO_HAND_QUIRKS
-	mechanics = "Your punches, when you roll max damage, inflict clone damage instead of normal brute damage on people. Which is harder to heal and generally somewhat devastating."
+	mechanics = "Your punches, when you roll max damage heal some damage and do EVEN MORE DAMAGE to others."
 	conflicts = list(
 		/datum/quirk/nonviolent,
 		/datum/quirk/noodle_fist,
@@ -1682,6 +1683,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	medical_record_text = "Patient repeatedly scores baskets in the trashcan."
 	locked =  FALSE
 	human_only = FALSE
+	disabled = TRUE
 
 /datum/quirk/bowtrained
 	name = "Bow Trained"
@@ -1699,6 +1701,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	medical_record_text = "Patient shows aptitude for utilizing strings on sticks."
 	locked =  FALSE
 	human_only = FALSE
+	disabled = TRUE
 
 /datum/quirk/masterrifleman
 	name = "Bolt Worker"
@@ -1716,6 +1719,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	medical_record_text = "Patient appears to really enjoy cranking bolts."
 	locked =  FALSE
 	human_only = FALSE
+	disabled = TRUE
 
 /datum/quirk/wandproficient
 	name = "Magically Attuned"
@@ -2013,6 +2017,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	lose_text = span_danger("Your arm feels lighter...")
 	medical_record_text = "Patient appears to possess a knife, somehow."
 	human_only = FALSE
+	disabled = TRUE
 
 
 /datum/quirk/mantisblade
@@ -2028,6 +2033,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	lose_text = span_danger("Your arm feels lighter...")
 	medical_record_text = "Patient appears to possess a cybernetic armblade."
 	human_only = FALSE
+	disabled = TRUE
 
 /datum/quirk/tentaclearm
 	name = "Arm Tentacle"
@@ -2040,6 +2046,7 @@ GLOBAL_LIST_INIT(security_expert, list(
 	gain_text = span_notice("You feel as your arm is wriggling...")
 	lose_text = span_danger("Your arm feels lighter...")
 	medical_record_text = "Patient appears to possess a club, somehow."
+	disabled = TRUE
 
 /datum/quirk/magegrab
 	name = "Mage Grab" // Better name pending

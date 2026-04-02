@@ -382,7 +382,7 @@
 	var/status = 0  //basically if the number increases it means that the projectile for some reason has to miss
 
 	status += check_pacifism_lesser(src, firer, target)
-	status += check_hitormiss_gun(target)
+	status += check_hitormiss_by_archetype(target)
 	status += multichance_projectile_hit_behaviour(src, firer, target, status)
 
 	if(!status)
@@ -390,7 +390,44 @@
 	else
 		return FALSE
 
-/obj/item/projectile/proc/check_hitormiss_gun(atom/target)
+/obj/item/projectile/proc/check_hitormiss_by_archetype(atom/target)
+	if(!istype(fired_from, /obj/item/gun))
+		return FALSE
+
+	var/obj/item/gun/firing_gun = fired_from
+	switch(firing_gun.gun_archetype)
+		if("precise")
+			return check_hitormiss_precise(target)
+		if("heavy")
+			return check_hitormiss_heavy(target)
+		else
+			return check_hitormiss_swift(target)
+
+/obj/item/projectile/proc/check_hitormiss_swift(atom/target)
+	if(!isliving(firer))
+		return check_hitormiss_gun_archetype(target)
+
+	var/mob/living/living_firer = firer
+	var/deftness = isnull(living_firer.stat_agility) ? 0 : max(0, living_firer.stat_agility)
+	return check_hitormiss_gun_archetype(target, deftness)
+
+/obj/item/projectile/proc/check_hitormiss_precise(atom/target)
+	if(!isliving(firer))
+		return check_hitormiss_gun_archetype(target)
+
+	var/mob/living/living_firer = firer
+	var/awareness = isnull(living_firer.stat_perception) ? 0 : max(0, living_firer.stat_perception)
+	return check_hitormiss_gun_archetype(target, awareness, 2)
+
+/obj/item/projectile/proc/check_hitormiss_heavy(atom/target)
+	if(!isliving(firer))
+		return check_hitormiss_gun_archetype(target)
+
+	var/mob/living/living_firer = firer
+	var/strength = isnull(living_firer.stat_strength) ? 0 : max(0, living_firer.stat_strength)
+	return check_hitormiss_gun_archetype(target, strength)
+
+/obj/item/projectile/proc/check_hitormiss_gun_archetype(atom/target, stat_value = null, stat_weight = 1)
 	if(!isliving(target))
 		return FALSE
 	if(!istype(fired_from, /obj/item/gun))
@@ -401,8 +438,10 @@
 	var/obj/item/gun/firing_gun = fired_from
 	var/mob/living/living_firer = firer
 
-	var/awareness = isnull(living_firer.stat_perception) ? 0 : max(0, living_firer.stat_perception)
-	var/hit_chance = clamp(firing_gun.base_accuracy + (awareness * 5), 10, 95)
+	if(isnull(stat_value))
+		stat_value = isnull(living_firer.stat_perception) ? 0 : max(0, living_firer.stat_perception)
+
+	var/hit_chance = clamp(firing_gun.base_accuracy + (stat_value * 5 * stat_weight), 10, 95)
 
 	if(prob(hit_chance))
 		return FALSE

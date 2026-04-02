@@ -10,7 +10,7 @@
 	icon_dead = "dog_feral_dead"
 	icon_gib = "gib"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
-	turns_per_move = 1
+	seconds_per_wander = 1
 	response_help_simple = "pets"
 	response_disarm_simple = "pushes aside"
 	response_harm_simple = "kicks"
@@ -21,7 +21,7 @@
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/animalhide/wolf = 1, /obj/item/reagent_containers/food/snacks/meat/slab/wolf = 1,/obj/item/stack/sheet/bone = 1)
 	melee_damage_lower = 8
 	melee_damage_upper = 16
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	waddle_amount = 2
 	waddle_up_time = 0 //Dogs can't look up ~TK
 	waddle_side_time = 1

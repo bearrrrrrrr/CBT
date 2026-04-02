@@ -26,7 +26,7 @@
 	minimum_distance = 0
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 4 //due to ants poor eyesight
+	aggroed_vision_range = 4 //due to ants poor eyesight
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 5
@@ -35,7 +35,7 @@
 	speak_emote = list("clacks", "chitters", "snips", "snaps")
 	// emote_see = list("waggles its antenna", "clicks its mandibles", "picks up your scent", "goes on the hunt")
 	attack_verb_simple = list ("rips", "tears", "stings")
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 1, /obj/item/reagent_containers/food/snacks/meat/slab/ant_meat = 2, /obj/effect/spawner/lootdrop/f13/deadantloot = 1)
 	butcher_difficulty = 1.5
 	response_help_simple = "pets"
@@ -86,7 +86,7 @@
 	icon_gib = "FireAnt_gib"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	waddle_amount = 2
 	waddle_up_time = 1
 	waddle_side_time = 1
@@ -148,7 +148,7 @@
 	icon_gib = "GiantAnt_gib"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 3, /obj/item/reagent_containers/food/snacks/meat/slab/ant_meat = 6, /obj/item/stack/sheet/animalhide/chitin = 6, /obj/item/reagent_containers/food/snacks/rawantbrain = 1, /obj/effect/spawner/lootdrop/f13/deadantloot = 5)
 	butcher_difficulty = 1.5
 	loot = list(/obj/item/reagent_containers/food/snacks/f13/giantantegg = 10, /obj/effect/gibspawner/larva)
@@ -241,7 +241,7 @@
 	minimum_distance = 0
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 4 //due to scorpions poor eyesight
+	aggroed_vision_range = 4 //due to scorpions poor eyesight
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 5
@@ -249,7 +249,7 @@
 
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/radscorpion_meat = 2)
 	response_help_simple = "pets"
 	response_disarm_simple = "gently pushes aside"
@@ -340,7 +340,7 @@
 	icon_dead = "cazador_dead1"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 
 	move_to_delay = 3
 	// m2d 3 = standard, less is fast, more is slower.
@@ -351,7 +351,7 @@
 	minimum_distance = 1
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 7 //due to scorpions poor eyesight
+	aggroed_vision_range = 7 //due to scorpions poor eyesight
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 8
@@ -494,7 +494,7 @@
 
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 				/obj/item/reagent_containers/food/snacks/meat/slab/bloatfly_meat = 2,
 				/obj/item/stack/sheet/sinew = 1)
@@ -572,17 +572,16 @@
 	loot = list(/obj/effect/gibspawner/larva)
 	loot_drop_amount = 1
 	loot_amount_random = TRUE
-	speed = 1
-	maxHealth = 20
-	health = 20
+	speed = 2
+	maxHealth = 35
+	health = 35
 	harm_intent_damage = 8
 	obj_damage = 20
-	melee_damage_lower = 4
-	melee_damage_upper = 6
-
+	melee_damage_lower = 10
+	melee_damage_upper = 20
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/radroach_meat = 2, /obj/item/stack/sheet/sinew = 1)
 	butcher_difficulty = 1.5
 	response_help_simple = "pets"
@@ -597,6 +596,9 @@
 	density = FALSE
 	gold_core_spawnable = HOSTILE_SPAWN
 	randpixel = 12
+	aggroed_vision_range = 3 
+	vision_range = 3
+	//tiles within they start making noise, does count the mobs tile
 	variation_list = list(
 		MOB_COLOR_VARIATION(50, 50, 50, 255, 255, 255),
 		MOB_SPEED_LIST(3.8, 3.9, 4),
@@ -625,14 +627,18 @@
 	send_mobs = /obj/effect/proc_holder/mob_common/direct_mobs/small_critter
 	. = ..()
 //Variants for Radroachers
+/mob/living/simple_animal/hostile/pillbug/Initialize()
+		.=..()
+		resize = 0.75
+		update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/micro
 	bounty = 1
 	name = "Micro Pillbug"
 	maxHealth = 20
 	health = 20
-	melee_damage_lower = 2
-	melee_damage_upper = 6
+	melee_damage_lower = 5
+	melee_damage_upper = 15
 	variation_list = list(
 		MOB_COLOR_VARIATION(200, 200, 200, 250, 250, 250), //Rmin, Gmin, Bmin, Rmax, Gmax, Bmax
 		MOB_SPEED_LIST(3.8, 3.9, 4),
@@ -646,7 +652,7 @@
 
 /mob/living/simple_animal/hostile/pillbug/micro/Initialize()
 	.=..()
-	resize = 0.75
+	resize = 0.65
 	update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/micro/become_the_mob(mob/user)
@@ -656,13 +662,11 @@
 
 /mob/living/simple_animal/hostile/pillbug/strongradroach
 	bounty = 15
-	maxHealth = 140
-	health = 140
 	name = "Macro Pillbug"
 	maxHealth = 40
 	health = 40
-	melee_damage_lower = 10
-	melee_damage_upper = 20
+	melee_damage_lower = 15
+	melee_damage_upper = 25
 	variation_list = list(
 		MOB_COLOR_VARIATION(80, 80, 80, 125, 125, 125), //Rmin, Gmin, Bmin, Rmax, Gmax, Bmax
 		MOB_SPEED_LIST(3.8, 3.9, 4),
@@ -673,6 +677,11 @@
 		MOB_MINIMUM_DISTANCE_LIST(1, 2),
 		MOB_MINIMUM_DISTANCE_CHANGE_PER_TURN_CHANCE(50),
 	) //same as a newt for how they attack
+
+/mob/living/simple_animal/hostile/pillbug/strongradroach/Initialize()
+	.=..()
+	resize = 0.8
+	update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/strongradroach/become_the_mob(mob/user)
 	call_backup = /obj/effect/proc_holder/mob_common/summon_backup/small_critter
@@ -686,11 +695,9 @@
 	health = 40
 	melee_damage_lower = 20
 	melee_damage_upper = 30
-	retreat_distance = 9
-	minimum_distance = 7
-	aggro_vision_range = 7
-	vision_range = 9
-	ranged = TRUE
+	aggroed_vision_range = 4
+	vision_range = 4
+	ranged = FALSE
 	can_glow_revive = FALSE
 	variation_list = list(
 		MOB_COLOR_VARIATION(245, 215, 0, 255, 220, 5), //Rmin, Gmin, Bmin, Rmax, Gmax, Bmax
@@ -705,7 +712,7 @@
 
 /mob/living/simple_animal/hostile/pillbug/leader/Initialize()
 	.=..()
-	resize = 2.0
+	resize = 1.2
 	update_transform()
 
 /mob/living/simple_animal/hostile/pillbug/leader/become_the_mob(mob/user)
@@ -749,5 +756,5 @@
 
 /mob/living/simple_animal/hostile/pillbug/leader/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/glow_heal, chosen_targets = /mob/living/simple_animal/hostile/pillbug, allow_revival = TRUE, restrict_faction = null, type_healing = BRUTELOSS)
+	AddComponent(/datum/component/glow_heal, chosen_targets = /mob/living/simple_animal/hostile/pillbug, allow_revival = FALSE, restrict_faction = null, type_healing = BRUTELOSS)
 

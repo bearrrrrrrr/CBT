@@ -31,7 +31,7 @@ to produce smoke or slow down victims? Stuff like that added to a couple would b
 	icon_dead = "ghoulrotter_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	robust_searching = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speak_emote = list("growls")
 	emote_see = list("screeches")
 	a_intent = INTENT_HARM
@@ -64,7 +64,7 @@ to produce smoke or slow down victims? Stuff like that added to a couple would b
 	name = "skull wolf"
 	desc = "Half rotted by radiation, blind, hunting by smell and sound."
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
-	turns_per_move = 1
+	seconds_per_wander = 1
 	response_help_simple = "pets"
 	response_disarm_simple = "pushes aside"
 	response_harm_simple = "kicks"
@@ -75,7 +75,7 @@ to produce smoke or slow down victims? Stuff like that added to a couple would b
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/animalhide/wolf = 1, /obj/item/reagent_containers/food/snacks/meat/slab/wolf = 1,/obj/item/stack/sheet/bone = 1)
 	melee_damage_lower = 20
 	melee_damage_upper = 25
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	attack_verb_simple = "bites"
 	attack_sound = 'sound/weapons/bite.ogg'
 	move_to_delay = 2
@@ -96,7 +96,7 @@ to produce smoke or slow down victims? Stuff like that added to a couple would b
 	icon_gib = null
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/clothing/head/f13/stalkerpelt = 1, /obj/item/reagent_containers/food/snacks/meat/slab = 4, /obj/item/stack/sheet/sinew = 2, /obj/item/stack/sheet/bone = 2)
 	butcher_difficulty = 3
 	response_help_simple = "pets"
@@ -127,7 +127,7 @@ to produce smoke or slow down victims? Stuff like that added to a couple would b
 	speak_emote = list("chitters")
 	emote_hear = list("chitters")
 	speak_chance = 5
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/spider = 2, /obj/item/reagent_containers/food/snacks/spiderleg = 8)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
@@ -169,7 +169,7 @@ to produce smoke or slow down victims? Stuff like that added to a couple would b
 	icon_gib = null
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(/obj/item/clothing/head/f13/stalkerpelt = 1, /obj/item/reagent_containers/food/snacks/meat/slab = 4, /obj/item/stack/sheet/sinew = 2, /obj/item/stack/sheet/bone = 2)
 	butcher_difficulty = 3
 	response_help_simple = "pets"

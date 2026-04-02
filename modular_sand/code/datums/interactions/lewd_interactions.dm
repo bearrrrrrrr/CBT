@@ -566,6 +566,9 @@
 			// if(is_self_action)
 			// 	return TRUE
 			var/list/ppl = SSinteractions.get_consent_chain(mouns) // send message to EVERYONE in the group!!!
+			if(target && target.merp_testing_funclaw)
+				ppl |= target
+				ppl |= user
 			for(var/mob/squish in ppl - mouns)
 				if(!squish.client)
 					continue
@@ -578,12 +581,13 @@
 
 /// adjusts ur lust
 /datum/interaction/lewd/adjust_lust(mob/living/user, mob/living/target, show_message, list/extra = list())
-	. = TRUE
 	var/user_lustmnt = CEILING(LAZYACCESS(lust_amt, user.a_intent) * user_lust_mult, lust_round)
+	user_lustmnt *= SSinteractions.lust_gain_multipler
 	user.handle_post_sex(user_lustmnt)
-	. = TRUE
 	var/target_lustmnt = CEILING(LAZYACCESS(lust_amt, user.a_intent) * target_lust_mult, lust_round)
+	target_lustmnt *= SSinteractions.lust_gain_multipler
 	target.handle_post_sex(target_lustmnt)
+	return TRUE
 
 /datum/interaction/lewd/post_interaction(mob/living/user, mob/living/target)
 	if(user_refractory_cost)

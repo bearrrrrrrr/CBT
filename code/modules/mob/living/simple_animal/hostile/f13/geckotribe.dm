@@ -8,7 +8,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 2,
 		/obj/item/stack/sheet/animalhide/gecko = 1,
@@ -20,16 +20,16 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 70
+	health = 70
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 4
 	melee_damage_upper = 12
-	move_to_delay = 1.5
+	move_to_delay = 3
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 8
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -117,7 +117,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 1,
 		/obj/item/clothing/under/f13/wayfarer = 1,
@@ -129,8 +129,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 15
-	health = 15
+	maxHealth = 20
+	health = 20
 	harm_intent_damage = 2
 	obj_damage = 5
 	melee_damage_lower = 1
@@ -138,7 +138,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 4
+	aggroed_vision_range = 4
 	vision_range = 4
 	bounty = 1
 
@@ -187,7 +187,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 2,
 		/obj/item/stack/sheet/animalhide/gecko = 1,
@@ -201,8 +201,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 80
+	health = 80
 	harm_intent_damage = 20
 	obj_damage = 20
 	melee_damage_lower = 16
@@ -210,7 +210,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -297,7 +297,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 2,
 		/obj/item/stack/sheet/animalhide/gecko = 1,
@@ -312,8 +312,8 @@
 	response_harm_simple = "hits"
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 70
+	health = 70
 	harm_intent_damage = 20
 	obj_damage = 20
 	melee_damage_lower = 16
@@ -321,7 +321,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -430,7 +430,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 2,
 		/obj/item/stack/sheet/animalhide/gecko = 1,
@@ -445,8 +445,8 @@
 	peaceful = TRUE
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 90
+	health = 90
 	harm_intent_damage = 8
 	obj_damage = 20
 	melee_damage_lower = 4
@@ -454,7 +454,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -553,7 +553,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 4,
 		/obj/item/stack/sheet/animalhide/gecko = 3,
@@ -571,8 +571,8 @@
 	peaceful = TRUE
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 200
-	health = 200
+	maxHealth = 150
+	health = 150
 	mob_armor = ARMOR_VALUE_DEATHCLAW_COMMON
 	harm_intent_damage = 8
 	obj_damage = 20
@@ -581,7 +581,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -710,7 +710,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 4,
 		/obj/item/stack/sheet/animalhide/gecko = 3,
@@ -741,7 +741,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 10
+	aggroed_vision_range = 10
 	vision_range = 10
 	waddle_amount = 3
 	waddle_up_time = 1
@@ -875,7 +875,7 @@
 	icon_dead = "gekko_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	guaranteed_butcher_results = list(
 		/obj/item/reagent_containers/food/snacks/meat/slab/gecko = 4,
 		/obj/item/stack/sheet/animalhide/gecko = 3,
@@ -893,8 +893,8 @@
 	peaceful = FALSE
 	taunt_chance = 30
 	speed = 0
-	maxHealth = 75
-	health = 75
+	maxHealth = 100
+	health = 100
 	mob_armor = ARMOR_VALUE_LIGHT
 	harm_intent_damage = 8
 	obj_damage = 20
@@ -903,7 +903,7 @@
 	move_to_delay = 1.5
 	retreat_distance = 0
 	minimum_distance = 0
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	vision_range = 8
 	waddle_amount = 3
 	waddle_up_time = 1

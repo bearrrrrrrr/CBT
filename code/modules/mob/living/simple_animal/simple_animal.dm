@@ -1,4 +1,6 @@
 GLOBAL_LIST_EMPTY(playmob_cooldowns)
+GLOBAL_VAR_INIT(attraction_cooldown, 0.1 SECONDS)
+GLOBAL_VAR_INIT(last_attraction_time, 0)
 
 /mob/living/simple_animal
 	name = "animal"
@@ -36,8 +38,8 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 
 	var/bombs_can_gib_me = TRUE
 
-	var/turns_per_move = 1
-	var/turns_since_move = 0
+	var/seconds_per_wander = 1
+	var/last_wander_time = 0
 	///Use this to temporarely stop random movement or to if you write special movement code for animals.
 	var/stop_automated_movement = 0
 	///Does the mob wander around when idle?
@@ -238,11 +240,21 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 
 	var/quit_stealing_my_bike = FALSE
 
-
 	var/bounty = 10
 	var/kill_credit
 
-
+	var/datum/wander_attractor/current_attraction
+	var/attracted_move_to_delay
+	var/wander_attractor_arrival_distance = 3
+	var/attractable = FALSE
+	// so this checks if the mob has moved more than 2 tiles in the past 5 seconds, and if it hasnt, kills the attraction movement
+	var/attraction_stuck_check_time = 5 SECONDS
+	var/attraction_stuck_check_distance = 2
+	var/last_attraction_check_coords
+	var/last_attraction_check_time
+	// a cooldown on being attracted, cus spamming pathfinding is kinda bad
+	var/attraction_cooldown = 10 SECONDS
+	var/last_attraction_time
 
 /mob/living/simple_animal/Initialize()
 	. = ..()
@@ -251,6 +263,8 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 		gender = pick(MALE,FEMALE)
 	if(!real_name)
 		real_name = name
+	if(attractable && !attracted_move_to_delay)
+		attracted_move_to_delay = move_to_delay
 	if(!loc)
 		stack_trace("Simple animal being instantiated in nullspace")
 	update_simplemob_varspeed()
@@ -388,6 +402,7 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	RegisterSignal(src, COMSIG_MOB_IS_IMPORTANT,PROC_REF(am_i_important))
 	RegisterSignal(src, COMSIG_ATOM_QUEST_SCANNED,PROC_REF(i_got_scanned))
 	RegisterSignal(src, COMSIG_RTS_SELECTED,PROC_REF(i_got_selected))
+	RegisterSignal(src, COMSIG_MOVELOOP_PREPROCESS_CHECK,PROC_REF(GetAttractionMovementFlags))
 
 /mob/living/simple_animal/proc/i_got_scanned(datum/source, mob/scanner)
 	if(!nest_coords)
@@ -426,6 +441,7 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 /mob/living/simple_animal/Destroy()
 	GLOB.simple_animals[AIStatus] -= src
 	SSnpcpool.currentrun -= src
+	QDEL_NULL(current_attraction)
 	sever_link_to_nest()
 	if(make_a_nest)
 		QDEL_NULL(make_a_nest)
@@ -574,29 +590,25 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 
 /mob/living/simple_animal/proc/handle_automated_movement()
 	set waitfor = FALSE
-	if(stop_automated_movement || !wander)
-		return
-	if(!isturf(loc) && !allow_movement_on_non_turfs)
-		return
-	if(!CHECK_MOBILITY(src, MOBILITY_MOVE)) // !(mobility_flags & MOBILITY_MOVE)
+	if(seconds_per_wander == -1) //stops wandering entirely
+		return FALSE
+	if(IsAttractionMoving())
+		if(ShouldStopAttractionMovement())
+			InterruptAttractionMovement()
+		else
+			return FALSE
+	if(!CanWander())
 		walk(src, 0) //stop mid walk
 		return FALSE
-	if(has_buckled_mobs()) //If someones on a mount then it won't wander about with them
+	if(AutomateAttraction())
 		return FALSE
-	if(turns_per_move == -1) //stops wandering entirely
+	if(world.time < last_wander_time + (seconds_per_wander SECONDS))
 		return FALSE
-	if(RTS_move_ordered())
-		// am_within_range_of_target_coords()
-		return FALSE
-	turns_since_move++
-	if(turns_since_move < turns_per_move)
-		return TRUE
-	if(stop_automated_movement_when_pulled && pulledby) //Some animals don't move when pulled
-		return TRUE
-	var/anydir = pick(GLOB.cardinals)
-	if(Process_Spacemove(anydir))
-		Move(get_step(src, anydir), anydir)
-		turns_since_move = 0
+	last_wander_time = world.time
+	spawn(rand(1, 30))
+		var/anydir = pick(GLOB.cardinals)
+		if(Process_Spacemove(anydir))
+			Move(get_step(src, anydir), anydir)
 	return TRUE
 
 /mob/living/simple_animal/proc/handle_automated_speech(override)
@@ -635,6 +647,122 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 				emote("me", EMOTE_VISIBLE, pick(emote_see))
 			else
 				emote("me", EMOTE_AUDIBLE, pick(emote_hear))
+
+/mob/living/simple_animal/proc/CanWander(ignore_stopped_automated_movement)
+	if(stat == DEAD || stat == UNCONSCIOUS || health <= 0)
+		return FALSE
+	if(!ignore_stopped_automated_movement)
+		if(stop_automated_movement || !wander)
+			return FALSE
+	if(!isturf(loc) && !allow_movement_on_non_turfs)
+		return FALSE
+	if(!CHECK_MOBILITY(src, MOBILITY_MOVE))
+		return FALSE
+	if(has_buckled_mobs()) //If someones on a mount then it won't wander about with them
+		return FALSE
+	if(RTS_move_ordered())
+		// am_within_range_of_target_coords()
+		return FALSE
+	if(stop_automated_movement_when_pulled && pulledby) //Some animals don't move when pulled
+		return FALSE
+	return TRUE
+
+/mob/living/simple_animal/proc/GetAttractionMovementFlags()
+	if(!istype(current_attraction))
+		return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	if(!CanWander(TRUE))
+		return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	var/turf/dest = current_attraction.GetTarget()
+	if(get_dist(get_turf(src), dest) <= wander_attractor_arrival_distance && prob(25))
+		return MOVELOOP_KILL_PATH_AND_GIVE_UP
+	return NONE
+
+/mob/living/simple_animal/proc/ShouldStopAttractionMovement()
+	return GetAttractionMovementFlags() == MOVELOOP_KILL_PATH_AND_GIVE_UP
+
+/mob/living/simple_animal/proc/AutomateAttraction()
+	if(!istype(current_attraction))
+		return FALSE
+	if(IsAttractionMoving())
+		if(ShouldStopAttractionMovement())
+			InterruptAttractionMovement()
+		else
+			return TRUE
+	var/turf/dest = current_attraction.GetTarget()
+	if(!dest)
+		InterruptAttractionMovement()
+		return FALSE
+	. = SSmove_manager.jps_move(
+		src,
+		dest,
+		attracted_move_to_delay,
+		null,
+		null,
+		30,
+		2,
+		get_idcard(TRUE),
+		FALSE,
+		null,
+		null,
+		SSmobattraction,
+		1,
+		NONE,
+		null
+	)
+	if(.)
+		last_wander_time = 0
+
+/mob/living/simple_animal/proc/IsAttractionMoving()
+	if(!istype(current_attraction))
+		return FALSE
+	if(!CheckAttractorMoved())
+		InterruptAttractionMovement()
+		return FALSE
+	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmobattraction)
+	return istype(MP)
+
+/mob/living/simple_animal/proc/InterruptAttractionMovement()
+	if(!istype(current_attraction))
+		return
+	. = TRUE
+	var/datum/move_loop/MP = SSmove_manager.processing_on(src, SSmobattraction)
+	if(MP)
+		qdel(MP)
+	QDEL_NULL(current_attraction)
+
+/mob/living/simple_animal/proc/AttractionAct(atom/target_origin, intensity, max_range, duration)
+	if(!attractable)
+		return
+	if(get_dist(src, target_origin) <= wander_attractor_arrival_distance)
+		return
+	var/datum/wander_attractor/att = new /datum/wander_attractor()
+	att.SetOwner(src)
+	att.SetTarget(target_origin)
+	att.SetupIntensity(intensity, max_range)
+	if(current_attraction && current_attraction.intensity > att.intensity)
+		QDEL_NULL(att)
+		return
+	current_attraction = att
+	last_wander_time = 0
+	handle_automated_movement()
+	return TRUE
+
+/mob/living/simple_animal/proc/CheckAttractorMoved()
+	if(!istype(current_attraction))
+		return FALSE
+	if(!last_attraction_check_coords || !last_attraction_check_time)
+		last_attraction_check_coords = atom2coords(src)
+		last_attraction_check_time = world.time
+		return TRUE
+	if(world.time < last_attraction_check_time + (attraction_cooldown))
+		return TRUE
+	var/turf/here = get_turf(src)
+	var/turf/last_here = coords2turf(last_attraction_check_coords)
+	if(get_dist(here, last_here) < attraction_stuck_check_distance)
+		return FALSE
+	last_attraction_check_coords = atom2coords(src)
+	last_attraction_check_time = world.time
+	return TRUE
 
 /*
 /mob/living/simple_animal/proc/environment_is_safe(datum/gas_mixture/environment, check_temp = FALSE)
@@ -872,6 +1000,17 @@ GLOBAL_LIST_EMPTY(playmob_cooldowns)
 	if(head && !skip_worn)
 		dropItemToGround(head)
 	. = ..()
+
+/mob/living/simple_animal/update_overlays()
+	. = ..()
+	if(SSnpcpool.debug_attraction)
+		if(IsAttractionMoving())
+			if(current_attraction)
+				maptext = "Attracted to [current_attraction.target_x], [current_attraction.target_y], [current_attraction.target_z]"
+			else
+				maptext = null
+		else
+			maptext = null
 
 /mob/living/simple_animal/proc/CanAttack(atom/the_target)
 	if(see_invisible < the_target.invisibility)

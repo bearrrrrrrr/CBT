@@ -60,6 +60,10 @@
 	) // frumf, frumf
 	target_lust_mult = 1.0
 	lust_go_to = LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+
 ///////THROAT GRAB END/////////
 
 ////////////////////
@@ -91,6 +95,9 @@
 	) // frumf, frumf
 	target_lust_mult = 0.5
 	lust_go_to = LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 ///////NECK TOUCH END/////////
 
 

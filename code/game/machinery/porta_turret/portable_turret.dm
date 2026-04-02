@@ -1056,13 +1056,13 @@
 	remote_controller = null
 	return TRUE
 
-/obj/machinery/porta_turret/proc/InterceptClickOn(mob/living/caller, params, atom/A)
+/obj/machinery/porta_turret/proc/InterceptClickOn(mob/living/the_one_who_called, params, atom/A)
 	if(!manual_control)
 		return FALSE
-	if(!can_interact(caller))
+	if(!can_interact(the_one_who_called))
 		remove_control()
 		return FALSE
-	log_combat(caller,A,"fired with manual turret control at")
+	log_combat(the_one_who_called,A,"fired with manual turret control at")
 	INVOKE_ASYNC(src,PROC_REF(open_fire_on_target), A)
 	return TRUE
 

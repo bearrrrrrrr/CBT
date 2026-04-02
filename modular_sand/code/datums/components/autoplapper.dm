@@ -218,7 +218,8 @@
 		plappeemob = GET_WEAKREF(debug_plappee)
 	else
 		plappeemob = ckey2mob(plappee)
-	return SSinteractions.check_consent(plapper, plappeemob)
+	var/mob/living/plappermob = ckey2mob(plapper)
+	return SSinteractions.check_consent(plappermob, plappeemob)
 
 /datum/autoplapper/proc/can_plap()
 	if(!plap_key)
@@ -240,7 +241,7 @@
 /datum/autoplapper/proc/give_up()
 	var/mob/living/plappermob = ckey2mob(plapper)
 	if(plappermob)
-		to_chat(plapper, span_alert("You took too long to plap!"))
+		to_chat(plappermob, span_alert("You took too long to plap!"))
 	qdel(src)
 
 /datum/autoplapper/proc/generate_unique_id()

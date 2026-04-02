@@ -29,7 +29,7 @@
 	a_intent = INTENT_HARM
 	speak_emote = list("groans")
 	attack_sound = 'modular_sand/sound/misc/impattacks.wav'
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	retreat_distance = 5
 	gold_core_spawnable = HOSTILE_SPAWN
 	crusher_loot = /obj/item/crusher_trophy/blaster_tubes/impskull

@@ -188,8 +188,8 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 
 /obj/structure/nest/ghoul
 	name = "ghoul nest"
-	max_mobs = 4
-	swarm_size = 3
+	max_mobs = 3
+	swarm_size = 2
 	mob_types = list(/mob/living/simple_animal/hostile/ghoul = 5,
 					/mob/living/simple_animal/hostile/ghoul/reaver = 2,
 					/mob/living/simple_animal/hostile/ghoul/glowing = 1)
@@ -269,19 +269,19 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 
 /obj/structure/nest/radroach
 	name = "mutant pillbug nest"
-	max_mobs = 2
-	swarm_size = 2
+	max_mobs = 3
+	swarm_size = 3
 	mob_types = list(/mob/living/simple_animal/hostile/pillbug = 10,
 					/mob/living/simple_animal/hostile/pillbug/micro = 15,
 					/mob/living/simple_animal/hostile/pillbug/leader = 5,
 					/mob/living/simple_animal/hostile/pillbug/strongradroach = 10,
-					/mob/living/simple_animal/hostile/bloatfly = 20
+					/mob/living/simple_animal/hostile/bloatfly = 2
 					)
 
 /obj/structure/nest/bloatfly
 	name = "bloatfly nest"
 	max_mobs = 10
-	swarm_size = 3
+	swarm_size = 2
 	mob_types = list(
 					/mob/living/simple_animal/hostile/bloatfly = 20
 					)
@@ -411,11 +411,10 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 	max_mobs = 2
 	spawnsound = 'sound/misc/crack.ogg'
 	mob_types = list(
-		/mob/living/simple_animal/hostile/gecko              = 4,
-		/mob/living/simple_animal/hostile/gecko/fire         = 1,
-		/mob/living/simple_animal/hostile/gecko/legacy       = 3,
-		/mob/living/simple_animal/hostile/gecko/legacy/alpha = 3,
-		/mob/living/simple_animal/hostile/gecko/big          = 2,
+		/mob/living/simple_animal/hostile/gecko/big          	= 2,
+		/mob/living/simple_animal/hostile/gecko/tribal          = 3,
+		/mob/living/simple_animal/hostile/gecko/tribal/warrior  = 3,
+		/mob/living/simple_animal/hostile/gecko/tribal/hunter   = 3,
 		)
 	
 
@@ -550,12 +549,13 @@ GLOBAL_LIST_EMPTY(player_made_nests)
 	return
 
 //Event Nests
-/obj/structure/nest/zombieghoul
-	name = "ravenous ghoul nest"
-	max_mobs = 5
-	mob_types = list(/mob/living/simple_animal/hostile/ghoul/zombie = 5,
-					/mob/living/simple_animal/hostile/ghoul/zombie/reaver = 3,
-					/mob/living/simple_animal/hostile/ghoul/zombie/glowing = 1)
+// /obj/structure/nest/zombieghoul
+// 	name = "ravenous ghoul nest"
+// 	max_mobs = 5
+// 	mob_types = list(
+// 					 /mob/living/simple_animal/hostile/ghoul/zombie = 5,
+// 					/mob/living/simple_animal/hostile/ghoul/zombie/reaver = 3,
+// 					/mob/living/simple_animal/hostile/ghoul/zombie/glowing = 1)
 
 /obj/structure/nest/tunneler
 	name = "tunneler tunnel"

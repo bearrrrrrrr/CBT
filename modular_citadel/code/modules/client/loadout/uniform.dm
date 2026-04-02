@@ -4,15 +4,15 @@
 	slot = SLOT_W_UNIFORM
 	cost = 0
 
-/datum/gear/uniform/recon
-	name = "BoS Recon Suit"
-	path = /obj/item/clothing/under/f13/recon
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/recon
+// 	name = "BoS Recon Suit"
+// 	path = /obj/item/clothing/under/f13/recon
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/bosuniform
-	name = "brotherhood uniform"
-	path = /obj/item/clothing/under/f13/bos/fatigues
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/bosuniform
+// 	name = "brotherhood uniform"
+// 	path = /obj/item/clothing/under/f13/bos/fatigues
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
 /datum/gear/uniform/legskirt
 	name = "burgundy fatigues"
@@ -45,20 +45,20 @@
 	path = /obj/item/clothing/under/f13/exile/vault
 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_JUMPSUITS
 
-/datum/gear/uniform/ncrcf
-	name = "NCRCF outfit"
-	path = /obj/item/clothing/under/f13/ncrcf
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_WASTELAND
+// /datum/gear/uniform/ncrcf
+// 	name = "NCRCF outfit"
+// 	path = /obj/item/clothing/under/f13/ncrcf
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_WASTELAND
 
-/datum/gear/uniform/brahminskin
-	name = "brahmin skin outfit"
-	path = /obj/item/clothing/under/f13/brahminm
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_WASTELAND
+// /datum/gear/uniform/brahminskin
+// 	name = "brahmin skin outfit"
+// 	path = /obj/item/clothing/under/f13/brahminm
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_WASTELAND
 
-/datum/gear/uniform/brahminskin/female
-	name = "female brahmin skin outfit"
-	path = /obj/item/clothing/under/f13/female/brahmin
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_WASTELAND
+// /datum/gear/uniform/brahminskin/female
+// 	name = "female brahmin skin outfit"
+// 	path = /obj/item/clothing/under/f13/female/brahmin
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_WASTELAND
 
 /datum/gear/uniform/doctorfatigues
 	name = "doctor fatigues"
@@ -95,10 +95,10 @@
 	path = /obj/item/clothing/under/tactiflannel
 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_GENERAL
 
-/datum/gear/uniform/citizen
-	name = "follower volunteer uniform"
-	path = /obj/item/clothing/under/f13/follower
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/citizen
+// 	name = "follower volunteer uniform"
+// 	path = /obj/item/clothing/under/f13/follower
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
 /datum/gear/uniform/machinist
 	name = "workman outfit"
@@ -525,11 +525,11 @@
 	path = /obj/item/clothing/under/misc/gear_harness
 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_GENERAL
 
-/datum/gear/uniform/chameleon
-	name = "chameleon outfit"
-	path = /obj/item/clothing/under/chameleon
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_GENERAL
-	cost = 0
+// /datum/gear/uniform/chameleon
+// 	name = "chameleon outfit"
+// 	path = /obj/item/clothing/under/chameleon
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_GENERAL
+// 	cost = 0
 
 /datum/gear/uniform/navy
 	name = "navy jumpsuit"
@@ -827,25 +827,25 @@
 	name =  "Keyhole Sweater"
 	path = /obj/item/clothing/under/misc/keyholesweater
 
-/datum/gear/uniform/skirt/blueschool
-	name = "blue schoolgirl uniform"
-	path = /obj/item/clothing/under/costume/schoolgirl
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
+// /datum/gear/uniform/skirt/blueschool
+// 	name = "blue schoolgirl uniform"
+// 	path = /obj/item/clothing/under/costume/schoolgirl
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
 
-/datum/gear/uniform/skirt/redschool
-	name = "red schoolgirl uniform"
-	path = /obj/item/clothing/under/costume/schoolgirl/red
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
+// /datum/gear/uniform/skirt/redschool
+// 	name = "red schoolgirl uniform"
+// 	path = /obj/item/clothing/under/costume/schoolgirl/red
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
 
-/datum/gear/uniform/skirt/greenschool
-	name = "green schoolgirl uniform"
-	path = /obj/item/clothing/under/costume/schoolgirl/green
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
+// /datum/gear/uniform/skirt/greenschool
+// 	name = "green schoolgirl uniform"
+// 	path = /obj/item/clothing/under/costume/schoolgirl/green
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
 
-/datum/gear/uniform/skirt/orangeschool
-	name = "orange schoolgirl uniform"
-	path = /obj/item/clothing/under/costume/schoolgirl/orange
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
+// /datum/gear/uniform/skirt/orangeschool
+// 	name = "orange schoolgirl uniform"
+// 	path = /obj/item/clothing/under/costume/schoolgirl/orange
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SKIRTS
 
 /datum/gear/uniform/skirt/yellowperf
 	name = "yellow performer's outfit"
@@ -3425,53 +3425,53 @@
 	path = /obj/item/clothing/under/trek/engsec/ds9
 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/orv/captain
-	name = "orville captain uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/command/orv/captain
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/orv/captain
+// 	name = "orville captain uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/command/orv/captain
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/orv/engsec
-	name = "orville operations command uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/command/orv/engsec
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/orv/engsec
+// 	name = "orville operations command uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/command/orv/engsec
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/orv
-	name = "adjutant uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/orv
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/orv
+// 	name = "adjutant uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/orv
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/orv/service
-	name = "service uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/orv/service
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/orv/service
+// 	name = "service uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/orv/service
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/fedutil
-	name = "federation utility uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/fedutil
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/fedutil
+// 	name = "federation utility uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/fedutil
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/fedutil/trainee
-	name = "federation trainee utility uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/fedutil/trainee
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/fedutil/trainee
+// 	name = "federation trainee utility uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/fedutil/trainee
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/fedutil/service
-	name = "federation service uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/fedutil/service
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/fedutil/service
+// 	name = "federation service uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/fedutil/service
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
-/datum/gear/uniform/trek/Q
-	name = "french marshall's uniform"
-	cost = 0
-	path = /obj/item/clothing/under/trek/Q
-	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
+// /datum/gear/uniform/trek/Q
+// 	name = "french marshall's uniform"
+// 	cost = 0
+// 	path = /obj/item/clothing/under/trek/Q
+// 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_UNIFORMS
 
 /datum/gear/uniform/kudds
 	name = "Red Flannel"
@@ -3523,9 +3523,9 @@
 	name = "Ratty Pink Skirt"
 	path = /obj/item/clothing/under/kuddles/rattyskirtpink
 
-/datum/gear/uniform/kudds/rattycyberpunkskirt
-	name = "Ratty Cyberpunk Skirt"
-	path = /obj/item/clothing/under/kuddles/rattyskirtcyberpunk
+// /datum/gear/uniform/kudds/rattycyberpunkskirt
+// 	name = "Ratty Cyberpunk Skirt"
+// 	path = /obj/item/clothing/under/kuddles/rattyskirtcyberpunk
 
 /datum/gear/uniform/kudds/brownpunkpants
 	name = "Brown Punk Pants"

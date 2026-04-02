@@ -16,7 +16,7 @@
 	emote_hear = list("brays.")
 	emote_see = list("shakes its head.", "stamps a foot.", "glares around.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 4)
 	response_help_continuous  = "pets"
@@ -134,7 +134,7 @@
 	emote_hear = list("brays.")
 	emote_see = list("shakes its head.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 6)
 	response_help_continuous  = "pets"
@@ -516,7 +516,7 @@
 	emote_see = list("pecks at the ground.","flaps its tiny wings.")
 	density = FALSE
 	speak_chance = 2
-	turns_per_move = 2
+	seconds_per_wander = 2
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/chicken = 1)
 	response_help_continuous  = "pets"
 	response_help_simple = "pet"
@@ -571,7 +571,7 @@
 	emote_see = list("pecks at the ground.","flaps its wings viciously.")
 	density = FALSE
 	speak_chance = 2
-	turns_per_move = 3
+	seconds_per_wander = 3
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/chicken = 2)
 	var/egg_type = /obj/item/reagent_containers/food/snacks/egg
 	var/food_type = /obj/item/reagent_containers/food/snacks/grown/wheat
@@ -705,7 +705,7 @@
 	emote_hear = list("brays.")
 	emote_see = list("shakes its head.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	response_help_continuous  = "pets"
 	response_help_simple = "pet"
@@ -751,7 +751,7 @@
 	emote_hear = list("chatters.")
 	emote_see = list("shakes its head.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	response_help_continuous  = "pets"
 	response_help_simple = "pet"
@@ -793,7 +793,7 @@
 	emote_hear = list("roars.")
 	emote_see = list("shakes its head.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	response_help_continuous  = "pets"
 	response_help_simple = "pet"
@@ -833,7 +833,7 @@
 	emote_hear = list("does some sort of insane horse sound.")
 	emote_see = list("perks its ears up.")
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 200
 	maxHealth = 200
@@ -879,7 +879,7 @@
 	emote_hear = list("The engine rumbles quietly.")
 	emote_see = list("The engine purrs loudly.")
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 75
 	maxHealth = 75 //Probably not the most durable piece of work. (equal in loss to the increase in speed)
@@ -931,7 +931,7 @@
 	emote_hear = list("does some sort of insane horse sound.")
 	emote_see = list("perks its ears up.")
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 100
 	maxHealth = 100
@@ -975,7 +975,7 @@
 	emote_hear = list("perks its head up.")
 	emote_see = list("stares.")
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 150
 	maxHealth = 150
@@ -1029,7 +1029,7 @@
 	emote_hear = list("rubs it mandibles together.")
 	emote_see = list("stares, with all 8 eyes.")
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 150
 	maxHealth = 150
@@ -1081,7 +1081,7 @@
 	emote_hear = list("bares it's teeth and snarls.")
 	emote_see = list("glares around.")
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 300 //More tanky mount
 	maxHealth = 300
@@ -1146,7 +1146,7 @@
 		"perks its ears up."
 		)
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 100
 	maxHealth = 100
@@ -1209,7 +1209,7 @@
 	ride_move_delay = 1.8
 	health = 500
 	maxHealth = 500
-	turns_per_move = -1
+	seconds_per_wander = -1
 	see_in_dark = 6
 	response_help_continuous  = "pets"
 	response_help_simple = "pet"
@@ -1249,7 +1249,7 @@
 	emote_hear = list("makes a soft friendly chirp noise.")
 	emote_see = list("scratches at the ground.")
 	speak_chance = 1
-	turns_per_move = -1 //no random movement
+	seconds_per_wander = -1 //no random movement
 	see_in_dark = 6
 	health = 200
 	maxHealth = 200
@@ -1475,7 +1475,7 @@
 	icon_dead = "deer_dead"
 	icon_gib = "radstag_gib"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	resize = 0.7
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 4, /obj/item/stack/sheet/sinew = 2, /obj/item/stack/sheet/animalhide/radstag = 2, /obj/item/stack/sheet/bone = 2)
@@ -1517,7 +1517,7 @@
 	emote_hear = list("brays.")
 	emote_see = list("shakes its head.", "stamps a foot.", "glares around.", "grunts.")
 	speak_chance = 1
-	turns_per_move = 5
+	seconds_per_wander = 5
 	see_in_dark = 6
 	guaranteed_butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 6, /obj/item/stack/sheet/sinew = 2, /obj/item/stack/sheet/bone = 3)
 	butcher_difficulty = 1

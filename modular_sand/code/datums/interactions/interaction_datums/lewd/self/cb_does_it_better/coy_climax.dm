@@ -25,7 +25,10 @@
 		'modular_coyote/sound/lewd/sexslide9.wav',
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
-	user_lust_mult = 4 
+	user_lust_mult = 4
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 //////////////
 //	Femgasm///
@@ -55,6 +58,9 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ///////////////////////
 //	Creampie them///
@@ -84,6 +90,12 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 ///////////////////////
 //	Creampie womb///
@@ -113,6 +125,12 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_UTERUS,
+	)
 
 ///////////////////////
 //	Creampie Mouth///
@@ -142,6 +160,10 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	
 
 ///////////////////////
 //	Creampie Throat///
@@ -171,6 +193,9 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
 
 ///////////////////////
 //	Creampie Cleavage///
@@ -200,6 +225,12 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_BREASTS,
+	)
 
 ///////////////////////
 //	Creampie Thighs///
@@ -229,6 +260,12 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	target_required_parts = list(
+		MERPNEED_LEG,
+	)
 
 ///////////////////////
 //	Creampie Butt///
@@ -258,6 +295,10 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_PENIS,
+	)
+	
 
 //////////////
 //	Squirt on face///
@@ -287,6 +328,10 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
+
 
 //////////////
 //	Squirt on chest///
@@ -316,6 +361,9 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 //////////////
 //	Squirt on lap///
@@ -345,6 +393,9 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 //////////////
 //	Squirt on surface///
@@ -374,6 +425,9 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	user_required_parts = list(
+		MERPNEED_VAGINA,
+	)
 
 //////////////
 //	Oral Fixation Climax///
@@ -403,3 +457,4 @@
 		'modular_coyote/sound/lewd/sexslide10.wav',
 	) // frumf, frumf
 	user_lust_mult = 4 
+	

@@ -14,7 +14,7 @@
 	icon_living = "raider_melee"
 	icon_dead = "raider_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	mob_armor = ARMOR_VALUE_RAIDER_LEATHER_JACKET
 	maxHealth = 80
 	health = 80
@@ -38,7 +38,7 @@
 	waddle_side_time = 1
 	retreat_distance = 0 //mob retreats 1 tile when in min distance
 	minimum_distance = 0 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	variation_list = list(
 		MOB_NAME_FROM_GLOBAL_LIST(\
@@ -113,7 +113,7 @@
 	move_to_delay = 2.8 //faster than average, but not a lot
 	retreat_distance = 1 //mob retreats 1 tile when in min distance
 	minimum_distance = 1 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	ranged_cooldown_time = 2 SECONDS
 	auto_fire_delay = GUN_AUTOFIRE_DELAY_NORMAL
@@ -230,7 +230,7 @@
 	move_to_delay = 4.0 //faster than average, but not a lot
 	retreat_distance = 4 //mob retreats 1 tile when in min distance
 	minimum_distance = 2 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	despawns_when_lonely = FALSE
 	important = TRUE
@@ -666,7 +666,7 @@
 	icon_living = "cult_axeghoul"
 	icon_dead = "cult_axeghoul_dead"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	turns_per_move = 5
+	seconds_per_wander = 5
 	mob_armor = ARMOR_VALUE_RAIDER_LEATHER_JACKET
 	maxHealth = 80
 	health = 80
@@ -690,7 +690,7 @@
 	waddle_side_time = 1
 	retreat_distance = 0 //mob retreats 1 tile when in min distance
 	minimum_distance = 0 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 
 /mob/living/simple_animal/hostile/raider/cultist/ranged
@@ -710,7 +710,7 @@
 	move_to_delay = 2.8 //faster than average, but not a lot
 	retreat_distance = 4 //mob retreats 1 tile when in min distance
 	minimum_distance = 2 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	ranged_cooldown_time = 2 SECONDS
 	auto_fire_delay = GUN_AUTOFIRE_DELAY_NORMAL
@@ -746,7 +746,7 @@
 	move_to_delay = 2.8 //faster than average, but not a lot
 	retreat_distance = 4 //mob retreats 1 tile when in min distance
 	minimum_distance = 2 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	ranged_cooldown_time = 4 SECONDS
 	auto_fire_delay = GUN_AUTOFIRE_DELAY_SLOW
@@ -785,7 +785,7 @@
 	move_to_delay = 2.8 //faster than average, but not a lot
 	retreat_distance = 4 //mob retreats 1 tile when in min distance
 	minimum_distance = 2 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	ranged_cooldown_time = 1 SECONDS
 	auto_fire_delay = GUN_AUTOFIRE_DELAY_FAST
@@ -823,7 +823,7 @@
 	move_to_delay = 2.8 //faster than average, but not a lot
 	retreat_distance = 4 //mob retreats 1 tile when in min distance
 	minimum_distance = 2 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	ranged_cooldown_time = 2 SECONDS
 	auto_fire_delay = GUN_AUTOFIRE_DELAY_FAST
@@ -861,7 +861,7 @@
 	move_to_delay = 2.8 //faster than average, but not a lot
 	retreat_distance = 4 //mob retreats 1 tile when in min distance
 	minimum_distance = 2 //Mob pushes up to melee, then backs off to avoid player attack?
-	aggro_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
+	aggroed_vision_range = 6 //mob waits to attack if the player chooses to close distance, or if the player attacks first.
 	vision_range = 8 //will see the player at max view range, and communicate that they've been seen but won't aggro unless they get closer.
 	ranged_cooldown_time = 2 SECONDS
 	auto_fire_delay = GUN_AUTOFIRE_DELAY_FAST

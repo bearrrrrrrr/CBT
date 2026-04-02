@@ -52083,7 +52083,7 @@
 /mob/living/simple_animal/hostile/securitron/sentrybot{
 	faction = list("raider");
 	name = "Robot of the Shack";
-	aggro_vision_range = 3;
+	aggroed_vision_range = 3;
 	desc = "A heavily damaged Pre-Fall sentry bot.  This ones vision sensor looks like someone spraypainted it.";
 	health = 80
 	},

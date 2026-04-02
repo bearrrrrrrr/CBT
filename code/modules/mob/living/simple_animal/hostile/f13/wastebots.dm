@@ -103,7 +103,7 @@
 
 /mob/living/simple_animal/hostile/handy/nsb //NSB + Raider Bunker specific
 	name = "mr.handy"
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	faction = list("raider")
 	obj_damage = 300
 
@@ -196,7 +196,7 @@
 
 /mob/living/simple_animal/hostile/handy/gutsy/nsb //NSB + Raider Bunker specific
 	name = "mr. gutsy"
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	faction = list("raider")
 	obj_damage = 300
 
@@ -301,7 +301,7 @@
 
 /mob/living/simple_animal/hostile/handy/robobrain/nsb //NSB + Raider Bunker specific
 	name = "robobrain"
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	faction = list("raider")
 	can_ghost_into = FALSE
 	obj_damage = 300
@@ -337,7 +337,7 @@
 	minimum_distance = 1
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 7
+	aggroed_vision_range = 7
 	//tiles within they start attacking, doesn't count the mobs tile
 
 	vision_range = 8
@@ -427,7 +427,7 @@
 
 /mob/living/simple_animal/hostile/handy/protectron/nsb //NSB + Raider Bunker specific
 	name = "protectron"
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	can_ghost_into = FALSE
 	faction = list("raider")
 	obj_damage = 300
@@ -517,7 +517,7 @@
 
 /mob/living/simple_animal/hostile/handy/assaultron/nsb //NSB + Raider Bunker specific.
 	name = "assaultron"
-	aggro_vision_range = 15
+	aggroed_vision_range = 15
 	faction = list("raider")
 	obj_damage = 300
 	can_ghost_into = FALSE

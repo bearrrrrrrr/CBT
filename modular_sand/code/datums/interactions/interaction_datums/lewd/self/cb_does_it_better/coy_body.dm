@@ -36,7 +36,9 @@
 	) // frumf, frumf
 	user_lust_mult = 0.3
 	lust_go_to = LUST_TARGET
-
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 ///////////////////
 //Nipple Bite 3A2//
@@ -132,6 +134,9 @@
 		'sound/weapons/thudswoosh.ogg' // grab grab throw
 	) // frumf, frumf
 	user_lust_mult = 0.3
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
 
 ////////////////
 // Leg Wrap 3A5//
@@ -163,6 +168,9 @@
 	) // frumf, frumf
 	user_lust_mult = 0.3
 	lust_go_to = LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_LEG,
+	)
 
 ////////////////////
 //Tail Bap 3A6//
@@ -194,6 +202,10 @@
 		'sound/effects/rustle5.ogg',
 	) // frumf, frumf
 	user_lust_mult = 0
+	user_required_parts = list(
+		MERPNEED_TAIL,
+	)
+	
 
 ////////////////
 // Titplay 3A7//
@@ -226,6 +238,12 @@
 	user_lust_mult = 0.4
 	target_lust_mult = 0.4
 	lust_go_to = LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_BREASTS,
+	)
 
 ////////////////
 // Titsqueeze 3A7//
@@ -258,3 +276,9 @@
 	user_lust_mult = 0.4
 	target_lust_mult = 0.4
 	lust_go_to = LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		MERPNEED_ARM,
+	)
+	target_required_parts = list(
+		MERPNEED_BREASTS,
+	)

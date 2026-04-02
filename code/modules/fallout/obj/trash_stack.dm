@@ -62,17 +62,25 @@
 	var/ukey = ckey(user?.ckey)
 	if(!ukey)
 		to_chat(user, span_alert("You need a ckey to search the trash! Gratz on not having a ckey, tell Lagg (a coder) about it!"))
+	if(doing_something(user))
+		to_chat(user, span_alert("You're already doing something!"))
+		return
 	if(ukey in loot_players)
 		to_chat(user, span_notice("You already have looted [src]."))
 		return
-	if(!rifling)
-		playsound(get_turf(src), 'sound/f13effects/loot_trash.ogg', 100, TRUE, 1)
+	if(rifling)
+		to_chat(user, span_alert("Someone is already rifling through that trash pile!"))
+		return
+	playsound(get_turf(src), 'sound/f13effects/loot_trash.ogg', 100, TRUE, 1)
 	to_chat(user, span_smallnoticeital("You start picking through [src]...."))
 	rifling = TRUE
-	if(!do_mob(user, src, 5 SECONDS))
-		rifling = FALSE
-		return
+	start_doing_something(user, 5 SECONDS)
+	var/succ = do_mob(user, src, 5 SECONDS)
+	stop_doing_something(user)
 	rifling = FALSE
+	if(!succ)
+		to_chat(user, span_alert("You were interrupted!"))
+		return
 	if(ukey in loot_players)
 		to_chat(user, span_notice("You already have looted [src]."))
 		return

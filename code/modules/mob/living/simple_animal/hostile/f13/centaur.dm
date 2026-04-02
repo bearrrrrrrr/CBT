@@ -38,12 +38,12 @@
 	minimum_distance = 0 //Mob pushes up to melee, leading with its ranged attacks to soften up player.
 	// how close you can get before they try to pull back
 
-	aggro_vision_range = 7 //Will start attacking within player sight, but gives wiggle room to avoid if moving slow and carefully
+	aggroed_vision_range = 7 //Will start attacking within player sight, but gives wiggle room to avoid if moving slow and carefully
 	//tiles within they start attacking
 
 	vision_range = 7 //will start attacking within player sight, but like aggro gives wiggle room.  So they just don't see players outside of 7 tiles and start screeching.
 	//tiles within they start making noise
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speak_emote = list("growls")
 	//emote_see = list("screeches", "screams", "howls", "bellows", "flails", "fidgets", "festers")
 	a_intent = INTENT_HARM

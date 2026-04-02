@@ -57,10 +57,10 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 /obj/effect/proc_holder/proc/Trigger(mob/user)
 	return TRUE
 
-/obj/effect/proc_holder/proc/InterceptClickOn(mob/living/caller, params, atom/A)
-	if(caller.ranged_ability != src || ranged_ability_user != caller) //I'm not actually sure how these would trigger, but, uh, safety, I guess?
-		to_chat(caller, span_warning("<b>[caller.ranged_ability.name]</b> has been disabled."))
-		caller.ranged_ability.remove_ranged_ability()
+/obj/effect/proc_holder/proc/InterceptClickOn(mob/living/the_one_who_called, params, atom/A)
+	if(the_one_who_called.ranged_ability != src || ranged_ability_user != the_one_who_called) //I'm not actually sure how these would trigger, but, uh, safety, I guess?
+		to_chat(the_one_who_called, span_warning("<b>[the_one_who_called.ranged_ability.name]</b> has been disabled."))
+		the_one_who_called.ranged_ability.remove_ranged_ability()
 		return TRUE //TRUE for failed, FALSE for passed.
 	return FALSE
 

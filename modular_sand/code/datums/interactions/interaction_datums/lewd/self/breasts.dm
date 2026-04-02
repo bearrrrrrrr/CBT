@@ -6,6 +6,12 @@
 	max_distance = 0
 	write_log_user = "groped own breasts"
 	write_log_target = null
+	user_required_parts = list(
+		MERPNEED_ARM
+	)
+	target_required_parts = list(
+		MERPNEED_BREASTS
+	)
 
 	help_messages = list(
 		"XU_NAME gently gropes XU_THEIR breast",
@@ -29,46 +35,6 @@
 	user_lust_mult = 1.0 // this ONE trick will make you cum in 5 seconds! doctors hate it!
 	lust_go_to = LUST_USER | LUST_TARGET
 
-	additional_details = list(
-		list(
-			"info" = "You can fill a container if you hold it in your hand or pull it",
-			"icon" = "flask",
-			"color" = "transparent"
-			)
-	)
-/*
-/datum/interaction/lewd/titgrope_self/do_action(mob/living/user, mob/living/target, discrete = FALSE, list/extra = list())
-	var/obj/item/reagent_containers/liquid_container
-
-	var/obj/item/cached_item = user.get_active_held_item()
-	if(istype(cached_item, /obj/item/reagent_containers))
-		liquid_container = cached_item
-	else
-		cached_item = user.pulling
-		if(istype(cached_item, /obj/item/reagent_containers))
-			liquid_container = cached_item
-
-
-	if(liquid_container)
-
-		var/obj/item/organ/genital/breasts/milkers = user.getorganslot(ORGAN_SLOT_BREASTS)
-		var/milktype = milkers?.fluid_id
-
-		// if(milkers && milktype)
-		// 	var/modifier
-		// 	switch(milkers.size)
-		// 		if(3 to 5)
-		// 			modifier = 2
-		// 		if(6 to 8)
-		// 			modifier = 3
-		// 		else
-		// 			if(milkers.size_to_state() in GLOB.breast_values)
-		// 				modifier = clamp(GLOB.breast_values[milkers.size_to_state()] - 5, 0, INFINITY)
-		// 			else
-		// 				modifier = 1
-		liquid_container.reagents.add_reagent(milktype, rand(1,3))
-*/
-
 /datum/interaction/lewd/self_nipsuck
 	description = "Self/Body - Suck your own nips."
 	require_user_breasts = REQUIRE_ANY
@@ -85,26 +51,10 @@
 	)
 	user_lust_mult = 1
 	lust_go_to = LUST_USER | LUST_TARGET
+	user_required_parts = list(
+		
+	)
+	target_required_parts = list(
+		MERPNEED_BREASTS
+	)
 
-/datum/interaction/lewd/self_nipsuck/interaction_message(mob/living/user, mob/living/target)
-	var/obj/item/organ/genital/breasts/milkers = user.getorganslot(ORGAN_SLOT_BREASTS)
-	var/milktype = milkers?.fluid_id
-	var/modifier
-
-	if(!milkers || !milktype)
-		return
-
-
-	// var/milktext = milk.name
-
-	switch(milkers.size)
-		if("c", "d", "e")
-			modifier = 2
-		if("f", "g", "h")
-			modifier = 3
-		else
-			if(milkers.size in GLOB.breast_values)
-				modifier = clamp(GLOB.breast_values[milkers.size] - 5, 0, INFINITY)
-			else
-				modifier = 1
-	user.reagents.add_reagent(milktype, rand(1,3 * modifier) * user.get_fluid_mod(milkers)) //SPLURT edit

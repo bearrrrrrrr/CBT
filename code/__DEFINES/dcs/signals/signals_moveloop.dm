@@ -5,6 +5,7 @@
 ///from [/datum/move_loop/process] ():
 #define COMSIG_MOVELOOP_PREPROCESS_CHECK "moveloop_preprocess_check"
 	#define MOVELOOP_SKIP_STEP (1<<0)
+	#define MOVELOOP_KILL_PATH_AND_GIVE_UP (1<<1)
 ///from [/datum/move_loop/process] (succeeded, visual_delay):
 #define COMSIG_MOVELOOP_POSTPROCESS "moveloop_postprocess"
 //from [/datum/move_loop/has_target/jps/recalculate_path] ():

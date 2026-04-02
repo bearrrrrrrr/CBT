@@ -24,7 +24,7 @@
 	icon_gib = "syndicate_gib"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	speak_chance = 0
-	turns_per_move = 5
+	seconds_per_wander = 5
 	speed = 0
 	robust_searching = 1
 	maxHealth = 100

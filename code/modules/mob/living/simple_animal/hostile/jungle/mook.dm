@@ -27,7 +27,7 @@
 	robust_searching = TRUE
 	attack_sound = 'sound/weapons/rapierhit.ogg'
 	death_sound = 'sound/voice/mook_death.ogg'
-	aggro_vision_range = 8 //A little more aggressive once in combat to balance out their really low HP
+	aggroed_vision_range = 8 //A little more aggressive once in combat to balance out their really low HP
 	var/attack_state = MOOK_ATTACK_NEUTRAL
 	var/struck_target_leap = FALSE
 

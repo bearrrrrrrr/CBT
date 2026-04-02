@@ -56,14 +56,14 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/plasticflaps/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
-	if(isliving(caller))
-		if(isbot(caller))
+/obj/structure/plasticflaps/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/the_one_who_called)
+	if(isliving(the_one_who_called))
+		if(isbot(the_one_who_called))
 			return TRUE
 
-		// var/mob/living/living_caller = caller
-		// var/ventcrawler = HAS_TRAIT(living_caller, TRAIT_VENTCRAWLER_ALWAYS) || HAS_TRAIT(living_caller, TRAIT_VENTCRAWLER_NUDE)
-		// if(!ventcrawler && living_caller.mob_size != MOB_SIZE_TINY)
+		// var/mob/living/living_the_one_who_called = the_one_who_called
+		// var/ventcrawler = HAS_TRAIT(living_the_one_who_called, TRAIT_VENTCRAWLER_ALWAYS) || HAS_TRAIT(living_the_one_who_called, TRAIT_VENTCRAWLER_NUDE)
+		// if(!ventcrawler && living_the_one_who_called.mob_size != MOB_SIZE_TINY)
 
 
 /obj/structure/plasticflaps/CanAllowThrough(atom/movable/A, border_dir)

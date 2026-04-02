@@ -14,7 +14,7 @@
 	faction = list("mining", "ashwalker")
 	density = FALSE
 	speak_chance = 1
-	turns_per_move = 8
+	seconds_per_wander = 8
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	move_to_delay = 15

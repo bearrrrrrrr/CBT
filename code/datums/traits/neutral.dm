@@ -58,6 +58,7 @@
 	name = "Snob"
 	desc = "You care about the finer things, if a room doesn't look nice its just not really worth it, is it?"
 	value = 0
+	disabled = TRUE
 	category = QUIRK_CATEGORY_EMOTIONAL_QUIRKS
 	mechanics = "WIP In a perfect world this would adjust your mood on the beauty rating of the room you're in, in reality it does nearly nothing. Gives you a good reason to whine about the feng shui. WIP"
 	conflicts = list(
@@ -93,6 +94,7 @@
 	name = "Ananas Affinity"
 	desc = "You find yourself greatly enjoying fruits of the ananas genus. You can't seem to ever get enough of their sweet goodness!"
 	value = 0
+	disabled = TRUE
 	category = QUIRK_CATEGORY_FOOD_QUIRKS
 	mechanics = "You get a mood boost from eating pineapples."
 	conflicts = list(
@@ -119,6 +121,7 @@
 	name = "Ananas Aversion"
 	desc = "You find yourself greatly detesting fruits of the ananas genus. Serious, how the hell can anyone say these things are good? And what kind of madman would even dare putting it on a pizza!?"
 	value = 0
+	disabled = TRUE
 	category = QUIRK_CATEGORY_FOOD_QUIRKS
 	mechanics = "You really just hate eating pineapples."
 	conflicts = list(
@@ -479,25 +482,25 @@
 		H.remove_language(/datum/language/pokemon)
 
 /datum/quirk/in_heat
-	name = "ERP Receptive"
+	name = "In Heat"
 	desc = "Your character, for whatever reason, is PASSIVELY seeking out attention from those who match your OOC Prefences. Remember to set your OOC notes!"
 	value = 0
 	category = QUIRK_CATEGORY_BAWDY_QUIRKS
-	disabled = TRUE
+	disabled = FALSE
 	mechanics = "This trait is a flag for people who have ERP seeking to know that you, right now, are seeking ERP. It's a simple concept, if you just have this quirk you are not going out of our way to look for it, but if it stumbles into your lap well that'd be fine, right?"
 	conflicts = list()
 	mob_trait = TRAIT_IN_HEAT
-	human_only = FALSE
+
 
 /datum/quirk/heat
-	name = "ERP Seeking"
+	name = "In Rut"
 	desc = "Your character, for whatever reason, is ACTIVELY seeking out attention from those who match your OOC Preferences. Remember to check peoples OOC notes!"
 	value = 0
 	category = QUIRK_CATEGORY_PERCEPTIVE_QUIRKS
 	mechanics = "This Quirk allows you to see other players ERP related quirks when you examine them. Letting you know, at a glance, some of their prefs if they have them set."
 	conflicts = list()
 	mob_trait = TRAIT_HEAT_DETECT
-	human_only = FALSE
+
 
 /datum/quirk/shy
 	name = "OOCly Shy"

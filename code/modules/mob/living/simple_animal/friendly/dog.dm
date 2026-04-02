@@ -15,7 +15,7 @@
 	faction = list("dog", "neutral")
 	see_in_dark = 5
 	speak_chance = 1
-	turns_per_move = 10
+	seconds_per_wander = 10
 	var/held_icon = "corgi"
 	can_ghost_into = TRUE
 
@@ -352,7 +352,7 @@
 		icon_living = "old_corgi"
 		icon_dead = "old_corgi_dead"
 		desc = "At a ripe old age of [record_age] Ian's not as spry as he used to be, but he'll always be the HoP's beloved corgi." //RIP
-		turns_per_move = 20
+		seconds_per_wander = 20
 		RemoveElement(/datum/element/mob_holder, held_icon)
 		AddElement(/datum/element/mob_holder, "old_corgi")
 

@@ -13,7 +13,7 @@ SUBSYSTEM_DEF(temperament)
 		var/datum/temperament/T = d
 		if(initial(T.dont_use))
 			continue
-		T = new()
+		T = new d()
 		temperaments[d] = T
 	..()
 	to_chat(world, span_greenannounce("Initialized [LAZYLEN(temperaments)] temperaments and/or builds! =3"))
@@ -95,18 +95,19 @@ SUBSYSTEM_DEF(temperament)
 /datum/controller/subsystem/temperament/proc/get_builds(Z)
 	return get_temperaments(Z, TRUE) // hehehe
 
-/datum/controller/subsystem/temperament/proc/get_temperaments_for_prefs(Z, builds_instead = FALSE)
-	var/list/temps = builds_instead ? get_builds(Z) : get_temperaments(Z)
-	if(!LAZYLEN(temps))
-		return list()
+/datum/controller/subsystem/temperament/proc/get_temperaments_for_prefs(builds_instead = FALSE)
 	// format: list("cool guy" = /datum/temperament/reallychillguy, "buxom and soft" = /datum/temperament/build/debug_2, etc)
 	var/list/ret = list()
-	for(var/datum/temperament/T in temps)
-		ret[T.name] = T
+	for(var/t in temperaments)
+		var/datum/temperament/T = temperaments[t]
+		if(builds_instead && T.temp_or_build == "build")
+			ret[T.name] = T
+		else if(!builds_instead && T.temp_or_build == "temperament")
+			ret[T.name] = T
 	return ret
 
-/datum/controller/subsystem/temperament/proc/get_builds_for_prefs(Z)
-	return get_temperaments_for_prefs(Z, TRUE) // hehe again
+/datum/controller/subsystem/temperament/proc/get_builds_for_prefs()
+	return get_temperaments_for_prefs(TRUE) // hehe again
 
 /datum/controller/subsystem/temperament/proc/get_temperament_textblock(Z)
 	var/list/temps = get_temperaments(Z)
@@ -310,9 +311,6 @@ SUBSYSTEM_DEF(temperament)
 	spanuse = "clown"
 	temp_or_build = "temperament"
 
-/datum/temperament/build
-	temp_or_build = "build"
-
 /datum/temperament/build/debug_1
 	name = "Super buttsome individual"
 	examine_text = "one HUGE awesome thing about %THEM is that %THEYRE super buttsome and everyone loves %THEM for that buttsome energy"
@@ -324,4 +322,550 @@ SUBSYSTEM_DEF(temperament)
 	examine_text = "WOW they got them serious %THEYRE %THEIR %THEY %SEEMS %ARE %DUDER %NAME %SPECIES %GENDER badoneroonies"
 	spanuse = "clown"
 	temp_or_build = "temperament"
+
+/// cus for SOME REASON I CANT TICK THE DAMN FILES, so theyre here
+
+/* 
+ * I love grammar! heres a list of usable tokens for the temperament text:
+ * %THEYRE  - he's/she's/they're
+ * %THEIR   - his/her/their
+ * %THEY    - he/she/they
+ * %NAME    - the mob's name
+ * %SPECIES - the mob's species
+ * %GENDER  - the mob's gender
+ * %SEEMS   - seems/seems/seem
+ * %ARE     - is/is/are
+ * %HAS     - has/has/have
+ * %DUDER   - guy/gal/duder
+ * 
+ * Tense is assumed to be something like "They seem like they're a really chill guy who low key dgaf"
+ */
+
+/// builds are prefixed with a pronounified "They are "
+
+/datum/temperament/build/buxom
+	name = "Buxom"
+	examine_text = "%THEY %ARE a bit heavy chested"
+	spanuse = "love"
+
+/datum/temperament/build/broadshouldered
+	name = "Broad Shouldered"
+	examine_text = "%THEIR shoulders are wide and sturdy"
+	spanuse = "love"
+
+/datum/temperament/build/slender
+	name = "Slender"
+	examine_text = "%THEY %HAVE a thin, lightly built frame"
+	spanuse = "love"
+
+/datum/temperament/build/athletic
+	name = "Athletic"
+	examine_text = "%THEY %APPEARS fit and athletic"
+	spanuse = "love"
+
+/datum/temperament/build/stocky
+	name = "Stocky"
+	examine_text = "%THEY %ARE short and solidly built"
+	spanuse = "love"
+
+/datum/temperament/build/lithe
+	name = "Lithe"
+	examine_text = "%THEY %ARE slim"
+	spanuse = "love"
+
+/datum/temperament/build/lean
+	name = "Lean"
+	examine_text = "%THEY %HAVE little excess mass"
+	spanuse = "love"
+
+/datum/temperament/build/muscular
+	name = "Muscular"
+	examine_text = "%THEIR muscles are clearly defined"
+	spanuse = "love"
+
+/datum/temperament/build/burly
+	name = "Burly"
+	examine_text = "%THEY %ARE large and powerfully built"
+	spanuse = "love"
+
+/datum/temperament/build/petite
+	name = "Petite"
+	examine_text = "%THEY %ARE small and delicately built"
+	spanuse = "love"
+
+/datum/temperament/build/willowy
+	name = "Willowy"
+	examine_text = "%THEY %ARE narrow framed"
+	spanuse = "love"
+
+/datum/temperament/build/heavyset
+	name = "Heavyset"
+	examine_text = "%THEY %HAVE a broad body with extra weight"
+	spanuse = "love"
+
+/datum/temperament/build/curvy
+	name = "Curvy"
+	examine_text = "%THEIR body has rounded, flowing lines"
+	spanuse = "love"
+
+/datum/temperament/build/gangly
+	name = "Gangly"
+	examine_text = "%THEY %ARE compact and strongly built"
+	spanuse = "love"
+
+/datum/temperament/build/husky
+	name = "Husky"
+	examine_text = "%THEY %ARE large with a sturdy frame"
+	spanuse = "love"
+
+/datum/temperament/build/compact
+	name = "Compact"
+	examine_text = "%THEY %ARE small but well-proportioned"
+	spanuse = "love"
+
+/datum/temperament/build/chiseled
+	name = "Chiseled"
+	examine_text = "%THEIR features are sharply defined"
+	spanuse = "love"
+
+/datum/temperament/build/softbuilt
+	name = "Soft-Built"
+	examine_text = "%THEIR body has gentle contours"
+	spanuse = "love"
+
+/datum/temperament/build/topheavy
+	name = "Top Heavy"
+	examine_text = "%THEY %CARRY more mass in their upper body"
+	spanuse = "love"
+
+/datum/temperament/build/bottomheavy
+	name = "Bottom Heavy"
+	examine_text = "%THEY %CARRY more mass in their hips and legs"
+	spanuse = "love"
+
+/datum/temperament/build/barrelchested
+	name = "Barrel Chested"
+	examine_text = "%THEIR chest is wide and deep"
+	spanuse = "love"
+
+/datum/temperament/build/narrowframed
+	name = "Narrow Framed"
+	examine_text = "%THEIR skeletal frame is slim"
+	spanuse = "love"
+
+/datum/temperament/build/widehipped
+	name = "Wide Hipped"
+	examine_text = "%THEIR hips are broader than average"
+	spanuse = "love"
+
+/datum/temperament/build/longtorsoed
+	name = "Long Torsoed"
+	examine_text = "%THEIR torso is longer than their legs"
+	spanuse = "love"
+
+/datum/temperament/build/longlegged
+	name = "Long Legged"
+	examine_text = "%THEIR legs are noticeably long"
+	spanuse = "love"
+
+/datum/temperament/build/shortlimbed
+	name = "Short Limbed"
+	examine_text = "%THEIR arms and legs are shorter in proportion"
+	spanuse = "love"
+
+/datum/temperament/build/delicateboned
+	name = "Delicate Boned"
+	examine_text = "%THEIR bones APPEARS fine and light"
+	spanuse = "love"
+
+/datum/temperament/build/solidlybuilt
+	name = "Solidly Built"
+	examine_text = "%THEY %APPEARS dense and durable"
+	spanuse = "love"
+
+/datum/temperament/build/hourglass
+	name = "Hourglass"
+	examine_text = "%THEIR waist is narrow"
+	spanuse = "love"
+
+/datum/temperament/build/rectanglebuilt
+	name = "Rectangle Built"
+	examine_text = "%THEIR chest, waist, and hips align evenly"
+	spanuse = "love"
+
+/datum/temperament/build/pearshaped
+	name = "Pear Shaped"
+	examine_text = "%THEIR hips are wider than their shoulders"
+	spanuse = "love"
+
+/datum/temperament/build/invertedtriangle
+	name = "Inverted Triangle"
+	examine_text = "%THEIR shoulders are wider than their hips"
+	spanuse = "love"
+
+/datum/temperament/build/thickthighed
+	name = "Thick Thighed"
+	examine_text = "%THEIR thighs are strong and full"
+	spanuse = "love"
+
+/datum/temperament/build/narrowwaisted
+	name = "Narrow Waisted"
+	examine_text = "%THEIR waist is noticeably slim"
+	spanuse = "love"
+
+/datum/temperament/build/densebuilt
+	name = "Densely Built"
+	examine_text = "%THEIR skeletal structure seems dense"
+	spanuse = "love"
+
+/datum/temperament/build/broad
+	name = "Broad"
+	examine_text = "%THEIR skeletal structure is wide"
+	spanuse = "love"
+
+/datum/temperament/build/lightlybuilt
+	name = "Lightly Built"
+	examine_text = "%THEY %LOOKS very light"
+	spanuse = "love"
+
+/datum/temperament/build/ruggedlybuilt
+	name = "Ruggedly Built"
+	examine_text = "%THEY %LOOKS pretty ruggedly built"
+	spanuse = "love"
+
+/datum/temperament/build/average
+	name = "Average"
+	examine_text = "%THEY %HAVE no extreme features"
+	spanuse = "love"
+
+/datum/temperament/build/plush
+	name = "Plush"
+	examine_text = "%THEY %ARE pleasantly plump and soft"
+	spanuse = "love"
+
+/datum/temperament/build/chubby
+	name = "Chubby"
+	examine_text = "%THEY %LOOKS pretty darn chubby"
+	spanuse = "love"
+
+/datum/temperament/build/fat
+	name = "Fat"
+	examine_text = "%THEY %LOOKS quite well-fed"
+	spanuse = "love"
+
+/datum/temperament/build/obese
+	name = "Obese"
+	examine_text = "%THEY %LOOKS exceptionally blubbery"
+	spanuse = "love"
+
+/datum/temperament/build/morbidlyobese
+	name = "Morbidly Obese"
+	examine_text = "%THEY %LOOKS extremely obese"
+	spanuse = "love"
+
+/datum/temperament/build/extremelybuxom
+	name = "Extremely Buxom"
+	examine_text = "%THEY %HAVE some extremely massive breasts"
+	spanuse = "love"
+
+/datum/temperament/build/morphable
+	name = "Morphable"
+	examine_text = "%THEIR body seems a bit amorphous"
+	spanuse = "love"
+
+/datum/temperament/build/swimmer
+	name = "Swimmer"
+	examine_text = "%THEY %HAVE a long, swimmer's body"
+	spanuse = "love"
+
+/datum/temperament/build/androgynous
+	name = "Androgynous"
+	examine_text = "%THEY %SEEMS rather androgynous"
+	spanuse = "love"
+
+/datum/temperament/build/masculinepresenting
+	name = "Masculine Presenting"
+	examine_text = "%THEY %SEEMS to be rather masculine-presenting"
+	spanuse = "love"
+
+/datum/temperament/build/femininepresenting
+	name = "Feminine Presenting"
+	examine_text = "%THEY %SEEMS to be rather feminine-presenting"
+	spanuse = "love"
+
+/datum/temperament/build/fluffy
+	name = "Fluffy"
+	examine_text = "%THEY %LOOKS soft and fluffy"
+	spanuse = "love"
+
+/datum/temperament/build/extremelyfluffy
+	name = "Extremely Fluffy"
+	examine_text = "%THEY %LOOKS REALLY soft and REALLY fluffy"
+	spanuse = "love"
+
+/datum/temperament/build/jacked
+	name = "Jacked"
+	examine_text = "%THEY %ARE absolutely RIPPED"
+	spanuse = "love"
+
+/datum/temperament/build/shortstack
+	name = "Shortstack"
+	examine_text = "%THEY is short and well filled out"
+	spanuse = "love"
+
+/datum/temperament/build/buttsum
+	name = "Buttsome"
+	examine_text = "%THEY got a butt built like a brick house"
+	spanuse = "love"
+
+/datum/temperament/build/extremelybuttsum
+	name = "EXTREMELY Buttsome"
+	examine_text = "%THEY has a rear end that might have its own gravity well"
+	spanuse = "love"
+
+/datum/temperament/build/flatchested
+	name = "Flat Chested"
+	examine_text = "%THEY is pretty flat chested"
+	spanuse = "love"
+
+/datum/temperament/build/flatassed
+	name = "Flat Assed"
+	examine_text = "%THEY has a flat rear end"
+	spanuse = "love"
+
+
+/* 
+ * I love grammar! heres a list of usable tokens for the temperament text:
+ * %THEYRE  - he's/she's/they're
+ * %THEIR   - his/her/their
+ * %THEY    - he/she/they
+ * %NAME    - the mob's name
+ * %SPECIES - the mob's species
+ * %GENDER  - the mob's gender
+ * %SEEMS   - seems/seems/seem
+ * %ARE     - is/is/are
+ * %HAS     - has/has/have
+ * %DUDER   - guy/gal/duder
+ * 
+ * Tense is assumed to be something like "They seem like they're a really chill guy who low key dgaf"
+ */
+
+/// they show up as [prefix] [examine_text]
+/datum/temperament/aggressive
+	name = "Aggressive"
+	prefix = "%THEY seem"
+	examine_text = "kind of aggressive, but it might be a front."
+	spanuse = "notice"
+
+/datum/temperament/anxious
+	name = "Anxious"
+	prefix = "%THEY seem"
+	examine_text = "kind of anxious and on edge!"
+	spanuse = "notice"
+
+/datum/temperament/bratty
+	name = "Bratty"
+	prefix = "%THEY seem"
+	examine_text = "kind of bratty and combative!"
+	spanuse = "notice"
+
+/datum/temperament/calm
+	name = "Calm"
+	prefix = "%THEY seem"
+	examine_text = "to be calm natured."
+	spanuse = "notice"
+
+/datum/temperament/confident
+	name = "Confident"
+	prefix = "%THEY seem"
+	examine_text = "confident, like %THEY really %KNOWS-AAA what %THEYRE doing."
+	spanuse = "notice"
+
+/datum/temperament/cuddly
+	name = "Cuddly"
+	prefix = "%THEY seem"
+	examine_text = "soft and squishable!"
+	spanuse = "notice"
+
+/datum/temperament/curious
+	name = "Curious"
+	prefix = "%THEY seem"
+	examine_text = "really curious about things."
+	spanuse = "notice"
+
+/datum/temperament/distracted
+	name = "Distracted"
+	prefix = "%THEY seem"
+	examine_text = "kind of distracted on other things!"
+	spanuse = "notice"
+
+/datum/temperament/dopey
+	name = "Dopey"
+	prefix = "%THEY seem"
+	examine_text = "a bit uh - well. A bit dopey. A bit not all there."
+	spanuse = "notice"
+
+/datum/temperament/dorky
+	name = "Dorky"
+	prefix = "%THEY seem"
+	examine_text = "a little socially awkward, but not maliciously so."
+	spanuse = "notice"
+
+/datum/temperament/eager
+	name = "Eager"
+	prefix = "%THEY seem"
+	examine_text = "eager!  Almost like a puppy."
+	spanuse = "notice"
+
+/datum/temperament/easygoing
+	name = "Easygoing"
+	prefix = "%THEY seem"
+	examine_text = "easy going, like life is just a-okay for them."
+	spanuse = "notice"
+
+/datum/temperament/flighty
+	name = "Flighty"
+	prefix = "%THEY seem"
+	examine_text = "very flighty, but they seem to enjoy the chase."
+	spanuse = "notice"
+
+/datum/temperament/flirty
+	name = "Flirty"
+	prefix = "%THEY seem"
+	examine_text = "kind of flirty and prone to teasing!"
+	spanuse = "notice"
+
+/datum/temperament/forward
+	name = "Forward"
+	prefix = "%THEY seem"
+	examine_text = "like %THEYRE willing to say what %THEYRE thinking."
+	spanuse = "notice"
+
+/datum/temperament/friendly
+	name = "Friendly"
+	prefix = "%THEY seem"
+	examine_text = "friendly!"
+	spanuse = "notice"
+
+/datum/temperament/gentle
+	name = "Gentle"
+	prefix = "%THEY seem"
+	examine_text = "to be quite gentle."
+	spanuse = "notice"
+
+/datum/temperament/gregarious
+	name = "Gregarious"
+	prefix = "%THEY seem"
+	examine_text = "kind of outgoing and prone to laughter!"
+	spanuse = "notice"
+
+/datum/temperament/indifferent
+	name = "Indifferent"
+	prefix = "%THEY seem"
+	examine_text = "kind of aloof and indifferent!"
+	spanuse = "notice"
+
+/datum/temperament/innocent
+	name = "Innocent"
+	prefix = "%THEY seem"
+	examine_text = "really innocent. How surprising."
+	spanuse = "notice"
+
+/datum/temperament/lazy
+	name = "Lazy"
+	prefix = "%THEY seem"
+	examine_text = "to be kind of lazy."
+	spanuse = "notice"
+
+/datum/temperament/lonely
+	name = "Lonely"
+	prefix = "%THEY seem"
+	examine_text = "to be kind of lonely, but approachable!"
+	spanuse = "notice"
+
+/datum/temperament/mature // mtndew
+	name = "Mature"
+	prefix = "%THEY seem"
+	examine_text = "very mature, in a sort of 'parenty' way."
+	spanuse = "notice"
+
+/datum/temperament/melancholic
+	name = "Melancholic"
+	prefix = "%THEY seem"
+	examine_text = "down, and in need of some love!"
+	spanuse = "notice"
+
+/datum/temperament/modest
+	name = "Modest"
+	prefix = "%THEY seem"
+	examine_text = "to be modest, in a way."
+	spanuse = "notice"
+
+/datum/temperament/naive
+	name = "Naive"
+	prefix = "%THEY seem"
+	examine_text = "to be naive."
+	spanuse = "notice"
+
+/datum/temperament/rebellious
+	name = "Rebellious"
+	prefix = "%THEY seem"
+	examine_text = "to have an aire of the rebellious to them."
+	spanuse = "notice"
+
+/datum/temperament/relaxed
+	name = "Relaxed"
+	prefix = "%THEY seem"
+	examine_text = "to just be very relaxed."
+	spanuse = "notice"
+
+/datum/temperament/ruffled
+	name = "Ruffled"
+	prefix = "%THEY seem"
+	examine_text = "a bit frazzled!"
+	spanuse = "notice"
+
+/datum/temperament/shy
+	name = "Shy"
+	prefix = "%THEY seem"
+	examine_text = "to be kinda shy, but approachable!"
+	spanuse = "notice"
+
+/datum/temperament/silly
+	name = "Silly"
+	prefix = "%THEY seem"
+	examine_text = "to be just kind of silly."
+	spanuse = "notice"
+
+/datum/temperament/smart
+	name = "Smart"
+	prefix = "%THEY seem"
+	examine_text = "smart. In a bookish kind of way."
+	spanuse = "notice"
+
+/datum/temperament/timid
+	name = "Timid"
+	prefix = "%THEY seem"
+	examine_text = "to be a bit timid."
+	spanuse = "notice"
+
+/datum/temperament/tired
+	name = "Tired"
+	prefix = "%THEY seem"
+	examine_text = "kind of tired and sleepy!"
+	spanuse = "notice"
+
+/datum/temperament/trustworthy
+	name = "Trustworthy"
+	prefix = "%THEY seem"
+	examine_text = "like the trustworthy sort! Probably."
+	spanuse = "notice"
+
+/datum/temperament/warm
+	name = "Warm"
+	prefix = "%THEY seem"
+	examine_text = "warm, physically or emotionally."
+	spanuse = "notice"
+
+
 

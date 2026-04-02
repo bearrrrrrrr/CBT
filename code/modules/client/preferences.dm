@@ -2547,38 +2547,38 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					TOGGLE_VAR(show_health_smilies)
 					return 1
 				if("pick_temperament")
-					var/list/temperaments = SStemperament.get_temperaments_for_prefs(src)
+					var/list/temperaments = SStemperament.get_temperaments_for_prefs()
 					var/new_temperament = input(
 						user, 
-						"Choose the general 'air' about your character. Fenny, add the description for this thing here.",
+						"Choose the general 'air' about your character. FENNY HEY LISTEN, ADD THE DESCRIPTION FOR THIS THING HERE.",
 						"Temperament") as null|anything in temperaments
 					if(isnull(new_temperament))
 						to_chat(user, "Never mind!")
 						return
-					var/temp_path = temperaments[new_temperament]
-					if(!ispath(temp_path))
+					var/datum/temperament/tem = temperaments[new_temperament]
+					if(!istype(tem, /datum/temperament))
 						to_chat(user, "Hmm, looks like that temperament isn't actually a thing. Try again later!")
 						return
-					temperaments_and_builds |= temp_path
+					temperaments_and_builds |= tem.type
 					if(isliving(parent.mob))
 						SStemperament.update_temps(parent.mob)
 						temperaments_and_builds_needs_update = FALSE
 					else
 						temperaments_and_builds_needs_update = TRUE
 				if("pick_build")
-					var/list/builds = SStemperament.get_builds_for_prefs(src)
+					var/list/builds = SStemperament.get_builds_for_prefs()
 					var/new_build = input(
 						user, 
-						"Choose the general 'build' about your character. Fenny, add the description for this thing here.",
+						"Choose the general 'build' about your character. FENNY HEY LISTEN, ADD THE DESCRIPTION FOR THIS THING HERE.",
 						"Build") as null|anything in builds
 					if(isnull(new_build))
 						to_chat(user, "Never mind!")
 						return
-					var/temp_path = builds[new_build]
-					if(!ispath(temp_path))
+					var/datum/temperament/B = builds[new_build]
+					if(!istype(B, /datum/temperament))
 						to_chat(user, "Hmm, looks like that build isn't actually a thing. Try again later!")
 						return
-					temperaments_and_builds |= temp_path
+					temperaments_and_builds |= B.type
 					if(isliving(parent.mob))
 						SStemperament.update_temps(parent.mob)
 						temperaments_and_builds_needs_update = FALSE

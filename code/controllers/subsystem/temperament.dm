@@ -104,7 +104,8 @@ SUBSYSTEM_DEF(temperament)
 	var/list/texts = list()
 	for(var/i in 1 to LAZYLEN(builds))
 		var/datum/temperament/build/B = builds[i]
-		texts += B.generate_text_for(Z, i != 1)
+		var/txt = B.generate_text_for(Z, i != 1)
+		texts += txt
 	var/build_text = capitalize("[english_list(texts, and_text = ", and ")]")
 	return build_text
 
@@ -125,6 +126,13 @@ SUBSYSTEM_DEF(temperament)
 	if(has_temps)
 		msg += temperament_text
 	return msg
+
+/// if a string doesnt end with some kind of punctuation, add a period to the end!
+/proc/end_with_a_period(txt)
+	var/last_char = txt[LAZYLEN(txt)]
+	if(last_char != "." && last_char != "!" && last_char != "?")
+		return txt + "."
+	return txt
 
 /* 
  * I love grammar! heres a list of usable tokens for the temperament text:
@@ -262,7 +270,7 @@ SUBSYSTEM_DEF(temperament)
 	var/ex_text = SStemperament.pronounify(Z, examine_text)
 	decapitalize(ex_text)
 	colorize(ex_text)
-	return "[ex_text]"
+	return "[capitalize(ex_text)]"
 
 /datum/temperament/proc/colorize(textin)
 	return "<span class=\"[spanuse]\">[textin]</span>"

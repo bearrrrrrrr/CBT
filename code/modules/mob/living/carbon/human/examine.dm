@@ -95,8 +95,8 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 			obscure_name = TRUE
 
 	var/datum/preferences/P = extract_prefs(src)
-	. = list("<span class='info'>*---------*")
-	. += span_info("<font size=2>This is <EM>[!obscure_name ? name : "Unknown"]</EM>! [t_He] [t_is] a [dna.custom_species ? dna.custom_species : dna.species.name]!</font>")
+	. = list("<span class='green'><TT>►═════════════START═════════════◄</TT></span>")
+	. += span_big("<EM>[!obscure_name ? name : "Unknown"]</EM>! [t_He] [t_is] a [dna.custom_species ? dna.custom_species : dna.species.name]!")
 	if(P)
 		var/followers_clinic_full_of_big_strong_gay_dogs_in_it = SSchat.GetPicForMode(src, MODE_PROFILE_PIC)
 		var/pfp = followers_clinic_full_of_big_strong_gay_dogs_in_it
@@ -105,7 +105,7 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 
 	var/tnb = SStemperament.get_textblock_for(src)
 	if(tnb)
-		. += "[tnb]\n"
+		. += "[tnb]"
 
 	var/vampDesc = ReturnVampExamine(user) // Vamps recognize the names of other vamps.
 	var/vassDesc = ReturnVassalExamine(user) // Vassals recognize each other's marks.
@@ -568,129 +568,10 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 	if (length(msg))
 		. += span_warning("[msg.Join("")]")
 
-	if(HAS_TRAIT(src, TRAIT_JIGGLY_ASS))
-		. += span_love("[t_His] butt could use a firm smack.</span>")
-
-//adventure quirk examines
-	//bruiser
-	if(HAS_TRAIT(src, TRAIT_ADV_BRUISER))
-		. += span_purple("[t_He] looks like [t_He]'d beat something up!</span>")
-	//fighter
-	if(HAS_TRAIT(src, TRAIT_ADV_FIGHTER))
-		. += span_purple("[t_He] looks like a natural born fighter!</span>")
-	//gunner
-	if(HAS_TRAIT(src, TRAIT_ADV_GUNNER))
-		. += span_purple("[t_He] looks good with a gun!</span>")
-	//healer
-	if(HAS_TRAIT(src, TRAIT_ADV_HEALER))
-		. += span_purple("[t_He] looks like [t_He] know's how to fix people up!</span>")
-	//rogue
-	if(HAS_TRAIT(src, TRAIT_ADV_ROGUE))
-		. += span_purple("[t_He] looks quick and stealthy!</span>")
-	//tank
-	if(HAS_TRAIT(src, TRAIT_ADV_TANK))
-		. += span_purple("[t_He] looks tougher than nails!</span>")
-	//LFG
-	if(HAS_TRAIT(src, TRAIT_ADV_LFG))
-		. += span_purple("[t_He] is looking for someone to adventure with!</span>")
-
-//erp/rp term specification
-	//long term rp/erp
-	if(HAS_TRAIT(src, TRAIT_RPLONGTERM))
-		. += span_green("[t_He] wants long term RP/ERP relationships!</span>")
-	//short term
-	if(HAS_TRAIT(src, TRAIT_RPLONGTERM))
-		. += span_green("[t_He] wants short term RP/ERP relationships!</span>")
-
-
-//quick physical info
-	//big ass
-	if(HAS_TRAIT(src, TRAIT_BIGBUTT))
-		. += span_neovgre_small("[t_He] has a big backside!</span>")
-	//booba
-	if(HAS_TRAIT(src, TRAIT_BIGBOOBS))
-		. += span_neovgre_small("[t_He] has big boobs!</span>")
-	//balls
-	if(HAS_TRAIT(src, TRAIT_BIGBALLS))
-		. += span_neovgre_small("[t_He] has stuffed pants!</span>")
-	//weenus
-	if(HAS_TRAIT(src, TRAIT_BIGWEENIE))
-		. += span_neovgre_small("[t_He] might buy cucumbers!</span>")
-	
-	
-
-
-//The kissers
-	//anykisser
-	if(HAS_TRAIT(src, TRAIT_ERPANYKISSER))
-		. += span_love("[t_He]'d kiss just about anyone!</span>")
-
-	//boykisser
-	if(HAS_TRAIT(src, TRAIT_ERPBOYKISSER))
-		. += span_love("[t_He]'d prefer boys!</span>")
-
-	//girlkisser
-	if(HAS_TRAIT(src, TRAIT_ERPGIRLKISSER))
-		. += span_love("[t_He]'d prefer girls!</span>")
-
-//The positioners
-	//switch
-	if(HAS_TRAIT(src, TRAIT_ERPSWITCH))
-		. += span_love("[t_He] is a switch!</span>")
-	//top
-	if(HAS_TRAIT(src, TRAIT_ERPTOP))
-		. += span_love("[t_He] is a top!</span>")
-	//bottom
-	if(HAS_TRAIT(src, TRAIT_ERPBOTTOM))
-		. += span_love("[t_He] is a bottom!</span>")
-
-//The stylers
-	//no erp
-	if(HAS_TRAIT(src, TRAIT_NOERP))
-		. += span_clown("[t_He] doesn't ERP!</span>")
-	//vanilla
-	if(HAS_TRAIT(src, TRAIT_VANILLAERP))
-		. += span_clown("[t_He] prefers vanilla scenes!</span>")
-	//rough
-	if(HAS_TRAIT(src, TRAIT_ROUGHERP))
-		. += span_clown("[t_He] prefers rougher scenes!</span>")
-	//extreme
-	if(HAS_TRAIT(src, TRAIT_EXTREMEERP))
-		. += span_clown("[t_He] prefers extreme scenes!</span>")
-	//snuggler
-	if(HAS_TRAIT(src, TRAIT_SNUGGLER))
-		. += span_clown("[t_He] is a softy that wants snuggles for sure.")
-	//orally fixated
-	if(HAS_TRAIT(src, TRAIT_ORAL_FIXATION))
-		. += span_clown("[t_He] seems a bit orally fixated.")
-	//orally fixated
-	if(HAS_TRAIT(src, TRAIT_RISKY_BUSINESS))
-		. += span_clown("[t_He] is into creampies.")
-
-//The partners
-	//feral
-	if(HAS_TRAIT(src, TRAIT_FERALERP))
-		. += span_love("[t_He] is okay with ferals!</span>")
-	//robot
-	if(HAS_TRAIT(src, TRAIT_ROBOTERP))
-		. += span_love("[t_He] is okay with robots!</span>")
-	//vore
-	if(HAS_TRAIT(src, TRAIT_VOREERP))
-		. += span_love("[t_He] is okay with vore!</span>")
-	//fat
-	if(HAS_TRAIT(src, TRAIT_FATERP))
-		. += span_love("[t_He] is okay with fatplay!</span>")
-	//feeder
-	if(HAS_TRAIT(src, TRAIT_DANIMAL))
-		. += span_love("[t_He] is okay with feeding play!</span>")
-
 
 	var/trait_exam = common_trait_examine()
 	if (!isnull(trait_exam))
 		. += trait_exam
-
-	/// Personality and RP Preferences quirk display
-	. += get_personality_traits(user)
 
 	var/traitstring = get_trait_string()
 	if(ishuman(user))
@@ -741,24 +622,12 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 	else if(isobserver(user) && traitstring)
 		. += "<span class='info'><b>Traits:</b> [traitstring]</span>"
 
-	// . += "[print_special()]"//This already includes breaks and newlines, don't add any more
-
-
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .) //This also handles examine texts now
-
-	// if(HAS_TRAIT(src, TRAIT_PVEFOC))
-	// 	. += span_boldwarning("[t_He] [t_has] <u>opted out</u> of PVP combat! Please respect their wishes and do not engage in PVP with them. If they are trying to PVP with you, please let the staff know!")
-	// else if(!HAS_TRAIT(user, TRAIT_PVEFOC) && HAS_TRAIT(src, TRAIT_PVPFOC))
-	// 	. += span_alert("[t_He] [t_has] is looking for PVP encounters! If you're looking for a fight, they're the one to go to!")
-
-	// . += span_green("Right click and select flirt with me to [span_love("maybe get my attention!~")]")
-	
-	// . += span_green("Ctrl-Shift click me for [span_love("special interactions!~")]")
 
 	if(has_status_effect(STATUS_EFFECT_ADMINSLEEP))
 		. += span_danger("<B>This player has been slept by staff.</B>\n")
 
-	. += "*---------*</span>"
+	. += "<span class='green'><TT>►══════════════END══════════════◄</TT></span>"
 
 /mob/living/proc/status_effect_examines(pronoun_replacement) //You can include this in any mob's examine() to show the examine texts of status effects!
 	var/list/dat = list()

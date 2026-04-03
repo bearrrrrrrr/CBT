@@ -35,7 +35,7 @@ SUBSYSTEM_DEF(temperament)
 	var/muid = M.get_uid()
 	var/datum/preferences/P = extract_prefs(M)
 	who_got_what[muid] = list()
-	for(var/tnb_path in P.temperaments_and_builds)
+	for(var/tnb_path in P.current_t_n_b)
 		who_got_what[muid] |= tnb_path
 
 // tries to get the Most Truthfulness temperaments and builds for the player
@@ -45,7 +45,7 @@ SUBSYSTEM_DEF(temperament)
 /datum/controller/subsystem/temperament/proc/get_tnb_holder(Z)
 	var/datum/preferences/P = extract_prefs(Z)
 	if(P)
-		return P.temperaments_and_builds
+		return P.current_t_n_b
 	else if(isliving(Z))
 		var/mob/living/L = Z
 		update_tnb(L)
@@ -68,19 +68,22 @@ SUBSYSTEM_DEF(temperament)
 /datum/controller/subsystem/temperament/proc/get_builds(Z)
 	return get_temperaments(Z, TRUE) // hehehe
 
-/datum/controller/subsystem/temperament/proc/get_temperaments_for_prefs(builds_instead = FALSE)
+/datum/controller/subsystem/temperament/proc/get_temperaments_for_prefs(Z, builds_instead = FALSE)
 	// format: list("cool guy" = /datum/temperament/reallychillguy, "buxom and soft" = /datum/temperament/build/debug_2, etc)
+	var/datum/preferences/P = extract_prefs(Z)
 	var/list/ret = list()
 	for(var/t in temperaments)
 		var/datum/temperament/T = temperaments[t]
+		if(t in P.current_t_n_b)
+			continue // skip temperaments/builds the player already has
 		if(builds_instead && T.temp_or_build == "build")
 			ret[T.name] = T
 		else if(!builds_instead && T.temp_or_build == "temperament")
 			ret[T.name] = T
 	return sort_list(ret, /proc/cmp_text_asc)
 
-/datum/controller/subsystem/temperament/proc/get_builds_for_prefs()
-	return get_temperaments_for_prefs(TRUE) // hehe again
+/datum/controller/subsystem/temperament/proc/get_builds_for_prefs(Z)
+	return get_temperaments_for_prefs(Z, TRUE) // hehe again
 
 /datum/controller/subsystem/temperament/proc/get_temperament_textblock(Z)
 	var/list/temps = get_temperaments(Z)
@@ -125,6 +128,72 @@ SUBSYSTEM_DEF(temperament)
 	if(has_temps)
 		msg += temperament_text
 	return msg
+
+/datum/controller/subsystem/temperament/proc/pose_modify_temperament(Z, build_instead)
+	var/t_or_b = build_instead ? "build" : "temperament"
+	var/list/current_tnb = build_instead ? get_builds(Z) : get_temperaments(Z)
+	var/mob/living/L = extract_mob(Z)
+	var/datum/preferences/P = extract_prefs(Z)
+	if(!isliving(L))
+		return
+	var/can_add_more = LAZYLEN(current_tnb) < build_instead ? MAX_BUILDS : MAX_TEMPERAMENTS
+	var/can_remove_any = LAZYLEN(current_tnb) > 0
+	var/list/options = list()
+	if(can_add_more)
+		options["Add [t_or_b]"] = "add"
+	if(can_remove_any)
+		options["Remove [t_or_b]"] = "remove"
+	if(!LAZYLEN(options))
+		return
+	var/choose = input(
+		L,
+		span_italics("Would you like to add or remove a [t_or_b]?"),
+		"Add or Remove?",
+	) as null|anything in options
+	if(!choose || !options[choose])
+		to_chat(L, span_alert("Never mind!!"))
+		return
+	var/action = options[choose]
+	if(action == "add")
+		var/list/possible_tnb = build_instead ? get_builds_for_prefs(P) : get_temperaments_for_prefs(P)
+		if(!LAZYLEN(possible_tnb))
+			to_chat(L, span_danger("There are no [t_or_b]s available to add! Error code: HUGE-CUTE-TERROR-SHARK"))
+			return
+		var/choose_tnb = input(
+			L,
+			span_italics("Which [t_or_b] would you like to add?"),
+			"Choose a [t_or_b] to add",
+		) as null|anything in possible_tnb
+		if(!choose_tnb || !possible_tnb[choose_tnb])
+			to_chat(L, span_alert("Never mind!!"))
+			return
+		var/datum/temperament/T = possible_tnb[choose_tnb]
+		if(!istype(T))
+			to_chat(L, span_danger("That was not a valid [t_or_b]! Error code: LOUD-HUNGRY-FOX-SHARK"))
+			return
+		P.current_t_n_b |= T.type
+		to_chat(L, span_green("Added [choose_tnb] to your [t_or_b]s!"))
+	else if(action == "remove")
+		var/choose_tnb = input(
+			L,
+			span_italics("Which [t_or_b] would you like to remove?"),
+			"Choose a [t_or_b] to remove",
+		) as null|anything in current_tnb
+		if(!choose_tnb || !current_tnb[choose_tnb])
+			to_chat(L, span_alert("Never mind!!"))
+			return
+		var/datum/temperament/T = current_tnb[choose_tnb]
+		if(!istype(T))
+			to_chat(L, span_danger("That was not a valid [t_or_b]! Error code: TINY-FUZZY-FENNEC-TUNA"))
+			return
+		P.current_t_n_b -= T.type
+		to_chat(L, span_green("Removed [choose_tnb] from your [t_or_b]s!"))
+	else
+		to_chat(L, span_danger("That was not a valid action! Error code: BIG-CRANKY-CRAB-SHARK"))
+		return
+
+/datum/controller/subsystem/temperament/proc/pose_modify_build(Z)
+	pose_modify_temperament(Z, TRUE) // huehue
 
 /* 
  * I love grammar! heres a list of usable tokens for the temperament text:
@@ -252,16 +321,16 @@ SUBSYSTEM_DEF(temperament)
 	var/pre_text = SStemperament.pronounify(Z, prefix)
 	var/ex_text = SStemperament.pronounify(Z, examine_text)
 	if(also)
-		decapitalize(ex_text)
+		ex_text = decapitalize(ex_text)
 		text += "also, "
-	colorize(ex_text)
+	ex_text = colorize(ex_text)
 	return "[text][pre_text] [ex_text]"
 
 // builds are made to be inline with each other, just output a lowercased
 /datum/temperament/build/generate_text_for(Z, also)
 	var/ex_text = SStemperament.pronounify(Z, examine_text)
-	decapitalize(ex_text)
-	colorize(ex_text)
+	ex_text = decapitalize(ex_text)
+	ex_text = colorize(ex_text)
 	return "[ex_text]"
 
 /datum/temperament/proc/colorize(textin)

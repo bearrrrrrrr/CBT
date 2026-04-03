@@ -475,8 +475,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// lets the user see runechat that's hidden behind a wall
 	var/see_hidden_runechat = TRUE
 
-	var/list/temperaments_and_builds = list() // list of paths
-	var/temperaments_and_builds_needs_update = FALSE
+	var/list/temperaments_and_builds = list() // list of paths. this one gets saved
+	var/list/current_t_n_b = list() // the mutable list of paths. this one doesnt, and can be changed inround!
 
 /datum/preferences/New(client/C)
 	parent = C
@@ -610,6 +610,24 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if(LAZYLEN(pref_species.alt_prefixes))
 				dat += "<b>Alt Appearance:</b><a href='?_src_=prefs;preference=species_alt_prefix;task=input'>[alt_appearance ? alt_appearance : "Select"]</a><br>"
 			dat += "<b>Custom Species Name:</b><a href='?_src_=prefs;preference=custom_species;task=input'>[custom_species ? custom_species : "None"]</a><br>"
+			dat += "<h2>Voice</h2>"
+			dat += "<b>Custom Tongue:</b> <a href='?_src_=prefs;preference=tongue;task=input'>[custom_tongue]</a><br>"
+
+			// the voice vars thing is kinda worded strangely, lets make it not so strange
+			var/ti_speed =             replacetext(features_speech["typing_indicator_speed"],            "Speed: "            , "")
+			var/ti_pitch =             replacetext(features_speech["typing_indicator_pitch"],            "Pitch: "            , "")
+			var/ti_variance =          replacetext(features_speech["typing_indicator_variance"],         "Tone: "             , "")
+			var/ti_volume =            replacetext(features_speech["typing_indicator_volume"],           "Volume: "           , "")
+			var/ti_max_words_spoken =  replacetext(features_speech["typing_indicator_max_words_spoken"], "Max words spoken: " , "")
+
+			dat += "<b>Sound:</b><a href='?_src_=prefs;preference=typing_indicator_sound;task=input'>[features_speech["typing_indicator_sound"]]</a><br>"
+			dat += "<b>Audible When:</b><a  href='?_src_=prefs;preference=typing_indicator_sound_play;task=input'>[features_speech["typing_indicator_sound_play"]]</a><br>"			
+			dat += "<b>Speed: </b><a href='?_src_=prefs;preference=typing_indicator_speed;task=input'>[ti_speed]</a><br>"
+			dat += "<b>Pitch: </b><a href='?_src_=prefs;preference=typing_indicator_pitch;task=input'>[ti_pitch]</a><br>"
+			dat += "<b>Variance: </b><a href='?_src_=prefs;preference=typing_indicator_variance;task=input'>[ti_variance]</a><br>"
+			dat += "<b>Volume: </b><a href='?_src_=prefs;preference=typing_indicator_volume;task=input'>[ti_volume]</a><br>"
+			dat += "<b>Max Words: </b><a href='?_src_=prefs;preference=typing_indicator_max_words_spoken;task=input'>[ti_max_words_spoken]</a><br>"
+			dat += "<b>Runechat Color:</b><a href='?_src_=prefs;preference=chat_color;task=input;background-color: #[features["chat_color"]]'>#[features["chat_color"]]</span></a><br>"
 			dat += "</td>"
 
 			//Middle Column
@@ -638,29 +656,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += display_temperaments_and_builds_preferences() // this is a proc that returns a string of html, so we can keep the code neater
 			dat += "</td>"
 
-			/// Right column
-			dat += "<td valign='top'>"
-			dat += "<h2>Voice</h2>"
-			dat += "<b>Custom Tongue:</b> <a href='?_src_=prefs;preference=tongue;task=input'>[custom_tongue]</a><br>"
-
-			// the voice vars thing is kinda worded strangely, lets make it not so strange
-			var/ti_speed =             replacetext(features_speech["typing_indicator_speed"],            "Speed: "            , "")
-			var/ti_pitch =             replacetext(features_speech["typing_indicator_pitch"],            "Pitch: "            , "")
-			var/ti_variance =          replacetext(features_speech["typing_indicator_variance"],         "Tone: "             , "")
-			var/ti_volume =            replacetext(features_speech["typing_indicator_volume"],           "Volume: "           , "")
-			var/ti_max_words_spoken =  replacetext(features_speech["typing_indicator_max_words_spoken"], "Max words spoken: " , "")
-
-			dat += "<b>Sound:</b><a href='?_src_=prefs;preference=typing_indicator_sound;task=input'>[features_speech["typing_indicator_sound"]]</a><br>"
-			dat += "<b>Audible When:</b><a  href='?_src_=prefs;preference=typing_indicator_sound_play;task=input'>[features_speech["typing_indicator_sound_play"]]</a><br>"			
-			dat += "<b>Speed: </b><a href='?_src_=prefs;preference=typing_indicator_speed;task=input'>[ti_speed]</a><br>"
-			dat += "<b>Pitch: </b><a href='?_src_=prefs;preference=typing_indicator_pitch;task=input'>[ti_pitch]</a><br>"
-			dat += "<b>Variance: </b><a href='?_src_=prefs;preference=typing_indicator_variance;task=input'>[ti_variance]</a><br>"
-			dat += "<b>Volume: </b><a href='?_src_=prefs;preference=typing_indicator_volume;task=input'>[ti_volume]</a><br>"
-			dat += "<b>Max Words: </b><a href='?_src_=prefs;preference=typing_indicator_max_words_spoken;task=input'>[ti_max_words_spoken]</a><br>"
-			dat += "<b>Runechat Color:</b><a href='?_src_=prefs;preference=chat_color;task=input;background-color: #[features["chat_color"]]'>#[features["chat_color"]]</span></a><br>"
-			dat += "</td>"
-			dat += "</tr>"
-			dat += "</table>"
+			// /// Right column
+			// dat += "<td valign='top'>"
+			// dat += "</td>"
+			// dat += "</tr>"
+			// dat += "</table>"
 
 		//Character Appearance
 		if(APPEARANCE_TAB)
@@ -2547,7 +2547,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					TOGGLE_VAR(show_health_smilies)
 					return 1
 				if("pick_temperament")
-					var/list/temperaments = SStemperament.get_temperaments_for_prefs()
+					var/list/temperaments = SStemperament.get_temperaments_for_prefs(Z)
 					var/new_temperament = input(
 						user, 
 						"Choose the general 'air' about your character. FENNY HEY LISTEN, ADD THE DESCRIPTION FOR THIS THING HERE.",
@@ -2560,8 +2560,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						to_chat(user, "Hmm, looks like that temperament isn't actually a thing. Try again later!")
 						return
 					temperaments_and_builds |= tem.type
+					current_t_n_b = temperaments_and_builds.Copy()
 				if("pick_build")
-					var/list/builds = SStemperament.get_builds_for_prefs()
+					var/list/builds = SStemperament.get_builds_for_prefs(Z)
 					var/new_build = input(
 						user, 
 						"Choose the general 'build' about your character. FENNY HEY LISTEN, ADD THE DESCRIPTION FOR THIS THING HERE.",
@@ -2574,6 +2575,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						to_chat(user, "Hmm, looks like that build isn't actually a thing. Try again later!")
 						return
 					temperaments_and_builds |= B.type
+					current_t_n_b = temperaments_and_builds.Copy()
 				if("remove_temperament_or_build")
 					var/whichtext = href_list["which"]
 					var/whichpath = text2path(whichtext)
@@ -2582,6 +2584,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						return
 					if(whichpath in temperaments_and_builds)
 						temperaments_and_builds -= whichpath
+					current_t_n_b = temperaments_and_builds.Copy()
 					else
 						to_chat(user, "Hmm, looks like you don't actually have that temperament/build. Try again later!")
 						return
@@ -2772,16 +2775,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(!isnull(msg))
 						features["background_info_notes"] = msg
 
-				if("flist")
-					var/link = input(usr, "Set always-visible F-list. Just copy and paste the link you want to use from the browser. Leave it blank to remove the previous link.", "F-list")
-					if(!length(link))
-						features["flist"] = ""
-						to_chat(usr, span_alert("Removed the previous F-list link."))
-					else if(findtext(link, "https://www.f-list.net"))  //we want to avoid malicious links, so let's check if it's actually a valid link first
-						features["flist"] = link
-					else
-						features["flist"] = ""
-						to_chat(usr, span_alert("This is not a correct F-list link!"))
+				// if("flist")
+				// 	var/link = input(usr, "Set always-visible F-list. Just copy and paste the link you want to use from the browser. Leave it blank to remove the previous link.", "F-list")
+				// 	if(!length(link))
+				// 		features["flist"] = ""
+				// 		to_chat(usr, span_alert("Removed the previous F-list link."))
+				// 	else if(findtext(link, "https://www.f-list.net"))  //we want to avoid malicious links, so let's check if it's actually a valid link first
+				// 		features["flist"] = link
+				// 	else
+				// 		features["flist"] = ""
+				// 		to_chat(usr, span_alert("This is not a correct F-list link!"))
 
 				if("hide_ckey")
 					hide_ckey = !hide_ckey

@@ -387,7 +387,7 @@ const CharacterDirectoryList = (props, context) => {
                   content="View"
                 />
               </Table.Cell>
-              <Table.Cell collapsing textAlign="center">
+              {/* <Table.Cell collapsing textAlign="center">
                 {character.flist ?
                   <Button
                     onClick={() => act("view_flist", { quid: character.quid })}
@@ -396,7 +396,7 @@ const CharacterDirectoryList = (props, context) => {
                     content="F-List" />
                   : <Fragment />
                 }
-              </Table.Cell>
+              </Table.Cell> */}
               <Table.Cell collapsing textAlign="center">
                 <Button
                   onClick={() => act("pager", { quid: character.quid })}

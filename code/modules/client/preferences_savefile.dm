@@ -1340,6 +1340,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			if(!ispath(pth, /datum/temperament))
 				continue
 			temperaments_and_builds |= pth
+		current_t_n_b = temperaments_and_builds.Copy()
 
 	char_quirks = SANITIZE_LIST(char_quirks)
 	if(SSquirks.debug_migration)

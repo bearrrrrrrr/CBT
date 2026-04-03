@@ -1672,14 +1672,14 @@ SUBSYSTEM_DEF(chat)
 		popup.set_content(dat)
 		popup.open()
 		return TRUE
-	if(action == "view_flist")
-		if(viowed)
-			to_chat(viower, span_notice("Opening F-list..."))
-			SEND_SIGNAL(viowed, COMSIG_FLIST, viower)
-			return TRUE
-		else
-			to_chat(viower, span_alert("Couldn't find that character's F-list!"))
-			return TRUE
+	// if(action == "view_flist")
+	// 	if(viowed)
+	// 		to_chat(viower, span_notice("Opening F-list..."))
+	// 		SEND_SIGNAL(viowed, COMSIG_FLIST, viower)
+	// 		return TRUE
+	// 	else
+	// 		to_chat(viower, span_alert("Couldn't find that character's F-list!"))
+	// 		return TRUE
 	return TRUE
 
 /datum/character_inspection/ui_state(mob/user)

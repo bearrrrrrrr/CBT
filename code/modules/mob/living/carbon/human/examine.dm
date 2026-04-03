@@ -105,7 +105,7 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 
 	var/tnb = SStemperament.get_textblock_for(src)
 	if(tnb)
-		. += "[tnb]"
+		. += "[tnb]\n"
 
 	var/vampDesc = ReturnVampExamine(user) // Vamps recognize the names of other vamps.
 	var/vassDesc = ReturnVassalExamine(user) // Vassals recognize each other's marks.

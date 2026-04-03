@@ -108,7 +108,10 @@ SUBSYSTEM_DEF(temperament)
 	for(var/i in 1 to LAZYLEN(builds))
 		var/datum/temperament/build/B = builds[i]
 		texts += B.generate_text_for(Z, i != 1)
-	var/build_text = capitalize("[english_list(texts, and_text = ", and ")]")
+	var/build_text = "[english_list(texts, and_text = ", and ")]"
+	build_text = capitalize(build_text)
+	if(build_text[LAZYLEN(build_text)] != ".")
+		build_text += "."
 	return build_text
 
 /datum/controller/subsystem/temperament/proc/get_textblock_for(Z)
@@ -147,11 +150,11 @@ SUBSYSTEM_DEF(temperament)
 		return
 	var/choose = input(
 		L,
-		span_italics("Would you like to add or remove a [t_or_b]?"),
+		"Would you like to add or remove a [t_or_b]?",
 		"Add or Remove?",
 	) as null|anything in options
 	if(!choose || !options[choose])
-		to_chat(L, span_alert("Never mind!!"))
+		to_chat(L, span_notice("Okay, not touching your [t_or_b]s!"))
 		return
 	var/action = options[choose]
 	if(action == "add")
@@ -161,11 +164,11 @@ SUBSYSTEM_DEF(temperament)
 			return
 		var/choose_tnb = input(
 			L,
-			span_italics("Which [t_or_b] would you like to add?"),
+			"Which [t_or_b] would you like to add?",
 			"Choose a [t_or_b] to add",
 		) as null|anything in possible_tnb
 		if(!choose_tnb || !possible_tnb[choose_tnb])
-			to_chat(L, span_alert("Never mind!!"))
+			to_chat(L, span_notice("Okay, not adding any [t_or_b]s!"))
 			return
 		var/datum/temperament/T = possible_tnb[choose_tnb]
 		if(!istype(T))
@@ -176,11 +179,11 @@ SUBSYSTEM_DEF(temperament)
 	else if(action == "remove")
 		var/choose_tnb = input(
 			L,
-			span_italics("Which [t_or_b] would you like to remove?"),
+			"Which [t_or_b] would you like to remove?",
 			"Choose a [t_or_b] to remove",
 		) as null|anything in current_tnb
 		if(!choose_tnb || !current_tnb[choose_tnb])
-			to_chat(L, span_alert("Never mind!!"))
+			to_chat(L, span_notice("Okay, not removing any [t_or_b]s!"))
 			return
 		var/datum/temperament/T = current_tnb[choose_tnb]
 		if(!istype(T))

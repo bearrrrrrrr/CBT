@@ -2547,10 +2547,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					TOGGLE_VAR(show_health_smilies)
 					return 1
 				if("pick_temperament")
-					var/list/temperaments = SStemperament.get_temperaments_for_prefs(Z)
+					var/list/temperaments = SStemperament.get_temperaments_for_prefs(src)
 					var/new_temperament = input(
 						user, 
-						"Choose the general 'air' about your character. FENNY HEY LISTEN, ADD THE DESCRIPTION FOR THIS THING HERE.",
+						"Choose the general 'air' about your character. This is your vibe, your outward disposition. You must select at least one in order to spawn in. You can modify them in game on the fly with the (Pose) button in the bottom right of the UI.",
 						"Temperament") as null|anything in temperaments
 					if(isnull(new_temperament))
 						to_chat(user, "Never mind!")
@@ -2562,10 +2562,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					temperaments_and_builds |= tem.type
 					current_t_n_b = temperaments_and_builds.Copy()
 				if("pick_build")
-					var/list/builds = SStemperament.get_builds_for_prefs(Z)
+					var/list/builds = SStemperament.get_builds_for_prefs(src)
 					var/new_build = input(
 						user, 
-						"Choose the general 'build' about your character. FENNY HEY LISTEN, ADD THE DESCRIPTION FOR THIS THING HERE.",
+						"Choose the general 'build' about your character. This is your physical build, so it isn't lost in Examine Text. You must select at least one in order to spawn in. You can modify them in game on the fly with the (Pose) button in the bottom right of the UI.",
 						"Build") as null|anything in builds
 					if(isnull(new_build))
 						to_chat(user, "Never mind!")
@@ -2584,7 +2584,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						return
 					if(whichpath in temperaments_and_builds)
 						temperaments_and_builds -= whichpath
-					current_t_n_b = temperaments_and_builds.Copy()
+						current_t_n_b = temperaments_and_builds.Copy()
 					else
 						to_chat(user, "Hmm, looks like you don't actually have that temperament/build. Try again later!")
 						return
@@ -4875,9 +4875,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		dat += "Nothing yet!!<br>"
 	if(canaddnew_build)
 		dat += "<a href='?_src_=prefs;preference=pick_build;task=input'>Add New Build</a><br>"
-	var/example = SStemperament.get_textblock_for(src)
-	dat += "<br><b>Example:</b><br>"
-	dat += "[replacetext(example, "\n", "<br>")]<br>"
+	// var/example = SStemperament.get_textblock_for(src)
+	// dat += "<br><b>Example:</b><br>"
+	// dat += "[replacetext(example, "\n", "<br>")]<br>"
 	return dat.Join()
 
 

@@ -69,8 +69,14 @@ All foods are distributed among various categories. Use common sense.
 	var/dunkable = FALSE // for dunkable food, make true
 	var/dunk_amount = 10 // how much reagent is transferred per dunk
 	var/inedible = FALSE // for inedible food, make true
+	var/floormeat = FALSE // makes it a very bad idea if eaten
 
 	//Placeholder for effect that trigger on eating that aren't tied to reagents.
+
+/obj/item/reagent_containers/food/snacks/examine(mob/user)
+	. = ..()
+	if(floormeat)
+		. += span_danger("This looks like it would be very toxic if you ate it without cooking it first.")
 
 /obj/item/reagent_containers/food/snacks/add_initial_reagents()
 	var/list/flavors = SSlistbank.get_tastes(src)
@@ -220,14 +226,22 @@ All foods are distributed among various categories. Use common sense.
 			if(reagents.total_volume)
 				SEND_SIGNAL(src, COMSIG_FOOD_EATEN, M, user)
 				var/fraction = min(bitesize / reagents.total_volume, 1)
-				reagents.reaction(M, INGEST, fraction)
-				reagents.trans_to(M, bitesize, log = TRUE)
+				// now hold on! is it floormeat? if so, give them gastrotoxin instead (and delete the reagents we would have eaten)
+				if(floormeat)
+					reagents.remove_all(bitesize)
+					reagents.add_reagent(/datum/reagent/toxin/floormeat_gastrotoxin, bitesize)
+					reagents.reaction(M, INGEST)
+					reagents.trans_id_to(M, /datum/reagent/toxin/floormeat_gastrotoxin, bitesize, log = TRUE)
+					to_chat(M, span_danger("Ulch! That [src] was tainted! You feel sick!"))
+					M.try_give_tip(TIP_FLOOR_MEAT, rand(5 SECONDS, 15 SECONDS))
+				else
+					reagents.reaction(M, INGEST, fraction)
+					reagents.trans_to(M, bitesize, log = TRUE)
 				bitecount++
 				On_Consume(M, vorebite)
 				if(!vorebite)
 					checkLiked(fraction, M)
 				return 1
-
 	return 0
 
 /obj/item/reagent_containers/food/snacks/CheckAttackCooldown(mob/user, atom/target)
@@ -358,6 +372,7 @@ All foods are distributed among various categories. Use common sense.
 
 // initialize_cooked_food() is called when microwaving the food
 /obj/item/reagent_containers/food/snacks/proc/initialize_cooked_food(obj/item/reagent_containers/food/snacks/S, cooking_efficiency = 1)
+	floormeat = FALSE //cooked food isn't floor meat
 	S.create_reagents(S.volume, reagent_flags, reagent_value)
 	if(reagents)
 		reagents.trans_to(S, reagents.total_volume)
@@ -372,6 +387,7 @@ All foods are distributed among various categories. Use common sense.
 /obj/item/reagent_containers/food/snacks/microwave_act(obj/machinery/microwave/M)
 	var/turf/T = get_turf(src)
 	var/obj/item/result
+	floormeat = FALSE //cooked food isn't floor meat
 	if(cooked_type)
 		result = new cooked_type(T)
 		if(istype(M))
@@ -410,6 +426,24 @@ All foods are distributed among various categories. Use common sense.
 				if(sattisfaction_text)
 					M.emote("me", EMOTE_VISIBLE, "[sattisfaction_text]")
 				qdel(src)
+
+/obj/item/reagent_containers/food/snacks/on_grind()
+	floormeatify()
+	return ..()
+
+/obj/item/reagent_containers/food/snacks/on_juice()
+	floormeatify()
+	return ..()
+
+/obj/item/reagent_containers/food/snacks/proc/floormeatify()
+	if(!floormeat)
+		return
+	if(!reagents)
+		return
+	var/howmuch = reagents.total_volume
+	reagents.remove_all(howmuch)
+	grind_results = list(/datum/reagent/toxin/floormeat_gastrotoxin = howmuch)
+	juice_results = list(/datum/reagent/toxin/floormeat_gastrotoxin = howmuch)
 
 //////////////////////////////////////////Dunking///////////////////////////////////////////
 

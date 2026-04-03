@@ -1237,7 +1237,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["taste"]				= copytext(features["taste"], 1, MAX_TASTE_LEN)
 	features["flavor_text"]			= copytext(features["flavor_text"], 1, MAX_FLAVOR_LEN)
 	features["silicon_flavor_text"]	= copytext(features["silicon_flavor_text"], 1, MAX_FLAVOR_LEN)
-	features["ooc_notes"]			= copytext(features["ooc_notes"], 1, MAX_FLAVOR_LEN)
+	features["ooc_notes"]			= copytext(features["ooc_notes"], 1, MAX_OOC_LEN)
 	if(features["ooc_notes"] == "")
 		features["ooc_notes"] = OOC_NOTE_TEMPLATE
 		WRITE_FILE(S["feature_ooc_notes"], features["ooc_notes"])
@@ -1305,9 +1305,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	creature_profilepic = sanitize_text(creature_profilepic)
 	creature_pfphost 	= sanitize_inlist(creature_pfphost, GLOB.pfp_filehosts, "")
 
-	SSchat.SanitizeUserImages(src)
-	SSchat.SanitizeUserPreferences(src)
-
 	features_override["grad_color"]		= sanitize_hexcolor(features_override["grad_color"], 6, FALSE, default = COLOR_ALMOST_BLACK)
 	features_override["grad_style"]		= sanitize_inlist(features_override["grad_style"], GLOB.hair_gradients, "none")
 
@@ -1332,6 +1329,18 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	for(var/j in job_preferences)
 		if(job_preferences["[j]"] != JP_LOW && job_preferences["[j]"] != JP_MEDIUM && job_preferences["[j]"] != JP_HIGH)
 			job_preferences -= j
+
+	var/list/tnb_strings = safe_json_decode(S["temperaments_and_builds"])
+	if(islist(tnb_strings) && LAZYLEN(tnb_strings))
+		temperaments_and_builds.Cut()
+		for(var/str in tnb_strings)
+			if(!istext(str))
+				continue
+			var/pth = text2path(str)
+			if(!ispath(pth, /datum/temperament))
+				continue
+			temperaments_and_builds |= pth
+		current_t_n_b = temperaments_and_builds.Copy()
 
 	char_quirks = SANITIZE_LIST(char_quirks)
 	if(SSquirks.debug_migration)
@@ -1359,12 +1368,17 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	
 	WRITE_FILE(S["feature_fuzzy"], fuzzy)
 
+	// temperaments and builds!
+
 	matchmaking_prefs = sanitize_matchmaking_prefs(matchmaking_prefs)
 
 	cit_character_pref_load(S)
 
 	// permanent tattoos
 	permanent_tattoos = sanitize_text(permanent_tattoos)
+
+	SSchat.SanitizeUserImages(src)
+	SSchat.SanitizeUserPreferences(src)
 	if(update_save(S))
 		save_character()
 
@@ -1690,6 +1704,15 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["pda_ringmessage"], pda_ringmessage)
 
 	WRITE_FILE(S["last_quest_login"], last_quest_login)
+
+	var/list/tnb_save = list()
+	for(var/tnb_path in temperaments_and_builds)
+		if(!ispath(tnb_path))
+			log_game("Failed to save temperament/build [tnb_path] to savefile, issue: not a path")
+			continue
+		tnb_save |= "[tnb_path]"
+	var/tnbjson = safe_json_encode(tnb_save)
+	WRITE_FILE(S["temperaments_and_builds"], tnbjson)
 
 	return 1
 

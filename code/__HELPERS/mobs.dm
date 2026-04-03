@@ -383,6 +383,15 @@ GLOBAL_LIST_EMPTY(species_list)
 		if(H.dna && istype(H.dna.species, species_datum))
 			. = TRUE
 
+/proc/get_species(A)
+	if(!ishuman(A))
+		return
+	var/mob/living/carbon/human/H = A
+	if(!H.dna)
+		return
+	if(istype(H.dna.species, /datum/species))
+		return H.dna.species
+
 /proc/is_toxin_lover(mob/living/carbon/human/H)
 	if(!ishuman(H))
 		return FALSE

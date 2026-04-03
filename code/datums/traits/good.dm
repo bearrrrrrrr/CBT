@@ -1595,13 +1595,14 @@ GLOBAL_LIST_INIT(security_expert, list(
 	medical_record_text = "Patient is apparently very good at gripping things."
 	locked =  FALSE
 	human_only = FALSE
+	disabled = TRUE
 
 /datum/quirk/mastermartialartist
 	name = "Master Martial Artist"
 	desc = "You occasionally hit so hard that they don't even seem like themselves anymore!"
 	value = 32
 	category = QUIRK_CATEGORY_HAND_TO_HAND_QUIRKS
-	mechanics = "Your punches, when you roll max damage, inflict clone damage instead of normal brute damage on people. Which is harder to heal and generally somewhat devastating."
+	mechanics = "Your punches, when you roll max damage heal some damage and do EVEN MORE DAMAGE to others."
 	conflicts = list(
 		/datum/quirk/nonviolent,
 		/datum/quirk/noodle_fist,

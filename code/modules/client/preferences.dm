@@ -475,6 +475,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// lets the user see runechat that's hidden behind a wall
 	var/see_hidden_runechat = TRUE
 
+	var/list/temperaments_and_builds = list() // list of paths. this one gets saved
+	var/list/current_t_n_b = list() // the mutable list of paths. this one doesnt, and can be changed inround!
+
 /datum/preferences/New(client/C)
 	parent = C
 
@@ -607,6 +610,24 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if(LAZYLEN(pref_species.alt_prefixes))
 				dat += "<b>Alt Appearance:</b><a href='?_src_=prefs;preference=species_alt_prefix;task=input'>[alt_appearance ? alt_appearance : "Select"]</a><br>"
 			dat += "<b>Custom Species Name:</b><a href='?_src_=prefs;preference=custom_species;task=input'>[custom_species ? custom_species : "None"]</a><br>"
+			dat += "<h2>Voice</h2>"
+			dat += "<b>Custom Tongue:</b> <a href='?_src_=prefs;preference=tongue;task=input'>[custom_tongue]</a><br>"
+
+			// the voice vars thing is kinda worded strangely, lets make it not so strange
+			var/ti_speed =             replacetext(features_speech["typing_indicator_speed"],            "Speed: "            , "")
+			var/ti_pitch =             replacetext(features_speech["typing_indicator_pitch"],            "Pitch: "            , "")
+			var/ti_variance =          replacetext(features_speech["typing_indicator_variance"],         "Tone: "             , "")
+			var/ti_volume =            replacetext(features_speech["typing_indicator_volume"],           "Volume: "           , "")
+			var/ti_max_words_spoken =  replacetext(features_speech["typing_indicator_max_words_spoken"], "Max words spoken: " , "")
+
+			dat += "<b>Sound:</b><a href='?_src_=prefs;preference=typing_indicator_sound;task=input'>[features_speech["typing_indicator_sound"]]</a><br>"
+			dat += "<b>Audible When:</b><a  href='?_src_=prefs;preference=typing_indicator_sound_play;task=input'>[features_speech["typing_indicator_sound_play"]]</a><br>"			
+			dat += "<b>Speed: </b><a href='?_src_=prefs;preference=typing_indicator_speed;task=input'>[ti_speed]</a><br>"
+			dat += "<b>Pitch: </b><a href='?_src_=prefs;preference=typing_indicator_pitch;task=input'>[ti_pitch]</a><br>"
+			dat += "<b>Variance: </b><a href='?_src_=prefs;preference=typing_indicator_variance;task=input'>[ti_variance]</a><br>"
+			dat += "<b>Volume: </b><a href='?_src_=prefs;preference=typing_indicator_volume;task=input'>[ti_volume]</a><br>"
+			dat += "<b>Max Words: </b><a href='?_src_=prefs;preference=typing_indicator_max_words_spoken;task=input'>[ti_max_words_spoken]</a><br>"
+			dat += "<b>Runechat Color:</b><a href='?_src_=prefs;preference=chat_color;task=input;background-color: #[features["chat_color"]]'>#[features["chat_color"]]</span></a><br>"
 			dat += "</td>"
 
 			//Middle Column
@@ -631,32 +652,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			else
 				dat += "[TextPreview(features["ooc_notes"])]...<br>"
 			dat += "<br>"
-			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Configure VisualChat / Profile Pictures!</a><BR>"
+			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Setup VisualChat</a><BR>"
+			dat += display_temperaments_and_builds_preferences() // this is a proc that returns a string of html, so we can keep the code neater
 			dat += "</td>"
 
-			/// Right column
-			dat += "<td valign='top'>"
-			dat += "<h2>Voice</h2>"
-			dat += "<b>Custom Tongue:</b> <a href='?_src_=prefs;preference=tongue;task=input'>[custom_tongue]</a><br>"
-
-			// the voice vars thing is kinda worded strangely, lets make it not so strange
-			var/ti_speed =             replacetext(features_speech["typing_indicator_speed"],            "Speed: "            , "")
-			var/ti_pitch =             replacetext(features_speech["typing_indicator_pitch"],            "Pitch: "            , "")
-			var/ti_variance =          replacetext(features_speech["typing_indicator_variance"],         "Tone: "             , "")
-			var/ti_volume =            replacetext(features_speech["typing_indicator_volume"],           "Volume: "           , "")
-			var/ti_max_words_spoken =  replacetext(features_speech["typing_indicator_max_words_spoken"], "Max words spoken: " , "")
-
-			dat += "<b>Sound:</b><a href='?_src_=prefs;preference=typing_indicator_sound;task=input'>[features_speech["typing_indicator_sound"]]</a><br>"
-			dat += "<b>Audible When:</b><a  href='?_src_=prefs;preference=typing_indicator_sound_play;task=input'>[features_speech["typing_indicator_sound_play"]]</a><br>"			
-			dat += "<b>Speed: </b><a href='?_src_=prefs;preference=typing_indicator_speed;task=input'>[ti_speed]</a><br>"
-			dat += "<b>Pitch: </b><a href='?_src_=prefs;preference=typing_indicator_pitch;task=input'>[ti_pitch]</a><br>"
-			dat += "<b>Variance: </b><a href='?_src_=prefs;preference=typing_indicator_variance;task=input'>[ti_variance]</a><br>"
-			dat += "<b>Volume: </b><a href='?_src_=prefs;preference=typing_indicator_volume;task=input'>[ti_volume]</a><br>"
-			dat += "<b>Max Words: </b><a href='?_src_=prefs;preference=typing_indicator_max_words_spoken;task=input'>[ti_max_words_spoken]</a><br>"
-			dat += "<b>Runechat Color:</b><a href='?_src_=prefs;preference=chat_color;task=input;background-color: #[features["chat_color"]]'>#[features["chat_color"]]</span></a><br>"
-			dat += "</td>"
-			dat += "</tr>"
-			dat += "</table>"
+			// /// Right column
+			// dat += "<td valign='top'>"
+			// dat += "</td>"
+			// dat += "</tr>"
+			// dat += "</table>"
 
 		//Character Appearance
 		if(APPEARANCE_TAB)
@@ -2542,6 +2546,48 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("show_health_smilies")
 					TOGGLE_VAR(show_health_smilies)
 					return 1
+				if("pick_temperament")
+					var/list/temperaments = SStemperament.get_temperaments_for_prefs(src)
+					var/new_temperament = input(
+						user, 
+						"Choose the general 'air' about your character. This is your vibe, your outward disposition. You must select at least one in order to spawn in. You can modify them in game on the fly with the (Pose) button in the bottom right of the UI.",
+						"Temperament") as null|anything in temperaments
+					if(isnull(new_temperament))
+						to_chat(user, "Never mind!")
+						return
+					var/datum/temperament/tem = temperaments[new_temperament]
+					if(!istype(tem, /datum/temperament))
+						to_chat(user, "Hmm, looks like that temperament isn't actually a thing. Try again later!")
+						return
+					temperaments_and_builds |= tem.type
+					current_t_n_b = temperaments_and_builds.Copy()
+				if("pick_build")
+					var/list/builds = SStemperament.get_builds_for_prefs(src)
+					var/new_build = input(
+						user, 
+						"Choose the general 'build' about your character. This is your physical build, so it isn't lost in Examine Text. You must select at least one in order to spawn in. You can modify them in game on the fly with the (Pose) button in the bottom right of the UI.",
+						"Build") as null|anything in builds
+					if(isnull(new_build))
+						to_chat(user, "Never mind!")
+						return
+					var/datum/temperament/B = builds[new_build]
+					if(!istype(B, /datum/temperament))
+						to_chat(user, "Hmm, looks like that build isn't actually a thing. Try again later!")
+						return
+					temperaments_and_builds |= B.type
+					current_t_n_b = temperaments_and_builds.Copy()
+				if("remove_temperament_or_build")
+					var/whichtext = href_list["which"]
+					var/whichpath = text2path(whichtext)
+					if(!ispath(whichpath))
+						to_chat(user, "Hmm, looks like that temperament/build isn't actually a thing. Try again later!")
+						return
+					if(whichpath in temperaments_and_builds)
+						temperaments_and_builds -= whichpath
+						current_t_n_b = temperaments_and_builds.Copy()
+					else
+						to_chat(user, "Hmm, looks like you don't actually have that temperament/build. Try again later!")
+						return
 				if("stat_strength")
 					var/new_point = input(user, "Choose Amount(1-9)", "Strength") as num|null
 					if(new_point)
@@ -2714,11 +2760,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							to_chat(usr, span_notice("Here's what you wrote:"))
 							to_chat(usr, "[msg]")
 							return
-						if(LAZYLEN(msg) > MAX_FLAVOR_LEN)
-							to_chat(usr, span_alert("Your OOC Notes are more than [MAX_FLAVOR_LEN] characters! It needs to be shorter (but not shorter than [MIN_FLAVOR_LEN] characters!)"))
+						if(LAZYLEN(msg) > MAX_OOC_LEN)
+							to_chat(usr, span_alert("Your OOC Notes are more than [MAX_OOC_LEN] characters! It needs to be shorter (but not shorter than [MIN_FLAVOR_LEN] characters!)"))
 							to_chat(usr, span_notice("Here's what you wrote:"))
 							to_chat(usr, "[msg]")
-							msg = copytext(msg, 1, (MAX_FLAVOR_LEN - 1))
+							msg = copytext(msg, 1, (MAX_OOC_LEN - 1))
 							to_chat(usr, span_notice("And this is what will be kept:"))
 							to_chat(usr, "[msg]")
 					if(!isnull(msg))
@@ -2729,16 +2775,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(!isnull(msg))
 						features["background_info_notes"] = msg
 
-				if("flist")
-					var/link = input(usr, "Set always-visible F-list. Just copy and paste the link you want to use from the browser. Leave it blank to remove the previous link.", "F-list")
-					if(!length(link))
-						features["flist"] = ""
-						to_chat(usr, span_alert("Removed the previous F-list link."))
-					else if(findtext(link, "https://www.f-list.net"))  //we want to avoid malicious links, so let's check if it's actually a valid link first
-						features["flist"] = link
-					else
-						features["flist"] = ""
-						to_chat(usr, span_alert("This is not a correct F-list link!"))
+				// if("flist")
+				// 	var/link = input(usr, "Set always-visible F-list. Just copy and paste the link you want to use from the browser. Leave it blank to remove the previous link.", "F-list")
+				// 	if(!length(link))
+				// 		features["flist"] = ""
+				// 		to_chat(usr, span_alert("Removed the previous F-list link."))
+				// 	else if(findtext(link, "https://www.f-list.net"))  //we want to avoid malicious links, so let's check if it's actually a valid link first
+				// 		features["flist"] = link
+				// 	else
+				// 		features["flist"] = ""
+				// 		to_chat(usr, span_alert("This is not a correct F-list link!"))
 
 				if("hide_ckey")
 					hide_ckey = !hide_ckey
@@ -4805,6 +4851,40 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	to_chat(parent, "Exported preview icons.")
 
 	SSdummy.return_dummy(mannequin)
+
+/datum/preferences/proc/display_temperaments_and_builds_preferences()
+	var/list/dat = list()
+	var/list/temps = SStemperament.get_temperaments(src)
+	var/list/builds = SStemperament.get_builds(src)
+	var/canaddnew_temp = LAZYLEN(temps) < MAX_TEMPERAMENTS
+	var/canaddnew_build = LAZYLEN(builds) < MAX_BUILDS
+	dat += "<h3>Temperaments & Builds</h3>"
+	dat += "<b><u>Temperaments</u></b><br>"
+	if(LAZYLEN(temps))
+		for(var/datum/temperament/T in temps)
+			dat += "<a href='?_src_=prefs;preference=remove_temperament_or_build;task=input;which=[T.type]'>[T.name]</a><br>"
+	else
+		dat += "Nothing yet!!<br>"
+	if(canaddnew_temp)
+		dat += "<a href='?_src_=prefs;preference=pick_temperament;task=input'>Add New Temperament</a><br>"
+	dat += "<br><b><u>Builds</u></b><br>"
+	if(LAZYLEN(builds))
+		for(var/datum/temperament/B in builds)
+			dat += "<a href='?_src_=prefs;preference=remove_temperament_or_build;task=input;which=[B.type]'>[B.name]</a><br>"
+	else
+		dat += "Nothing yet!!<br>"
+	if(canaddnew_build)
+		dat += "<a href='?_src_=prefs;preference=pick_build;task=input'>Add New Build</a><br>"
+	// var/example = SStemperament.get_textblock_for(src)
+	// dat += "<br><b>Example:</b><br>"
+	// dat += "[replacetext(example, "\n", "<br>")]<br>"
+	return dat.Join()
+
+
+
+
+
+
 
 #undef MAX_FREE_PER_CAT
 #undef HANDS_SLOT_AMT

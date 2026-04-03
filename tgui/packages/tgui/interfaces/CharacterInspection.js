@@ -66,7 +66,7 @@ export const CharacterInspection = (props, context) => {
               <ERPPref />
               <VorePref />
               <KissPref />
-              <FlistLink />
+              {/* <FlistLink /> */}
             </Section>
           </Stack.Item>
           <Stack.Item>

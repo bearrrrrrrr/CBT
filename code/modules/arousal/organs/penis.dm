@@ -121,7 +121,7 @@
 	update_genital_visibility(D.features["cock_visibility_flags"], FALSE, TRUE)
 
 /obj/item/organ/genital/penis/size_kind()
-	return "[size] inch[size!=1?"es":""]"
+	return "[length] inch[length!=1?"es":""]"
 
 /obj/item/organ/genital/penis/resize_genital(mob/user)
 	var/min_size = CONFIG_GET(number/penis_min_inches_prefs)

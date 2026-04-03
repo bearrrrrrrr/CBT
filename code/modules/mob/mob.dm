@@ -1402,18 +1402,8 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 	Every single one of these actions is worded as an ATTEMPT to do said thing on the recieving parties end.\n\
 	Roleplay accordingly. \n\
 	\n\
-	- If someone sends you a message and you reject them please remember not to be overly cruel ICly.\n\
-	Unless they're into that, and its part of a bit. \n\
-	- With understanding that rejection is sometimes a part of flirting, the 3. Option exists, use it specifically to play 'hard to get'. \n\
-	\n\
 	-- There are different categories of flirt. These exist to help the flirter figure out what approach they're using. \n\
-	- Leer is generally you looking at them in some way. \n\
-	-- React is generally you having some sort of reaction to them, like making a noise or a reflexive physical reactions like biting your own lower lip. \n\
-	--- Touch is generally you attempting to touch them in some manner, like coping a feel or brushing a cheek. \n\
-	\n\
-	-- So lets try to hold onto your charm, shall we?\n\
-	\n\
-	- On the off chance that you DO find out someone is using your advance to stir pointless OOC drama please ahelp and let us know, don't assume we're aware. \n\
+
 	"
 
 /mob/verb/check_out(mob/A as mob in view())

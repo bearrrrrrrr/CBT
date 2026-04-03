@@ -470,7 +470,7 @@
 	min_val = 0
 
 /datum/config_entry/number/penis_max_inches_prefs
-	config_entry_value = 10
+	config_entry_value = 50
 	min_val = 0
 
 /datum/config_entry/number/butt_min_size_prefs

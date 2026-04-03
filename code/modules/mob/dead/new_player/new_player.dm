@@ -904,8 +904,8 @@
 	var/ft_long_enough = ft_len > MIN_FLAVOR_LEN
 	var/ft_short_enough = ft_len < MAX_FLAVOR_LEN
 	var/ooc_len = LAZYLEN(P.features["ooc_notes"])
-	var/ooc_long_enough = ooc_len > MIN_FLAVOR_LEN 
-	var/ooc_short_enough = ooc_len < MAX_FLAVOR_LEN
+	var/ooc_long_enough = ooc_len > MIN_OOC_LEN 
+	var/ooc_short_enough = ooc_len < MAX_OOC_LEN
 
 	var/ft_too_long = ft_long_enough && !ft_short_enough
 	var/ft_too_short = !ft_long_enough

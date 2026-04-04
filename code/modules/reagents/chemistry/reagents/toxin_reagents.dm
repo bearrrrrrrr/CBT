@@ -1221,4 +1221,52 @@
 			liber.filterToxins = TRUE
 	L.metabolism_efficiency += metab_inibition
 
+/datum/reagent/toxin/floormeat_gastrotoxin
+	name = "Gastrotoxin"
+	description = "A horrible biochemical that reacts violently with any form of digestive container. Found in raw floormeat, and will ruin your day."
+	reagent_state = LIQUID
+	color = "#2f6617" //A sickly green color
+	metabolization_rate = REAGENTS_METABOLISM
+	overdose_threshold = 5
+	toxpwr = 0
+	taste_description = "impending gastric agony"
+	value = REAGENT_VALUE_VERY_RARE
+	var/painfully = FALSE
+
+/datum/reagent/toxin/floormeat_gastrotoxin/on_mob_life(mob/living/carbon/C)
+	if(prob(75*REM))	
+		if(!painfully)
+			to_chat(C, span_userdanger("Your insides sieze up painfully!"))
+			painfully = TRUE
+		C.Stun(40*REM, 0)
+		C.adjustToxLoss(1*REM, 0)
+		var/nut_loss = rand(30,100)
+		var/bloody = current_cycle >= 5 && prob(25*REM)
+		C.DefaultCombatKnockdown(60*REM, 0)
+		C.vomit(nut_loss, bloody, TRUE, 1, TRUE, FALSE)
+		for(var/datum/reagent/R in C.reagents.reagent_list)
+			if(R != src)
+				C.reagents.remove_reagent(R.type,1*REM)
+	if(prob(35*REM))
+		switch(rand(1,5))
+			if(1)
+				C.emote("scream")
+			if(2)
+				C.emote("groans")
+			if(3)
+				C.emote("cries")
+			if(4)
+				C.emote("scrungy")
+			if(5)
+				C.emote("faints")
+	. = TRUE
+	..()
+
+/datum/reagent/toxin/floormeat_gastrotoxin/overdose_process(mob/living/carbon/C)
+	. = ..()
+	toxpwr += 0.1
+
+
+
+
 

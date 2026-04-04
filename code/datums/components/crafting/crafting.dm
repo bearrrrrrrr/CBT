@@ -213,6 +213,9 @@
 			var/list/parts = del_reqs(R, a)
 			var/atom/movable/I = new R.result (get_turf(a.loc))
 			I.CheckParts(parts, R)
+			if(istype(I, /obj/item/reagent_containers/food/snacks))
+				var/obj/item/reagent_containers/food/snacks/SN = I
+				SN.floormeat = FALSE // you did something with it, and we promised that doing whatever that is makes it no longe floormeat
 			R.on_finished(a, parent)
 			if(send_feedback)
 				SSblackbox.record_feedback("tally", "object_crafted", 1, I.type)

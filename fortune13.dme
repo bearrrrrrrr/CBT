@@ -64,6 +64,7 @@
 #include "code\__DEFINES\food.dm"
 #include "code\__DEFINES\footsteps.dm"
 #include "code\__DEFINES\generators.dm"
+#include "code\__DEFINES\helpful_tips.dm"
 #include "code\__DEFINES\html.dm"
 #include "code\__DEFINES\hud.dm"
 #include "code\__DEFINES\icon_smoothing.dm"

@@ -1,6 +1,7 @@
 /obj/item/reagent_containers/food/snacks/meat
 	var/subjectname = ""
 	var/subjectjob = null
+	floormeat = TRUE
 	custom_materials = list(/datum/material/meat = MINERAL_MATERIAL_AMOUNT * 4)
 
 /obj/item/reagent_containers/food/snacks/meat/slab
@@ -341,6 +342,7 @@
 	dried_type = /obj/item/reagent_containers/food/snacks/meatsmoked
 	filling_color = "#B22222"
 	foodtype = MEAT
+	floormeat = FALSE // steak isnt floormeat!!!
 	tastes = list("meat" = 1)
 
 /obj/item/reagent_containers/food/snacks/meat/steak/chicken
@@ -482,6 +484,7 @@
 	filling_color = "#B22222"
 	tastes = list("meat" = 1)
 	foodtype = MEAT
+	floormeat = FALSE // cooked cutlets arent floormeat!!!
 
 /obj/item/reagent_containers/food/snacks/meat/cutlet/plain
 

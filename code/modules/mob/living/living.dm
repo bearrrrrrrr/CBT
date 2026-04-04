@@ -1644,3 +1644,23 @@
 	if(do_after(src, 1 SECONDS, target = src))
 		for(var/i in 1 to 180)  //I know this is awful
 			src.tilt_left()
+
+/mob/living/proc/try_give_tip(tipkind, delay = 0)
+	if(!client)
+		return
+	if(helpful_tips[tipkind])
+		return
+	var/tiptext = GLOB.helpful_tip_texts[tipkind]
+	if(!tiptext)
+		return
+	helpful_tips[tipkind] = TRUE
+	INVOKE_ASYNC(src, PROC_REF(give_tip), tiptext, delay)
+
+/mob/living/proc/give_tip(tiptext, delay)
+	if(delay)
+		sleep(delay) //delay
+	to_chat(src, span_purple("<b>[safepick(GLOB.helpful_tip_prefixes)]</b> [tiptext]"))
+
+
+
+

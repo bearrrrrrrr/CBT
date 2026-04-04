@@ -179,3 +179,6 @@
 	var/icon_resting
 
 	var/coolshadow = TRUE
+
+	/// format = (TIP_FOR_UR_HEALTH, tip_expire_time)
+	var/list/helpful_tips = list() //tips that the game gives you for things it wants you to know

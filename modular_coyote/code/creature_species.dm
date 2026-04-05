@@ -33,7 +33,7 @@
 
 /datum/species/feral/pokemon
 	meat = /obj/item/reagent_containers/food/snacks/meat/slab/pokemon
-	roundstart = FALSE
+	roundstart = TRUE
 	liked_food = FRUIT | MEAT //berries
 	disliked_food = TOXIC | GROSS
 	icon_dead_suffix = "_d"
@@ -1391,7 +1391,7 @@
 
 //Start Synthetic Creatures//
 /datum/species/adapted
-	name = "REPORT THIS AS A BUG"
+	name = "Feral Robot Thing"
 	//The id is the living and standing icon state of the creature.
 	simple_icon = 'icons/mob/splurtbot.dmi'
 	say_mod = "beeps"
@@ -1413,7 +1413,7 @@
 	mutanttongue = /obj/item/organ/tongue/robot/ipc
 	mutant_brain = /obj/item/organ/brain/ipc
 	icon_width = 32
-	roundstart = FALSE
+	roundstart = TRUE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	attack_verb = "claw"
 	attack_sound = 'sound/weapons/slash.ogg'
@@ -1449,7 +1449,7 @@
 /datum/species/adapted/simplebot
 	name = "REPORT THIS AS A BUG"
 	simple_icon = 'icons/mob/robots.dmi'
-	roundstart = FALSE
+	roundstart = TRUE
 
 /datum/species/adapted/simplebot/handy
 	name = "Adapted Handy Unit"
@@ -1640,7 +1640,7 @@
 /datum/species/adapted/dogborg
 	name = "REPORT THIS AS A BUGGY"
 	simple_icon = 'modular_coyote/icons/mob/dogborg.dmi'
-	roundstart = FALSE
+	roundstart = TRUE
 	rotate_on_lying = FALSE
 	icon_width = 62
 	icon_rest_suffix = "_rest"
@@ -1718,7 +1718,7 @@
 	simple_icon = 'modular_splurt/icons/mob/widerobot.dmi'
 	icon_rest_suffix = "-rest"
 	icon_dead_suffix = "-wreck"
-	roundstart = FALSE
+	roundstart = TRUE
 
 /datum/species/adapted/dogborg/otieborg/otiee
 	name = "Engineering Otieborg"
@@ -1747,7 +1747,7 @@
 /datum/species/adapted/raptorborg
 	name = "REPORT THIS AS A BUG"
 	simple_icon = 'modular_coyote/icons/mob/newraptorborg.dmi'
-	roundstart = FALSE
+	roundstart = TRUE
 	rotate_on_lying = FALSE
 	icon_width = 64
 	icon_rest_suffix = "-rest"
@@ -1862,7 +1862,7 @@
 /datum/species/adapted/drakeborg
 	name = "REPORT THIS AS A BUGGY"
 	simple_icon = 'modular_coyote/code/drakeborgs/drakeborg_vr.dmi'
-	roundstart = FALSE
+	roundstart = TRUE
 	rotate_on_lying = FALSE
 	icon_width = 64
 	icon_rest_suffix = "_rest"
@@ -1911,7 +1911,7 @@
 	simple_icon = 'icons/mecha/mecha.dmi'
 	icon_dead_suffix = "-broken"
 	footstep_type = FOOTSTEP_MOB_HEAVY
-	roundstart = FALSE
+	roundstart = TRUE
 
 /datum/species/adapted/mechs/gygax
 	name = "Adapted Gygax"

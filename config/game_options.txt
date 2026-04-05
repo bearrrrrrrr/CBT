@@ -445,17 +445,17 @@ SILICON_MAX_LAW_AMOUNT 12
 
 ## You probably want humans on your space station, but technically speaking you can turn them off without any ill effect
 ROUNDSTART_RACES human
-ROUNDSTART_RACES ghoul
+#ROUNDSTART_RACES ghoul
 
 ## Races that are strictly worse than humans that could probably be turned on without balance concerns
 ROUNDSTART_RACES lizard
 ROUNDSTART_RACES synthliz
-ROUNDSTART_RACES fly
+#ROUNDSTART_RACES fly
 #ROUNDSTART_RACES insect
 #ROUNDSTART_RACES plasmaman
 #ROUNDSTART_RACES shadow
 ROUNDSTART_RACES felinid
-ROUNDSTART_RACES dwarf
+#ROUNDSTART_RACES dwarf
 #ROUNDSTART_RACES ethereal
 
 ## Races that are better than humans in some ways, but worse in others
@@ -486,13 +486,13 @@ ROUNDSTART_RACES insect
 #ROUNDSTART_RACES xeno
 ROUNDSTART_RACES slimeperson
 #ROUNDSTART_RACES guilmon
-ROUNDSTART_RACES ipc
+#ROUNDSTART_RACES ipc
 ROUNDSTART_RACES arachnid
 
 
 ## CUSTOM Races
 ROUNDSTART_RACES shadekin
-ROUNDSTART_RACES dragon
+#ROUNDSTART_RACES dragon
 
 
 ##-------------------------------------------------------------------------------------------

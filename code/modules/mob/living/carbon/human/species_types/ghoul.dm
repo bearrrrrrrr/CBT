@@ -25,6 +25,7 @@
 	species_type = "furry"
 
 	allowed_limb_ids = list("mammal","aquatic","avian","shadekin")
+	roundstart = FALSE
 
 /*
 //Ghouls have weak limbs.

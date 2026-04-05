@@ -24,7 +24,7 @@
 /datum/species/vox
 	name = "Vox"
 	id = "vox"
-	roundstart = TRUE
+	roundstart = FALSE
 	species_traits = list(MUTCOLORS,
 		EYECOLOR,
 		NO_UNDERWEAR,

@@ -496,7 +496,7 @@
 	name = "In Rut"
 	desc = "Your character, for whatever reason, is ACTIVELY seeking out attention from those who match your OOC Preferences. Remember to check peoples OOC notes!"
 	value = 0
-	category = QUIRK_CATEGORY_PERCEPTIVE_QUIRKS
+	category = QUIRK_CATEGORY_BAWDY_QUIRKS
 	mechanics = "This Quirk allows you to see other players ERP related quirks when you examine them. Letting you know, at a glance, some of their prefs if they have them set."
 	conflicts = list()
 	mob_trait = TRAIT_HEAT_DETECT

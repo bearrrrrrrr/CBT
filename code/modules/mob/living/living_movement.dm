@@ -1,7 +1,8 @@
-/mob/living/Moved()
+/mob/living/Moved(atom/OldLoc, Dir)
 	. = ..()
 	update_turf_movespeed(loc)
 	update_pixel_shifting(TRUE)
+	update_minecraft_movement(OldLoc, Dir)
 
 /mob/living/setDir(newdir, ismousemovement)
 	. = ..()
@@ -19,6 +20,38 @@
 		if(is_tilted)
 			transform = transform.Turn(-is_tilted)
 			is_tilted = 0
+
+/mob/living/proc/update_minecraft_movement(atom/old_loc, dir_moved)
+	// walking? bypass and use walk speed
+	if(m_intent == MOVE_INTENT_WALK)
+		remove_movespeed_modifier(/datum/movespeed_modifier/minecraft)
+		return
+	// check 2 reset tiles moved, based on tiiiime
+	var/ds = world.time - mc_last_move_time
+	if(ds > mc_distance_moved)
+		mc_distance_moved = 0
+	var/moved_this_dir = get_dir(old_loc, loc)
+	if(moved_this_dir != mc_last_move_dir)
+		mc_distance_moved = 0
+	else
+		mc_distance_moved += 1
+	mc_last_move_dir = moved_this_dir
+	mc_last_move_time = world.time
+	// we go from min speed (highest delay) to config-set run speed (lowest delay)
+	var/tiles_to_reach_full_speed = CONFIG_GET(number/tiles_to_reach_min_run_delay)
+	var/max_delay = CONFIG_GET(number/movedelay/run_max_delay)
+	var/min_delay = CONFIG_GET(number/movedelay/run_delay)
+	var/delay_to_use
+	// interpolate!
+	if(mc_distance_moved >= tiles_to_reach_full_speed)
+		delay_to_use = min_delay
+	else
+		delay_to_use = max_delay - ((max_delay - min_delay) * (mc_distance_moved / tiles_to_reach_full_speed))
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/minecraft, multiplicative_slowdown = delay_to_use)
+	if(mc_debug)
+		to_chat(src, "MC_DEBUG: Time since last move: [ds], distance moved in same direction: [mc_distance_moved], delay to use: [delay_to_use]")
+		to_chat(src, "MC_DEBUG: Max delay: [max_delay], Min delay: [min_delay], Tiles to reach full speed: [tiles_to_reach_full_speed]")
+		to_chat(src, "MC_DEBUG: Fenny is a dork")
 
 
 /mob/living/CanAllowThrough(atom/movable/mover, border_dir)

@@ -188,5 +188,5 @@
 	var/mc_last_move_time = 0
 	var/mc_decay_one_tile = 1 SECONDS
 	var/mc_distance_moved
-	var/mc_debug = TRUE
+	var/mc_debug = FALSE
 

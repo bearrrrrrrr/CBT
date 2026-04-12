@@ -39,13 +39,6 @@
 		else
 			current_move_dir = get_dir(locate(last_x, last_y, last_z), get_turf(src))
 	var/tiles_to_reach_full_speed = CONFIG_GET(number/tiles_to_reach_min_run_delay)
-	if(CHECK_BITFIELD(combat_flags, COMBAT_FLAG_SPRINT_ACTIVE))
-		// sprinting? bypass and use sprint speed
-		remove_movespeed_modifier(/datum/movespeed_modifier/minecraft)
-		mc_last_move_dir = current_move_dir
-		mc_last_move_time = world.time
-		mc_distance_moved = tiles_to_reach_full_speed
-		return
 	var/ds = world.time - mc_last_move_time
 	var/tiled_decayed = 0
 	if(ds > mc_decay_one_tile)
@@ -112,14 +105,13 @@
 	mc_last_move_dir = current_move_dir
 	mc_last_move_time = world.time
 	// we go from min speed (highest delay) to config-set run speed (lowest delay)
-	var/max_delay = CONFIG_GET(number/movedelay/run_max_delay)
-	var/min_delay = CONFIG_GET(number/movedelay/run_delay)
+	var/startup_slowdown = CONFIG_GET(number/movedelay/run_initial_slowdown)
 	var/delay_to_use
 	// interpolate!
 	if(mc_distance_moved >= tiles_to_reach_full_speed)
 		remove_movespeed_modifier(/datum/movespeed_modifier/minecraft)
 	else
-		delay_to_use = max_delay - ((max_delay - min_delay) * (mc_distance_moved / tiles_to_reach_full_speed))
+		delay_to_use = startup_slowdown - ((startup_slowdown - 1) * (mc_distance_moved / tiles_to_reach_full_speed))
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/minecraft, multiplicative_slowdown = delay_to_use)
 	if(mc_debug)
 		//convirt the direction numbers into binary!

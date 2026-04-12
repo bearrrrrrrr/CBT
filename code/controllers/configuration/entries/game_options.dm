@@ -262,9 +262,9 @@
 	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/run)
 	M.sync()
 
-/datum/config_entry/number/movedelay/run_max_delay
+/datum/config_entry/number/movedelay/run_initial_slowdown
 
-/datum/config_entry/number/movedelay/run_max_delay/ValidateAndSet()
+/datum/config_entry/number/movedelay/run_initial_slowdown/ValidateAndSet()
 	. = ..()
 	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/run/slowest)
 	M.sync()

@@ -565,7 +565,7 @@
 	icon_dead = "pillbug_dead"
 	icon_gib = "radroach_gib"
 	can_ghost_into = TRUE
-	move_to_delay = 4
+	move_to_delay = 5
 	waddle_amount = 1
 	waddle_up_time = 1
 	waddle_side_time = 1

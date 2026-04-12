@@ -26,13 +26,6 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/minecraft)
 		return
 	// check 2 reset tiles moved, based on tiiiime
-	var/ds = world.time - mc_last_move_time
-	var/tiled_decayed = 0
-	if(ds > mc_decay_one_tile)
-		// how manyuu intervals of decay have passed?
-		var/intervals = floor(ds / mc_decay_one_tile)
-		tiled_decayed = intervals
-		mc_distance_moved = max(mc_distance_moved - intervals, 0)
 	var/facing = dir_moved
 	var/client/C = client
 	var/last_move_dir = mc_last_move_dir
@@ -46,6 +39,20 @@
 		else
 			current_move_dir = get_dir(locate(last_x, last_y, last_z), get_turf(src))
 	var/tiles_to_reach_full_speed = CONFIG_GET(number/tiles_to_reach_min_run_delay)
+	if(CHECK_BITFIELD(combat_flags, COMBAT_FLAG_SPRINT_ACTIVE))
+		// sprinting? bypass and use sprint speed
+		remove_movespeed_modifier(/datum/movespeed_modifier/minecraft)
+		mc_last_move_dir = current_move_dir
+		mc_last_move_time = world.time
+		mc_distance_moved = tiles_to_reach_full_speed
+		return
+	var/ds = world.time - mc_last_move_time
+	var/tiled_decayed = 0
+	if(ds > mc_decay_one_tile)
+		// how manyuu intervals of decay have passed?
+		var/intervals = floor(ds / mc_decay_one_tile)
+		tiled_decayed = intervals
+		mc_distance_moved = max(mc_distance_moved - intervals, 0)
 	// the & allows for diagonals!
 	// no it doesnt
 	// okay diagonal movement is actually two steps of cardinals, and... it gets complicated here

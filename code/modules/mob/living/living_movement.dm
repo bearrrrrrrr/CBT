@@ -116,7 +116,6 @@
 	if(mc_debug)
 		//convirt the direction numbers into binary!
 		to_chat(src, "MC_DEBUG: Time since last move: [ds], distance moved in same direction: [mc_distance_moved], delay to use: [delay_to_use]")
-		to_chat(src, "MC_DEBUG: Max delay: [max_delay], Min delay: [min_delay], Tiles to reach full speed: [tiles_to_reach_full_speed]")
 		to_chat(src, "MC_DEBUG: Moved this dir: [dir2text(current_move_dir)], Last move dir: [dir2text(last_move_dir)], Tiles decayed: [tiled_decayed]")
 		to_chat(src, "MC_DEBUG: Fenny is a dork")
 

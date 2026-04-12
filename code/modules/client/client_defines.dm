@@ -190,3 +190,4 @@
 	///has the mob joined the game
 	var/is_in_game = 0  //this variable has 3 states 0, 1, 2
 
+	var/last_move_direction = 0

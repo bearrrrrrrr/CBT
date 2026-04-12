@@ -147,6 +147,9 @@
 			if(client_mobs_in_contents) // We're done moving, update our parallax now
 				update_parallax_contents()
 			moving_diagonally = 0
+			last_x = x
+			last_y = y
+			last_z = z
 			return
 
 	if(!loc || (loc == oldloc && oldloc != newloc))

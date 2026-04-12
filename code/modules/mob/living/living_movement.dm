@@ -2,7 +2,6 @@
 	. = ..()
 	update_turf_movespeed(loc)
 	update_pixel_shifting(TRUE)
-	update_minecraft_movement(OldLoc, Dir)
 
 /mob/living/setDir(newdir, ismousemovement)
 	. = ..()
@@ -21,36 +20,105 @@
 			transform = transform.Turn(-is_tilted)
 			is_tilted = 0
 
-/mob/living/proc/update_minecraft_movement(atom/old_loc, dir_moved)
+/mob/living/proc/update_minecraft_movement(dir_moved)
 	// walking? bypass and use walk speed
-	if(m_intent == MOVE_INTENT_WALK)
+	if(m_intent == MOVE_INTENT_WALK || !ckey) // non-player mobs do a differnet thing
 		remove_movespeed_modifier(/datum/movespeed_modifier/minecraft)
 		return
 	// check 2 reset tiles moved, based on tiiiime
 	var/ds = world.time - mc_last_move_time
-	if(ds > mc_distance_moved)
-		mc_distance_moved = 0
-	var/moved_this_dir = get_dir(old_loc, loc)
-	if(moved_this_dir != mc_last_move_dir)
-		mc_distance_moved = 0
+	var/tiled_decayed = 0
+	if(ds > mc_decay_one_tile)
+		// how manyuu intervals of decay have passed?
+		var/intervals = floor(ds / mc_decay_one_tile)
+		tiled_decayed = intervals
+		mc_distance_moved = max(mc_distance_moved - intervals, 0)
+	var/facing = dir_moved
+	var/client/C = client
+	var/last_move_dir = mc_last_move_dir
+	var/current_move_dir
+	var/its_okay = FALSE
+	if(C)
+		current_move_dir = C.last_move_direction
 	else
-		mc_distance_moved += 1
-	mc_last_move_dir = moved_this_dir
+		if(moving_diagonally)
+			its_okay = TRUE // ugh. UGH
+		else
+			current_move_dir = get_dir(locate(last_x, last_y, last_z), get_turf(src))
+	var/tiles_to_reach_full_speed = CONFIG_GET(number/tiles_to_reach_min_run_delay)
+	// the & allows for diagonals!
+	// no it doesnt
+	// okay diagonal movement is actually two steps of cardinals, and... it gets complicated here
+	if(!its_okay)
+		if(current_move_dir == last_move_dir) // if we're moving in the same direction as last time, or a diagonal that includes the last direction, keep building up distance. otherwise reset.
+			its_okay = TRUE
+		if(!its_okay)
+			switch(current_move_dir)
+				if(NORTH)
+					if(last_move_dir == NORTHEAST || last_move_dir == NORTHWEST)
+						its_okay = TRUE
+				if(SOUTH)
+					if(last_move_dir == SOUTHEAST || last_move_dir == SOUTHWEST)
+						its_okay = TRUE
+				if(EAST)
+					if(last_move_dir == NORTHEAST || last_move_dir == SOUTHEAST)
+						its_okay = TRUE
+				if(WEST)
+					if(last_move_dir == NORTHWEST || last_move_dir == SOUTHWEST)
+						its_okay = TRUE
+				if(NORTHWEST)
+					if(last_move_dir == NORTH || last_move_dir == WEST)
+						its_okay = TRUE
+				if(NORTHEAST)
+					if(last_move_dir == NORTH || last_move_dir == EAST)
+						its_okay = TRUE
+				if(SOUTHWEST)
+					if(last_move_dir == SOUTH || last_move_dir == WEST)
+						its_okay = TRUE
+				if(SOUTHEAST)
+					if(last_move_dir == SOUTH || last_move_dir == EAST)
+						its_okay = TRUE
+	if(its_okay && C)
+		its_okay = FALSE // its NOT okay!!!
+		if(facing == current_move_dir || facing == last_move_dir) // if we're facing the direction we're moving, or a diagonal that includes the direction we're facing, keep building up speed. otherwise reset.
+			its_okay = TRUE
+		else
+			switch(facing)
+				if(NORTH)
+					if(last_move_dir == NORTHWEST || last_move_dir == NORTHEAST)
+						its_okay = TRUE
+				if(SOUTH)
+					if(last_move_dir == SOUTHWEST || last_move_dir == SOUTHEAST)
+						its_okay = TRUE
+				if(WEST)
+					if(last_move_dir == NORTHWEST || last_move_dir == SOUTHWEST)
+						its_okay = TRUE
+				if(EAST)
+					if(last_move_dir == NORTHEAST || last_move_dir == SOUTHEAST)
+						its_okay = TRUE
+				else
+					its_okay = FALSE // if we're moving in a different direction than we're facing,
+	if(its_okay)
+		mc_distance_moved = min(mc_distance_moved + 1, tiles_to_reach_full_speed)
+	else
+		mc_distance_moved = 0
+	mc_last_move_dir = current_move_dir
 	mc_last_move_time = world.time
 	// we go from min speed (highest delay) to config-set run speed (lowest delay)
-	var/tiles_to_reach_full_speed = CONFIG_GET(number/tiles_to_reach_min_run_delay)
 	var/max_delay = CONFIG_GET(number/movedelay/run_max_delay)
 	var/min_delay = CONFIG_GET(number/movedelay/run_delay)
 	var/delay_to_use
 	// interpolate!
 	if(mc_distance_moved >= tiles_to_reach_full_speed)
-		delay_to_use = min_delay
+		remove_movespeed_modifier(/datum/movespeed_modifier/minecraft)
 	else
 		delay_to_use = max_delay - ((max_delay - min_delay) * (mc_distance_moved / tiles_to_reach_full_speed))
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/minecraft, multiplicative_slowdown = delay_to_use)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/minecraft, multiplicative_slowdown = delay_to_use)
 	if(mc_debug)
+		//convirt the direction numbers into binary!
 		to_chat(src, "MC_DEBUG: Time since last move: [ds], distance moved in same direction: [mc_distance_moved], delay to use: [delay_to_use]")
 		to_chat(src, "MC_DEBUG: Max delay: [max_delay], Min delay: [min_delay], Tiles to reach full speed: [tiles_to_reach_full_speed]")
+		to_chat(src, "MC_DEBUG: Moved this dir: [dir2text(current_move_dir)], Last move dir: [dir2text(last_move_dir)], Tiles decayed: [tiled_decayed]")
 		to_chat(src, "MC_DEBUG: Fenny is a dork")
 
 
@@ -145,6 +213,8 @@
 		update_pull_movespeed()
 
 	. = ..()
+
+	update_minecraft_movement(old_direction)
 
 	if(pulledby && moving_diagonally != FIRST_DIAG_STEP && get_dist(src, pulledby) > 1 && (pulledby != moving_from_pull))//separated from our puller and not in the middle of a diagonal move.
 		pulledby.stop_pulling()

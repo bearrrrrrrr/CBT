@@ -44,3 +44,39 @@
 	var/mob/living/carbon/human/H = user.mob
 	H.smart_equipbag()
 	return TRUE
+
+/datum/keybinding/human/juke
+	hotkey_keys = list("AltW")
+	name = "juke_north"
+	full_name = "Dodge North"
+	description = "Immediately launches you northward, if you can!"
+	var/jukedir = NORTH
+
+/datum/keybinding/human/juke/down(client/user)
+	var/mob/living/carbon/human/H = user.mob
+	H.juke(jukedir)
+	return TRUE
+
+/datum/keybinding/human/juke/south
+	hotkey_keys = list("AltS")
+	name = "juke_south"
+	full_name = "Dodge South"
+	description = "Immediately launches you southward, if you can!"
+	jukedir = SOUTH
+
+/datum/keybinding/human/juke/east
+	hotkey_keys = list("AltD")
+	name = "juke_east"
+	full_name = "Dodge East"
+	description = "Immediately launches you eastward, if you can!"
+	jukedir = EAST
+
+/datum/keybinding/human/juke/west
+	hotkey_keys = list("AltA")
+	name = "juke_west"
+	full_name = "Dodge West"
+	description = "Immediately launches you westward, if you can!"
+	jukedir = WEST
+
+
+

@@ -80,6 +80,10 @@
 	///Used for the calculate_adjacencies proc for icon smoothing.
 	var/can_be_unanchored = FALSE
 
+	var/last_x
+	var/last_y
+	var/last_z
+
 /atom/movable/Initialize(mapload)
 	. = ..()
 	switch(blocks_emissive)
@@ -96,6 +100,9 @@
 			AddComponent(/datum/component/overlay_lighting)
 		if(MOVABLE_LIGHT_DIRECTIONAL)
 			AddComponent(/datum/component/overlay_lighting, is_directional = TRUE)
+	last_x = x
+	last_y = y
+	last_z = z
 
 
 /atom/movable/proc/update_emissive_block()

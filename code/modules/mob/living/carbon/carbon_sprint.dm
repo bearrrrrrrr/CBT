@@ -32,9 +32,9 @@
 		else
 			adjustStaminaLoss(tiles * sprint_stamina_cost)		//use stamina to cover deficit.
 
-		if(usr.client?.prefs.toggles & SOUND_SPRINTBUFFER && world.time > sprint_buffer_sound_time)
-			sprint_buffer_sound_time = world.time + SPRINT_BUFFER_SOUND_COOLDOWN
-			SEND_SOUND(usr, sound('sound/machines/terminal_error.ogg'))
+		// if(usr.client?.prefs.toggles & SOUND_SPRINTBUFFER && world.time > sprint_buffer_sound_time)
+		// 	sprint_buffer_sound_time = world.time + SPRINT_BUFFER_SOUND_COOLDOWN
+		// 	SEND_SOUND(usr, sound('sound/machines/terminal_error.ogg'))
 
 /mob/living/carbon/proc/doSprintBufferRegen(updating = TRUE)
 	var/diff = world.time - sprint_buffer_regen_last

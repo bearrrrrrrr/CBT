@@ -103,3 +103,32 @@
 		return TRUE
 	return ..()
 
+/mob/living/carbon/human
+	var/next_juke_time = 0
+	var/juke_cooldown = 2 SECONDS
+
+// shut up its movement
+// makes the mod juke in a dorection
+/mob/living/carbon/human/proc/juke(movement_dir)
+	if(incapacitated(TRUE, FALSE, TRUE))
+		to_chat(src, span_warning("You're too messed up to juke!"))
+		return
+	if(world.time < next_juke_time)
+		to_chat(src, span_warning("You can't juke again yet!"))
+		return
+	next_juke_time = world.time + juke_cooldown
+	var/turf/T = get_ranged_target_turf(src, movement_dir, 20)
+	throw_at(T, 2, 1, src, TRUE, FALSE, callback=CALLBACK(src,PROC_REF(finish_juking)))
+	playsound(src, 'sound/effects/dive.ogg', 30, 1)
+	// to_chat(src, span_good("You juke [dir2text(movement_dir)]!"))
+	adjustStaminaLoss(50) // happens after you juke, so you can stamcrit urself
+
+/mob/living/carbon/human/proc/finish_juking()
+
+/mob/living/carbon/human/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	. = ..()
+	if(world.time < next_juke_time && hit_atom.density)
+		to_chat(src, span_warning("You smack into \the [hit_atom]!"))
+		take_bodypart_damage(5, check_armor = TRUE)
+		playsound(src,'sound/weapons/punch1.ogg',50,1)
+		return

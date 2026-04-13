@@ -39,6 +39,7 @@
 	move_delay = world.time + world.tick_lag //this is here because Move() can now be called mutiple times per tick
 	if(!n || !direction || !mob?.loc)
 		return FALSE
+	last_move_direction = direction
 	//GET RID OF THIS SOON AS MOBILITY FLAGS IS DONE
 	if(mob.mob_transforming)
 		return FALSE

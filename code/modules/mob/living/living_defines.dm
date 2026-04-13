@@ -182,3 +182,11 @@
 
 	/// format = (TIP_FOR_UR_HEALTH, tip_expire_time)
 	var/list/helpful_tips = list() //tips that the game gives you for things it wants you to know
+
+	/// minecraft movement vars
+	var/mc_last_move_dir
+	var/mc_last_move_time = 0
+	var/mc_decay_one_tile = 1 SECONDS
+	var/mc_distance_moved
+	var/mc_debug = FALSE
+

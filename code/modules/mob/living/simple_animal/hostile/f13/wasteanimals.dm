@@ -32,7 +32,7 @@
 	obj_damage = 20
 	melee_damage_lower = 4
 	melee_damage_upper = 12
-	move_to_delay = 3.5
+	move_to_delay = 4.5
 	retreat_distance = 0
 	minimum_distance = 0
 	aggroed_vision_range = 7
@@ -194,7 +194,7 @@
 	obj_damage = 20
 	melee_damage_lower = 4
 	melee_damage_upper = 12
-	move_to_delay = 3.5
+	move_to_delay = 4.0
 	retreat_distance = 0
 	minimum_distance = 0
 	aggroed_vision_range = 7
@@ -298,7 +298,6 @@
 	obj_damage = 20
 	melee_damage_lower = 4
 	melee_damage_upper = 12
-	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
 	aggroed_vision_range = 7
@@ -448,7 +447,6 @@
 	obj_damage = 20
 	melee_damage_lower = 7
 	melee_damage_upper = 18
-	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
 	aggroed_vision_range = 7
@@ -537,7 +535,6 @@
 	obj_damage = 20
 	melee_damage_lower = 7
 	melee_damage_upper = 18
-	move_to_delay = 3.5
 	retreat_distance = 0
 	minimum_distance = 0
 	aggroed_vision_range = 7
@@ -601,7 +598,7 @@
 	obj_damage = 20
 	melee_damage_lower = 12
 	melee_damage_upper = 24
-	move_to_delay = 3.5
+	move_to_delay = 5.0
 	retreat_distance = 0
 	minimum_distance = 0
 	aggroed_vision_range = 4

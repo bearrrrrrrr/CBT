@@ -72,6 +72,10 @@
 	var/mod = CONFIG_GET(number/movedelay/run_delay)
 	multiplicative_slowdown = isnum(mod)? mod : initial(multiplicative_slowdown)
 
+/datum/movespeed_modifier/config_walk_run/run/slowest/sync()
+	var/mod = CONFIG_GET(number/movedelay/run_initial_slowdown)
+	multiplicative_slowdown = isnum(mod)? mod : initial(multiplicative_slowdown)
+
 /datum/movespeed_modifier/special_speed//SPECIAL Integration
 	variable = TRUE
 
@@ -152,3 +156,10 @@
 /datum/movespeed_modifier/artifact
 	flags = IGNORE_NOSLOW
 	variable = TRUE
+
+/datum/movespeed_modifier/minecraft
+	movetypes = GROUND
+	blacklisted_movetypes = (FLYING|FLOATING)
+	variable = TRUE
+
+
